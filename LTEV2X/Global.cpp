@@ -138,7 +138,7 @@ Matrix Codebook::getPrecodingMatrix(int nTx, int PMI, int RI) {
 
 double gt_LUTMCSIndex2Effective(int McsIndex, eLinkType link) {
 	float mod;
-	ModulationType modtype;
+	eModulationType modtype;
 	float rate;
 	if (link == DOWNLINK) {
 		if (McsIndex == -1) {

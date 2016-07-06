@@ -15,31 +15,27 @@ enum eTransMode {//传输模式
 	BEAMFORMING  //基于Beamforming
 };
 
-enum ScheduleMode {
+enum eScheduleMode {
 
 };
 
 
+enum eMessageType {
+	PERIOD,  //周期性信息（包括车辆的基本信息，车速，位置，方向等等）
+	EMERGENCY,   //紧急信息（比如车祸信息，优先级较高）
+	DATA     //数据业务(文本，视频，声音等等）
+};
 
 
-//***************地理拓扑类变量设置*****************//
-
-
-
-
-
-
-
-//****************MAC层变量类型******************//
-
-
-
-
+enum eRSUType {
+	INTERSECTION,       //处于十字路口中央，城镇特有
+	MIDDLE_IN_RODE      //在道路中间，高速城镇场景均有
+};
 
 
 //****************物理层变量类型****************//
 
-enum ModulationType {//调制方式
+enum eModulationType {//调制方式
 	BPSK = 1,
 	QPSK = 2,
 	_16QAM = 4,
@@ -56,7 +52,7 @@ enum ModulationType {//调制方式
 
 
 struct sMCS {//调制编码方式等级
-	ModulationType modulationType;//调制方式
+	eModulationType modulationType;//调制方式
 	float rate;//码率
 };
 
