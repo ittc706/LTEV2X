@@ -21,12 +21,19 @@ int main() {
 		cout << "Num " << k << " : " << res.FactorPF/gc_PI << endl;
 	}
 
+
 	cRSU rsu;
 	rsu.m_VecVUE = Function::getVector(100);
-	rsu.m_Cluster = vector<vector<int>>{ Function::getVector(1), Function::getVector(24) ,Function::getVector(1) ,Function::getVector(74) };
-    rsu.DRAPerformCluster();
+	cout << "\n\n-------------------------------------\n\n";
+	rsu.m_Cluster = Function::getVectorDim2(100, 4);
+	int count = 0;
+	for (vector<int>&v : rsu.m_Cluster) {
+		cout << v.size() << ", ";
+		count += v.size();
+	}
+	cout << "\ncount: " << count << endl;
+	rsu.DRAPerformCluster();
 	Function::print1DimVector(rsu.m_DRA_ETI);
-
 
 	system("pause");
 }

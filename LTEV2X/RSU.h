@@ -51,4 +51,8 @@ public:
 	/*--------------------接口函数--------------------*/
 	int getDRAClusterIdx();//根据此刻的m_DRA_CNTI返回当前可以进行资源分配的簇的编号
 	void DRAPerformCluster();
+
+	/*--------------------辅助函数--------------------*/
+private:
+	int getMaxIndex(const std::vector<double>&v);
 };
