@@ -60,6 +60,9 @@
     <ClInclude Include="RSU.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blas1_z.cpp">
@@ -74,9 +77,6 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleBase.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Numerical.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -84,6 +84,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="VUE.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RSU.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

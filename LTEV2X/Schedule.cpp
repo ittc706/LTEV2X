@@ -55,19 +55,19 @@ void cSystem::schedulePF_RP_CSI_UL() {
 		
 
 		//计算每个RSU对应不同子带的PF因子
-		vector<PFInfo> F;//存储PF因子的容器
+		vector<sPFInfo> F;//存储PF因子的容器
 		for (int RSUId : _eNB.m_VecRSU) {
 			for (int subbandId = 0; subbandId < gc_SubbandNum; subbandId++) {
 				if (_eNB.m_UnassignedSubband[subbandId] == false) continue;//该子带已被分配
 				double t_FactorPF= log10(1 + m_VecRSU[RSUId].m_SINR[subbandId]) / m_VecRSU[RSUId].m_AccumulateThroughput;
-				F.push_back(PFInfo(RSUId, subbandId, t_FactorPF));
+				F.push_back(sPFInfo(RSUId, subbandId, t_FactorPF));
 			}
 		}
 
 		//开始排序算法
 		int p = 1;
 		while (S.size() != 0) {
-			PFInfo pPFInfo = selectKthPF(F, p, 0, F.size() - 1);
+			sPFInfo pPFInfo = selectKthPF(F, p, 0, F.size() - 1);
 			int u = pPFInfo.RSUId;
 			int v = pPFInfo.SubbandId;
 
@@ -94,7 +94,7 @@ void cSystem::schedulePF_RP_CSI_UL() {
 }
 
 
-PFInfo cSystem::selectKthPF(std::vector<PFInfo>& v, int k,int p,int r) {
+sPFInfo cSystem::selectKthPF(std::vector<sPFInfo>& v, int k,int p,int r) {
 	if (p == r) return v[p];
 	int q = partition(v, p, r);
 	int n = q - p + 1;
@@ -103,7 +103,7 @@ PFInfo cSystem::selectKthPF(std::vector<PFInfo>& v, int k,int p,int r) {
 	else return selectKthPF(v, k - n, q + 1, r);		
 }
 
-int cSystem::partition(std::vector<PFInfo>& v, int p, int r) {
+int cSystem::partition(std::vector<sPFInfo>& v, int p, int r) {
 	int k = p - 1;
 	double x = v[r].FactorPF;
 	for (int j = p; j <= r - 1; j++) {
@@ -116,8 +116,8 @@ int cSystem::partition(std::vector<PFInfo>& v, int p, int r) {
 	return k + 1;
 }
 
-void cSystem::exchange(std::vector<PFInfo>& v, int i, int j) {
-	PFInfo tem = v[i];
+void cSystem::exchange(std::vector<sPFInfo>& v, int i, int j) {
+	sPFInfo tem = v[i];
 	v[i] = v[j];
 	v[j] = tem;
 }
@@ -187,18 +187,76 @@ void cSystem::exchange(std::vector<PFInfo>& v, int i, int j) {
 
 
 
-void cSystem::distributedSchedule() {
+void cSystem::DRASchedule() {
 
-	frequencyResourceSelect();
+	DRAInformationClean();//资源分配信息清空
+
+	DRAbuildCallList();//建立呼叫链表
+
+
+	switch (m_DRAMode) {
+	case P13:
+		DRABasedOnP13();
+		break;
+	case P23:
+		DRABasedOnP23();
+		break;
+	case P123:
+		DRABasedOnP123();
+		break;
+	}
 
 }
 
 
-void cSystem::performCluster() {
-	
+void cSystem::DRAInformationClean() {
+	for (cRSU &_RSU : m_VecRSU) {
+		for (vector<int> curCluster : _RSU.m_CallList)
+			curCluster.clear();
+	}
+}
+
+void cSystem::DRAbuildCallList() {
+	for (cRSU &_RSU : m_VecRSU) {
+		//根据m_VecRSU更新m_CallList
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_Cluster.size(); ++clusterIdx) {
+			for (int UEId : _RSU.m_Cluster[clusterIdx]) {
+				if (m_VecVUE[UEId].m_isHavingDataToTransmit) //若车辆有数据要传，将其添加到m_CallList表中
+					_RSU.m_CallList[clusterIdx].push_back(UEId);
+			}
+		}
+	}
 }
 
 
-void cSystem::frequencyResourceSelect() {
+void cSystem::DRAPerformCluster() {
+	/*
+	假定已经分簇完毕，每个RSU有
+	*/
+}
+
+
+void cSystem::DRAGroupSizeBasedTDM() {
 
 }
+
+
+void cSystem::DRABasedOnP13() {
+
+}
+
+void cSystem::DRABasedOnP23() {
+
+}
+
+void cSystem::DRABasedOnP123() {
+	for (cRSU &_RSU : m_VecRSU) {
+		for (int i = 0; i < _RSU.mc_DRA_NTI; i++) {//依次遍历每一个DRA时隙
+			int clusterIdx = _RSU.getDRAClusterIdx();
+
+
+			_RSU.m_DRA_CNTI++;//更新该RSU当前的DRA时刻
+		}
+	}
+}
+

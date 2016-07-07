@@ -132,6 +132,7 @@
     <ClInclude Include="Schedule.h" />
     <ClInclude Include="Sector.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="VUE.h" />
   </ItemGroup>
   <ItemGroup>
@@ -139,9 +140,10 @@
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="linpack_z.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ModuleBase.cpp" />
     <ClCompile Include="Numerical.cpp" />
+    <ClCompile Include="RSU.cpp" />
     <ClCompile Include="Schedule.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="VUE.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

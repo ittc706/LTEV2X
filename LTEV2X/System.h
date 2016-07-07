@@ -53,22 +53,34 @@ private:
 
 	//线性时间选取算法
 public:
-	PFInfo selectKthPF(std::vector<PFInfo>& vecF, int k, int p, int r);
-	int partition(std::vector<PFInfo>& vecF, int p, int r);
-	void exchange(std::vector<PFInfo>& vecF, int i, int j);
+	sPFInfo selectKthPF(std::vector<sPFInfo>& vecF, int k, int p, int r);
+	int partition(std::vector<sPFInfo>& vecF, int p, int r);
+	void exchange(std::vector<sPFInfo>& vecF, int i, int j);
 
 
 
 	/***************************************************************
 	---------------------分布式资源管理-----------------------------
+	-------------DRA:Distributed Resource Allocation----------------
 	****************************************************************/
 public :
+	eDRAMode m_DRAMode;
 	/*--------------------接口函数--------------------*/
-	void distributedSchedule();
+	void DRASchedule();
 
 private:
-	void performCluster();//对RSU内的车辆进行分簇
-	void frequencyResourceSelect();//对每个RSU内的小簇（该小簇指：在当前RSU_TII进行资源竞争的小簇）进行资源选择
+	/*--------------------实现函数--------------------*/
+	void DRAPerformCluster();//对RSU内的车辆进行分簇
+	void DRAGroupSizeBasedTDM();//基于簇大小的时分复用
+	void DRAInformationClean();//资源分配信息清空
+	void DRAbuildCallList();//建立呼叫链表
+
+
+	void DRABasedOnP13();
+	void DRABasedOnP23();
+	void DRABasedOnP123();
+
+	/*--------------------辅助函数--------------------*/
 };
 
 

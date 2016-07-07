@@ -29,7 +29,17 @@ enum eMessageType {
 
 enum eRSUType {
 	INTERSECTION,       //处于十字路口中央，城镇特有
-	MIDDLE_IN_RODE      //在道路中间，高速城镇场景均有
+	VERTICAL,           //处于竖直的道路中
+	HORIZONTAL          //处于水平的道路中    
+};
+
+enum eDRAMode {
+	//P1:  Collision avoidance based on sensing
+	//P2:  Enhanced random resource selection
+	//P3:  Location-based resource selection
+	P13,               //Combination of P1 and P3
+	P23,               //Combination of P2 and P3
+	P123               //Combination of P1 and P2 and P3
 };
 
 

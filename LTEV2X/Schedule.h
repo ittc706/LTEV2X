@@ -46,21 +46,21 @@ public:
 };
 
 
-struct PFInfo {//仅用于PF上行调度算法的数据类型
+struct sPFInfo {//仅用于PF上行调度算法的数据类型
 	int RSUId;
 	int SubbandId;
 	double FactorPF;
-	PFInfo(int RSUId, int SubbandId, double FactorPF) {
+	sPFInfo(int RSUId, int SubbandId, double FactorPF) {
 		this->RSUId = RSUId;
 		this->SubbandId = SubbandId;
 		this->FactorPF = FactorPF;
 	}
-	PFInfo(const PFInfo& t) {
+	sPFInfo(const sPFInfo& t) {
 		this->RSUId = t.RSUId;
 		this->SubbandId = t.SubbandId;
 		this->FactorPF = t.FactorPF;
 	}
-	PFInfo& operator=(const PFInfo& t) {
+	sPFInfo& operator=(const sPFInfo& t) {
 		this->RSUId = t.RSUId;
 		this->SubbandId = t.SubbandId;
 		this->FactorPF = t.FactorPF;
@@ -69,3 +69,6 @@ struct PFInfo {//仅用于PF上行调度算法的数据类型
 };
 
 
+struct sDRAInfo {
+
+};
