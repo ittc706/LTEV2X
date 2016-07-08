@@ -22,28 +22,7 @@ public:
 };
 
 
-class cServingSector {
-public:
-	int servingSectorId[gc_MaxCoMP];
-	int servingSectorNum;
-	bool IsServing(int sectorId) {
-		bool ret = false;
-		for (int i = 0; i != servingSectorNum; i++) {
-			if (servingSectorId[i] == sectorId) {
-				ret = true;
-				break;
-			}
-		}
-		return ret;
-	};
-	void AppendSector(int sectorId) {
-		if (servingSectorNum + 1 >= gc_MaxCoMP)
-			throw Exp("AppendSector: sectorId large than c_maxCoMP");
-		servingSectorId[servingSectorNum] = sectorId;
-		servingSectorNum++;
-	};
-	void clear() { servingSectorNum = 0; }
-};
+
 
 
 struct sPFInfo {//仅用于PF上行调度算法的数据类型
@@ -69,6 +48,6 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 };
 
 
-struct sDRAInfo {
-
+struct sDRAScheduleInfo {
+	int UEid;
 };

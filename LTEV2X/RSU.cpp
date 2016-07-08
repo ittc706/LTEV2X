@@ -13,7 +13,7 @@ void cRSU::DRAPerformCluster() {
 	*/
 
 	//生成m_DRA_ETI容器
-	m_DRA_ETI = vector<int>(m_ClusterNum, 1);//每个簇至少分配一个大小的DRA_MTI
+	m_DRAClusterENTI = vector<int>(m_ClusterNum, 1);//每个簇至少分配一个大小的DRA_MTI
 	int remainNTI = mc_DRA_NTI - m_ClusterNum;//然后对剩下的时域资源循环进行分配
 	
 	//clusterSize存储每个簇的车辆数目(double类型)
@@ -27,20 +27,25 @@ void cRSU::DRAPerformCluster() {
 		clusterSize[i] = static_cast<double>(m_Cluster[i].size()) - VUESizePerMTI;
 	}
 
+	//对于剩下的资源块，循环分配给当前比例最高的簇，分配之后，更改对应的比例
 	while (remainNTI > 0) {
 		int dex = getMaxIndex(clusterSize);
 		if (dex == -1) throw Exp("还存在没有分配的时域资源，但是每个簇内的车辆已经为负数");
-		m_DRA_ETI[dex]++;
+		m_DRAClusterENTI[dex]++;
 		remainNTI--;
 		clusterSize[dex] -= VUESizePerMTI;
 	}
-	for (int i = 1; i < m_DRA_ETI.size(); i++)
-		m_DRA_ETI[i] += m_DRA_ETI[i - 1];
+
+	m_DRAClusterNTI = m_DRAClusterENTI;//保留每个簇分配到的时隙数量
+
+	for (int i = 1; i < m_DRAClusterENTI.size(); i++)
+		m_DRAClusterENTI[i] += m_DRAClusterENTI[i - 1];
 }
 
 int cRSU::getDRAClusterIdx() {
 	int relativeCNTI = m_DRA_CNTI%mc_DRA_NTI;
-
+	for (int i = 0; i < m_ClusterNum; i++)
+		if (relativeCNTI < m_DRAClusterENTI[i]) return i;
 	return -1;
 }
 
@@ -56,5 +61,7 @@ int cRSU::getMaxIndex(const std::vector<double>&v) {
 	}
 	return dex;
 }
+
+
 
 

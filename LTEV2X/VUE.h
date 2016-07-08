@@ -3,6 +3,7 @@
 #include<list>
 #include"Global.h"
 #include"Schedule.h"
+#include"Message.h"
 
 class cVeUE {
 public:
@@ -16,6 +17,7 @@ public:
 	bool m_IsCac;//用户被接纳标志
 	std::vector<float> m_LSFadingFromUE2eNB;//	用户到所有基站的大中尺度
 
+	sMessage m_Message;//消息
 
 	/***************************************************************
 	------------------------调度模块--------------------------------
@@ -25,8 +27,7 @@ public:
 	bool m_IsScheduledDL;    //DownLink是否在被调度
 	std::list<int> m_HIndicatorUL; //传输数据位置
 	std::list<int> m_HIndicatorDL; //传输数据位置
-	int  m_RBs[gc_MaxCodewords];  //频域*空间
-	cServingSector m_ServingSet;
+	int  m_RBs[gc_DRA_FBNum];  //频域*空间
 	sFeedbackInfo m_FeedbackDL;//将要发送给基站端的反馈信息
 	sFeedbackInfo m_FeedbackUL;//将要发送给基站端的反馈信息
 
@@ -40,4 +41,6 @@ public:
 	---------------------分布式资源管理-----------------------------
 	****************************************************************/
 	bool m_isHavingDataToTransmit;
+
+	int RBSelectBasedOnP2(const std::vector<int> &v);
 };

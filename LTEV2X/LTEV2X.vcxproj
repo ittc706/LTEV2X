@@ -120,13 +120,14 @@
   <ItemGroup>
     <ClInclude Include="blas1_z.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Message.h" />
     <ClInclude Include="Definition.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="linpack_z.h" />
-    <ClInclude Include="Message.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="Numerical.h" />
     <ClInclude Include="RSU.h" />
     <ClInclude Include="Schedule.h" />

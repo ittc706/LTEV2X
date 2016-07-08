@@ -17,6 +17,7 @@
 */
 
 #include<vector>
+#include<iomanip>
 #include"Schedule.h"
 #include"System.h"
 #include"Exception.h"
@@ -46,18 +47,18 @@ void cSystem::scheduleInfoClean() {
 void cSystem::schedulePF_RP_CSI_UL() {
 	for (ceNB& _eNB : m_VeceNB) {//对每一个基站进行一次调度
 		int k = _eNB.m_VecRSU.size();
-		vector<vector<bool>> SPU(k, vector<bool>(gc_SubbandNum));//每个RSU用一个vector<bool>来管理其SPU，true代表已选如该子带
+		vector<vector<bool>> SPU(k, vector<bool>(gc_RBNum));//每个RSU用一个vector<bool>来管理其SPU，true代表已选如该子带
 		vector<int> S;//未分配的子带集合(存储子带的ID）
 		
 		//初始化子带集合S（这里需要不需要？每次调度前应该没有子带被占用吧）
-		for (int subbandId = 0; subbandId < gc_SubbandNum; subbandId++) 
+		for (int subbandId = 0; subbandId < gc_RBNum; subbandId++) 
 			if (_eNB.m_UnassignedSubband)S.push_back(subbandId);
 		
 
 		//计算每个RSU对应不同子带的PF因子
 		vector<sPFInfo> F;//存储PF因子的容器
 		for (int RSUId : _eNB.m_VecRSU) {
-			for (int subbandId = 0; subbandId < gc_SubbandNum; subbandId++) {
+			for (int subbandId = 0; subbandId < gc_RBNum; subbandId++) {
 				if (_eNB.m_UnassignedSubband[subbandId] == false) continue;//该子带已被分配
 				double t_FactorPF= log10(1 + m_VecRSU[RSUId].m_SINR[subbandId]) / m_VecRSU[RSUId].m_AccumulateThroughput;
 				F.push_back(sPFInfo(RSUId, subbandId, t_FactorPF));
@@ -71,7 +72,7 @@ void cSystem::schedulePF_RP_CSI_UL() {
 			int u = pPFInfo.RSUId;
 			int v = pPFInfo.SubbandId;
 
-			if (SPU[u].size() == 0 || (v>0 && SPU[u][v - 1] || v < gc_SubbandNum - 1 && SPU[u][v + 1])) {
+			if (SPU[u].size() == 0 || (v>0 && SPU[u][v - 1] || v < gc_RBNum - 1 && SPU[u][v + 1])) {
 				S.erase(S.begin() + v);
 				SPU[u][v] = true;
 				F.erase(F.begin() + p - 1);//这里注意，p代表的是顺序数，从1开始计
@@ -85,7 +86,7 @@ void cSystem::schedulePF_RP_CSI_UL() {
 		for (int RSUId = 0; RSUId < k; RSUId++) {
 			sScheduleInfo curRSUScheduleInfo;
 			curRSUScheduleInfo.userId = RSUId;
-			for (int subbandId = 0; subbandId < gc_SubbandNum; subbandId++) {
+			for (int subbandId = 0; subbandId < gc_RBNum; subbandId++) {
 				if (SPU[RSUId][subbandId]) curRSUScheduleInfo.assignedSubbandId.push_back(subbandId);
 			}
 			if (curRSUScheduleInfo.assignedSubbandId.size() != 0) _eNB.m_vecScheduleInfo.push_back(curRSUScheduleInfo);
@@ -189,10 +190,18 @@ void cSystem::exchange(std::vector<sPFInfo>& v, int i, int j) {
 
 void cSystem::DRASchedule() {
 
-	DRAInformationClean();//资源分配信息清空
+	/*----------------------
+	资源分配信息清空
+	包括每个RSU内的m_CallList、
+	-----------------------*/
+	DRAInformationClean();
 
-	DRAbuildCallList();//建立呼叫链表
 
+	/*----------------------
+	建立呼叫链表，遍历RSU内的m_CallList
+	转存如m_CallList
+	-----------------------*/
+	DRAbuildCallList();
 
 	switch (m_DRAMode) {
 	case P13:
@@ -233,6 +242,9 @@ void cSystem::DRAPerformCluster() {
 	/*
 	假定已经分簇完毕，每个RSU有
 	*/
+	for (cRSU& _RSU : m_VecRSU) {
+		_RSU.DRAPerformCluster();
+	}
 }
 
 
@@ -250,13 +262,33 @@ void cSystem::DRABasedOnP23() {
 }
 
 void cSystem::DRABasedOnP123() {
-	for (cRSU &_RSU : m_VecRSU) {
+	for (cRSU &_RSU : m_VecRSU) {//遍历所有RSU
 		for (int i = 0; i < _RSU.mc_DRA_NTI; i++) {//依次遍历每一个DRA时隙
 			int clusterIdx = _RSU.getDRAClusterIdx();
+			vector<int> curAvaliableRB;
+			for (int i = 0; i < _RSU.mc_DRA_RBNum; i++)
+				if (_RSU.m_DRA_CNTI<=_RSU.m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableRB.push_back(i); //将可以占用的RB编号存入
+			//srand((unsigned)time(NULL));//iomanip
+			for (int UEId : _RSU.m_CallList[clusterIdx]) {//遍历该簇内呼叫链表中的用户
+				//为当前用户在可用的RB块中随机选择一个
+				int RBId = m_VecVUE[UEId].RBSelectBasedOnP2(curAvaliableRB);
+				int curONTI = m_VecVUE[UEId].m_Message.DRA_ONTI;//获取当前用户将要传输的信息占用的时隙
+
+				//计算当前消息所占用资源块的释放时刻,并写入m_DRA_RBIsAvailable
+				int remainNTI = _RSU.m_DRAClusterENTI[clusterIdx] - i;//当前一轮分配中该簇剩余的可分配时隙
+				int OverNTI = curONTI - remainNTI;//需要到下一轮，或下几轮进行传输的时隙数量
+				if (OverNTI <= 0)
+					_RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(_RSU.m_DRA_CNTI + curONTI, _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
+				else
+					_RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(_RSU.m_DRA_CNTI + remainNTI + OverNTI / _RSU.m_DRAClusterNTI[clusterIdx]*(_RSU.mc_DRA_NTI + _RSU.mc_DRA_FNTI) + OverNTI%_RSU.m_DRAClusterNTI[clusterIdx], _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
+
+			}
 
 
 			_RSU.m_DRA_CNTI++;//更新该RSU当前的DRA时刻
 		}
 	}
 }
+
+
 

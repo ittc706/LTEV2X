@@ -18,6 +18,6 @@ public:
 	/***************************************************************
 	------------------------调度模块--------------------------------
 	****************************************************************/
-	bool m_UnassignedSubband[gc_SubbandNum];//所有资源块，标记为true指示未被分配的RB
+	bool m_UnassignedSubband[gc_RBNum];//所有资源块，标记为true指示未被分配的RB
 	std::vector<sScheduleInfo> m_vecScheduleInfo;//调度信息
 };

@@ -54,21 +54,21 @@
     <ClInclude Include="Config.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Message.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="RSU.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Test.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blas1_z.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Global.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="linpack_z.cpp">
@@ -90,6 +90,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -33,7 +33,11 @@ int main() {
 	}
 	cout << "\ncount: " << count << endl;
 	rsu.DRAPerformCluster();
-	Function::print1DimVector(rsu.m_DRA_ETI);
+	Function::print1DimVector(rsu.m_DRAClusterNTI);
+	Function::print1DimVector(rsu.m_DRAClusterENTI);
+	rsu.m_DRA_CNTI = rand()%1000;
+	cout << rsu.getDRAClusterIdx() << endl;
+
 
 	system("pause");
 }
