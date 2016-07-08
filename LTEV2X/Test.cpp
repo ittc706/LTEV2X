@@ -31,3 +31,10 @@ void Function::print1DimVector(std::vector<int>&v) {
 		cout << t << ", ";
 	cout << endl;
 }
+
+
+void Function::printVectorTuple(const vector<tuple<int, int, int>>&v) {
+	for (tuple<int, int, int> t : v) {
+		cout << "Interval£º[ " << get<0>(t) << " , " << get<1>(t) << " ]  , length: " << get<2>(t) << endl;
+	}
+}

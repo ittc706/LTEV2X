@@ -18,6 +18,7 @@
 
 #include<vector>
 #include<iomanip>
+#include<tuple>
 #include"Schedule.h"
 #include"System.h"
 #include"Exception.h"
@@ -262,31 +263,31 @@ void cSystem::DRABasedOnP23() {
 }
 
 void cSystem::DRABasedOnP123() {
+	int relativeTTI = g_TTI%gc_DRA_NTTI;
 	for (cRSU &_RSU : m_VecRSU) {//遍历所有RSU
-		for (int i = 0; i < _RSU.mc_DRA_NTI; i++) {//依次遍历每一个DRA时隙
-			int clusterIdx = _RSU.getDRAClusterIdx();
-			vector<int> curAvaliableRB;
-			for (int i = 0; i < _RSU.mc_DRA_RBNum; i++)
-				if (_RSU.m_DRA_CNTI<=_RSU.m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableRB.push_back(i); //将可以占用的RB编号存入
-			//srand((unsigned)time(NULL));//iomanip
-			for (int UEId : _RSU.m_CallList[clusterIdx]) {//遍历该簇内呼叫链表中的用户
-				//为当前用户在可用的RB块中随机选择一个
-				int RBId = m_VecVUE[UEId].RBSelectBasedOnP2(curAvaliableRB);
-				int curONTI = m_VecVUE[UEId].m_Message.DRA_ONTI;//获取当前用户将要传输的信息占用的时隙
+		int clusterIdx = _RSU.getDRAClusterIdx();
+		vector<int> curAvaliableRB;//当前TTI
+		for (int i = 0; i < gc_DRA_RBNum; i++)
+			if (g_TTI <= _RSU.m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableRB.push_back(i); //将可以占用的RB编号存入
+																										 //srand((unsigned)time(NULL));//iomanip
+		for (int UEId : _RSU.m_CallList[clusterIdx]) {//遍历该簇内呼叫链表中的用户
+													  //为当前用户在可用的RB块中随机选择一个
+			int RBId = m_VecVUE[UEId].RBSelectBasedOnP2(curAvaliableRB);//每个用户自行随机选择可用RB块
+			int occupiedTTI = m_VecVUE[UEId].m_Message.DRA_ONTI;//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
 
-				//计算当前消息所占用资源块的释放时刻,并写入m_DRA_RBIsAvailable
-				int remainNTI = _RSU.m_DRAClusterENTI[clusterIdx] - i;//当前一轮分配中该簇剩余的可分配时隙
-				int OverNTI = curONTI - remainNTI;//需要到下一轮，或下几轮进行传输的时隙数量
-				if (OverNTI <= 0)
-					_RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(_RSU.m_DRA_CNTI + curONTI, _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
-				else
-					_RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(_RSU.m_DRA_CNTI + remainNTI + OverNTI / _RSU.m_DRAClusterNTI[clusterIdx]*(_RSU.mc_DRA_NTI + _RSU.mc_DRA_FNTI) + OverNTI%_RSU.m_DRAClusterNTI[clusterIdx], _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
-
-			}
+															//计算当前消息所占用资源块的释放时刻,并写入m_DRA_RBIsAvailable
+			int remainTTI = get<1>(_RSU.m_DRAClusterTTI[clusterIdx]) - relativeTTI;//当前一轮分配中该簇剩余的可分配时隙
+			int overTTI = occupiedTTI - remainTTI;//需要到下一轮，或下几轮进行传输的时隙数量
+			if (overTTI <= 0)
+				_RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(g_TTI + occupiedTTI, _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
+			else
+				_RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(g_TTI + remainTTI + overTTI / get<2>(_RSU.m_DRAClusterTTI[clusterIdx]) * gc_DRA_NTTI + overTTI%get<2>(_RSU.m_DRAClusterTTI[clusterIdx]), _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
 
 
-			_RSU.m_DRA_CNTI++;//更新该RSU当前的DRA时刻
+			//写入调度信息
+			_RSU.m_DRAScheduleList[clusterIdx][RBId] = sDRAScheduleInfo(UEId, _RSU.m_DRAClusterTTI[clusterIdx], occupiedTTI);
 		}
+
 	}
 }
 

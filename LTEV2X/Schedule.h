@@ -1,5 +1,8 @@
 #pragma once
 #include<vector>
+#include<utility>
+#include<iostream>
+#include<tuple>
 #include"Global.h"
 
 struct sScheduleInfo {
@@ -50,4 +53,31 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 
 struct sDRAScheduleInfo {
 	int UEid;
+	sDRAScheduleInfo(int UEid, std::tuple<int,int,int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)){
+		this->UEid = UEid;
+		int begin = std::get<0>(ClasterTTI),
+			end = std::get<1>(ClasterTTI),
+			len = std::get<2>(ClasterTTI);
+		int relativeTTI = g_TTI%gc_DRA_NTTI;
+		int principlePart = g_TTI - relativeTTI;//当前一轮调度的起始TTI
+		int remainTTI = end - relativeTTI + 1;//当前一轮调度中剩余可用的时隙数量
+		int overTTI = occupiedTTI - remainTTI;//超出当前一轮调度可用时隙数量的部分
+		if (overTTI <= 0) occupiedInterval.push_back(std::tuple<int, int>(g_TTI, g_TTI + occupiedTTI-1));
+		else {
+			occupiedInterval.push_back(std::tuple<int, int>(g_TTI, g_TTI+end-1));
+			int n = overTTI / len;
+			for (int i = 0;i < n;i++) occupiedInterval.push_back(std::tuple<int, int>(principlePart+ begin +i*gc_DRA_NTTI, principlePart+end+i*gc_DRA_NTTI));
+			if (overTTI%len != 0) occupiedInterval.push_back(std::tuple<int, int>(principlePart + begin + n*gc_DRA_NTTI, principlePart + begin + n*gc_DRA_NTTI + overTTI%len - 1));
+		}
+	}
+	std::vector<std::tuple<int, int>> occupiedInterval;//当前车辆进行传输的实际TTI区间（闭区间）
+
+
+	/*------------------测试用的函数------------------*/
+	void print() {
+		std::cout << "OccupiedInterval: ";
+		for (std::tuple<int, int> t : occupiedInterval)
+			std::cout << "[ " << std::get<0>(t) << " , " << std::get<1>(t) << " ] , ";
+		std::cout << std::endl;
+	}
 };
