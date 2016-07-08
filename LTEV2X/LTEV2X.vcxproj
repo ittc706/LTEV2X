@@ -131,7 +131,6 @@
     <ClInclude Include="Numerical.h" />
     <ClInclude Include="RSU.h" />
     <ClInclude Include="Schedule.h" />
-    <ClInclude Include="Sector.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="VUE.h" />

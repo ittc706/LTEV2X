@@ -19,9 +19,6 @@ public:
 	bool m_IsScheduledDL;    //DownLink是否在被调度
 	double m_FactorPF[gc_RBNum];
 	double m_SINR[gc_RBNum];
-	std::list<int> m_HIndicatorUL; //传输数据位置
-	std::list<int> m_HIndicatorDL; //传输数据位置
-	int  m_RBs[gc_DRA_FBNum];  //频域*空间
 	sFeedbackInfo m_FeedbackDL;//将要发送给基站端的反馈信息
 	sFeedbackInfo m_FeedbackUL;//将要发送给基站端的反馈信息
 
@@ -29,7 +26,6 @@ public:
 	std::vector<double> m_CQIPredictRealistic;
 	int m_ServingSectorId; //用户属于扇区的ID = 小区ID*每小区扇区数+小区内扇区编号 主服务小区
 
-	bool isScheduled(eLinkType);//当前TTI该用户是否被调度
 
 
 	/***************************************************************

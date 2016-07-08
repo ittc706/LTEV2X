@@ -48,9 +48,6 @@
     <ClInclude Include="eNB.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Sector.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>头文件</Filter>
     </ClInclude>

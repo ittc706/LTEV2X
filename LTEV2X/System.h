@@ -3,7 +3,6 @@
 #include"Schedule.h"
 #include"Config.h"
 #include"VUE.h"
-#include"Sector.h"
 #include"eNB.h"
 #include"Message.h"
 #include"Event.h"
@@ -13,17 +12,10 @@ class cSystem{
 private:
 	/*------------------数据成员------------------*/
 	sConfig m_Config;//系统配置参数
-	int m_TTI;//仿真目前运行到的TTI
-	std::vector<Sector> m_VecSector;//扇区容器
 	std::vector<ceNB> m_VeceNB;//基站容器
 	std::vector<cVeUE> m_VecVUE;//车辆容器
 	std::vector<cRSU> m_VecRSU;
-	EventList m_EventListCallSetup;//呼叫发起事件链表
-	EventList m_EventListHandover;//切换事件链表
-	EventList m_EventListCac;//接纳控制事件链表
-	EventList m_EnentListCallEnd;//呼叫结束事件链表
-
-
+	
 public:
 	/*------------------系统流程控制------------------*/
 	void configure();//系统仿真参数配置
@@ -43,14 +35,8 @@ public:
 
 private:
 	/*--------------------私有实现函数--------------------*/
-	void scheduleDistribute();//把部分调度信息写到UE中
 	void scheduleInfoClean();//清除当前扇区所有用户的调度信息
-	void feedbackInfoReceived();//将反馈信息写入基站端
-	void feedbackInfoDelay();
-	void feedbackInfoSent();//将反馈信息写入到用户反馈读指针里
 	void schedulePF_RP_CSI_UL();//上行PF-RP调度
-	void scheduleMCS();//确定所有调度用户的MCS
-	void scheduleInfoDelay();
 
 	//线性时间选取算法
 public:
