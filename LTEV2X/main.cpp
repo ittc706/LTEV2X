@@ -1,11 +1,15 @@
 #include<iostream>
 #include<fstream>
+#include<iomanip>
 #include"Enumeration.h"
 #include"Numerical.h"
 #include"Schedule.h"
 #include"System.h"
 #include"Test.h"
 using namespace std;
+
+ofstream g_OutDRAScheduleInfo("F:\\LTEV2X\\output\\DRAScheduleInfo.txt");
+
 
 int main() {
 	/*
@@ -40,15 +44,15 @@ int main() {
 	cout << rsu.getDRAClusterIdx() << endl;
 	*/
 	/*²âÊÔ---DRABasedOnP123()---*/
-	ofstream out("E:\\LTEV2X\\output\\DRAScheduleInfo.txt");
-	out.close();
+	srand((unsigned)time(NULL));//iomanip
 
-	g_TTI = 0;
+
+	g_TTI = std::abs(std::rand());
 	cSystem _system;
 	_system.configure();
 	_system.DRASchedule();
 	_system.print();
 
-	
+	g_OutDRAScheduleInfo.close();
 	system("pause");
 }

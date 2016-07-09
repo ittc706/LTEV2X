@@ -12,7 +12,7 @@
 
 using namespace std;
 
-extern ofstream out;
+
 
 
 vector<int> Function::getVector(int size){
@@ -20,7 +20,7 @@ vector<int> Function::getVector(int size){
 }
 
 vector<vector<int>> Function::getVectorDim2(int size, int group) {
-	std::srand((unsigned)std::time(NULL));//iomanip
+	srand((unsigned)time(NULL));//iomanip
 	vector<vector<int>> v(group);
 	int remain = size;
 	for (int i = 0;i < group-1;i++) {
@@ -74,14 +74,14 @@ void cSystem::print() {
 
 void cSystem::configure() {//系统仿真参数配置
 	m_VeceNB = vector<ceNB>(1);
-	m_VecVUE = vector<cVeUE>(40);
+	m_VecVUE = vector<cVeUE>(100);
 	m_VecRSU = vector<cRSU>(2);
 
 	m_VeceNB[0].m_VecRSU= Function::makeEqualInterverSequence(0, 1, 2);
-	m_VeceNB[0].m_VecVUE= Function::makeEqualInterverSequence(0, 1, 40);
+	m_VeceNB[0].m_VecVUE= Function::makeEqualInterverSequence(0, 1, 100);
 
-	m_VecRSU[0].m_VecVUE = Function::makeEqualInterverSequence(0, 2, 20);
-	m_VecRSU[1].m_VecVUE = Function::makeEqualInterverSequence(1, 2, 20);
+	m_VecRSU[0].m_VecVUE = Function::makeEqualInterverSequence(0, 2, 50);
+	m_VecRSU[1].m_VecVUE = Function::makeEqualInterverSequence(1, 2, 50);
 
 	m_DRAMode = P123;
 }
@@ -137,9 +137,9 @@ int cRSU::count = 0;
 cRSU::cRSU() :m_ClusterNum(4) {
 	m_RSUId = count++;
 	m_Cluster = vector<vector<int>>(m_ClusterNum);
-	m_DRA_RBIsAvailable = vector<vector<int>>(m_ClusterNum, vector<int>(gc_DRA_FBNum, 0));
+	m_DRA_RBIsAvailable = vector<vector<int>>(m_ClusterNum, vector<int>(gc_DRA_FBNum, -1));
 	m_CallList = vector<vector<int>>(m_ClusterNum);
-	m_DRAScheduleList = vector<vector<sDRAScheduleInfo>>(m_ClusterNum, vector<sDRAScheduleInfo>(gc_DRA_FBNum));
+	m_DRAScheduleList = vector<vector<list<sDRAScheduleInfo>>>(m_ClusterNum, vector<list<sDRAScheduleInfo>>(gc_DRA_FBNum));
 
 }
 void cRSU::print() {

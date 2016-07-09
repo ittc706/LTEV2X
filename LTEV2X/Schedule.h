@@ -54,21 +54,21 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 struct sDRAScheduleInfo {
 	int UEid;
 	sDRAScheduleInfo() {}
-	sDRAScheduleInfo(int UEid, std::tuple<int,int,int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)){
+	sDRAScheduleInfo(int UEid, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
 		this->UEid = UEid;
 		int begin = std::get<0>(ClasterTTI),
 			end = std::get<1>(ClasterTTI),
 			len = std::get<2>(ClasterTTI);
 		int relativeTTI = g_TTI%gc_DRA_NTTI;
-		int principlePart = g_TTI - relativeTTI;//当前一轮调度的起始TTI
+		int nextTurnBeginTTI = g_TTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
 		int remainTTI = end - relativeTTI + 1;//当前一轮调度中剩余可用的时隙数量
 		int overTTI = occupiedTTI - remainTTI;//超出当前一轮调度可用时隙数量的部分
-		if (overTTI <= 0) occupiedInterval.push_back(std::tuple<int, int>(g_TTI, g_TTI + occupiedTTI-1));
+		if (overTTI <= 0) occupiedInterval.push_back(std::tuple<int, int>(g_TTI, g_TTI + occupiedTTI - 1));
 		else {
-			occupiedInterval.push_back(std::tuple<int, int>(g_TTI, g_TTI+ remainTTI -1));
+			occupiedInterval.push_back(std::tuple<int, int>(g_TTI, g_TTI + remainTTI - 1));
 			int n = overTTI / len;
-			for (int i = 0; i < n; i++) occupiedInterval.push_back(std::tuple<int, int>(principlePart + begin + (i + 1)*gc_DRA_NTTI, principlePart + end + (i + 1)*gc_DRA_NTTI));
-			if (overTTI%len != 0) occupiedInterval.push_back(std::tuple<int, int>(principlePart + begin + (n+1)*gc_DRA_NTTI, principlePart + begin + (n+1)*gc_DRA_NTTI + overTTI%len - 1));
+			for (int i = 0; i < n; i++) occupiedInterval.push_back(std::tuple<int, int>(nextTurnBeginTTI + i*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + len - 1 + i*gc_DRA_NTTI));
+			if (overTTI%len != 0) occupiedInterval.push_back(std::tuple<int, int>(nextTurnBeginTTI + n*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1));
 		}
 	}
 	std::vector<std::tuple<int, int>> occupiedInterval;//当前车辆进行传输的实际TTI区间（闭区间）

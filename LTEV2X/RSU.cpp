@@ -75,23 +75,27 @@ int cRSU::getMaxIndex(const std::vector<double>&v) {
 
 
 
-void cRSU::writeDRAScheduleInfo() {
-	ofstream out = ofstream(path, ofstream::app);
+void cRSU::writeDRAScheduleInfo(std::ofstream& out) {
 	out << "RSU: " << m_RSUId << endl;
 	for (int clusterIdx = 0; clusterIdx < m_ClusterNum; clusterIdx++) {
 		out << "  Cluster: " << clusterIdx << endl;
 		for (int FBIdx = 0; FBIdx < gc_DRA_FBNum; FBIdx++) {
-			sDRAScheduleInfo & info = m_DRAScheduleList[clusterIdx][FBIdx];
 			out << "    FB: " << FBIdx << endl;
-			out << "      VEId: " << info.UEid << endl;
-			out << "      OccupiedTTI: ";
-			for (tuple<int, int> t : info.occupiedInterval)
-				out << "[" << get<0>(t) << " , " << get<1>(t) << "] , ";
-			out << endl;
+			out << "      Released TTI: " << m_DRA_RBIsAvailable[clusterIdx][FBIdx]<<endl;
+			int cnt = 0;
+			for (sDRAScheduleInfo & info : m_DRAScheduleList[clusterIdx][FBIdx]) {
+				if (cnt++ == 0) out << "      ========================================" << endl;
+				else out << "      ----------------------------------------" << endl;
+				out << "      VEId: " << info.UEid << endl;
+				out << "      OccupiedTTI: ";
+				for (tuple<int, int> t : info.occupiedInterval)
+					out << "[" << get<0>(t) << " , " << get<1>(t) << "] , ";
+				out << endl;
+			}
 		}
 	}
-	out.close();
 }
+
 
 
 

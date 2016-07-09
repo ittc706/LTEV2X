@@ -14,7 +14,6 @@ public:
 	cRSU();
 	void print();
 	void Cluster();
-	std::string path = "E:\\LTEV2X\\output\\DRAScheduleInfo.txt";
 	//-----------------------TEST-----------------------
 public:
 
@@ -42,16 +41,16 @@ public:
 	eRSUType m_RSUType;   //RSU的类型
 	const int m_ClusterNum;  //一个RSU覆盖范围内的簇的个数（与RSU的类型有关）
 	std::vector<std::tuple<int,int,int>> m_DRAClusterTTI;//存储每个簇所分配时间数量区间的左端点，右端点以及区间长度
-	std::vector<std::vector<int>> m_DRA_RBIsAvailable;  //若"m_DRA_CNTI<=m_DRA_RBIsAvailable[i][j]"代表簇i的资源块j可用;内层vector存储的是对应资源块解除占用的时刻
+	std::vector<std::vector<int>> m_DRA_RBIsAvailable;  //若"g_TTI>m_DRA_RBIsAvailable[i][j]"代表簇i的资源块j可用;内层vector存储的是对应资源块解除占用的TTI时刻（该TTI结束时解除）
 	std::vector<std::vector<int>> m_Cluster;   //存放簇的容器，每个簇包含一个vector<int>存储车辆的ID
 	std::vector<std::vector<int>> m_CallList;   //外层vector代表一个簇，内层vector<int>代表要传输数据的车辆ID
-	std::vector<std::vector<sDRAScheduleInfo>> m_DRAScheduleList;  //当前调度信息，[i][j]代表第i个簇的第j个RB块
+	std::vector<std::vector<std::list<sDRAScheduleInfo>>> m_DRAScheduleList;  //当前调度信息，[i][j]代表第i个簇的第j个RB块
 
 
 	/*--------------------接口函数--------------------*/
 	int getDRAClusterIdx();//根据此刻的m_DRA_CNTI返回当前可以进行资源分配的簇的编号
 	void DRAPerformCluster();//进行分簇，并给每个簇分配对应的时域资源
-	void writeDRAScheduleInfo();
+	void writeDRAScheduleInfo(std::ofstream& out);
 	/*--------------------辅助函数--------------------*/
 private:
 	int getMaxIndex(const std::vector<double>&v);

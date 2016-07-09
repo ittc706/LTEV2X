@@ -1,250 +1,242 @@
 RSU: 0
   Cluster: 0
     FB: 0
-      VEId: 24
-      OccupiedTTI: [0 , 1] , 
+      Released TTI: -1
     FB: 1
-      VEId: 0
-      OccupiedTTI: [0 , 1] , 
+      Released TTI: -1
     FB: 2
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 3
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 4
-      VEId: 16
-      OccupiedTTI: [0 , 6] , [25 , 31] , [50 , 55] , 
+      Released TTI: -1
     FB: 5
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 6
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 7
-      VEId: 8
-      OccupiedTTI: [0 , 3] , 
+      Released TTI: -1
     FB: 8
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 9
-      VEId: 32
-      OccupiedTTI: [0 , 3] , 
+      Released TTI: -1
   Cluster: 1
     FB: 0
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 1
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 2
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 3
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 4
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 5
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 6
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 7
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 8
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 9
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
   Cluster: 2
     FB: 0
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 32664
+      ========================================
+      VEId: 36
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32664] , 
+      ----------------------------------------
+      VEId: 84
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32664] , 
     FB: 1
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 32693
+      ========================================
+      VEId: 68
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , 
     FB: 2
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 32693
+      ========================================
+      VEId: 20
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , 
+      ----------------------------------------
+      VEId: 60
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32664] , 
     FB: 3
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 32664
+      ========================================
+      VEId: 12
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32664] , 
     FB: 4
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 32693
+      ========================================
+      VEId: 92
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , 
     FB: 5
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 33039
+      ========================================
+      VEId: 52
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , [32713 , 32718] , [32738 , 32743] , [32763 , 32768] , [32788 , 32793] , [32813 , 32818] , [32838 , 32843] , [32863 , 32868] , [32888 , 32893] , [32913 , 32918] , [32938 , 32943] , [32963 , 32968] , [32988 , 32993] , [33013 , 33018] , [33038 , 33039] , 
     FB: 6
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 33039
+      ========================================
+      VEId: 4
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , [32713 , 32718] , [32738 , 32743] , [32763 , 32768] , [32788 , 32793] , [32813 , 32818] , [32838 , 32843] , [32863 , 32868] , [32888 , 32893] , [32913 , 32918] , [32938 , 32943] , [32963 , 32968] , [32988 , 32993] , [33013 , 33018] , [33038 , 33039] , 
+      ----------------------------------------
+      VEId: 28
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , [32713 , 32718] , [32738 , 32743] , [32763 , 32768] , [32788 , 32793] , [32813 , 32818] , [32838 , 32843] , [32863 , 32868] , [32888 , 32893] , [32913 , 32918] , [32938 , 32943] , [32963 , 32968] , [32988 , 32993] , [33013 , 33018] , [33038 , 33039] , 
     FB: 7
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 8
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 9
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 33039
+      ========================================
+      VEId: 44
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , 
+      ----------------------------------------
+      VEId: 76
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , [32713 , 32718] , [32738 , 32743] , [32763 , 32768] , [32788 , 32793] , [32813 , 32818] , [32838 , 32843] , [32863 , 32868] , [32888 , 32893] , [32913 , 32918] , [32938 , 32943] , [32963 , 32968] , [32988 , 32993] , [33013 , 33018] , [33038 , 33039] , 
   Cluster: 3
     FB: 0
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 1
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 2
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 3
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 4
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 5
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 6
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 7
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 8
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 9
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
 RSU: 1
   Cluster: 0
     FB: 0
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 1
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 2
-      VEId: 25
-      OccupiedTTI: [0 , 6] , [25 , 31] , [50 , 55] , 
+      Released TTI: -1
     FB: 3
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 4
-      VEId: 33
-      OccupiedTTI: [0 , 1] , 
+      Released TTI: -1
     FB: 5
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 6
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 7
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 8
-      VEId: 17
-      OccupiedTTI: [0 , 3] , 
+      Released TTI: -1
     FB: 9
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
   Cluster: 1
     FB: 0
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 1
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 2
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 3
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 4
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 5
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 6
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 7
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 8
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 9
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
   Cluster: 2
     FB: 0
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 33039
+      ========================================
+      VEId: 13
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , [32713 , 32718] , [32738 , 32743] , [32763 , 32768] , [32788 , 32793] , [32813 , 32818] , [32838 , 32843] , [32863 , 32868] , [32888 , 32893] , [32913 , 32918] , [32938 , 32943] , [32963 , 32968] , [32988 , 32993] , [33013 , 33018] , [33038 , 33039] , 
     FB: 1
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 2
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 32693
+      ========================================
+      VEId: 21
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32664] , 
+      ----------------------------------------
+      VEId: 77
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , 
     FB: 3
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 4
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 5
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 32664
+      ========================================
+      VEId: 69
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32664] , 
     FB: 6
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 32693
+      ========================================
+      VEId: 5
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , 
+      ----------------------------------------
+      VEId: 53
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , 
+      ----------------------------------------
+      VEId: 93
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32664] , 
     FB: 7
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 33039
+      ========================================
+      VEId: 29
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , 
+      ----------------------------------------
+      VEId: 85
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , [32713 , 32718] , [32738 , 32743] , [32763 , 32768] , [32788 , 32793] , [32813 , 32818] , [32838 , 32843] , [32863 , 32868] , [32888 , 32893] , [32913 , 32918] , [32938 , 32943] , [32963 , 32968] , [32988 , 32993] , [33013 , 33018] , [33038 , 33039] , 
     FB: 8
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 33039
+      ========================================
+      VEId: 61
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , [32713 , 32718] , [32738 , 32743] , [32763 , 32768] , [32788 , 32793] , [32813 , 32818] , [32838 , 32843] , [32863 , 32868] , [32888 , 32893] , [32913 , 32918] , [32938 , 32943] , [32963 , 32968] , [32988 , 32993] , [33013 , 33018] , [33038 , 33039] , 
     FB: 9
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: 33039
+      ========================================
+      VEId: 37
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32668] , [32688 , 32693] , [32713 , 32718] , [32738 , 32743] , [32763 , 32768] , [32788 , 32793] , [32813 , 32818] , [32838 , 32843] , [32863 , 32868] , [32888 , 32893] , [32913 , 32918] , [32938 , 32943] , [32963 , 32968] , [32988 , 32993] , [33013 , 33018] , [33038 , 33039] , 
+      ----------------------------------------
+      VEId: 45
+      OccupiedTTI: [32617 , 32618] , [32638 , 32643] , [32663 , 32664] , 
   Cluster: 3
     FB: 0
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 1
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 2
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 3
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 4
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 5
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 6
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 7
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 8
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1
     FB: 9
-      VEId: -842150451
-      OccupiedTTI: 
+      Released TTI: -1

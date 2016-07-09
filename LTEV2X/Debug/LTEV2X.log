@@ -1,38 +1,20 @@
-﻿生成启动时间为 2016/7/9 11:47:49。
-     1>项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”在节点 2 上(Build 个目标)。
-     1>ClCompile:
-         E:\Visual Studio 2015\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt RSU.cpp Schedule.cpp System.cpp Test.cpp VUE.cpp main.cpp
-         RSU.cpp
-     1>e:\ltev2x\ltev2x\rsu.cpp(46): warning C4018: “<”: 有符号/无符号不匹配
-     1>e:\ltev2x\ltev2x\rsu.cpp(67): warning C4018: “<”: 有符号/无符号不匹配
-         正在生成代码...
-         正在编译...
-         Test.cpp
-     1>e:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-     1>e:\ltev2x\ltev2x\test.cpp(147): warning C4018: “<”: 有符号/无符号不匹配
-         Schedule.cpp
-     1>e:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-     1>e:\ltev2x\ltev2x\schedule.cpp(170): warning C4018: “<”: 有符号/无符号不匹配
-         正在生成代码...
-         正在跳过...(未检测到相关更改)
-         main.cpp
-         VUE.cpp
-         System.cpp
-       Link:
-         E:\Visual Studio 2015\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\LTEV2X\Debug\LTEV2X.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\LTEV2X\Debug\LTEV2X.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\LTEV2X\Debug\LTEV2X.lib" /MACHINE:X86 Debug\blas1_z.obj
-         Debug\Config.obj
-         Debug\Global.obj
-         Debug\linpack_z.obj
-         Debug\main.obj
-         Debug\Numerical.obj
-         Debug\RSU.obj
-         Debug\Schedule.obj
-         Debug\System.obj
-         Debug\Test.obj
-         Debug\VUE.obj
-         LTEV2X.vcxproj -> E:\LTEV2X\Debug\LTEV2X.exe
-     1>已完成生成项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”(Build 个目标)的操作。
-
-已成功生成。
-
-已用时间 00:00:03.03
+﻿  Global.cpp
+  正在生成代码...
+  正在编译...
+  main.cpp
+f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+  VUE.cpp
+f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+  Test.cpp
+f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+f:\ltev2x\ltev2x\test.cpp(147): warning C4018: “<”: 有符号/无符号不匹配
+  System.cpp
+f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+  Schedule.cpp
+f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+f:\ltev2x\ltev2x\schedule.cpp(171): warning C4018: “<”: 有符号/无符号不匹配
+  RSU.cpp
+f:\ltev2x\ltev2x\rsu.cpp(46): warning C4018: “<”: 有符号/无符号不匹配
+f:\ltev2x\ltev2x\rsu.cpp(67): warning C4018: “<”: 有符号/无符号不匹配
+  正在生成代码...
+  LTEV2X.vcxproj -> F:\LTEV2X\Debug\LTEV2X.exe
