@@ -9,12 +9,16 @@
 
 
 class cSystem{
+	//-----------------------TEST-----------------------
+public:
+	void print();
+	//-----------------------TEST-----------------------
 private:
 	/*------------------数据成员------------------*/
 	sConfig m_Config;//系统配置参数
 	std::vector<ceNB> m_VeceNB;//基站容器
 	std::vector<cVeUE> m_VecVUE;//车辆容器
-	std::vector<cRSU> m_VecRSU;
+	std::vector<cRSU> m_VecRSU;//RSU容器
 	
 public:
 	/*------------------系统流程控制------------------*/

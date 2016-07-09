@@ -3,11 +3,17 @@
 #include"RSU.h"
 
 class ceNB {
+	//-----------------------TEST-----------------------
+public:
+	static int count;
+	ceNB();
+	void print();
+	//-----------------------TEST-----------------------
 public:
 	int m_eNBId;//基站ID
 
 	std::vector<int> m_VecRSU;//该基站中的RSU容器（存储RSU的ID）
-	std::vector<int> m_VecVeUE;
+	std::vector<int> m_VecVUE;//该基站中的RSU容器（存储VE的ID）
 
 	/***************************************************************
 	------------------------调度模块--------------------------------

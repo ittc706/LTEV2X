@@ -137,12 +137,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blas1_z.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="linpack_z.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Numerical.cpp" />
     <ClCompile Include="RSU.cpp" />
     <ClCompile Include="Schedule.cpp" />
+    <ClCompile Include="System.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="VUE.cpp" />
   </ItemGroup>

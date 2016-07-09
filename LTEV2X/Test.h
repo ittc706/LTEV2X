@@ -13,4 +13,7 @@ public :
 
 	static void printVectorTuple(const std::vector<std::tuple<int, int, int>>&v);
 
+
+	static std::vector<int> makeEqualInterverSequence(int begin, int interval, int num);
+
 };

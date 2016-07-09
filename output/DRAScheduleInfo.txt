@@ -1,0 +1,250 @@
+RSU: 0
+  Cluster: 0
+    FB: 0
+      VEId: 24
+      OccupiedTTI: [0 , 1] , 
+    FB: 1
+      VEId: 0
+      OccupiedTTI: [0 , 1] , 
+    FB: 2
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 3
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 4
+      VEId: 16
+      OccupiedTTI: [0 , 6] , [25 , 31] , [50 , 55] , 
+    FB: 5
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 6
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 7
+      VEId: 8
+      OccupiedTTI: [0 , 3] , 
+    FB: 8
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 9
+      VEId: 32
+      OccupiedTTI: [0 , 3] , 
+  Cluster: 1
+    FB: 0
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 1
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 2
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 3
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 4
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 5
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 6
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 7
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 8
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 9
+      VEId: -842150451
+      OccupiedTTI: 
+  Cluster: 2
+    FB: 0
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 1
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 2
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 3
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 4
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 5
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 6
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 7
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 8
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 9
+      VEId: -842150451
+      OccupiedTTI: 
+  Cluster: 3
+    FB: 0
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 1
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 2
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 3
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 4
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 5
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 6
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 7
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 8
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 9
+      VEId: -842150451
+      OccupiedTTI: 
+RSU: 1
+  Cluster: 0
+    FB: 0
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 1
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 2
+      VEId: 25
+      OccupiedTTI: [0 , 6] , [25 , 31] , [50 , 55] , 
+    FB: 3
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 4
+      VEId: 33
+      OccupiedTTI: [0 , 1] , 
+    FB: 5
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 6
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 7
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 8
+      VEId: 17
+      OccupiedTTI: [0 , 3] , 
+    FB: 9
+      VEId: -842150451
+      OccupiedTTI: 
+  Cluster: 1
+    FB: 0
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 1
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 2
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 3
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 4
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 5
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 6
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 7
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 8
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 9
+      VEId: -842150451
+      OccupiedTTI: 
+  Cluster: 2
+    FB: 0
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 1
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 2
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 3
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 4
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 5
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 6
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 7
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 8
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 9
+      VEId: -842150451
+      OccupiedTTI: 
+  Cluster: 3
+    FB: 0
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 1
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 2
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 3
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 4
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 5
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 6
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 7
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 8
+      VEId: -842150451
+      OccupiedTTI: 
+    FB: 9
+      VEId: -842150451
+      OccupiedTTI: 

@@ -1,13 +1,6 @@
 #pragma once
 
 
-
-enum eLinkType {//链路方向
-	DOWNLINK,    //下行链路
-	UPLINK      //上行链路
-};
-
-
 enum eScheduleMode {
 
 };

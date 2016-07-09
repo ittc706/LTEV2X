@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include"Enumeration.h"
 #include"Numerical.h"
 #include"Schedule.h"
@@ -7,6 +8,7 @@
 using namespace std;
 
 int main() {
+	/*
 	Matrix m(1,1);
 	m.hermitian();
 
@@ -36,9 +38,17 @@ int main() {
 	Function::printVectorTuple(rsu.m_DRAClusterTTI);
 	g_TTI = rand()%1000;
 	cout << rsu.getDRAClusterIdx() << endl;
-
+	*/
 	/*²âÊÔ---DRABasedOnP123()---*/
-	cSystem _system;
+	ofstream out("E:\\LTEV2X\\output\\DRAScheduleInfo.txt");
+	out.close();
 
+	g_TTI = 0;
+	cSystem _system;
+	_system.configure();
+	_system.DRASchedule();
+	_system.print();
+
+	
 	system("pause");
 }

@@ -4,9 +4,14 @@
 #include"Enumeration.h"
 
 struct sMessage {
+
+	//-----------------------TEST-----------------------
+	void print();
+	//-----------------------TEST-----------------------
+
 	eMessageType messageType;
 	int byteNum; //该消息的比特数量
-	int DRA_ONTI;  //在DRA方式下，传输该消息需要占用多少个DRA_MTI
+	int DRA_ONTTI;  //在DRA方式下，传输该消息需要占用多少个TTI
 
 	void setMessageType(eMessageType messageType) {
 		this->messageType = messageType;
@@ -21,6 +26,6 @@ struct sMessage {
 			byteNum = 1000;
 			break;
 		}
-		DRA_ONTI = std::ceil(static_cast<double>(byteNum) / static_cast<double>(gc_ByteNumPerRB));
+		DRA_ONTTI = std::ceil(static_cast<double>(byteNum) / static_cast<double>(gc_ByteNumPerRB));
 	}
 };

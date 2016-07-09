@@ -2,13 +2,23 @@
 
 #include<vector>
 #include<list>
+#include<string>
+#include<fstream>
 #include"Schedule.h"
 #include"Global.h"
 
 class cRSU {
+	//-----------------------TEST-----------------------
 public:
-	cRSU() :m_ClusterNum(4){}
+	static int count;
+	cRSU();
+	void print();
+	void Cluster();
+	std::string path = "E:\\LTEV2X\\output\\DRAScheduleInfo.txt";
+	//-----------------------TEST-----------------------
+public:
 
+	int m_RSUId;
 	std::vector<int> m_VecVUE;//当前RSU范围内的UEid编号容器
 
 	/***************************************************************
@@ -19,13 +29,10 @@ public:
 	bool m_IsScheduledDL;    //DownLink是否在被调度
 	double m_FactorPF[gc_RBNum];
 	double m_SINR[gc_RBNum];
-	sFeedbackInfo m_FeedbackDL;//将要发送给基站端的反馈信息
 	sFeedbackInfo m_FeedbackUL;//将要发送给基站端的反馈信息
 
 	std::vector<double> m_CQIPredictIdeal;
 	std::vector<double> m_CQIPredictRealistic;
-	int m_ServingSectorId; //用户属于扇区的ID = 小区ID*每小区扇区数+小区内扇区编号 主服务小区
-
 
 
 	/***************************************************************
@@ -44,7 +51,7 @@ public:
 	/*--------------------接口函数--------------------*/
 	int getDRAClusterIdx();//根据此刻的m_DRA_CNTI返回当前可以进行资源分配的簇的编号
 	void DRAPerformCluster();//进行分簇，并给每个簇分配对应的时域资源
-
+	void writeDRAScheduleInfo();
 	/*--------------------辅助函数--------------------*/
 private:
 	int getMaxIndex(const std::vector<double>&v);

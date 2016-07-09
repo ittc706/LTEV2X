@@ -13,7 +13,7 @@ void cRSU::DRAPerformCluster() {
 	/*
 	对该RSU范围内的UE进行分簇，会得到m_Cluster
 	*/
-
+	Cluster();
 	//生成m_DRA_ETI容器
 	m_DRAClusterTTI = vector<tuple<int, int, int>>(m_ClusterNum,tuple<int, int, int>(0,0,1));//每个簇至少分配一个大小的DRA_MTI
 	int remainNTI = gc_DRA_NTTI - m_ClusterNum;//然后对剩下的时域资源循环进行分配
@@ -42,19 +42,21 @@ void cRSU::DRAPerformCluster() {
 		get<1>(m_DRAClusterTTI[i]) = get<2>(m_DRAClusterTTI[i]);
 	get<1>(m_DRAClusterTTI[0])--;//使区间范围从0开始
 
+
 	for (int i = 1; i < m_DRAClusterTTI.size(); i++) {
 		get<1>(m_DRAClusterTTI[i]) += get<1>(m_DRAClusterTTI[i - 1]);
 		get<0>(m_DRAClusterTTI[i]) = get<1>(m_DRAClusterTTI[i]) - get<2>(m_DRAClusterTTI[i]) + 1;
 	}
-	get<0>(m_DRAClusterTTI[0]) = get<1>(m_DRAClusterTTI[0]) - get<2>(m_DRAClusterTTI[0]) + 1;
 
+
+	get<0>(m_DRAClusterTTI[0]) = get<1>(m_DRAClusterTTI[0]) - get<2>(m_DRAClusterTTI[0]) + 1;
 
 }
 
 int cRSU::getDRAClusterIdx() {
 	int relativeCNTI = g_TTI%gc_DRA_NTTI;
 	for (int i = 0; i < m_ClusterNum; i++)
-		if (relativeCNTI < get<1>(m_DRAClusterTTI[i])) return i;
+		if (relativeCNTI <= get<1>(m_DRAClusterTTI[i])) return i;
 	return -1;
 }
 
@@ -71,6 +73,25 @@ int cRSU::getMaxIndex(const std::vector<double>&v) {
 	return dex;
 }
 
+
+
+void cRSU::writeDRAScheduleInfo() {
+	ofstream out = ofstream(path, ofstream::app);
+	out << "RSU: " << m_RSUId << endl;
+	for (int clusterIdx = 0; clusterIdx < m_ClusterNum; clusterIdx++) {
+		out << "  Cluster: " << clusterIdx << endl;
+		for (int FBIdx = 0; FBIdx < gc_DRA_FBNum; FBIdx++) {
+			sDRAScheduleInfo & info = m_DRAScheduleList[clusterIdx][FBIdx];
+			out << "    FB: " << FBIdx << endl;
+			out << "      VEId: " << info.UEid << endl;
+			out << "      OccupiedTTI: ";
+			for (tuple<int, int> t : info.occupiedInterval)
+				out << "[" << get<0>(t) << " , " << get<1>(t) << "] , ";
+			out << endl;
+		}
+	}
+	out.close();
+}
 
 
 

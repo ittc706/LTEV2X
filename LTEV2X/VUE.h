@@ -6,9 +6,14 @@
 #include"Message.h"
 
 class cVeUE {
-
+	//-----------------------TEST-----------------------
 public:
-	int m_UserId;//用户ID
+	static int count;
+	cVeUE();
+	void print();
+	//-----------------------TEST-----------------------
+public:
+	int m_VEId;//用户ID
 
 	sMessage m_Message;//消息
 
@@ -17,14 +22,10 @@ public:
 	****************************************************************/
 
 	bool m_IsScheduledUL;    //UpLink是否在被调度
-	bool m_IsScheduledDL;    //DownLink是否在被调度
-	sFeedbackInfo m_FeedbackDL;//将要发送给基站端的反馈信息
 	sFeedbackInfo m_FeedbackUL;//将要发送给基站端的反馈信息
 
 	std::vector<double> m_CQIPredictIdeal;
 	std::vector<double> m_CQIPredictRealistic;
-
-	bool isScheduled(eLinkType);//当前TTI该用户是否被调度
 
 	/***************************************************************
 	---------------------分布式资源管理-----------------------------

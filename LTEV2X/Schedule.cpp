@@ -27,6 +27,7 @@
 
 using namespace std;
 
+extern ofstream out;
 
 void cSystem::centralizedSchedule() {
 	//清除上一次调度信息
@@ -38,10 +39,9 @@ void cSystem::centralizedSchedule() {
 
 
 void cSystem::scheduleInfoClean() {
-	for (ceNB _eNB : m_VeceNB) {
-		if (m_Config.linkType == UPLINK)
-			_eNB.m_vecScheduleInfo.clear();
-	}
+	for (ceNB _eNB : m_VeceNB) 
+		_eNB.m_vecScheduleInfo.clear();
+	
 }
 
 
@@ -138,6 +138,8 @@ void cSystem::DRASchedule() {
 	建立呼叫链表，遍历RSU内的m_CallList
 	转存如m_CallList
 	-----------------------*/
+	DRAPerformCluster();
+
 	DRAbuildCallList();
 
 	switch (m_DRAMode) {
@@ -166,6 +168,7 @@ void cSystem::DRAbuildCallList() {
 	for (cRSU &_RSU : m_VecRSU) {
 		//根据m_VecRSU更新m_CallList
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_Cluster.size(); ++clusterIdx) {
+			_RSU.m_CallList[clusterIdx].clear();
 			for (int UEId : _RSU.m_Cluster[clusterIdx]) {
 				if (m_VecVUE[UEId].m_isHavingDataToTransmit) //若车辆有数据要传，将其添加到m_CallList表中
 					_RSU.m_CallList[clusterIdx].push_back(UEId);
@@ -200,16 +203,18 @@ void cSystem::DRABasedOnP23() {
 
 void cSystem::DRABasedOnP123() {
 	int relativeTTI = g_TTI%gc_DRA_NTTI;
+	cout << "relativeTTI: " << relativeTTI << endl;
 	for (cRSU &_RSU : m_VecRSU) {//遍历所有RSU
 		int clusterIdx = _RSU.getDRAClusterIdx();
+		cout << "clusterIdx: " << clusterIdx << endl;
 		vector<int> curAvaliableRB;//当前TTI
-		for (int i = 0; i < gc_DRA_RBNum; i++)
+		for (int i = 0; i < gc_DRA_FBNum; i++)
 			if (g_TTI <= _RSU.m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableRB.push_back(i); //将可以占用的RB编号存入
 																										 //srand((unsigned)time(NULL));//iomanip
 		for (int UEId : _RSU.m_CallList[clusterIdx]) {//遍历该簇内呼叫链表中的用户
 													  //为当前用户在可用的RB块中随机选择一个
 			int RBId = m_VecVUE[UEId].RBSelectBasedOnP2(curAvaliableRB);//每个用户自行随机选择可用RB块
-			int occupiedTTI = m_VecVUE[UEId].m_Message.DRA_ONTI;//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
+			int occupiedTTI = m_VecVUE[UEId].m_Message.DRA_ONTTI;//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
 
 															//计算当前消息所占用资源块的释放时刻,并写入m_DRA_RBIsAvailable
 			int remainTTI = get<1>(_RSU.m_DRAClusterTTI[clusterIdx]) - relativeTTI;//当前一轮分配中该簇剩余的可分配时隙
@@ -222,8 +227,9 @@ void cSystem::DRABasedOnP123() {
 
 			//写入调度信息
 			_RSU.m_DRAScheduleList[clusterIdx][RBId] = sDRAScheduleInfo(UEId, _RSU.m_DRAClusterTTI[clusterIdx], occupiedTTI);
+			
 		}
-
+		_RSU.writeDRAScheduleInfo();
 	}
 }
 
