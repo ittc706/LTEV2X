@@ -1,0 +1,3 @@
+version_2016_7_9(增加了冲突退避机制)
+	*调度信息的更新仍需要完善
+	*当数据传输完毕，或者监听到冲突后，应该将其从m_DRAScheduleInfo表中删除，并相应地m_DRARB_IsAvailable

@@ -1,20 +1,19 @@
-﻿  Global.cpp
+﻿  Test.cpp
+f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+f:\ltev2x\ltev2x\test.cpp(150): warning C4018: “<”: 有符号/无符号不匹配
+  Schedule.cpp
+f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+f:\ltev2x\ltev2x\schedule.cpp(175): warning C4018: “<”: 有符号/无符号不匹配
+  RSU.cpp
+f:\ltev2x\ltev2x\rsu.cpp(48): warning C4018: “<”: 有符号/无符号不匹配
+f:\ltev2x\ltev2x\rsu.cpp(67): warning C4018: “<”: 有符号/无符号不匹配
   正在生成代码...
   正在编译...
   main.cpp
 f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
   VUE.cpp
 f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-  Test.cpp
-f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-f:\ltev2x\ltev2x\test.cpp(147): warning C4018: “<”: 有符号/无符号不匹配
   System.cpp
 f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-  Schedule.cpp
-f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-f:\ltev2x\ltev2x\schedule.cpp(171): warning C4018: “<”: 有符号/无符号不匹配
-  RSU.cpp
-f:\ltev2x\ltev2x\rsu.cpp(46): warning C4018: “<”: 有符号/无符号不匹配
-f:\ltev2x\ltev2x\rsu.cpp(67): warning C4018: “<”: 有符号/无符号不匹配
   正在生成代码...
   LTEV2X.vcxproj -> F:\LTEV2X\Debug\LTEV2X.exe

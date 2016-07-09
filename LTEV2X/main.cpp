@@ -44,14 +44,10 @@ int main() {
 	cout << rsu.getDRAClusterIdx() << endl;
 	*/
 	/*²âÊÔ---DRABasedOnP123()---*/
-	srand((unsigned)time(NULL));//iomanip
-
-
-	g_TTI = std::abs(std::rand());
+	
 	cSystem _system;
-	_system.configure();
-	_system.DRASchedule();
-	_system.print();
+	_system.process();
+	//_system.print();
 
 
 	g_OutDRAScheduleInfo.close();

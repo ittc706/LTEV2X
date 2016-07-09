@@ -67,9 +67,11 @@ private:
 	void DRAbuildCallList();//建立呼叫链表
 
 
-	void DRABasedOnP13();
-	void DRABasedOnP23();
-	void DRABasedOnP123();
+	void DRASelectBasedOnP13();//基于P1和P3的资源分配
+	void DRASelectBasedOnP23();//基于P2和P3的资源分配
+	void DRASelectBasedOnP123();//基于P1、P2和P3的资源分配
+
+	void DRAConflictListener();//帧听冲突
 
 	/*--------------------辅助函数--------------------*/
 };

@@ -40,14 +40,14 @@ void cSystem::centralizedSchedule() {
 
 
 void cSystem::scheduleInfoClean() {
-	for (ceNB _eNB : m_VeceNB) 
+	for (ceNB &_eNB : m_VeceNB) 
 		_eNB.m_vecScheduleInfo.clear();
 	
 }
 
 
 void cSystem::schedulePF_RP_CSI_UL() {
-	for (ceNB& _eNB : m_VeceNB) {//对每一个基站进行一次调度
+	for (ceNB &_eNB : m_VeceNB) {//对每一个基站进行一次调度
 		int k = _eNB.m_VecRSU.size();
 		vector<vector<bool>> SPU(k, vector<bool>(gc_RBNum));//每个RSU用一个vector<bool>来管理其SPU，true代表已选如该子带
 		vector<int> S;//未分配的子带集合(存储子带的ID）
@@ -128,116 +128,143 @@ void cSystem::exchange(std::vector<sPFInfo>& v, int i, int j) {
 
 void cSystem::DRASchedule() {
 
-	/*----------------------
-	资源分配信息清空
-	包括每个RSU内的m_CallList、
-	-----------------------*/
+	/*资源分配信息清空:包括每个RSU内的m_CallList等*/
 	DRAInformationClean();
 
-
-	/*----------------------
-	建立呼叫链表，遍历RSU内的m_CallList
-	转存如m_CallList
-	-----------------------*/
+	/*根据地理位置进行分簇*/
 	DRAPerformCluster();
 
+	/*根据簇大小进行时域资源的划分*/
+	DRAGroupSizeBasedTDM();
+
+	/*建立呼叫链表，遍历RSU内的m_VecVUE，生成m_CallList*/
 	DRAbuildCallList();
 
+	/*当前g_TTI的DRA算法*/
 	switch (m_DRAMode) {
 	case P13:
-		DRABasedOnP13();
+		DRASelectBasedOnP13();
 		break;
 	case P23:
-		DRABasedOnP23();
+		DRASelectBasedOnP23();
 		break;
 	case P123:
-		DRABasedOnP123();
+		DRASelectBasedOnP123();
 		break;
 	}
+
+	/*帧听冲突*/
+	DRAConflictListener();
 
 }
 
 
 void cSystem::DRAInformationClean() {
 	for (cRSU &_RSU : m_VecRSU) {
-		for (vector<int> curCluster : _RSU.m_CallList)
-			curCluster.clear();
+		cout << _RSU.m_VecVUE.size() << endl;
+		for (vector<int> &v : _RSU.m_DRACallList)
+			v.clear();
+		for (vector<int> &v : _RSU.m_DRAVecCluster)
+			v.clear();
 	}
 }
 
 void cSystem::DRAbuildCallList() {
 	for (cRSU &_RSU : m_VecRSU) {
 		//根据m_VecRSU更新m_CallList
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_Cluster.size(); ++clusterIdx) {
-			_RSU.m_CallList[clusterIdx].clear();
-			for (int UEId : _RSU.m_Cluster[clusterIdx]) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_DRAVecCluster.size(); ++clusterIdx) {
+			_RSU.m_DRACallList[clusterIdx].clear();
+			for (int UEId : _RSU.m_DRAVecCluster[clusterIdx]) {
 				if (m_VecVUE[UEId].m_isHavingDataToTransmit) //若车辆有数据要传，将其添加到m_CallList表中
-					_RSU.m_CallList[clusterIdx].push_back(UEId);
+					_RSU.m_DRACallList[clusterIdx].push_back(UEId);
 			}
 		}
 	}
+
+
+	//-----------------------TEST-----------------------
+
+	for (cRSU& _RSU : m_VecRSU) {
+		cout << "RSU: " << _RSU.m_RSUId << " 's ClusterCallListSize  :";
+		for (auto c : _RSU.m_DRAVecCluster)
+			cout << c.size() << " , ";
+		cout << endl;
+	}
+	//-----------------------TEST-----------------------
 }
 
 
 void cSystem::DRAPerformCluster() {
-	/*
-	假定已经分簇完毕，每个RSU有
-	*/
-	for (cRSU& _RSU : m_VecRSU) {
+	for (cRSU& _RSU : m_VecRSU)
 		_RSU.DRAPerformCluster();
+
+	//-----------------------TEST-----------------------
+
+	for (cRSU& _RSU : m_VecRSU) {
+		cout << "RSU: " << _RSU.m_RSUId << " 's ClusterSize  :";
+		for (auto c : _RSU.m_DRAVecCluster)
+			cout << c.size() << " , ";
+		cout << endl;
 	}
+	//-----------------------TEST-----------------------
 }
 
 
 void cSystem::DRAGroupSizeBasedTDM() {
-
+	for (cRSU& _RSU : m_VecRSU) 
+		_RSU.DRAGroupSizeBasedTDM();
 }
 
 
-void cSystem::DRABasedOnP13() {
+void cSystem::DRASelectBasedOnP13() {
 
 }
 
-void cSystem::DRABasedOnP23() {
+void cSystem::DRASelectBasedOnP23() {
 
 }
 
-void cSystem::DRABasedOnP123() {
+void cSystem::DRASelectBasedOnP123() {
 	int relativeTTI = g_TTI%gc_DRA_NTTI;
 	for (cRSU &_RSU : m_VecRSU) {//遍历所有RSU
-		int clusterIdx = _RSU.getDRAClusterIdx();
+		int clusterIdx = _RSU.DRAGetClusterIdx();
 		vector<int> curAvaliableRB;//当前TTI
 		for (int i = 0; i < gc_DRA_FBNum; i++)
 			if (g_TTI > _RSU.m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableRB.push_back(i); //将可以占用的RB编号存入
 																										 //srand((unsigned)time(NULL));//iomanip
-		for (int UEId : _RSU.m_CallList[clusterIdx]) {//遍历该簇内呼叫链表中的用户
+		for (int UEId : _RSU.m_DRACallList[clusterIdx]) {//遍历该簇内呼叫链表中的用户
 													  //为当前用户在可用的RB块中随机选择一个
-			int RBId = m_VecVUE[UEId].RBSelectBasedOnP2(curAvaliableRB);//每个用户自行随机选择可用RB块
+			int FBId = m_VecVUE[UEId].RBSelectBasedOnP2(curAvaliableRB);//每个用户自行随机选择可用FB块
 			int occupiedTTI = m_VecVUE[UEId].m_Message.DRA_ONTTI;//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
 
 
 			//计算当前消息所占用资源块的释放时刻,并写入m_DRA_RBIsAvailable
-			int begin =get<0>(_RSU.m_DRAClusterTTI[clusterIdx]),
-				end = get<1>(_RSU.m_DRAClusterTTI[clusterIdx]),
-				len = get<2>(_RSU.m_DRAClusterTTI[clusterIdx]);
+			int begin =get<0>(_RSU.m_DRAClusterTDRInfo[clusterIdx]),
+				end = get<1>(_RSU.m_DRAClusterTDRInfo[clusterIdx]),
+				len = get<2>(_RSU.m_DRAClusterTDRInfo[clusterIdx]);
 			int nextTurnBeginTTI = g_TTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
 			int remainTTI = end - relativeTTI+1;//当前一轮分配中该簇剩余的可分配时隙
 			int overTTI = occupiedTTI - remainTTI;//需要到下一轮，或下几轮进行传输的时隙数量
 			if (overTTI <= 0)
-				_RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(g_TTI + occupiedTTI-1, _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
+				_RSU.m_DRA_RBIsAvailable[clusterIdx][FBId] = max(g_TTI + occupiedTTI-1, _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId]);
 			else {
 				int n = overTTI / len;
-				if(overTTI%len==0) _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(nextTurnBeginTTI + end + (n-1)*gc_DRA_NTTI, _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
-				else _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId] = max(nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1, _RSU.m_DRA_RBIsAvailable[clusterIdx][RBId]);
+				if(overTTI%len==0) _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId] = max(nextTurnBeginTTI + end + (n-1)*gc_DRA_NTTI, _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId]);
+				else _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId] = max(nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1, _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId]);
 			}
 
 			//写入调度信息
-			_RSU.m_DRAScheduleList[clusterIdx][RBId].push_back(sDRAScheduleInfo(UEId, _RSU.m_DRAClusterTTI[clusterIdx], occupiedTTI));
+			_RSU.m_DRAScheduleList[clusterIdx][FBId].push_back(sDRAScheduleInfo(UEId, _RSU.m_DRAClusterTDRInfo[clusterIdx], occupiedTTI));
 			
 		}
-		_RSU.writeDRAScheduleInfo(g_OutDRAScheduleInfo);
+		_RSU.DRAWriteScheduleInfo(g_OutDRAScheduleInfo);
 	}
 }
 
 
 
+void cSystem::DRAConflictListener() {
+	for (cRSU &_RSU : m_VecRSU) {
+
+	}
+}

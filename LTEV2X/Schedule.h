@@ -52,10 +52,10 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 
 
 struct sDRAScheduleInfo {
-	int UEid;
+	int VEId;
 	sDRAScheduleInfo() {}
 	sDRAScheduleInfo(int UEid, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
-		this->UEid = UEid;
+		this->VEId = VEId;
 		int begin = std::get<0>(ClasterTTI),
 			end = std::get<1>(ClasterTTI),
 			len = std::get<2>(ClasterTTI);

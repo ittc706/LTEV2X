@@ -12,7 +12,9 @@
 
 using namespace std;
 
-
+int TestVUENum = 20;
+int TestRSUNum = 2;
+int TesteNBNum = 1;
 
 
 vector<int> Function::getVector(int size){
@@ -73,15 +75,15 @@ void cSystem::print() {
 
 
 void cSystem::configure() {//系统仿真参数配置
-	m_VeceNB = vector<ceNB>(1);
-	m_VecVUE = vector<cVeUE>(100);
-	m_VecRSU = vector<cRSU>(2);
+	m_VeceNB = vector<ceNB>(TesteNBNum);
+	m_VecVUE = vector<cVeUE>(TestVUENum);
+	m_VecRSU = vector<cRSU>(TestRSUNum);
 
-	m_VeceNB[0].m_VecRSU= Function::makeEqualInterverSequence(0, 1, 2);
-	m_VeceNB[0].m_VecVUE= Function::makeEqualInterverSequence(0, 1, 100);
+	m_VeceNB[0].m_VecRSU= Function::makeEqualInterverSequence(0, 1, TestRSUNum);
+	m_VeceNB[0].m_VecVUE= Function::makeEqualInterverSequence(0, 1, TestVUENum);
 
-	m_VecRSU[0].m_VecVUE = Function::makeEqualInterverSequence(0, 2, 50);
-	m_VecRSU[1].m_VecVUE = Function::makeEqualInterverSequence(1, 2, 50);
+	m_VecRSU[0].m_VecVUE = Function::makeEqualInterverSequence(0, 2, TestVUENum/2);
+	m_VecRSU[1].m_VecVUE = Function::makeEqualInterverSequence(1, 2, TestVUENum/2);
 
 	m_DRAMode = P123;
 }
@@ -102,6 +104,7 @@ cVeUE::cVeUE() {
 		m_Message.setMessageType(DATA);
 		break;
 	}
+	m_isHavingDataToTransmit = true;
 }
 
 
@@ -134,30 +137,36 @@ void ceNB::print() {
 
 int cRSU::count = 0;
 
-cRSU::cRSU() :m_ClusterNum(4) {
+cRSU::cRSU() :m_DRAClusterNum(4) {
 	m_RSUId = count++;
-	m_Cluster = vector<vector<int>>(m_ClusterNum);
-	m_DRA_RBIsAvailable = vector<vector<int>>(m_ClusterNum, vector<int>(gc_DRA_FBNum, -1));
-	m_CallList = vector<vector<int>>(m_ClusterNum);
-	m_DRAScheduleList = vector<vector<list<sDRAScheduleInfo>>>(m_ClusterNum, vector<list<sDRAScheduleInfo>>(gc_DRA_FBNum));
-
+	m_DRAVecCluster = vector<vector<int>>(m_DRAClusterNum);
+	m_DRA_RBIsAvailable = vector<vector<int>>(m_DRAClusterNum, vector<int>(gc_DRA_FBNum, -1));
+	m_DRACallList = vector<vector<int>>(m_DRAClusterNum);
+	m_DRAScheduleList = vector<vector<list<sDRAScheduleInfo>>>(m_DRAClusterNum, vector<list<sDRAScheduleInfo>>(gc_DRA_FBNum));
+	m_DRAConflictList = vector<list<int>>(m_DRAClusterNum);
 }
 void cRSU::print() {
 	cout << "  RSU Id: " << m_RSUId << endl;
-	for (int i = 0; i < m_Cluster.size(); i++){
+	for (int i = 0; i < m_DRAVecCluster.size(); i++){
 		cout << "      Cluster : " << i << endl;
 		cout << "      ";
-		for(int Id: m_Cluster[i])
+		for(int Id: m_DRAVecCluster[i])
 			cout << Id << " , ";
 		cout << endl;
 	}
 	
 }
 
-void cRSU::Cluster() {
+void cRSU::testCluster() {
 	int num = m_VecVUE.size();
 	for (int i = 0; i < num; i++)
-		m_Cluster[i%m_ClusterNum].push_back(m_VecVUE[i]);
+		m_DRAVecCluster[i%m_DRAClusterNum].push_back(m_VecVUE[i]);
+
+	int n = 0;
+	for (int i = 0;i < m_DRAClusterNum;i++) {
+		n += m_DRAVecCluster[i].size();
+	}
+	cout << "Total: " << n << endl;
 }
 
 void sMessage::print() {
