@@ -1,3 +1,1 @@
-﻿  System.cpp
-f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-  LTEV2X.vcxproj -> F:\LTEV2X\Debug\LTEV2X.exe
+﻿  LTEV2X.vcxproj -> F:\LTEV2X\Debug\LTEV2X.exe

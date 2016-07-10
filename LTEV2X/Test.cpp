@@ -148,7 +148,7 @@ cRSU::cRSU() :m_DRAClusterNum(4) {
 }
 void cRSU::print() {
 	cout << "  RSU Id: " << m_RSUId << endl;
-	for (int i = 0; i < m_DRAVecCluster.size(); i++){
+	for (int i = 0; i < m_DRAClusterNum; i++){
 		cout << "      Cluster : " << i << endl;
 		cout << "      ";
 		for(int Id: m_DRAVecCluster[i])

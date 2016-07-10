@@ -26,6 +26,6 @@ struct sMessage {
 			byteNum = 1000;
 			break;
 		}
-		DRA_ONTTI = std::ceil(static_cast<double>(byteNum) / static_cast<double>(gc_ByteNumPerRB));
+		DRA_ONTTI = static_cast<int>(std::ceil(static_cast<double>(byteNum) / static_cast<double>(gc_ByteNumPerRB)));
 	}
 };
