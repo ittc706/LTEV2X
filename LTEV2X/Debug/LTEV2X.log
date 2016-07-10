@@ -1,24 +1,3 @@
-﻿生成启动时间为 2016/7/10 11:28:53。
-     1>项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”在节点 2 上(Build 个目标)。
-     1>ClCompile:
-         E:\Visual Studio 2015\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Schedule.cpp
-         Schedule.cpp
-     1>e:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-       Link:
-         E:\Visual Studio 2015\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\LTEV2X\Debug\LTEV2X.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\LTEV2X\Debug\LTEV2X.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\LTEV2X\Debug\LTEV2X.lib" /MACHINE:X86 Debug\blas1_z.obj
-         Debug\Config.obj
-         Debug\Global.obj
-         Debug\linpack_z.obj
-         Debug\main.obj
-         Debug\Numerical.obj
-         Debug\RSU.obj
-         Debug\Schedule.obj
-         Debug\System.obj
-         Debug\Test.obj
-         Debug\VUE.obj
-         LTEV2X.vcxproj -> E:\LTEV2X\Debug\LTEV2X.exe
-     1>已完成生成项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”(Build 个目标)的操作。
-
-已成功生成。
-
-已用时间 00:00:01.34
+﻿  System.cpp
+f:\ltev2x\ltev2x\message.h(29): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+  LTEV2X.vcxproj -> F:\LTEV2X\Debug\LTEV2X.exe

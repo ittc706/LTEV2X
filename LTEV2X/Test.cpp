@@ -12,7 +12,7 @@
 
 using namespace std;
 
-int TestVUENum = 20;
+int TestVUENum = 40;
 int TestRSUNum = 2;
 int TesteNBNum = 1;
 
@@ -75,6 +75,8 @@ void cSystem::print() {
 
 
 void cSystem::configure() {//系统仿真参数配置
+	srand((unsigned)time(NULL));//iomanip
+	m_TTI = abs(rand()%1000);
 	m_VeceNB = vector<ceNB>(TesteNBNum);
 	m_VecVUE = vector<cVeUE>(TestVUENum);
 	m_VecRSU = vector<cRSU>(TestRSUNum);

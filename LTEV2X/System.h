@@ -16,9 +16,10 @@ public:
 private:
 	/*------------------数据成员------------------*/
 	sConfig m_Config;//系统配置参数
+	int m_TTI;
 	std::vector<ceNB> m_VeceNB;//基站容器
-	std::vector<cVeUE> m_VecVUE;//车辆容器
 	std::vector<cRSU> m_VecRSU;//RSU容器
+	std::vector<cVeUE> m_VecVUE;//车辆容器
 	
 public:
 	/*------------------系统流程控制------------------*/
@@ -61,9 +62,9 @@ public :
 
 private:
 	/*--------------------实现函数--------------------*/
+	void DRAInformationClean();//资源分配信息清空
 	void DRAPerformCluster();//对RSU内的车辆进行分簇
 	void DRAGroupSizeBasedTDM();//基于簇大小的时分复用
-	void DRAInformationClean();//资源分配信息清空
 	void DRABuildCallList();//建立呼叫链表
 
 

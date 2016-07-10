@@ -10,8 +10,8 @@ using namespace std;
 
 extern ofstream g_OutDRAScheduleInfo;
 
-int cRSU::DRAGetClusterIdx() {
-	int relativeCNTI = g_TTI%gc_DRA_NTTI;
+int cRSU::DRAGetClusterIdx(int TTI) {
+	int relativeCNTI = TTI%gc_DRA_NTTI;
 	for (int i = 0; i < m_DRAClusterNum; i++)
 		if (relativeCNTI <= get<1>(m_DRAClusterTDRInfo[i])) return i;
 	return -1;
@@ -116,21 +116,21 @@ void cRSU::DRAReaddConflictListToCallList() {
 }
 
 
-void cRSU::DRASelectBasedOnP13(std::vector<cVeUE>&v) {
+void cRSU::DRASelectBasedOnP13(int TTI, std::vector<cVeUE>&v) {
 }
 
-void cRSU::DRASelectBasedOnP23(std::vector<cVeUE>&v) {
+void cRSU::DRASelectBasedOnP23(int TTI, std::vector<cVeUE>&v) {
 }
 
-void cRSU::DRASelectBasedOnP123(std::vector<cVeUE>&v) {
-	int relativeTTI = g_TTI%gc_DRA_NTTI;
+void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&v) {
+	int relativeTTI = TTI%gc_DRA_NTTI;
 
-	int clusterIdx = DRAGetClusterIdx();
+	int clusterIdx = DRAGetClusterIdx(TTI);
 	vector<int> curAvaliableFB;//当前TTI可用的频域块
 
 
 	for (int i = 0; i < gc_DRA_FBNum; i++)
-		if (g_TTI > m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableFB.push_back(i); //将可以占用的RB编号存入
+		if (TTI > m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableFB.push_back(i); //将可以占用的RB编号存入
 
 	for (int UEId : m_DRACallList[clusterIdx]) {//遍历该簇内呼叫链表中的用户
 													 //为当前用户在可用的RB块中随机选择一个
@@ -142,11 +142,11 @@ void cRSU::DRASelectBasedOnP123(std::vector<cVeUE>&v) {
 		int begin = get<0>(m_DRAClusterTDRInfo[clusterIdx]),
 			end = get<1>(m_DRAClusterTDRInfo[clusterIdx]),
 			len = get<2>(m_DRAClusterTDRInfo[clusterIdx]);
-		int nextTurnBeginTTI = g_TTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
+		int nextTurnBeginTTI = TTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
 		int remainTTI = end - relativeTTI + 1;//当前一轮分配中该簇剩余的可分配时隙
 		int overTTI = occupiedTTI - remainTTI;//需要到下一轮，或下几轮进行传输的时隙数量
 		if (overTTI <= 0)
-			m_DRA_RBIsAvailable[clusterIdx][FBId] = max(g_TTI + occupiedTTI - 1, m_DRA_RBIsAvailable[clusterIdx][FBId]);
+			m_DRA_RBIsAvailable[clusterIdx][FBId] = max(TTI + occupiedTTI - 1, m_DRA_RBIsAvailable[clusterIdx][FBId]);
 		else {
 			int n = overTTI / len;
 			if (overTTI%len == 0) m_DRA_RBIsAvailable[clusterIdx][FBId] = max(nextTurnBeginTTI + end + (n - 1)*gc_DRA_NTTI, m_DRA_RBIsAvailable[clusterIdx][FBId]);
@@ -154,7 +154,7 @@ void cRSU::DRASelectBasedOnP123(std::vector<cVeUE>&v) {
 		}
 
 		//写入调度信息
-		m_DRAScheduleList[clusterIdx][FBId].push_back(sDRAScheduleInfo(UEId, FBId, m_DRAClusterTDRInfo[clusterIdx], occupiedTTI));
+		m_DRAScheduleList[clusterIdx][FBId].push_back(sDRAScheduleInfo(TTI,UEId, FBId, m_DRAClusterTDRInfo[clusterIdx], occupiedTTI));
 
 	}
 	DRAWriteScheduleInfo(g_OutDRAScheduleInfo);
@@ -167,7 +167,7 @@ void cRSU::DRASelectBasedOnP123(std::vector<cVeUE>&v) {
 
 
 void cRSU::DRAWriteScheduleInfo(std::ofstream& out) {
-	out << "RSU: " << m_RSUId << endl;
+	out << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: " << m_RSUId <<"   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>"<< endl;
 	for (int clusterIdx = 0; clusterIdx < m_DRAClusterNum; clusterIdx++) {
 		out << "  Cluster: " << clusterIdx << endl;
 		for (int FBIdx = 0; FBIdx < gc_DRA_FBNum; FBIdx++) {
@@ -188,7 +188,7 @@ void cRSU::DRAWriteScheduleInfo(std::ofstream& out) {
 }
 
 
-void cRSU::DRAConflictListener() {
+void cRSU::DRAConflictListener(int TTI) {
 	//-----------------------TEST-----------------------
 	/*如果每个簇的列表不为空，说明上一次的冲突还未处理完毕，说明程序需要修正*/
 	if (m_DRAConflictList.size() != 0) throw Exp("cRSU::DRAConflictListener()");
@@ -196,25 +196,34 @@ void cRSU::DRAConflictListener() {
 	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;clusterIdx++) {
 		for (int FBIdx = 0;FBIdx < gc_DRA_FBNum;FBIdx++) {
 			list<sDRAScheduleInfo> &list = m_DRAScheduleList[clusterIdx][FBIdx];
-			if (list.size() > 1) {
+			if (list.size() > 1) {//多于一个VE在当前TTI，该FB上传输，即发生了冲突，将其添加到冲突列表等待重新加入呼叫链表
 				for (sDRAScheduleInfo &info : list) {
 					m_DRAConflictList.push_back(tuple<int,int,int>(info.VEId, clusterIdx, FBIdx));
 				}		
+			}
+			else if (list.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
+			    //-----------------------WARN-----------------------
+				//没有考虑当车辆正在传输信号时，分簇将其分入另一个簇的情况
+				//-----------------------WARN-----------------------
+
+				/*如果当前TTI==m_DRA_RBIsAvailable[clusterIdx][FBIdx]更新对应的数据*/
+				if (TTI == m_DRA_RBIsAvailable[clusterIdx][FBIdx])
+					m_DRAScheduleList[clusterIdx][FBIdx].clear();
 			}
 		}
 	}
 
 	/*处理冲突，维护m_DRA_RBIsAvailable以及m_DRAScheduleList*/
-	DRAConflictSolve();
+	DRAConflictSolve(TTI);
 }
 
 
-void cRSU::DRAConflictSolve() {
+void cRSU::DRAConflictSolve(int TTI) {
 	for (const tuple<int, int, int> t : m_DRAConflictList) {
 		int clusterIdx = get<1>(t);
 		int FBIdx = get<2>(t);
 		m_DRAScheduleList[clusterIdx][FBIdx].clear();
-		m_DRA_RBIsAvailable[clusterIdx][FBIdx] = g_TTI;
+		m_DRA_RBIsAvailable[clusterIdx][FBIdx] = TTI;//将该FB资源在此时释放
 	}
 }
 

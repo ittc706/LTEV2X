@@ -57,19 +57,19 @@ struct sDRAScheduleInfo {
 	std::vector<std::tuple<int, int>> occupiedInterval;//当前车辆进行传输的实际TTI区间（闭区间）
 
 	sDRAScheduleInfo() {}
-	sDRAScheduleInfo(int VEId,int FBIdx, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
+	sDRAScheduleInfo(int TTI,int VEId,int FBIdx, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
 		this->VEId = VEId;
 		this->FBIdx = FBIdx;
 		int begin = std::get<0>(ClasterTTI),
 			end = std::get<1>(ClasterTTI),
 			len = std::get<2>(ClasterTTI);
-		int relativeTTI = g_TTI%gc_DRA_NTTI;
-		int nextTurnBeginTTI = g_TTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
+		int relativeTTI = TTI%gc_DRA_NTTI;
+		int nextTurnBeginTTI = TTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
 		int remainTTI = end - relativeTTI + 1;//当前一轮调度中剩余可用的时隙数量
 		int overTTI = occupiedTTI - remainTTI;//超出当前一轮调度可用时隙数量的部分
-		if (overTTI <= 0) occupiedInterval.push_back(std::tuple<int, int>(g_TTI, g_TTI + occupiedTTI - 1));
+		if (overTTI <= 0) occupiedInterval.push_back(std::tuple<int, int>(TTI, TTI + occupiedTTI - 1));
 		else {
-			occupiedInterval.push_back(std::tuple<int, int>(g_TTI, g_TTI + remainTTI - 1));
+			occupiedInterval.push_back(std::tuple<int, int>(TTI, TTI + remainTTI - 1));
 			int n = overTTI / len;
 			for (int i = 0; i < n; i++) occupiedInterval.push_back(std::tuple<int, int>(nextTurnBeginTTI + i*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + len - 1 + i*gc_DRA_NTTI));
 			if (overTTI%len != 0) occupiedInterval.push_back(std::tuple<int, int>(nextTurnBeginTTI + n*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1));

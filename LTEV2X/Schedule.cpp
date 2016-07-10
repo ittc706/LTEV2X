@@ -140,7 +140,7 @@ void cSystem::DRASchedule() {
 	/*建立呼叫链表，遍历RSU内的m_VecVUE，生成m_CallList*/
 	DRABuildCallList();
 
-	/*当前g_TTI的DRA算法*/
+	/*当前m_TTI的DRA算法*/
 	switch (m_DRAMode) {
 	case P13:
 		DRASelectBasedOnP13();
@@ -223,14 +223,14 @@ void cSystem::DRASelectBasedOnP23() {
 
 void cSystem::DRASelectBasedOnP123() {
 	for (cRSU &_RSU : m_VecRSU)
-		_RSU.DRASelectBasedOnP123(m_VecVUE);
+		_RSU.DRASelectBasedOnP123(m_TTI,m_VecVUE);
 }
 
 
 
 void cSystem::DRAConflictListener() {
 	for (cRSU &_RSU : m_VecRSU) {
-		_RSU.DRAConflictListener();
+		_RSU.DRAConflictListener(m_TTI);
 	}
 
 
