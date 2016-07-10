@@ -8,7 +8,7 @@
 #include"Test.h"
 using namespace std;
 
-ofstream g_OutDRAScheduleInfo("F:\\LTEV2X\\output\\DRAScheduleInfo.txt");
+ofstream g_OutDRAScheduleInfo("output\\DRAScheduleInfo.txt");
 
 
 int main() {

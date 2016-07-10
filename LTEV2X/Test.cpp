@@ -109,7 +109,7 @@ cVeUE::cVeUE() {
 
 
 void cVeUE::print() {
-	cout << "  VeUe Id: " << m_VEId << endl;
+	cout << "  VeUE Id: " << m_VEId << endl;
 	m_Message.print();
 	cout << endl;
 }
@@ -143,7 +143,6 @@ cRSU::cRSU() :m_DRAClusterNum(4) {
 	m_DRA_RBIsAvailable = vector<vector<int>>(m_DRAClusterNum, vector<int>(gc_DRA_FBNum, -1));
 	m_DRACallList = vector<vector<int>>(m_DRAClusterNum);
 	m_DRAScheduleList = vector<vector<list<sDRAScheduleInfo>>>(m_DRAClusterNum, vector<list<sDRAScheduleInfo>>(gc_DRA_FBNum));
-	m_DRAConflictList = vector<list<int>>(m_DRAClusterNum);
 }
 void cRSU::print() {
 	cout << "  RSU Id: " << m_RSUId << endl;
@@ -159,14 +158,12 @@ void cRSU::print() {
 
 void cRSU::testCluster() {
 	int num = m_VecVUE.size();
-	for (int i = 0; i < num; i++)
-		m_DRAVecCluster[i%m_DRAClusterNum].push_back(m_VecVUE[i]);
-
-	int n = 0;
-	for (int i = 0;i < m_DRAClusterNum;i++) {
-		n += m_DRAVecCluster[i].size();
+	for (int i = 0; i < num; i++) {
+		int clusterIdx = i%m_DRAClusterNum;
+		m_DRAVecCluster[clusterIdx].push_back(m_VecVUE[i]);
 	}
-	cout << "Total: " << n << endl;
+
+	
 }
 
 void sMessage::print() {

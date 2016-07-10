@@ -6,6 +6,7 @@
 #include<fstream>
 #include"Schedule.h"
 #include"Global.h"
+#include"VUE.h"
 
 class cRSU {
 	//-----------------------TEST-----------------------
@@ -45,14 +46,23 @@ public:
 	std::vector<std::vector<int>> m_DRAVecCluster;   //存放簇的容器，每个簇包含一个vector<int>存储车辆的ID
 	std::vector<std::vector<int>> m_DRACallList;   //外层vector代表一个簇，内层vector<int>代表要传输数据的车辆ID
 	std::vector<std::vector<std::list<sDRAScheduleInfo>>> m_DRAScheduleList;  //当前调度信息，[i][j]代表第i个簇的第j个RB块
-	std::vector<std::list<int>> m_DRAConflictList; //冲突列表，每个簇共用一个列表
+	std::list<std::tuple<int,int,int>> m_DRAConflictList; //冲突列表，每个簇共用一个列表
 
 	/*--------------------接口函数--------------------*/
 	int DRAGetClusterIdx();//根据此刻的g_TTI返回当前可以进行资源分配的簇的编号
+	void DRAInformationClean();//资源分配信息清空
 	void DRAPerformCluster();//进行分簇，并给每个簇分配对应的时域资源
+	void DRABuildCallList(std::vector<cVeUE>&v);//建立呼叫链表
+	void DRAReaddConflictListToCallList();//将上一个TTI冲突的用户重新添加到呼叫链表中
 	void DRAGroupSizeBasedTDM();//基于簇大小的时分复用
+
+	void DRASelectBasedOnP13(std::vector<cVeUE>&v);//基于P1和P3的资源分配
+	void DRASelectBasedOnP23(std::vector<cVeUE>&v);//基于P2和P3的资源分配
+	void DRASelectBasedOnP123(std::vector<cVeUE>&v);//基于P1、P2和P3的资源分配
+
 	void DRAWriteScheduleInfo(std::ofstream& out);//写调度信息
 	void DRAConflictListener();//帧听冲突
+	void DRAConflictSolve();//维护m_DRAScheduleList以及m_DRA_RBIsAvailable
 	/*--------------------辅助函数--------------------*/
 private:
 	int getMaxIndex(const std::vector<double>&v);

@@ -1,0 +1,382 @@
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 13259  ,  Relative TTI: 0-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+RSU: 0
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: 13261
+      ========================================
+      VEId: 2
+      OccupiedTTI: [13259 , 13261] , 
+    FB: 1
+      Released TTI: 13286
+      ========================================
+      VEId: 10
+      OccupiedTTI: [13259 , 13264] , [13283 , 13286] , 
+    FB: 2
+      Released TTI: 13260
+      ========================================
+      VEId: 18
+      OccupiedTTI: [13259 , 13260] , 
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+RSU: 1
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: 13261
+      ========================================
+      VEId: 11
+      OccupiedTTI: [13259 , 13261] , 
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: 13260
+      ========================================
+      VEId: 3
+      OccupiedTTI: [13259 , 13260] , 
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: 13286
+      ========================================
+      VEId: 19
+      OccupiedTTI: [13259 , 13264] , [13283 , 13286] , 
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 13260  ,  Relative TTI: 1-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+RSU: 0
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: 13261
+      ========================================
+      VEId: 2
+      OccupiedTTI: [13259 , 13261] , 
+    FB: 1
+      Released TTI: 13286
+      ========================================
+      VEId: 10
+      OccupiedTTI: [13259 , 13264] , [13283 , 13286] , 
+    FB: 2
+      Released TTI: 13260
+      ========================================
+      VEId: 18
+      OccupiedTTI: [13259 , 13260] , 
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+RSU: 1
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: 13261
+      ========================================
+      VEId: 11
+      OccupiedTTI: [13259 , 13261] , 
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: 13260
+      ========================================
+      VEId: 3
+      OccupiedTTI: [13259 , 13260] , 
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: 13286
+      ========================================
+      VEId: 19
+      OccupiedTTI: [13259 , 13264] , [13283 , 13286] , 
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1

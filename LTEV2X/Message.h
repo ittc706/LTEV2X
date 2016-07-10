@@ -17,10 +17,10 @@ struct sMessage {
 		this->messageType = messageType;
 		switch (messageType) {
 		case PERIOD:
-			byteNum = 200;
+			byteNum = 300;
 			break;
 		case EMERGENCY:
-			byteNum = 100;
+			byteNum = 200;
 			break;
 		case DATA:
 			byteNum = 1000;

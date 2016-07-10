@@ -63,6 +63,9 @@
     <ClInclude Include="Message.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blas1_z.cpp">

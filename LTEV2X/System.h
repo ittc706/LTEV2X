@@ -64,7 +64,7 @@ private:
 	void DRAPerformCluster();//对RSU内的车辆进行分簇
 	void DRAGroupSizeBasedTDM();//基于簇大小的时分复用
 	void DRAInformationClean();//资源分配信息清空
-	void DRAbuildCallList();//建立呼叫链表
+	void DRABuildCallList();//建立呼叫链表
 
 
 	void DRASelectBasedOnP13();//基于P1和P3的资源分配

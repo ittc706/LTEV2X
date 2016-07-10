@@ -138,7 +138,7 @@ void cSystem::DRASchedule() {
 	DRAGroupSizeBasedTDM();
 
 	/*建立呼叫链表，遍历RSU内的m_VecVUE，生成m_CallList*/
-	DRAbuildCallList();
+	DRABuildCallList();
 
 	/*当前g_TTI的DRA算法*/
 	switch (m_DRAMode) {
@@ -160,37 +160,8 @@ void cSystem::DRASchedule() {
 
 
 void cSystem::DRAInformationClean() {
-	for (cRSU &_RSU : m_VecRSU) {
-		cout << _RSU.m_VecVUE.size() << endl;
-		for (vector<int> &v : _RSU.m_DRACallList)
-			v.clear();
-		for (vector<int> &v : _RSU.m_DRAVecCluster)
-			v.clear();
-	}
-}
-
-void cSystem::DRAbuildCallList() {
-	for (cRSU &_RSU : m_VecRSU) {
-		//根据m_VecRSU更新m_CallList
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_DRAVecCluster.size(); ++clusterIdx) {
-			_RSU.m_DRACallList[clusterIdx].clear();
-			for (int UEId : _RSU.m_DRAVecCluster[clusterIdx]) {
-				if (m_VecVUE[UEId].m_isHavingDataToTransmit) //若车辆有数据要传，将其添加到m_CallList表中
-					_RSU.m_DRACallList[clusterIdx].push_back(UEId);
-			}
-		}
-	}
-
-
-	//-----------------------TEST-----------------------
-
-	for (cRSU& _RSU : m_VecRSU) {
-		cout << "RSU: " << _RSU.m_RSUId << " 's ClusterCallListSize  :";
-		for (auto c : _RSU.m_DRAVecCluster)
-			cout << c.size() << " , ";
-		cout << endl;
-	}
-	//-----------------------TEST-----------------------
+	for (cRSU &_RSU : m_VecRSU)
+		_RSU.DRAInformationClean();
 }
 
 
@@ -201,13 +172,39 @@ void cSystem::DRAPerformCluster() {
 	//-----------------------TEST-----------------------
 
 	for (cRSU& _RSU : m_VecRSU) {
-		cout << "RSU: " << _RSU.m_RSUId << " 's ClusterSize  :";
-		for (auto c : _RSU.m_DRAVecCluster)
-			cout << c.size() << " , ";
+		cout << "RSU: " << _RSU.m_RSUId << " 's Cluster  :" << endl;
+		for (const vector<int>& v : _RSU.m_DRAVecCluster) {
+			cout << "    :";
+			for (int VEId : v)
+				cout << VEId << " , ";
+			cout << endl;
+		}
 		cout << endl;
 	}
 	//-----------------------TEST-----------------------
 }
+
+
+void cSystem::DRABuildCallList() {
+	for (cRSU &_RSU : m_VecRSU)
+		_RSU.DRABuildCallList(m_VecVUE);
+
+	//-----------------------TEST-----------------------
+	for (cRSU& _RSU : m_VecRSU) {
+		cout << "RSU: " << _RSU.m_RSUId << " 's ClusterCallList  :" << endl;
+		for (const vector<int>& v : _RSU.m_DRACallList) {
+			cout << "    :";
+			for(int VEId:v)
+				cout << VEId << " , ";
+			cout << endl;
+		}
+		cout << endl;
+	}
+	//-----------------------TEST-----------------------
+}
+
+
+
 
 
 void cSystem::DRAGroupSizeBasedTDM() {
@@ -225,46 +222,26 @@ void cSystem::DRASelectBasedOnP23() {
 }
 
 void cSystem::DRASelectBasedOnP123() {
-	int relativeTTI = g_TTI%gc_DRA_NTTI;
-	for (cRSU &_RSU : m_VecRSU) {//遍历所有RSU
-		int clusterIdx = _RSU.DRAGetClusterIdx();
-		vector<int> curAvaliableRB;//当前TTI
-		for (int i = 0; i < gc_DRA_FBNum; i++)
-			if (g_TTI > _RSU.m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableRB.push_back(i); //将可以占用的RB编号存入
-																										 //srand((unsigned)time(NULL));//iomanip
-		for (int UEId : _RSU.m_DRACallList[clusterIdx]) {//遍历该簇内呼叫链表中的用户
-													  //为当前用户在可用的RB块中随机选择一个
-			int FBId = m_VecVUE[UEId].RBSelectBasedOnP2(curAvaliableRB);//每个用户自行随机选择可用FB块
-			int occupiedTTI = m_VecVUE[UEId].m_Message.DRA_ONTTI;//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
-
-
-			//计算当前消息所占用资源块的释放时刻,并写入m_DRA_RBIsAvailable
-			int begin =get<0>(_RSU.m_DRAClusterTDRInfo[clusterIdx]),
-				end = get<1>(_RSU.m_DRAClusterTDRInfo[clusterIdx]),
-				len = get<2>(_RSU.m_DRAClusterTDRInfo[clusterIdx]);
-			int nextTurnBeginTTI = g_TTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
-			int remainTTI = end - relativeTTI+1;//当前一轮分配中该簇剩余的可分配时隙
-			int overTTI = occupiedTTI - remainTTI;//需要到下一轮，或下几轮进行传输的时隙数量
-			if (overTTI <= 0)
-				_RSU.m_DRA_RBIsAvailable[clusterIdx][FBId] = max(g_TTI + occupiedTTI-1, _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId]);
-			else {
-				int n = overTTI / len;
-				if(overTTI%len==0) _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId] = max(nextTurnBeginTTI + end + (n-1)*gc_DRA_NTTI, _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId]);
-				else _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId] = max(nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1, _RSU.m_DRA_RBIsAvailable[clusterIdx][FBId]);
-			}
-
-			//写入调度信息
-			_RSU.m_DRAScheduleList[clusterIdx][FBId].push_back(sDRAScheduleInfo(UEId, _RSU.m_DRAClusterTDRInfo[clusterIdx], occupiedTTI));
-			
-		}
-		_RSU.DRAWriteScheduleInfo(g_OutDRAScheduleInfo);
-	}
+	for (cRSU &_RSU : m_VecRSU)
+		_RSU.DRASelectBasedOnP123(m_VecVUE);
 }
 
 
 
 void cSystem::DRAConflictListener() {
 	for (cRSU &_RSU : m_VecRSU) {
-
+		_RSU.DRAConflictListener();
 	}
+
+
+	//-----------------------TEST-----------------------
+
+	for (cRSU& _RSU : m_VecRSU) {
+		cout << "RSU: " << _RSU.m_RSUId << " 's DRAConflictList  : ";
+		for (tuple<int,int,int> &t : _RSU.m_DRAConflictList) {
+			cout << "[ " << get<0>(t) << " , " << get<1>(t) << " , " << get<2>(t) << " ]  ,";
+		}
+		cout << endl;
+	}
+	//-----------------------TEST-----------------------
 }
