@@ -47,7 +47,7 @@ int main() {
 	
 	cSystem _system;
 	_system.process();
-	//_system.print();
+	_system.print();
 
 
 	g_OutDRAScheduleInfo.close();

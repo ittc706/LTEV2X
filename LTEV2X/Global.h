@@ -1,9 +1,7 @@
 #pragma once
 
-#include"Definition.h"
-#include"Numerical.h"
-#include"Enumeration.h"
 
+//这里若包含了VUE.h RSU.h eNB.h会引发大量的未声明的错误
 
 
 /*===========================================

@@ -12,7 +12,7 @@
 
 using namespace std;
 
-int TestVUENum = 40;
+int TestVUENum = 20;
 int TestRSUNum = 2;
 int TesteNBNum = 1;
 
@@ -71,24 +71,56 @@ void cSystem::print() {
 	for (cRSU &RSU : m_VecRSU)
 		RSU.print();
 
+	for (int i = 0;i < m_NTTI;i++) {
+		cout << "TTI: " << i + m_STTI << endl;
+		for (sEvent &e : m_CallSetupList[i])
+			cout << "    [ VEId: " << e.VEId << " , " << "callSetupTTI: " << e.callSetupTTI << " , " << "eMessageType :" << (e.message.messageType == PERIOD ? "PEROID" : "ELSE") << " ] ,";
+		cout << endl;
+	}
 }
 
 
 void cSystem::configure() {//系统仿真参数配置
+	m_NTTI = 50;//仿真TTI时间
+}
+
+
+void cSystem::initialization() {
 	srand((unsigned)time(NULL));//iomanip
-	m_TTI = abs(rand()%1000);
+	m_STTI = abs(rand() % 1000);
+	m_TTI = m_STTI;
 	m_VeceNB = vector<ceNB>(TesteNBNum);
 	m_VecVUE = vector<cVeUE>(TestVUENum);
 	m_VecRSU = vector<cRSU>(TestRSUNum);
+	m_CallSetupList = vector<list<sEvent>>(m_NTTI);
 
-	m_VeceNB[0].m_VecRSU= Function::makeEqualInterverSequence(0, 1, TestRSUNum);
-	m_VeceNB[0].m_VecVUE= Function::makeEqualInterverSequence(0, 1, TestVUENum);
+	/*填充基站包含的RSU以及VE*/
+	m_VeceNB[0].m_VecRSU = Function::makeEqualInterverSequence(0, 1, TestRSUNum);
+	m_VeceNB[0].m_VecVUE = Function::makeEqualInterverSequence(0, 1, TestVUENum);
 
-	m_VecRSU[0].m_VecVUE = Function::makeEqualInterverSequence(0, 2, TestVUENum/2);
-	m_VecRSU[1].m_VecVUE = Function::makeEqualInterverSequence(1, 2, TestVUENum/2);
+	/*随机将车辆分配给RSU*/
+	for (int VEId = 0;VEId < TestVUENum;VEId++)
+		m_VecRSU[rand() % TestRSUNum].m_VecVUE.push_back(VEId);
 
 	m_DRAMode = P123;
+
+
+	/*生成事件链表*/
+	
+	/*首先给每辆车填充PERIOD事件*/
+	for (int VEId = 0;VEId < TestVUENum;VEId++) {
+		int curRelativeTTI = rand() % m_Config.periodicEventNTTI;//车辆周期性事件起始的相对TTI
+		while (curRelativeTTI < m_NTTI) {
+			int curAbsoluteTTI = curRelativeTTI + m_STTI;//绝对TTI时刻
+			m_CallSetupList[curRelativeTTI].push_back(sEvent(VEId, curAbsoluteTTI, PERIOD));
+			curRelativeTTI += m_Config.periodicEventNTTI;
+		}
+	}
+
+	
 }
+
+
 
 
 int cVeUE::count = 0;
@@ -97,13 +129,13 @@ cVeUE::cVeUE() {
 	m_VEId = count++;
 	switch (count % 3) {
 	case 0:
-		m_Message.setMessageType(PERIOD);
+		m_Message = sMessage(PERIOD);
 		break;
 	case 1:
-		m_Message.setMessageType(EMERGENCY);
+		m_Message = sMessage(EMERGENCY);
 		break;
 	case 2:
-		m_Message.setMessageType(DATA);
+		m_Message = sMessage(DATA);
 		break;
 	}
 	m_isHavingDataToTransmit = true;

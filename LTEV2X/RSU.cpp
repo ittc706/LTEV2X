@@ -21,7 +21,7 @@ int cRSU::DRAGetClusterIdx(int TTI) {
 int cRSU::getMaxIndex(const std::vector<double>&v) {
 	double max = 0;
 	int dex = -1;
-	for (int i = 0; i < v.size(); i++) {
+	for (int i = 0; i < static_cast<int>(v.size()); i++) {
 		if (v[i] > max) {
 			dex = i;
 			max = v[i];
@@ -75,7 +75,7 @@ void cRSU::DRAGroupSizeBasedTDM() {
 
 	get<1>(m_DRAClusterTDRInfo[0])--;//使区间范围从0开始
 
-	for (int i = 1; i < m_DRAClusterTDRInfo.size(); i++) {
+	for (int i = 1; i < m_DRAClusterNum; i++) {
 		get<1>(m_DRAClusterTDRInfo[i]) += get<1>(m_DRAClusterTDRInfo[i - 1]);
 		get<0>(m_DRAClusterTDRInfo[i]) = get<1>(m_DRAClusterTDRInfo[i]) - get<2>(m_DRAClusterTDRInfo[i]) + 1;
 	}

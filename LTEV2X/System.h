@@ -16,10 +16,13 @@ public:
 private:
 	/*------------------数据成员------------------*/
 	sConfig m_Config;//系统配置参数
-	int m_TTI;
+	int m_STTI;//仿真起始时刻TTI（随机生成的非负整数作为起始时刻）
+	int m_TTI;//当前TTI时刻
+	int m_NTTI;//仿真总共的TTI
 	std::vector<ceNB> m_VeceNB;//基站容器
 	std::vector<cRSU> m_VecRSU;//RSU容器
 	std::vector<cVeUE> m_VecVUE;//车辆容器
+	std::vector<std::list<sEvent>> m_CallSetupList;//呼叫发起事件链表，m_CallSetupList[i][j]代表第i个TTI的事件表
 	
 public:
 	/*------------------系统流程控制------------------*/
