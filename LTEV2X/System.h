@@ -22,7 +22,7 @@ private:
 	std::vector<ceNB> m_VeceNB;//基站容器
 	std::vector<cRSU> m_VecRSU;//RSU容器
 	std::vector<cVeUE> m_VecVUE;//车辆容器
-	std::vector<std::list<sEvent>> m_CallSetupList;//呼叫发起事件链表，m_CallSetupList[i][j]代表第i个TTI的事件表
+	std::vector<std::list<sEvent>> m_EventList;//呼叫发起事件链表，m_CallSetupList[i][j]代表第i个TTI的事件表
 	
 public:
 	/*------------------系统流程控制------------------*/

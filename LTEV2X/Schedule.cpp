@@ -28,8 +28,6 @@
 
 using namespace std;
 
-extern ofstream g_OutDRAScheduleInfo;
-
 void cSystem::centralizedSchedule() {
 	//清除上一次调度信息
 	scheduleInfoClean();
@@ -172,14 +170,14 @@ void cSystem::DRAPerformCluster() {
 	//-----------------------TEST-----------------------
 
 	for (cRSU& _RSU : m_VecRSU) {
-		cout << "RSU: " << _RSU.m_RSUId << " 's Cluster  :" << endl;
-		for (const vector<int>& v : _RSU.m_DRAVecCluster) {
-			cout << "    :";
-			for (int VEId : v)
-				cout << VEId << " , ";
-			cout << endl;
+		g_OutDRAProcessInfo << "RSU: " << _RSU.m_RSUId << " 's Cluster  :" << endl;
+		for (const set<int>& s : _RSU.m_DRAClusterVUESet) {
+			g_OutDRAProcessInfo << "    :";
+			for (int VEId : s)
+				g_OutDRAProcessInfo << VEId << " , ";
+			g_OutDRAProcessInfo << endl;
 		}
-		cout << endl;
+		g_OutDRAProcessInfo << endl;
 	}
 	//-----------------------TEST-----------------------
 }
@@ -187,18 +185,16 @@ void cSystem::DRAPerformCluster() {
 
 void cSystem::DRABuildCallList() {
 	for (cRSU &_RSU : m_VecRSU)
-		_RSU.DRABuildCallList(m_VecVUE);
+		_RSU.DRABuildCallList(m_TTI,m_EventList);
 
 	//-----------------------TEST-----------------------
 	for (cRSU& _RSU : m_VecRSU) {
-		cout << "RSU: " << _RSU.m_RSUId << " 's ClusterCallList  :" << endl;
-		for (const vector<int>& v : _RSU.m_DRACallList) {
-			cout << "    :";
-			for(int VEId:v)
-				cout << VEId << " , ";
-			cout << endl;
+		g_OutDRAProcessInfo << "RSU: " << _RSU.m_RSUId << " 's CurrentCallList  :" << endl;
+		g_OutDRAProcessInfo << "    :";
+		for (int VEId : _RSU.m_DRACallList) {
+			g_OutDRAProcessInfo << VEId << " , ";
 		}
-		cout << endl;
+		g_OutDRAProcessInfo << endl;
 	}
 	//-----------------------TEST-----------------------
 }
@@ -237,11 +233,11 @@ void cSystem::DRAConflictListener() {
 	//-----------------------TEST-----------------------
 
 	for (cRSU& _RSU : m_VecRSU) {
-		cout << "RSU: " << _RSU.m_RSUId << " 's DRAConflictList  : ";
-		for (tuple<int,int,int> &t : _RSU.m_DRAConflictList) {
-			cout << "[ " << get<0>(t) << " , " << get<1>(t) << " , " << get<2>(t) << " ]  ,";
+		g_OutDRAProcessInfo << "RSU: " << _RSU.m_RSUId << " 's DRAConflictList  : ";
+		for (const tuple<int,int,int> &t : _RSU.m_DRAConflictSet) {
+			g_OutDRAProcessInfo << "[ " << get<0>(t) << " , " << get<1>(t) << " , " << get<2>(t) << " ]  ,";
 		}
-		cout << endl;
+		g_OutDRAProcessInfo << endl;
 	}
 	//-----------------------TEST-----------------------
 }

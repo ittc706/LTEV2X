@@ -1,8 +1,14 @@
 #pragma once
-
+#include<fstream>
 
 //这里若包含了VUE.h RSU.h eNB.h会引发大量的未声明的错误
 
+/*===========================================
+*               变量定义
+* ==========================================*/
+extern std::ofstream g_OutDRAScheduleInfo;
+extern std::ofstream g_OutDRAProcessInfo;
+extern std::ofstream g_OutBasicInfo;
 
 /*===========================================
 *               常量定义

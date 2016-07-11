@@ -1,6 +1,6 @@
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 502  ,  Relative TTI: 0-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 41  ,  Relative TTI: 0-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Cluster: 0
     FB: 0
@@ -8,15 +8,688 @@
     FB: 1
       Released TTI: -1
     FB: 2
-      Released TTI: 503
-      ========================================
-      VEId: 0
-      OccupiedTTI: [502 , 503] , 
+      Released TTI: -1
     FB: 3
-      Released TTI: 503
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: 43
+      ========================================
+      VEId: 2
+      OccupiedTTI: [41 , 43] , 
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 42  ,  Relative TTI: 1-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: 43
+      ========================================
+      VEId: 2
+      OccupiedTTI: [41 , 43] , 
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 43  ,  Relative TTI: 2-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: 43
+      ========================================
+      VEId: 2
+      OccupiedTTI: [41 , 43] , 
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 44  ,  Relative TTI: 3-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: 43
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: 45
       ========================================
       VEId: 15
-      OccupiedTTI: [502 , 503] , 
+      OccupiedTTI: [44 , 45] , 
     FB: 4
       Released TTI: -1
     FB: 5
@@ -26,10 +699,32 @@
     FB: 7
       Released TTI: -1
     FB: 8
-      Released TTI: 503
-      ========================================
-      VEId: 9
-      OccupiedTTI: [502 , 503] , 
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 45  ,  Relative TTI: 4-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
     FB: 9
       Released TTI: -1
   Cluster: 1
@@ -98,24 +793,15 @@
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Cluster: 0
     FB: 0
-      Released TTI: 504
-      ========================================
-      VEId: 8
-      OccupiedTTI: [502 , 504] , 
+      Released TTI: -1
     FB: 1
       Released TTI: -1
     FB: 2
-      Released TTI: 503
-      ========================================
-      VEId: 18
-      OccupiedTTI: [502 , 503] , 
+      Released TTI: -1
     FB: 3
       Released TTI: -1
     FB: 4
-      Released TTI: 503
-      ========================================
-      VEId: 3
-      OccupiedTTI: [502 , 503] , 
+      Released TTI: -1
     FB: 5
       Released TTI: -1
     FB: 6
@@ -130,7 +816,7 @@
     FB: 0
       Released TTI: -1
     FB: 1
-      Released TTI: -1
+      Released TTI: 43
     FB: 2
       Released TTI: -1
     FB: 3
@@ -176,38 +862,10 @@
     FB: 2
       Released TTI: -1
     FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 503  ,  Relative TTI: 1-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-      ========================================
-      VEId: 0
-      OccupiedTTI: [502 , 503] , 
-    FB: 3
-      Released TTI: 503
+      Released TTI: 45
       ========================================
       VEId: 15
-      OccupiedTTI: [502 , 503] , 
+      OccupiedTTI: [44 , 45] , 
     FB: 4
       Released TTI: -1
     FB: 5
@@ -217,10 +875,32 @@
     FB: 7
       Released TTI: -1
     FB: 8
-      Released TTI: 503
-      ========================================
-      VEId: 9
-      OccupiedTTI: [502 , 503] , 
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 46  ,  Relative TTI: 5-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
     FB: 9
       Released TTI: -1
   Cluster: 1
@@ -289,173 +969,343 @@
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Cluster: 0
     FB: 0
-      Released TTI: 504
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: 43
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: 45
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 47  ,  Relative TTI: 6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: 43
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: 94
+      ========================================
+      VEId: 1
+      OccupiedTTI: [47 , 47] , [67 , 72] , [92 , 94] , 
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: 45
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 48  ,  Relative TTI: 7-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: 69
       ========================================
       VEId: 8
-      OccupiedTTI: [502 , 504] , 
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-      ========================================
-      VEId: 18
-      OccupiedTTI: [502 , 503] , 
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-      ========================================
-      VEId: 3
-      OccupiedTTI: [502 , 503] , 
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 504  ,  Relative TTI: 2-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
+      OccupiedTTI: [48 , 49] , [69 , 69] , 
     FB: 4
       Released TTI: -1
     FB: 5
@@ -471,167 +1321,170 @@
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Cluster: 0
     FB: 0
-      Released TTI: 504
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: 43
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: 94
+      ========================================
+      VEId: 1
+      OccupiedTTI: [47 , 47] , [67 , 72] , [92 , 94] , 
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: 45
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 49  ,  Relative TTI: 8-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Cluster: 0
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 1
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 2
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: -1
+    FB: 4
+      Released TTI: -1
+    FB: 5
+      Released TTI: -1
+    FB: 6
+      Released TTI: -1
+    FB: 7
+      Released TTI: -1
+    FB: 8
+      Released TTI: -1
+    FB: 9
+      Released TTI: -1
+  Cluster: 3
+    FB: 0
+      Released TTI: -1
+    FB: 1
+      Released TTI: -1
+    FB: 2
+      Released TTI: -1
+    FB: 3
+      Released TTI: 69
       ========================================
       VEId: 8
-      OccupiedTTI: [502 , 504] , 
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 505  ,  Relative TTI: 3-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
+      OccupiedTTI: [48 , 49] , [69 , 69] , 
     FB: 4
       Released TTI: -1
     FB: 5
@@ -647,15 +1500,15 @@
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Cluster: 0
     FB: 0
-      Released TTI: 504
+      Released TTI: -1
     FB: 1
       Released TTI: -1
     FB: 2
-      Released TTI: 503
+      Released TTI: -1
     FB: 3
       Released TTI: -1
     FB: 4
-      Released TTI: 503
+      Released TTI: -1
     FB: 5
       Released TTI: -1
     FB: 6
@@ -670,7 +1523,7 @@
     FB: 0
       Released TTI: -1
     FB: 1
-      Released TTI: -1
+      Released TTI: 43
     FB: 2
       Released TTI: -1
     FB: 3
@@ -695,7 +1548,10 @@
     FB: 2
       Released TTI: -1
     FB: 3
-      Released TTI: -1
+      Released TTI: 94
+      ========================================
+      VEId: 1
+      OccupiedTTI: [47 , 47] , [67 , 72] , [92 , 94] , 
     FB: 4
       Released TTI: -1
     FB: 5
@@ -716,7 +1572,7 @@
     FB: 2
       Released TTI: -1
     FB: 3
-      Released TTI: -1
+      Released TTI: 45
     FB: 4
       Released TTI: -1
     FB: 5
@@ -731,7 +1587,7 @@
       Released TTI: -1
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 506  ,  Relative TTI: 4-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 50  ,  Relative TTI: 9-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Cluster: 0
     FB: 0
@@ -739,9 +1595,9 @@
     FB: 1
       Released TTI: -1
     FB: 2
-      Released TTI: 503
+      Released TTI: -1
     FB: 3
-      Released TTI: 503
+      Released TTI: -1
     FB: 4
       Released TTI: -1
     FB: 5
@@ -751,7 +1607,7 @@
     FB: 7
       Released TTI: -1
     FB: 8
-      Released TTI: 503
+      Released TTI: -1
     FB: 9
       Released TTI: -1
   Cluster: 1
@@ -804,7 +1660,10 @@
     FB: 2
       Released TTI: -1
     FB: 3
-      Released TTI: -1
+      Released TTI: 69
+      ========================================
+      VEId: 8
+      OccupiedTTI: [48 , 49] , [69 , 69] , 
     FB: 4
       Released TTI: -1
     FB: 5
@@ -820,7770 +1679,7 @@
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Cluster: 0
     FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 507  ,  Relative TTI: 5-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 508  ,  Relative TTI: 6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 509  ,  Relative TTI: 7-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 510  ,  Relative TTI: 8-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 511  ,  Relative TTI: 9-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 512  ,  Relative TTI: 10-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 513  ,  Relative TTI: 11-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 514  ,  Relative TTI: 12-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 515  ,  Relative TTI: 13-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 516  ,  Relative TTI: 14-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 517  ,  Relative TTI: 15-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 518  ,  Relative TTI: 16-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 519  ,  Relative TTI: 17-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 520  ,  Relative TTI: 18-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 521  ,  Relative TTI: 19-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 522  ,  Relative TTI: 20-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 523  ,  Relative TTI: 21-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 524  ,  Relative TTI: 22-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 525  ,  Relative TTI: 23-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 526  ,  Relative TTI: 24-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 527  ,  Relative TTI: 25-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 528  ,  Relative TTI: 26-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 529  ,  Relative TTI: 27-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 530  ,  Relative TTI: 28-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 531  ,  Relative TTI: 29-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 532  ,  Relative TTI: 30-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 533  ,  Relative TTI: 31-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 534  ,  Relative TTI: 32-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 535  ,  Relative TTI: 33-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 536  ,  Relative TTI: 34-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 537  ,  Relative TTI: 35-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 538  ,  Relative TTI: 36-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 539  ,  Relative TTI: 37-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 540  ,  Relative TTI: 38-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 541  ,  Relative TTI: 39-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 542  ,  Relative TTI: 40-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 543  ,  Relative TTI: 41-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 544  ,  Relative TTI: 42-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 545  ,  Relative TTI: 43-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 546  ,  Relative TTI: 44-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 547  ,  Relative TTI: 45-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 548  ,  Relative TTI: 46-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 549  ,  Relative TTI: 47-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 550  ,  Relative TTI: 48-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: 503
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 551  ,  Relative TTI: 49-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
-      Released TTI: 503
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: 503
-    FB: 9
       Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
     FB: 1
       Released TTI: -1
     FB: 2
@@ -8591,29 +1687,7 @@
     FB: 3
       Released TTI: -1
     FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: 504
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: 503
-    FB: 3
       Released TTI: -1
-    FB: 4
-      Released TTI: 503
     FB: 5
       Released TTI: -1
     FB: 6
@@ -8628,7 +1702,7 @@
     FB: 0
       Released TTI: -1
     FB: 1
-      Released TTI: -1
+      Released TTI: 43
     FB: 2
       Released TTI: -1
     FB: 3
@@ -8653,7 +1727,10 @@
     FB: 2
       Released TTI: -1
     FB: 3
-      Released TTI: -1
+      Released TTI: 94
+      ========================================
+      VEId: 1
+      OccupiedTTI: [47 , 47] , [67 , 72] , [92 , 94] , 
     FB: 4
       Released TTI: -1
     FB: 5
@@ -8674,7 +1751,7 @@
     FB: 2
       Released TTI: -1
     FB: 3
-      Released TTI: -1
+      Released TTI: 45
     FB: 4
       Released TTI: -1
     FB: 5

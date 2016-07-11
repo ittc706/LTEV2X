@@ -1,10 +1,9 @@
 #include<iomanip>
 #include<fstream>
 #include"System.h"
+#include"Global.h"
 
 using namespace std;
-
-extern ofstream g_OutDRAScheduleInfo;
 
 void cSystem::process() {
 

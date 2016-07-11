@@ -1,14 +1,13 @@
 #include<iostream>
 #include<fstream>
 #include<iomanip>
+#include<set>
 #include"Enumeration.h"
 #include"Numerical.h"
 #include"Schedule.h"
 #include"System.h"
 #include"Test.h"
 using namespace std;
-
-ofstream g_OutDRAScheduleInfo("output\\DRAScheduleInfo.txt");
 
 
 int main() {
@@ -51,5 +50,7 @@ int main() {
 
 
 	g_OutDRAScheduleInfo.close();
+	g_OutDRAProcessInfo.close();
+	g_OutBasicInfo.close();
 	system("pause");
 }

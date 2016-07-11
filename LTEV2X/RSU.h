@@ -1,12 +1,14 @@
 #pragma once
 
 #include<vector>
+#include<set>
 #include<list>
 #include<string>
 #include<fstream>
 #include"Schedule.h"
 #include"Global.h"
 #include"VUE.h"
+#include"Event.h"
 
 class cRSU {
 	//-----------------------TEST-----------------------
@@ -19,7 +21,7 @@ public:
 public:
 
 	int m_RSUId;
-	std::vector<int> m_VecVUE;//当前RSU范围内的UEid编号容器
+	std::set<int> m_VUESet;//当前RSU范围内的VEId编号容器
 
 	/***************************************************************
 	------------------------上行调度--------------------------------
@@ -39,27 +41,72 @@ public:
 	---------------------分布式资源管理-----------------------------
 	-------------DRA:Distributed Resource Allocation----------------
 	****************************************************************/
-	eRSUType m_RSUType;   //RSU的类型
-	const int m_DRAClusterNum;  //一个RSU覆盖范围内的簇的个数（与RSU的类型有关）
-	std::vector<std::tuple<int,int,int>> m_DRAClusterTDRInfo;//TDR(Time Domain Resource)存储每个簇所分配时间数量区间的左端点，右端点以及区间长度
-	std::vector<std::vector<int>> m_DRA_RBIsAvailable;  //若"TTI>m_DRA_RBIsAvailable[i][j]"代表簇i的资源块j可用;内层vector存储的是对应资源块解除占用的TTI时刻（该TTI结束时解除）
-	std::vector<std::vector<int>> m_DRAVecCluster;   //存放簇的容器，每个簇包含一个vector<int>存储车辆的ID
-	std::vector<std::vector<int>> m_DRACallList;   //外层vector代表一个簇，内层vector<int>代表要传输数据的车辆ID
-	std::vector<std::vector<std::list<sDRAScheduleInfo>>> m_DRAScheduleList;  //当前调度信息，[i][j]代表第i个簇的第j个RB块
-	std::list<std::tuple<int,int,int>> m_DRAConflictList; //冲突列表,tuple从左到右分别是VEId,clusterIdx,FBIdx
+	/*
+	* RSU的类型
+	* 处于十字路口的RSU
+	* 分布于道路中间的RSU
+	*/
+	eRSUType m_RSUType; 
+
+	/*
+	* 一个RSU覆盖范围内的簇的个数
+	* 与RSU的类型"m_RSUType"有关
+	*/
+	const int m_DRAClusterNum;
+
+	/*
+	* TDR:Time Domain Resource
+	* 下标代表簇编号
+	* tuple存储的变量的含义依次为：存储每个簇所分配时间数量区间的左端点，右端点以及区间长度
+	*/
+	std::vector<std::tuple<int,int,int>> m_DRAClusterTDRInfo;
+
+	/*
+	* FB块释放该资源的TTI时刻（ATTI）（该TTI结束时解除）
+	* 外层下标代表簇编号
+	* 内层下标代表FB块编号
+	* 若"TTI>m_DRA_RBIsAvailable[i][j]"代表簇i的资源块j可用
+	*/
+	std::vector<std::vector<int>> m_DRA_RBIsAvailable;  
+
+	/*
+	* 存放车辆的容器
+	* 下标代表簇的编号
+	* 簇内车辆用set来维护，用于利用内置红黑树数据结构判断事件链表中对应事件的车辆ID是否存在于该set中，提高效率
+	*/
+	std::vector<std::set<int>> m_DRAClusterVUESet;  
+
+	/*
+	* 用于存放当前TTI呼叫车辆的编号
+	*/
+	std::vector<int> m_DRACallList; 
+
+	/*
+	* 存放调度调度信息
+	* 外层下标代表簇编号
+	* 内层下标代表FB编号
+	*/
+	std::vector<std::vector<std::list<sDRAScheduleInfo>>> m_DRAScheduleList;
+	
+	/*
+	* 冲突列表
+	* 列表元素是tuple，分别代表VEId,ClusterIdx以及FBIdx
+	* 其中ClusterIdx以及FBIdx是用于冲突处理释放对应的频域资源
+	*/
+	std::set<std::tuple<int,int,int>> m_DRAConflictSet;
 
 	/*--------------------接口函数--------------------*/
 	int DRAGetClusterIdx(int TTI);//根据此刻的TTI返回当前可以进行资源分配的簇的编号
 	void DRAInformationClean();//资源分配信息清空
 	void DRAPerformCluster();//进行分簇
 	void DRAGroupSizeBasedTDM();//基于簇大小的时分复用
-	void DRABuildCallList(std::vector<cVeUE>&v);//建立呼叫链表
+	void DRABuildCallList(int TTI,const std::vector<std::list<sEvent>>& eventList);//建立呼叫链表
 	
 	void DRASelectBasedOnP13(int TTI,std::vector<cVeUE>&v);//基于P1和P3的资源分配
 	void DRASelectBasedOnP23(int TTI,std::vector<cVeUE>&v);//基于P2和P3的资源分配
 	void DRASelectBasedOnP123(int TTI,std::vector<cVeUE>&v);//基于P1、P2和P3的资源分配
 
-	void DRAReaddConflictListToCallList();//将上一个TTI冲突的用户()重新添加到呼叫链表中
+	void DRAReaddConflictListToCallList(int TTI);//将上一个TTI冲突的用户()重新添加到呼叫链表中
 	void DRAWriteScheduleInfo(std::ofstream& out);//写调度信息
 	void DRAConflictListener(int TTI);//帧听冲突
 	void DRAConflictSolve(int TTI);//维护m_DRAScheduleList以及m_DRA_RBIsAvailable

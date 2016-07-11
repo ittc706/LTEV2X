@@ -1,0 +1,152 @@
+
+
+-----------------------VEUE------------------------
+  VeUE Id: 0
+  MessageInfo:
+    byteNum = 200
+    DRA_ONTTI = 2
+
+  VeUE Id: 1
+  MessageInfo:
+    byteNum = 1000
+    DRA_ONTTI = 10
+
+  VeUE Id: 2
+  MessageInfo:
+    byteNum = 300
+    DRA_ONTTI = 3
+
+  VeUE Id: 3
+  MessageInfo:
+    byteNum = 200
+    DRA_ONTTI = 2
+
+  VeUE Id: 4
+  MessageInfo:
+    byteNum = 1000
+    DRA_ONTTI = 10
+
+  VeUE Id: 5
+  MessageInfo:
+    byteNum = 300
+    DRA_ONTTI = 3
+
+  VeUE Id: 6
+  MessageInfo:
+    byteNum = 200
+    DRA_ONTTI = 2
+
+  VeUE Id: 7
+  MessageInfo:
+    byteNum = 1000
+    DRA_ONTTI = 10
+
+  VeUE Id: 8
+  MessageInfo:
+    byteNum = 300
+    DRA_ONTTI = 3
+
+  VeUE Id: 9
+  MessageInfo:
+    byteNum = 200
+    DRA_ONTTI = 2
+
+  VeUE Id: 10
+  MessageInfo:
+    byteNum = 1000
+    DRA_ONTTI = 10
+
+  VeUE Id: 11
+  MessageInfo:
+    byteNum = 300
+    DRA_ONTTI = 3
+
+  VeUE Id: 12
+  MessageInfo:
+    byteNum = 200
+    DRA_ONTTI = 2
+
+  VeUE Id: 13
+  MessageInfo:
+    byteNum = 1000
+    DRA_ONTTI = 10
+
+  VeUE Id: 14
+  MessageInfo:
+    byteNum = 300
+    DRA_ONTTI = 3
+
+  VeUE Id: 15
+  MessageInfo:
+    byteNum = 200
+    DRA_ONTTI = 2
+
+  VeUE Id: 16
+  MessageInfo:
+    byteNum = 1000
+    DRA_ONTTI = 10
+
+  VeUE Id: 17
+  MessageInfo:
+    byteNum = 300
+    DRA_ONTTI = 3
+
+  VeUE Id: 18
+  MessageInfo:
+    byteNum = 200
+    DRA_ONTTI = 2
+
+  VeUE Id: 19
+  MessageInfo:
+    byteNum = 1000
+    DRA_ONTTI = 10
+
+
+
+-----------------------eNB------------------------
+  eNB Id: 0
+      VUE ID: 
+        0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 , 13 , 14 , 15 , 16 , 17 , 18 , 19 , 
+      RSU ID: 
+        0 , 1 , 
+
+
+-----------------------RSU------------------------
+  RSU Id: 0
+      Cluster : 0
+      7 , 
+      Cluster : 1
+      3 , 
+      Cluster : 2
+      8 , 13 , 18 , 19 , 
+      Cluster : 3
+      0 , 14 , 
+  RSU Id: 1
+      Cluster : 0
+      10 , 15 , 16 , 
+      Cluster : 1
+      
+      Cluster : 2
+      1 , 2 , 9 , 11 , 12 , 17 , 
+      Cluster : 3
+      4 , 5 , 6 , 
+TTI: 41
+
+TTI: 42
+    [ VEId: 2 , callSetupTTI: 42 , eMessageType :PEROID ] ,
+TTI: 43
+
+TTI: 44
+
+TTI: 45
+    [ VEId: 15 , callSetupTTI: 45 , eMessageType :PEROID ] ,
+TTI: 46
+    [ VEId: 5 , callSetupTTI: 46 , eMessageType :PEROID ] ,    [ VEId: 11 , callSetupTTI: 46 , eMessageType :PEROID ] ,
+TTI: 47
+
+TTI: 48
+    [ VEId: 1 , callSetupTTI: 48 , eMessageType :PEROID ] ,    [ VEId: 10 , callSetupTTI: 48 , eMessageType :PEROID ] ,
+TTI: 49
+    [ VEId: 8 , callSetupTTI: 49 , eMessageType :PEROID ] ,
+TTI: 50
+
