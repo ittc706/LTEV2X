@@ -1,1766 +1,5950 @@
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 41  ,  Relative TTI: 0-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-      ========================================
-      VEId: 2
-      OccupiedTTI: [41 , 43] , 
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 537 , RTTI: 0
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :17 ,  List: [ 537 , 539 ] , }
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 42  ,  Relative TTI: 1-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-      ========================================
-      VEId: 2
-      OccupiedTTI: [41 , 43] , 
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 538 , RTTI: 1
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :17 ,  List: [ 537 , 539 ] , }
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :0 ,  List: [ 538 , 539 ] , }
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 43  ,  Relative TTI: 2-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-      ========================================
-      VEId: 2
-      OccupiedTTI: [41 , 43] , 
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 539 , RTTI: 2
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :17 ,  List: [ 537 , 539 ] , }
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :0 ,  List: [ 538 , 539 ] , }
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 44  ,  Relative TTI: 3-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 45
-      ========================================
-      VEId: 15
-      OccupiedTTI: [44 , 45] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 540 , RTTI: 3
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 45  ,  Relative TTI: 4-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 45
-      ========================================
-      VEId: 15
-      OccupiedTTI: [44 , 45] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 541 , RTTI: 4
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: 565
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :1 ,  List: [ 541 , 549 ] , [ 565 , 565 ] , }
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 46  ,  Relative TTI: 5-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 45
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 542 , RTTI: 5
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: 565
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :1 ,  List: [ 541 , 549 ] , [ 565 , 565 ] , }
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 47  ,  Relative TTI: 6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 94
-      ========================================
-      VEId: 1
-      OccupiedTTI: [47 , 47] , [67 , 72] , [92 , 94] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 45
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 543 , RTTI: 6
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: 565
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :1 ,  List: [ 541 , 549 ] , [ 565 , 565 ] , }
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 48  ,  Relative TTI: 7-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 69
-      ========================================
-      VEId: 8
-      OccupiedTTI: [48 , 49] , [69 , 69] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 94
-      ========================================
-      VEId: 1
-      OccupiedTTI: [47 , 47] , [67 , 72] , [92 , 94] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 45
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 544 , RTTI: 7
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: 565
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :1 ,  List: [ 541 , 549 ] , [ 565 , 565 ] , }
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 49  ,  Relative TTI: 8-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 69
-      ========================================
-      VEId: 8
-      OccupiedTTI: [48 , 49] , [69 , 69] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 94
-      ========================================
-      VEId: 1
-      OccupiedTTI: [47 , 47] , [67 , 72] , [92 , 94] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 45
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 545 , RTTI: 8
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: 565
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :1 ,  List: [ 541 , 549 ] , [ 565 , 565 ] , }
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: 50  ,  Relative TTI: 9-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 0   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 69
-      ========================================
-      VEId: 8
-      OccupiedTTI: [48 , 49] , [69 , 69] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: 1   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Cluster: 0
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 1
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: 43
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: -1
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 2
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 94
-      ========================================
-      VEId: 1
-      OccupiedTTI: [47 , 47] , [67 , 72] , [92 , 94] , 
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
-  Cluster: 3
-    FB: 0
-      Released TTI: -1
-    FB: 1
-      Released TTI: -1
-    FB: 2
-      Released TTI: -1
-    FB: 3
-      Released TTI: 45
-    FB: 4
-      Released TTI: -1
-    FB: 5
-      Released TTI: -1
-    FB: 6
-      Released TTI: -1
-    FB: 7
-      Released TTI: -1
-    FB: 8
-      Released TTI: -1
-    FB: 9
-      Released TTI: -1
+ATTI: 546 , RTTI: 9
+RSU[0] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: 539
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}
+RSU[1] :
+{
+    Cluster[0] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[1] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: 561
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :10 ,  List: [ 538 , 542 ] , [ 557 , 561 ] , }
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[2] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+    Cluster[3] :
+    {
+        FB[0] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[1] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[2] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[3] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[4] :
+        {
+            Released TTI: 565
+            ScheduleTTLInterval List: 
+                {
+                    { VEId :1 ,  List: [ 541 , 549 ] , [ 565 , 565 ] , }
+                }
+        }
+        FB[5] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[6] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[7] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[8] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+        FB[9] :
+        {
+            Released TTI: -1
+            ScheduleTTLInterval List: 
+                {
+                }
+        }
+    }
+}

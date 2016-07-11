@@ -14,7 +14,7 @@ void cSystem::process() {
 	initialization();
 
 	for (int count = 0;count < m_NTTI;count++) {
-		g_OutDRAScheduleInfo << "\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Absolute TTI: " << m_TTI << "  ,  Relative TTI: " << count << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
+		g_OutDRAScheduleInfo << "\n\nATTI: " << m_TTI << " , RTTI: " << count << endl;
 		DRASchedule();
 		m_TTI++;
 	}

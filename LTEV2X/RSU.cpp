@@ -33,6 +33,17 @@ int cRSU::getMaxIndex(const std::vector<double>&v) {
 
 void cRSU::DRAPerformCluster() {
 	testCluster();
+
+	//-----------------------TEST-----------------------
+	g_OutDRAProcessInfo << "RSU: " << m_RSUId << " 's Cluster VeUE" << endl;
+	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;clusterIdx++) {
+		g_OutDRAProcessInfo << "    Cluster " << clusterIdx << " : { ";
+		for (int VEId : m_DRAClusterVUESet[clusterIdx])
+			g_OutDRAProcessInfo << VEId << " , ";
+		g_OutDRAProcessInfo << "}" << endl;
+	}
+	g_OutDRAProcessInfo << endl;
+	//-----------------------TEST-----------------------
 }
 
 
@@ -97,6 +108,15 @@ void cRSU::DRABuildCallList(int TTI,const std::vector<std::list<sEvent>>&eventLi
 		if (m_DRAClusterVUESet[clusterIdx].count(VEId))
 			m_DRACallList.push_back(VEId);
 	}
+
+
+	//-----------------------TEST-----------------------
+	g_OutDRAProcessInfo << "RSU: " << m_RSUId << " 's Current CallList : { ";
+	for (int VEId:m_DRACallList) 
+		g_OutDRAProcessInfo << VEId<<" , ";
+	g_OutDRAProcessInfo << "}" << endl;
+	g_OutDRAProcessInfo << endl;
+	//-----------------------TEST-----------------------
 }
 
 
@@ -177,24 +197,30 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&v) {
 
 
 void cRSU::DRAWriteScheduleInfo(std::ofstream& out) {
-	out << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   RSU: " << m_RSUId <<"   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>"<< endl;
+	out << "RSU[" << m_RSUId << "] :"<<endl;
+	out << "{" << endl;
 	for (int clusterIdx = 0; clusterIdx < m_DRAClusterNum; clusterIdx++) {
-		out << "  Cluster: " << clusterIdx << endl;
+		out << "    Cluster[" << clusterIdx << "] :" << endl;
+		out << "    {" << endl;
 		for (int FBIdx = 0; FBIdx < gc_DRA_FBNum; FBIdx++) {
-			out << "    FB: " << FBIdx << endl;
-			out << "      Released TTI: " << m_DRA_RBIsAvailable[clusterIdx][FBIdx]<<endl;
+			out << "        FB[" << FBIdx << "] :" << endl;
+			out << "        {" << endl;
+			out << "            Released TTI: " << m_DRA_RBIsAvailable[clusterIdx][FBIdx]<<endl;
 			int cnt = 0;
+			out << "            ScheduleTTLInterval List: " << endl;
+			out << "                {" << endl;
 			for (sDRAScheduleInfo & info : m_DRAScheduleList[clusterIdx][FBIdx]) {
-				if (cnt++ == 0) out << "      ========================================" << endl;
-				else out << "      ----------------------------------------" << endl;
-				out << "      VEId: " << info.VEId << endl;
-				out << "      OccupiedTTI: ";
+				out << "                    { VEId :" << info.VEId << " ,  List: ";
 				for (tuple<int, int> t : info.occupiedInterval)
-					out << "[" << get<0>(t) << " , " << get<1>(t) << "] , ";
-				out << endl;
+					out << "[ " << get<0>(t) << " , " << get<1>(t) << " ] , ";
+				out << "}"<<endl;
 			}
+			out << "                }" << endl;
+			out << "        }" << endl;
 		}
+		out << "    }" << endl;
 	}
+	out <<"}" << endl;
 }
 
 
@@ -225,6 +251,14 @@ void cRSU::DRAConflictListener(int TTI) {
 
 	/*处理冲突，维护m_DRA_RBIsAvailable以及m_DRAScheduleList*/
 	DRAConflictSolve(TTI);
+
+	//-----------------------TEST-----------------------
+	g_OutDRAProcessInfo << "RSU: " << m_RSUId << " 's Current AccumulateConflictList : { ";
+	for (const tuple<int,int,int> &t : m_DRAConflictSet)
+		g_OutDRAProcessInfo <<" [ "<<get<0>(t)<<" , "<<get<1>(t)<<" , "<<get<2>(t) << " ] , ";
+	g_OutDRAProcessInfo << "}" << endl;
+	g_OutDRAProcessInfo << endl;
+	//-----------------------TEST-----------------------
 }
 
 

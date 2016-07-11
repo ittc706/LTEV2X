@@ -46,7 +46,7 @@ void cSystem::scheduleInfoClean() {
 
 void cSystem::schedulePF_RP_CSI_UL() {
 	for (ceNB &_eNB : m_VeceNB) {//对每一个基站进行一次调度
-		int k = _eNB.m_VecRSU.size();
+		int k = _eNB.m_RSUSet.size();
 		vector<vector<bool>> SPU(k, vector<bool>(gc_RBNum));//每个RSU用一个vector<bool>来管理其SPU，true代表已选如该子带
 		vector<int> S;//未分配的子带集合(存储子带的ID）
 		
@@ -57,7 +57,7 @@ void cSystem::schedulePF_RP_CSI_UL() {
 
 		//计算每个RSU对应不同子带的PF因子
 		vector<sPFInfo> F;//存储PF因子的容器
-		for (int RSUId : _eNB.m_VecRSU) {
+		for (int RSUId : _eNB.m_RSUSet) {
 			for (int subbandId = 0; subbandId < gc_RBNum; subbandId++) {
 				if (_eNB.m_UnassignedSubband[subbandId] == false) continue;//该子带已被分配
 				double t_FactorPF= log10(1 + m_VecRSU[RSUId].m_SINR[subbandId]) / m_VecRSU[RSUId].m_AccumulateThroughput;
@@ -166,37 +166,12 @@ void cSystem::DRAInformationClean() {
 void cSystem::DRAPerformCluster() {
 	for (cRSU& _RSU : m_VecRSU)
 		_RSU.DRAPerformCluster();
-
-	//-----------------------TEST-----------------------
-
-	for (cRSU& _RSU : m_VecRSU) {
-		g_OutDRAProcessInfo << "RSU: " << _RSU.m_RSUId << " 's Cluster  :" << endl;
-		for (const set<int>& s : _RSU.m_DRAClusterVUESet) {
-			g_OutDRAProcessInfo << "    :";
-			for (int VEId : s)
-				g_OutDRAProcessInfo << VEId << " , ";
-			g_OutDRAProcessInfo << endl;
-		}
-		g_OutDRAProcessInfo << endl;
-	}
-	//-----------------------TEST-----------------------
 }
 
 
 void cSystem::DRABuildCallList() {
 	for (cRSU &_RSU : m_VecRSU)
 		_RSU.DRABuildCallList(m_TTI,m_EventList);
-
-	//-----------------------TEST-----------------------
-	for (cRSU& _RSU : m_VecRSU) {
-		g_OutDRAProcessInfo << "RSU: " << _RSU.m_RSUId << " 's CurrentCallList  :" << endl;
-		g_OutDRAProcessInfo << "    :";
-		for (int VEId : _RSU.m_DRACallList) {
-			g_OutDRAProcessInfo << VEId << " , ";
-		}
-		g_OutDRAProcessInfo << endl;
-	}
-	//-----------------------TEST-----------------------
 }
 
 
@@ -228,16 +203,4 @@ void cSystem::DRAConflictListener() {
 	for (cRSU &_RSU : m_VecRSU) {
 		_RSU.DRAConflictListener(m_TTI);
 	}
-
-
-	//-----------------------TEST-----------------------
-
-	for (cRSU& _RSU : m_VecRSU) {
-		g_OutDRAProcessInfo << "RSU: " << _RSU.m_RSUId << " 's DRAConflictList  : ";
-		for (const tuple<int,int,int> &t : _RSU.m_DRAConflictSet) {
-			g_OutDRAProcessInfo << "[ " << get<0>(t) << " , " << get<1>(t) << " , " << get<2>(t) << " ]  ,";
-		}
-		g_OutDRAProcessInfo << endl;
-	}
-	//-----------------------TEST-----------------------
 }

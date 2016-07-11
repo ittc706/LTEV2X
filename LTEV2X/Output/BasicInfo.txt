@@ -114,39 +114,39 @@
 -----------------------RSU------------------------
   RSU Id: 0
       Cluster : 0
-      7 , 
+      0 , 5 , 12 , 
       Cluster : 1
-      3 , 
+      4 , 7 , 11 , 15 , 
       Cluster : 2
-      8 , 13 , 18 , 19 , 
+      6 , 9 , 16 , 
       Cluster : 3
-      0 , 14 , 
+      8 , 17 , 18 , 
   RSU Id: 1
       Cluster : 0
-      10 , 15 , 16 , 
+      1 , 14 , 19 , 
       Cluster : 1
       
       Cluster : 2
-      1 , 2 , 9 , 11 , 12 , 17 , 
+      2 , 3 , 10 , 13 , 
       Cluster : 3
-      4 , 5 , 6 , 
-TTI: 41
+      
+TTI: 537
+    [ VEId: 18 , callSetupTTI: 537 , eMessageType :PEROID ] ,
+TTI: 538
+    [ VEId: 1 , callSetupTTI: 538 , eMessageType :PEROID ] ,
+TTI: 539
 
-TTI: 42
-    [ VEId: 2 , callSetupTTI: 42 , eMessageType :PEROID ] ,
-TTI: 43
+TTI: 540
 
-TTI: 44
+TTI: 541
 
-TTI: 45
-    [ VEId: 15 , callSetupTTI: 45 , eMessageType :PEROID ] ,
-TTI: 46
-    [ VEId: 5 , callSetupTTI: 46 , eMessageType :PEROID ] ,    [ VEId: 11 , callSetupTTI: 46 , eMessageType :PEROID ] ,
-TTI: 47
+TTI: 542
+    [ VEId: 5 , callSetupTTI: 542 , eMessageType :PEROID ] ,    [ VEId: 6 , callSetupTTI: 542 , eMessageType :PEROID ] ,    [ VEId: 9 , callSetupTTI: 542 , eMessageType :PEROID ] ,
+TTI: 543
 
-TTI: 48
-    [ VEId: 1 , callSetupTTI: 48 , eMessageType :PEROID ] ,    [ VEId: 10 , callSetupTTI: 48 , eMessageType :PEROID ] ,
-TTI: 49
-    [ VEId: 8 , callSetupTTI: 49 , eMessageType :PEROID ] ,
-TTI: 50
+TTI: 544
+    [ VEId: 17 , callSetupTTI: 544 , eMessageType :PEROID ] ,
+TTI: 545
+    [ VEId: 0 , callSetupTTI: 545 , eMessageType :PEROID ] ,    [ VEId: 10 , callSetupTTI: 545 , eMessageType :PEROID ] ,
+TTI: 546
 

@@ -12,9 +12,6 @@
 
 using namespace std;
 
-int TestVUENum = 20;
-int TestRSUNum = 2;
-int TesteNBNum = 1;
 
 
 vector<int> Function::getVector(int size){
@@ -89,26 +86,33 @@ void cSystem::initialization() {
 	srand((unsigned)time(NULL));//iomanip
 	m_STTI = abs(rand() % 1000);
 	m_TTI = m_STTI;
-	m_VeceNB = vector<ceNB>(TesteNBNum);
-	m_VecVUE = vector<cVeUE>(TestVUENum);
-	m_VecRSU = vector<cRSU>(TestRSUNum);
+	m_VeceNB = vector<ceNB>(m_Config.eNBNum);
+	m_VecRSU = vector<cRSU>(m_Config.RSUNum);
+	m_VecVUE = vector<cVeUE>(m_Config.VUENum);
 	m_EventList = vector<list<sEvent>>(m_NTTI);
 
-	/*填充基站包含的RSU以及VE*/
-	m_VeceNB[0].m_VecRSU = Function::makeEqualInterverSequence(0, 1, TestRSUNum);
-	m_VeceNB[0].m_VecVUE = Function::makeEqualInterverSequence(0, 1, TestVUENum);
 
 	/*随机将车辆分配给RSU*/
-	for (int VEId = 0;VEId < TestVUENum;VEId++)
-		m_VecRSU[rand() % TestRSUNum].m_VUESet.insert(VEId);
+	for (int VEId = 0;VEId < m_Config.VUENum;VEId++)
+		m_VecRSU[rand() % m_Config.RSUNum].m_VUESet.insert(VEId);
 
+
+	/*随机将RSU分给基站*/
+	for (int RSUId = 0;RSUId < m_Config.RSUNum;RSUId++) {
+		int eNBId = rand() % m_Config.eNBNum;
+		m_VeceNB[eNBId].m_RSUSet.insert(RSUId);
+		m_VeceNB[eNBId].m_VUESet.insert(m_VecRSU[RSUId].m_VUESet.begin(), m_VecRSU[RSUId].m_VUESet.end());
+	}
+
+	
+	
 	m_DRAMode = P123;
 
 
 	/*生成事件链表*/
 	
 	/*首先给每辆车填充PERIOD事件*/
-	for (int VEId = 0;VEId < TestVUENum;VEId++) {
+	for (int VEId = 0;VEId < m_Config.VUENum;VEId++) {
 		int curRelativeTTI = rand() % m_Config.periodicEventNTTI;//车辆周期性事件起始的相对TTI
 		while (curRelativeTTI < m_NTTI) {
 			int curAbsoluteTTI = curRelativeTTI + m_STTI;//绝对TTI时刻
@@ -156,12 +160,12 @@ void ceNB::print() {
 	g_OutBasicInfo << "  eNB Id: " <<m_eNBId<< endl;
 	g_OutBasicInfo << "      VUE ID: " << endl;
 	g_OutBasicInfo << "        ";
-	for (int Id : m_VecVUE)
+	for (int Id : m_VUESet)
 		g_OutBasicInfo << Id << " , ";
 	g_OutBasicInfo << endl;
 	g_OutBasicInfo << "      RSU ID: " << endl;
 	g_OutBasicInfo << "        ";
-	for (int Id : m_VecRSU)
+	for (int Id : m_RSUSet)
 		g_OutBasicInfo << Id << " , ";
 	g_OutBasicInfo << endl;
 }

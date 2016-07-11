@@ -52,5 +52,7 @@ int main() {
 	g_OutDRAScheduleInfo.close();
 	g_OutDRAProcessInfo.close();
 	g_OutBasicInfo.close();
+
+
 	system("pause");
 }
