@@ -1,3 +1,9 @@
+version_2016_7_11(更改了呼叫链表的更新方式)
+	*进一步更新格式化输出
+	*尚未处理的问题：可选资源块为0的时候会抛出异常
+
+
+
 version_2016_7_10(格式化输出)
 	*System级别的输出放在System.cpp中
 	*定义了几个类型的toString方法，用到了ostringstream (在头文件sstream中)

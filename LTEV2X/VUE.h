@@ -14,7 +14,8 @@ public:
 	//-----------------------TEST-----------------------
 public:
 	int m_VEId;//用户ID
-
+	int m_RSUId;//所在的RSU的Id
+	int m_ClusterIdx;//所在簇de编号
 	sMessage m_Message;//消息
 
 	/***************************************************************
@@ -34,5 +35,5 @@ public:
 	int RBSelectBasedOnP2(const std::vector<int> &v);
 
 
-	std::string toString();//用于打印车辆信息
+	std::string toString();//用于打印VeUE信息
 };

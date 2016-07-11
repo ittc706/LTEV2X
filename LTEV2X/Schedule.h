@@ -52,13 +52,13 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 
 
 struct sDRAScheduleInfo {
-	int VEId;//车辆ID
+	int VeUEId;//VeUEID
 	int FBIdx;//频域块编号
-	std::vector<std::tuple<int, int>> occupiedInterval;//当前车辆进行传输的实际TTI区间（闭区间）
+	std::vector<std::tuple<int, int>> occupiedInterval;//当前VeUE进行传输的实际TTI区间（闭区间）
 
 	sDRAScheduleInfo() {}
-	sDRAScheduleInfo(int TTI,int VEId,int FBIdx, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
-		this->VEId = VEId;
+	sDRAScheduleInfo(int TTI,int VeUEId,int FBIdx, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
+		this->VeUEId = VeUEId;
 		this->FBIdx = FBIdx;
 		int begin = std::get<0>(ClasterTTI),
 			end = std::get<1>(ClasterTTI),

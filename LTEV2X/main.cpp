@@ -1,7 +1,6 @@
 #include<iostream>
 #include<fstream>
 #include<iomanip>
-#include<set>
 #include"Enumeration.h"
 #include"Numerical.h"
 #include"Schedule.h"

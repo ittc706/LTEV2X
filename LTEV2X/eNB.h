@@ -1,7 +1,6 @@
 #pragma once
 #include<vector>
 #include<string>
-#include<set>
 #include"RSU.h"
 
 class ceNB {
@@ -13,8 +12,8 @@ public:
 public:
 	int m_eNBId;//基站ID
 
-	std::set<int> m_RSUSet;//该基站中的RSU容器（存储RSU的ID）
-	std::set<int> m_VUESet;//该基站中的VE容器（存储VE的ID）
+	std::list<int> m_RSUIdList;//该基站中的RSU容器（存储RSU的ID）
+	std::list<int> m_VeUEList;//该基站中的VeUE容器（存储VeUE的ID）
 
 	/***************************************************************
 	------------------------调度模块--------------------------------

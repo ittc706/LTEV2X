@@ -6,7 +6,7 @@ struct sConfig {//系统仿真参数
 
 	int locationUpdateNTTI = 50;
 
-	int VUENum = 20;
+	int VUENum = 40;
 	int RSUNum = 2;
 	int eNBNum = 1;
 };

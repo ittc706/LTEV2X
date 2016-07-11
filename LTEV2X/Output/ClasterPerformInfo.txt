@@ -1,39 +1,348 @@
-ATTI = 132   RTTI = 0     
+ATTI = 0     RTTI = 0     
 {
     VUE Info: 
     {
-        { VeUE Id = 0     , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
-        { VeUE Id = 1     , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
-        { VeUE Id = 2     , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
-        { VeUE Id = 3     , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
-        { VeUE Id = 4     , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
-        { VeUE Id = 5     , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
-        { VeUE Id = 6     , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
-        { VeUE Id = 7     , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
-        { VeUE Id = 8     , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
-        { VeUE Id = 9     , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
-        { VeUE Id = 10    , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
-        { VeUE Id = 11    , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
-        { VeUE Id = 12    , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
-        { VeUE Id = 13    , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
-        { VeUE Id = 14    , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
-        { VeUE Id = 15    , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
-        { VeUE Id = 16    , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
-        { VeUE Id = 17    , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
-        { VeUE Id = 18    , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
-        { VeUE Id = 19    , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 0     , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 1     , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 2     , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 3     , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 4     , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 5     , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 6     , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 7     , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 8     , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 9     , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 10    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 11    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 12    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 13    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 14    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 15    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 16    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 17    , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 18    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 19    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 20    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 21    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 22    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 23    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 24    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 25    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 26    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 27    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 28    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 29    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 30    , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 31    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 32    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 33    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 34    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 35    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 36    , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 37    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 38    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 39    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
     }
 
 
 
     eNB Info: 
     {
-        { eNB Id = 0     , VEIdList = [ 0     , 1     , 2     , 3     , 4     , 5     , 6     , 7     , 8     , 9     , 10    , 11    , 12    , 13    , 14    , 15    , 16    , 17    , 18    , 19    ,  ] , RSUIdList = [ 0     , 1     ,  ] }
+        { eNB Id = 0     , VEIdList = [ 0     , 1     , 4     , 6     , 7     , 8     , 9     , 13    , 17    , 18    , 19    , 20    , 23    , 27    , 30    , 33    , 34    , 35    , 36    , 2     , 3     , 5     , 10    , 11    , 12    , 14    , 15    , 16    , 21    , 22    , 24    , 25    , 26    , 28    , 29    , 31    , 32    , 37    , 38    , 39    ,  ] , RSUIdList = [ 0     , 1     ,  ] }
     }
     RSU Info: 
     {
-        { RSU Id = 0 , VEIdList = [ 1     , 2     , 3     , 4     , 6     , 7     , 10    , 11    , 12    , 13    , 16    , 17    ,  ] }
-        { RSU Id = 1 , VEIdList = [ 0     , 5     , 8     , 9     , 14    , 15    , 18    , 19    ,  ] }
+        {
+            RSU Id = 0
+            VEIdList = 
+            { 
+                [ 1    , 13   , 18   , 19   , 20   , 33   , 35   ,                 ]
+                [ 0    , 4    , 6    , 23   , 27   ,                 ]
+                [ 8    , 9    , 17   , 30   , 36   ,                 ]
+                [ 7    , 34   ,                 ]
+            }
+            clusterInfo = { [ 0 , 8 ] , [ 9 , 15 ] , [ 16 , 21 ] , [ 22 , 24 ] , }
+        }
+
+        {
+            RSU Id = 1
+            VEIdList = 
+            { 
+                [ 12   , 14   , 26   , 39   ,                 ]
+                [ 2    , 3    , 5    , 10   , 16   , 24   , 29   ,                 ]
+                [ 11   , 15   , 21   , 22   ,                 ]
+                [ 25   , 28   , 31   , 32   , 37   , 38   ,                 ]
+            }
+            clusterInfo = { [ 0 , 4 ] , [ 5 , 12 ] , [ 13 , 17 ] , [ 18 , 24 ] , }
+        }
+
+    }
+
+
+
+    RSUSwitchList Info: 
+    {
+        [ ] 
+    }
+}
+
+
+ATTI = 50    RTTI = 50    
+{
+    VUE Info: 
+    {
+        { VeUE Id = 0     , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 1     , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 2     , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 3     , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 4     , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 5     , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 6     , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 7     , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 8     , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 9     , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 10    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 11    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 12    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 13    , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 14    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 15    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 16    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 17    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 18    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 19    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 20    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 21    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 22    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 23    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 24    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 25    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 26    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 27    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 28    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 29    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 30    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 31    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 32    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 33    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 34    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 35    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 36    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 37    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 38    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 39    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+    }
+
+
+
+    eNB Info: 
+    {
+        { eNB Id = 0     , VEIdList = [ 0     , 1     , 2     , 3     , 6     , 7     , 9     , 12    , 13    , 14    , 15    , 16    , 17    , 18    , 20    , 21    , 22    , 24    , 26    , 29    , 32    , 33    , 34    , 36    , 39    , 4     , 5     , 8     , 10    , 11    , 19    , 23    , 25    , 27    , 28    , 30    , 31    , 35    , 37    , 38    ,  ] , RSUIdList = [ 0     , 1     ,  ] }
+    }
+    RSU Info: 
+    {
+        {
+            RSU Id = 0
+            VEIdList = 
+            { 
+                [ 2    , 3    , 7    , 14   , 26   , 39   ,                 ]
+                [ 6    , 9    , 12   , 15   , 24   ,                 ]
+                [ 13   ,                 ]
+                [ 0    , 1    , 16   , 17   , 18   , 20   , 21   , 22   , 29   , 32   , 33   , 34   , 36   ,                 ]
+            }
+            clusterInfo = { [ 0 , 5 ] , [ 6 , 10 ] , [ 11 , 11 ] , [ 12 , 24 ] , }
+        }
+
+        {
+            RSU Id = 1
+            VEIdList = 
+            { 
+                [ 4    , 8    , 23   , 27   , 28   , 31   ,                 ]
+                [ 5    , 11   , 19   , 25   , 30   ,                 ]
+                [ 38   ,                 ]
+                [ 10   , 35   , 37   ,                 ]
+            }
+            clusterInfo = { [ 0 , 9 ] , [ 10 , 17 ] , [ 18 , 19 ] , [ 20 , 24 ] , }
+        }
+
+    }
+
+
+
+    RSUSwitchList Info: 
+    {
+        [ ] 
+    }
+}
+
+
+ATTI = 100   RTTI = 100   
+{
+    VUE Info: 
+    {
+        { VeUE Id = 0     , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 1     , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 2     , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 3     , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 4     , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 5     , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 6     , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 7     , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 8     , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 9     , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 10    , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 11    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 12    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 13    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 14    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 15    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 16    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 17    , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 18    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 19    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 20    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 21    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 22    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 23    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 24    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 25    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 26    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 27    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 28    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 29    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 30    , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 31    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 32    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 33    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 34    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 35    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 36    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 37    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 38    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 39    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+    }
+
+
+
+    eNB Info: 
+    {
+        { eNB Id = 0     , VEIdList = [ 0     , 2     , 4     , 6     , 10    , 12    , 14    , 15    , 16    , 17    , 19    , 24    , 26    , 27    , 29    , 30    , 31    , 33    , 34    , 36    , 37    , 38    , 39    , 1     , 3     , 5     , 7     , 8     , 9     , 11    , 13    , 18    , 20    , 21    , 22    , 23    , 25    , 28    , 32    , 35    ,  ] , RSUIdList = [ 0     , 1     ,  ] }
+    }
+    RSU Info: 
+    {
+        {
+            RSU Id = 0
+            VEIdList = 
+            { 
+                [ 0    , 15   , 16   , 26   , 31   , 34   , 36   , 37   , 38   ,                 ]
+                [ 12   , 14   , 24   , 27   , 39   ,                 ]
+                [ 2    , 6    , 10   , 17   , 30   ,                 ]
+                [ 4    , 19   , 29   , 33   ,                 ]
+            }
+            clusterInfo = { [ 0 , 9 ] , [ 10 , 15 ] , [ 16 , 20 ] , [ 21 , 24 ] , }
+        }
+
+        {
+            RSU Id = 1
+            VEIdList = 
+            { 
+                [ 21   ,                 ]
+                [ 7    , 8    , 11   , 18   , 32   ,                 ]
+                [ 9    , 13   , 23   , 25   , 28   , 35   ,                 ]
+                [ 1    , 3    , 5    , 20   , 22   ,                 ]
+            }
+            clusterInfo = { [ 0 , 1 ] , [ 2 , 8 ] , [ 9 , 17 ] , [ 18 , 24 ] , }
+        }
+
+    }
+
+
+
+    RSUSwitchList Info: 
+    {
+        [ ] 
+    }
+}
+
+
+ATTI = 150   RTTI = 150   
+{
+    VUE Info: 
+    {
+        { VeUE Id = 0     , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 1     , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 2     , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 3     , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 4     , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 5     , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 6     , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 7     , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 8     , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 9     , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 10    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 11    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 12    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 13    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 14    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 15    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 16    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 17    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 18    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 19    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 20    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 21    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 22    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 23    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 24    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 25    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 26    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 27    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 28    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 29    , RSU Id = 1     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 30    , RSU Id = 1     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 31    , RSU Id = 0     , Cluster Idx = 0    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 32    , RSU Id = 1     , Cluster Idx = 0    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 33    , RSU Id = 0     , Cluster Idx = 1    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 34    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 35    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 36    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 37    , RSU Id = 0     , Cluster Idx = 3    [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 38    , RSU Id = 0     , Cluster Idx = 2    [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 39    , RSU Id = 1     , Cluster Idx = 2    [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+    }
+
+
+
+    eNB Info: 
+    {
+        { eNB Id = 0     , VEIdList = [ 2     , 3     , 6     , 12    , 13    , 15    , 16    , 18    , 20    , 23    , 24    , 25    , 27    , 31    , 33    , 35    , 36    , 37    , 38    , 0     , 1     , 4     , 5     , 7     , 8     , 9     , 10    , 11    , 14    , 17    , 19    , 21    , 22    , 26    , 28    , 29    , 30    , 32    , 34    , 39    ,  ] , RSUIdList = [ 0     , 1     ,  ] }
+    }
+    RSU Info: 
+    {
+        {
+            RSU Id = 0
+            VEIdList = 
+            { 
+                [ 12   , 18   , 23   , 24   , 25   , 31   ,                 ]
+                [ 2    , 3    , 13   , 16   , 20   , 27   , 33   ,                 ]
+                [ 38   ,                 ]
+                [ 6    , 15   , 35   , 36   , 37   ,                 ]
+            }
+            clusterInfo = { [ 0 , 7 ] , [ 8 , 16 ] , [ 17 , 17 ] , [ 18 , 24 ] , }
+        }
+
+        {
+            RSU Id = 1
+            VEIdList = 
+            { 
+                [ 1    , 4    , 32   ,                 ]
+                [ 7    , 17   , 22   , 30   ,                 ]
+                [ 0    , 34   , 39   ,                 ]
+                [ 5    , 8    , 9    , 10   , 11   , 14   , 19   , 21   , 26   , 28   , 29   ,                 ]
+            }
+            clusterInfo = { [ 0 , 3 ] , [ 4 , 8 ] , [ 9 , 11 ] , [ 12 , 24 ] , }
+        }
+
     }
 
 
