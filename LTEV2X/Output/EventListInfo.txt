@@ -1,0 +1,58 @@
+ATTI = 132   RTTI = 0     
+{
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+    [ VEId = 3    callSetupTTI = 133     eMessageType = PEROID       ] 
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+    [ VEId = 6    callSetupTTI = 135     eMessageType = PEROID       ] 
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+    [ VEId = 0    callSetupTTI = 138     eMessageType = PEROID       ] 
+    [ VEId = 12   callSetupTTI = 138     eMessageType = PEROID       ] 
+    [ VEId = 15   callSetupTTI = 138     eMessageType = PEROID       ] 
+    [ VEId = 18   callSetupTTI = 138     eMessageType = PEROID       ] 
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+    [ VEId = 11   callSetupTTI = 139     eMessageType = PEROID       ] 
+    [ VEId = 17   callSetupTTI = 139     eMessageType = PEROID       ] 
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+}
+
+
+ATTI = 132   RTTI = 0     
+{
+}
+
+

@@ -125,12 +125,21 @@ void cSystem::exchange(std::vector<sPFInfo>& v, int i, int j) {
 
 
 void cSystem::DRASchedule() {
+	//-----------------------TEST-----------------------
+	g_OutDRAScheduleInfo << "ATTI = " << left << setw(6) << m_TTI << "RTTI = " << left << setw(6) << m_TTI - m_STTI << endl;
+	g_OutDRAScheduleInfo << "{" << endl;
+	g_OutDRAProcessInfo << "ATTI = " << left << setw(6) << m_TTI << "RTTI = " << left << setw(6) << m_TTI - m_STTI << endl;
+	g_OutDRAProcessInfo << "{" << endl;
+	//-----------------------TEST-----------------------
+
+
+	bool clusterFlag = (m_TTI - m_STTI) % m_Config.locationUpdateNTTI == 0;
 
 	/*资源分配信息清空:包括每个RSU内的m_CallList等*/
 	DRAInformationClean();
 
 	/*根据地理位置进行分簇*/
-	DRAPerformCluster();
+	DRAPerformCluster(clusterFlag);
 
 	/*根据簇大小进行时域资源的划分*/
 	DRAGroupSizeBasedTDM();
@@ -154,6 +163,12 @@ void cSystem::DRASchedule() {
 	/*帧听冲突*/
 	DRAConflictListener();
 
+	//-----------------------TEST-----------------------
+	g_OutDRAScheduleInfo << "}" << endl;
+	g_OutDRAScheduleInfo << "\n\n" << endl;
+	g_OutDRAProcessInfo << "}" << endl;
+	g_OutDRAProcessInfo << "\n\n" << endl;
+	//-----------------------TEST-----------------------
 }
 
 
@@ -163,9 +178,46 @@ void cSystem::DRAInformationClean() {
 }
 
 
-void cSystem::DRAPerformCluster() {
-	for (cRSU& _RSU : m_VecRSU)
-		_RSU.DRAPerformCluster();
+void cSystem::DRAPerformCluster(bool clusterFlag) {
+	if (!clusterFlag)return;
+
+	/*清除上一次的分簇信息*/
+	for (ceNB &_eNB : m_VeceNB) {
+		_eNB.m_VUESet.clear();
+	}
+	for (cRSU &_RSU : m_VecRSU) {
+		_RSU.m_VUESet.clear();
+	}
+
+
+	/*随机将车辆分配给RSU*/
+	for (int VEId = 0;VEId < m_Config.VUENum;VEId++) {
+		int RSUId = rand() % m_Config.RSUNum;
+		m_VecRSU[RSUId].m_VUESet.insert(VEId);
+	}
+
+	/*将RSU内的VE随机分给簇*/
+	for (cRSU &_RSU : m_VecRSU) {
+		//首先清除上次分簇的集合
+		for (int clusterIdx = 0;clusterIdx < _RSU.m_DRAClusterNum;clusterIdx++)
+			_RSU.m_DRAClusterVUESet[clusterIdx].clear();
+		//将现在RSU内的车辆随机分入不同的簇
+		for (int VEId : _RSU.m_VUESet) {
+			int clusterIdx = rand() % _RSU.m_DRAClusterNum;
+			_RSU.m_DRAClusterVUESet[clusterIdx].insert(VEId);
+		}
+	}
+
+	//更新基站的VE容器
+	for (ceNB &_eNB:m_VeceNB) {
+		for (int RSUId : _eNB.m_RSUSet) {
+			for (int VEId : m_VecRSU[RSUId].m_VUESet) {
+				_eNB.m_VUESet.insert(VEId);
+			}
+		}
+	}
+
+	writeClusterPerformInfo(g_OutClasterPerformInfo);
 }
 
 

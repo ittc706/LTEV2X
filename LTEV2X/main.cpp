@@ -46,13 +46,12 @@ int main() {
 	
 	cSystem _system;
 	_system.process();
-	_system.print();
 
 
 	g_OutDRAScheduleInfo.close();
 	g_OutDRAProcessInfo.close();
-	g_OutBasicInfo.close();
-
+	g_OutClasterPerformInfo.close();
+	g_OutEventListInfo.close();
 
 	system("pause");
 }

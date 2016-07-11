@@ -15,8 +15,7 @@ class cRSU {
 public:
 	static int count;
 	cRSU();
-	void print();
-	void testCluster();
+	
 	//-----------------------TEST-----------------------
 public:
 
@@ -98,7 +97,6 @@ public:
 	/*--------------------接口函数--------------------*/
 	int DRAGetClusterIdx(int TTI);//根据此刻的TTI返回当前可以进行资源分配的簇的编号
 	void DRAInformationClean();//资源分配信息清空
-	void DRAPerformCluster();//进行分簇
 	void DRAGroupSizeBasedTDM();//基于簇大小的时分复用
 	void DRABuildCallList(int TTI,const std::vector<std::list<sEvent>>& eventList);//建立呼叫链表
 	
@@ -110,6 +108,8 @@ public:
 	void DRAWriteScheduleInfo(std::ofstream& out);//写调度信息
 	void DRAConflictListener(int TTI);//帧听冲突
 	void DRAConflictSolve(int TTI);//维护m_DRAScheduleList以及m_DRA_RBIsAvailable
+
+	std::string toString();
 	/*--------------------辅助函数--------------------*/
 private:
 	int getMaxIndex(const std::vector<double>&v);

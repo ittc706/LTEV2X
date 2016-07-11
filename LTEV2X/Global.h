@@ -8,7 +8,9 @@
 * ==========================================*/
 extern std::ofstream g_OutDRAScheduleInfo;
 extern std::ofstream g_OutDRAProcessInfo;
-extern std::ofstream g_OutBasicInfo;
+extern std::ofstream g_OutClasterPerformInfo;
+extern std::ofstream g_OutEventListInfo;
+
 
 /*===========================================
 *               常量定义

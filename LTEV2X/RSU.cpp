@@ -31,27 +31,35 @@ int cRSU::getMaxIndex(const std::vector<double>&v) {
 }
 
 
-void cRSU::DRAPerformCluster() {
-	testCluster();
-
-	//-----------------------TEST-----------------------
-	g_OutDRAProcessInfo << "RSU: " << m_RSUId << " 's Cluster VeUE" << endl;
-	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;clusterIdx++) {
-		g_OutDRAProcessInfo << "    Cluster " << clusterIdx << " : { ";
-		for (int VEId : m_DRAClusterVUESet[clusterIdx])
-			g_OutDRAProcessInfo << VEId << " , ";
-		g_OutDRAProcessInfo << "}" << endl;
-	}
-	g_OutDRAProcessInfo << endl;
-	//-----------------------TEST-----------------------
-}
+//void cRSU::DRAPerformCluster(std::set<int>& DRA_RSUSwitchSet) {
+//	testCluster();
+//
+//
+//	/*处理System级的RSU切换重传，将其插入该RSU的冲突链表中*/
+//	set<int> copySet = DRA_RSUSwitchSet;
+//	for (int VEId : copySet) {
+//		if (m_VUESet.count(VEId) == 1) {//该链表中的VE在当前RSU中
+//			DRA_RSUSwitchSet.erase(VEId);
+//			//VEId在添加到DRA_RSUSwitchSet集合中之前，已经将他占用的资源释放了，传入-1即可
+//			m_DRAConflictSet.insert(tuple<int,int,int>(VEId,-1,-1));
+//		}
+//	}
+//
+//	//-----------------------TEST-----------------------
+//	g_OutDRAProcessInfo << "RSU: " << m_RSUId << " 's Cluster VeUE" << endl;
+//	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;clusterIdx++) {
+//		g_OutDRAProcessInfo << "    Cluster " << clusterIdx << " : { ";
+//		for (int VEId : m_DRAClusterVUESet[clusterIdx])
+//			g_OutDRAProcessInfo << VEId << " , ";
+//		g_OutDRAProcessInfo << "}" << endl;
+//	}
+//	g_OutDRAProcessInfo << endl;
+//	//-----------------------TEST-----------------------
+//}
 
 
 void cRSU::DRAInformationClean() {
 	m_DRACallList.clear();
-	for (int clusterIdx = 0; clusterIdx < m_DRAClusterNum; clusterIdx++) {
-		m_DRAClusterVUESet[clusterIdx].clear();
-	}
 }
 
 
@@ -96,32 +104,31 @@ void cRSU::DRAGroupSizeBasedTDM() {
 
 
 void cRSU::DRABuildCallList(int TTI,const std::vector<std::list<sEvent>>&eventList) {
-	/*首先添加上个TTI的冲突*/
-	/*-----------------------WARN-----------------------
-	* 这里即没有考虑上个TTI与当前TTI是否属于同一个簇
-	*-----------------------WARN-----------------------*/
+
+	/*首先添加RSU级别的冲突链表中可用在当前传输的VEId*/
 	DRAReaddConflictListToCallList(TTI);
 	
 	for (const sEvent& event : eventList[TTI%eventList.size()]) {
 		int VEId = event.VEId;
-		int clusterIdx = DRAGetClusterIdx(TTI);
-		if (m_DRAClusterVUESet[clusterIdx].count(VEId))
+		int clusterIdx = DRAGetClusterIdx(TTI);//当前可传输数据的簇编号
+		if (m_DRAClusterVUESet[clusterIdx].count(VEId))//当前时刻事件链表中的VE恰好位于该RSU的该簇内，添加到当前呼叫链表
 			m_DRACallList.push_back(VEId);
 	}
 
 
 	//-----------------------TEST-----------------------
-	g_OutDRAProcessInfo << "RSU: " << m_RSUId << " 's Current CallList : { ";
+	g_OutDRAProcessInfo << "    RSU[" << m_RSUId << "] 's CurrentCallList : { ";
 	for (int VEId:m_DRACallList) 
 		g_OutDRAProcessInfo << VEId<<" , ";
 	g_OutDRAProcessInfo << "}" << endl;
-	g_OutDRAProcessInfo << endl;
 	//-----------------------TEST-----------------------
 }
 
 
 void cRSU::DRAReaddConflictListToCallList(int TTI) {
 	int clusterIdx = DRAGetClusterIdx(TTI);
+
+	/*处理该RSU级别下的冲突链表的重传*/
 	set<tuple<int,int,int>> copyConflictSet = m_DRAConflictSet;//在迭代过程中会进行删除，因此需要拷贝一份，并以此来循环
 	for (const tuple<int, int, int > &t : copyConflictSet) {
 		int VEId = get<0>(t);
@@ -197,30 +204,30 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&v) {
 
 
 void cRSU::DRAWriteScheduleInfo(std::ofstream& out) {
-	out << "RSU[" << m_RSUId << "] :"<<endl;
-	out << "{" << endl;
+	out << "    RSU[" << m_RSUId << "] :"<<endl;
+	out << "    {" << endl;
 	for (int clusterIdx = 0; clusterIdx < m_DRAClusterNum; clusterIdx++) {
-		out << "    Cluster[" << clusterIdx << "] :" << endl;
-		out << "    {" << endl;
+		out << "        Cluster[" << clusterIdx << "] :" << endl;
+		out << "        {" << endl;
 		for (int FBIdx = 0; FBIdx < gc_DRA_FBNum; FBIdx++) {
-			out << "        FB[" << FBIdx << "] :" << endl;
-			out << "        {" << endl;
-			out << "            Released TTI: " << m_DRA_RBIsAvailable[clusterIdx][FBIdx]<<endl;
+			out << "            FB[" << FBIdx << "] :" << endl;
+			out << "            {" << endl;
+			out << "                Released TTI: " << m_DRA_RBIsAvailable[clusterIdx][FBIdx]<<endl;
 			int cnt = 0;
-			out << "            ScheduleTTLInterval List: " << endl;
+			out << "                ScheduleTTLInterval List: " << endl;
 			out << "                {" << endl;
 			for (sDRAScheduleInfo & info : m_DRAScheduleList[clusterIdx][FBIdx]) {
 				out << "                    { VEId :" << info.VEId << " ,  List: ";
-				for (tuple<int, int> t : info.occupiedInterval)
+				for (const tuple<int, int> &t : info.occupiedInterval)
 					out << "[ " << get<0>(t) << " , " << get<1>(t) << " ] , ";
 				out << "}"<<endl;
 			}
 			out << "                }" << endl;
-			out << "        }" << endl;
+			out << "            }" << endl;
 		}
-		out << "    }" << endl;
+		out << "        }" << endl;
 	}
-	out <<"}" << endl;
+	out <<"    }" << endl;
 }
 
 
@@ -253,17 +260,16 @@ void cRSU::DRAConflictListener(int TTI) {
 	DRAConflictSolve(TTI);
 
 	//-----------------------TEST-----------------------
-	g_OutDRAProcessInfo << "RSU: " << m_RSUId << " 's Current AccumulateConflictList : { ";
+	g_OutDRAProcessInfo << "    RSU[" << m_RSUId << "] 's Current AccumulateConflictList : { ";
 	for (const tuple<int,int,int> &t : m_DRAConflictSet)
-		g_OutDRAProcessInfo <<" [ "<<get<0>(t)<<" , "<<get<1>(t)<<" , "<<get<2>(t) << " ] , ";
+		g_OutDRAProcessInfo <<" [ VEId = "<<get<0>(t)<<" , ClusterIdx = "<<get<1>(t)<<" , FBIdx = "<<get<2>(t) << " ] , ";
 	g_OutDRAProcessInfo << "}" << endl;
-	g_OutDRAProcessInfo << endl;
 	//-----------------------TEST-----------------------
 }
 
 
 void cRSU::DRAConflictSolve(int TTI) {
-	for (const tuple<int, int, int> t : m_DRAConflictSet) {
+	for (const tuple<int, int, int> &t : m_DRAConflictSet) {
 		int clusterIdx = get<1>(t);
 		int FBIdx = get<2>(t);
 		m_DRAScheduleList[clusterIdx][FBIdx].clear();

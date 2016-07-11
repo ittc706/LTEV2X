@@ -80,7 +80,7 @@ struct sDRAScheduleInfo {
 	/*------------------²âÊÔÓÃµÄº¯Êı------------------*/
 	void print() {
 		std::cout << "OccupiedInterval: ";
-		for (std::tuple<int, int> t : occupiedInterval)
+		for (const std::tuple<int, int> &t : occupiedInterval)
 			std::cout << "[ " << std::get<0>(t) << " , " << std::get<1>(t) << " ] , ";
 		std::cout << std::endl;
 	}

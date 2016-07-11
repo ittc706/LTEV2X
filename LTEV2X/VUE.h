@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include<list>
+#include<string>
 #include"Global.h"
 #include"Schedule.h"
 #include"Message.h"
@@ -10,7 +11,6 @@ class cVeUE {
 public:
 	static int count;
 	cVeUE();
-	void print();
 	//-----------------------TEST-----------------------
 public:
 	int m_VEId;//用户ID
@@ -32,4 +32,7 @@ public:
 	****************************************************************/
 
 	int RBSelectBasedOnP2(const std::vector<int> &v);
+
+
+	std::string toString();//用于打印车辆信息
 };

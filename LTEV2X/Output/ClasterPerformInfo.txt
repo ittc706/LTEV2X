@@ -1,0 +1,47 @@
+ATTI = 132   RTTI = 0     
+{
+    VUE Info: 
+    {
+        { VeUE Id = 0     , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 1     , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 2     , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 3     , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 4     , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 5     , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 6     , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 7     , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 8     , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 9     , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 10    , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 11    , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 12    , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 13    , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 14    , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 15    , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 16    , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+        { VeUE Id = 17    , [ byteNum = 300   ,  DRA_ONTTI = 3     ] }
+        { VeUE Id = 18    , [ byteNum = 200   ,  DRA_ONTTI = 2     ] }
+        { VeUE Id = 19    , [ byteNum = 1000  ,  DRA_ONTTI = 10    ] }
+    }
+
+
+
+    eNB Info: 
+    {
+        { eNB Id = 0     , VEIdList = [ 0     , 1     , 2     , 3     , 4     , 5     , 6     , 7     , 8     , 9     , 10    , 11    , 12    , 13    , 14    , 15    , 16    , 17    , 18    , 19    ,  ] , RSUIdList = [ 0     , 1     ,  ] }
+    }
+    RSU Info: 
+    {
+        { RSU Id = 0 , VEIdList = [ 1     , 2     , 3     , 4     , 6     , 7     , 10    , 11    , 12    , 13    , 16    , 17    ,  ] }
+        { RSU Id = 1 , VEIdList = [ 0     , 5     , 8     , 9     , 14    , 15    , 18    , 19    ,  ] }
+    }
+
+
+
+    RSUSwitchList Info: 
+    {
+        [ ] 
+    }
+}
+
+

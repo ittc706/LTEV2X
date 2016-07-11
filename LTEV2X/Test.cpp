@@ -5,6 +5,7 @@
 #include<initializer_list>
 #include<list>
 #include<fstream>
+#include<string>
 
 #include"Test.h"
 #include"System.h"
@@ -40,7 +41,7 @@ void Function::print1DimVector(std::vector<int>&v) {
 
 
 void Function::printVectorTuple(const vector<tuple<int, int, int>>&v) {
-	for (tuple<int, int, int> t : v) {
+	for (const tuple<int, int, int> &t : v) {
 		cout << "Interval：[ " << get<0>(t) << " , " << get<1>(t) << " ]  , length: " << get<2>(t) << endl;
 	}
 }
@@ -57,25 +58,6 @@ vector<int> Function::makeEqualInterverSequence(int begin, int interval,int num)
 }
 
 
-void cSystem::print() {
-	g_OutBasicInfo << "\n\n-----------------------VEUE------------------------"<<endl;
-	for (cVeUE &ve : m_VecVUE)
-		ve.print();
-	g_OutBasicInfo << "\n\n-----------------------eNB------------------------" << endl;
-	for (ceNB &eNB : m_VeceNB)
-		eNB.print();
-	g_OutBasicInfo << "\n\n-----------------------RSU------------------------" << endl;
-	for (cRSU &RSU : m_VecRSU)
-		RSU.print();
-
-	for (int i = 0;i < m_NTTI;i++) {
-		g_OutBasicInfo << "TTI: " << i + m_STTI << endl;
-		for (sEvent &e : m_EventList[i])
-			g_OutBasicInfo << "    [ VEId: " << e.VEId << " , " << "callSetupTTI: " << e.callSetupTTI << " , " << "eMessageType :" << (e.message.messageType == PERIOD ? "PEROID" : "ELSE") << " ] ,";
-		g_OutBasicInfo << endl;
-	}
-}
-
 
 void cSystem::configure() {//系统仿真参数配置
 	m_NTTI = 10;//仿真TTI时间
@@ -91,19 +73,11 @@ void cSystem::initialization() {
 	m_VecVUE = vector<cVeUE>(m_Config.VUENum);
 	m_EventList = vector<list<sEvent>>(m_NTTI);
 
-
-	/*随机将车辆分配给RSU*/
-	for (int VEId = 0;VEId < m_Config.VUENum;VEId++)
-		m_VecRSU[rand() % m_Config.RSUNum].m_VUESet.insert(VEId);
-
-
-	/*随机将RSU分给基站*/
+	//由于RSU和基站位置固定，随机将RSU撒给基站进行初始化即可
 	for (int RSUId = 0;RSUId < m_Config.RSUNum;RSUId++) {
 		int eNBId = rand() % m_Config.eNBNum;
 		m_VeceNB[eNBId].m_RSUSet.insert(RSUId);
-		m_VeceNB[eNBId].m_VUESet.insert(m_VecRSU[RSUId].m_VUESet.begin(), m_VecRSU[RSUId].m_VUESet.end());
 	}
-
 	
 	
 	m_DRAMode = P123;
@@ -143,11 +117,6 @@ cVeUE::cVeUE() {
 }
 
 
-void cVeUE::print() {
-	g_OutBasicInfo << "  VeUE Id: " << m_VEId << endl;
-	m_Message.print();
-	g_OutBasicInfo << endl;
-}
 
 
 int ceNB::count = 0;
@@ -156,19 +125,7 @@ ceNB::ceNB() {
 	m_eNBId = count++;
 }
 
-void ceNB::print() {
-	g_OutBasicInfo << "  eNB Id: " <<m_eNBId<< endl;
-	g_OutBasicInfo << "      VUE ID: " << endl;
-	g_OutBasicInfo << "        ";
-	for (int Id : m_VUESet)
-		g_OutBasicInfo << Id << " , ";
-	g_OutBasicInfo << endl;
-	g_OutBasicInfo << "      RSU ID: " << endl;
-	g_OutBasicInfo << "        ";
-	for (int Id : m_RSUSet)
-		g_OutBasicInfo << Id << " , ";
-	g_OutBasicInfo << endl;
-}
+
 
 int cRSU::count = 0;
 
@@ -178,29 +135,6 @@ cRSU::cRSU() :m_DRAClusterNum(4) {
 	m_DRA_RBIsAvailable = vector<vector<int>>(m_DRAClusterNum, vector<int>(gc_DRA_FBNum, -1));
 	m_DRAScheduleList = vector<vector<list<sDRAScheduleInfo>>>(m_DRAClusterNum, vector<list<sDRAScheduleInfo>>(gc_DRA_FBNum));
 }
-void cRSU::print() {
-	g_OutBasicInfo << "  RSU Id: " << m_RSUId << endl;
-	for (int i = 0; i < m_DRAClusterNum; i++){
-		g_OutBasicInfo << "      Cluster : " << i << endl;
-		g_OutBasicInfo << "      ";
-		for(int Id: m_DRAClusterVUESet[i])
-			g_OutBasicInfo << Id << " , ";
-		g_OutBasicInfo << endl;
-	}
-	
-}
 
-void cRSU::testCluster() {
-	for (int VEId :m_VUESet) {
-		int clusterIdx = rand()%m_DRAClusterNum;
-		m_DRAClusterVUESet[clusterIdx].insert(VEId);
-	}
 
-	
-}
 
-void sMessage::print() {
-	g_OutBasicInfo << "  MessageInfo:" << endl;
-	g_OutBasicInfo << "    byteNum = " << byteNum << endl;
-	g_OutBasicInfo << "    DRA_ONTTI = " << DRA_ONTTI << endl;
-}

@@ -1,3 +1,8 @@
+version_2016_7_10(格式化输出)
+	*System级别的输出放在System.cpp中
+	*定义了几个类型的toString方法，用到了ostringstream (在头文件sstream中)
+
+
 version_2016_7_10(修改了调度信息输出格式)
 
 

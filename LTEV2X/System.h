@@ -1,5 +1,7 @@
 #pragma once
 #include<vector>
+#include<set>
+#include<fstream>
 #include"Schedule.h"
 #include"Config.h"
 #include"VUE.h"
@@ -11,7 +13,7 @@
 class cSystem{
 	//-----------------------TEST-----------------------
 public:
-	void print();
+
 	//-----------------------TEST-----------------------
 private:
 	/*------------------数据成员------------------*/
@@ -60,13 +62,22 @@ public:
 	****************************************************************/
 public :
 	eDRAMode m_DRAMode;
+
+	/*
+	* DRA情况下RSU切换导致信息无法正常发送的VEId集合
+	* 用于存放以下两种情况的VEId
+	* 车辆发送信息完毕之前，进行了分簇，且分入了与原来不同的簇内
+	* 车辆发送信息冲突，并且已经添加进对应RSU的冲突链表，但是在进行下一次重传之前，进行了分簇，并且分入了与原来不同的簇内
+	* 总而言之，是存储信息发送尚未成功且发生VE所属RSU切换的VEId
+	*/
+	std::set<int> m_DRA_RSUSwitchSet;
 	/*--------------------接口函数--------------------*/
 	void DRASchedule();
 
 private:
 	/*--------------------实现函数--------------------*/
 	void DRAInformationClean();//资源分配信息清空
-	void DRAPerformCluster();//对RSU内的车辆进行分簇
+	void DRAPerformCluster(bool clusterFlag);//对RSU内的车辆进行分簇
 	void DRAGroupSizeBasedTDM();//基于簇大小的时分复用
 	void DRABuildCallList();//建立呼叫链表
 
@@ -78,6 +89,8 @@ private:
 	void DRAConflictListener();//帧听冲突
 
 	/*--------------------辅助函数--------------------*/
+	void writeClusterPerformInfo(std::ofstream &out);
+	void writeEventListInfo(std::ofstream &out);
 };
 
 

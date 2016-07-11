@@ -1,13 +1,10 @@
 #pragma once
 #include<math.h>
+#include<string>
 #include"Global.h"
 #include"Enumeration.h"
 
 struct sMessage {
-
-	//-----------------------TEST-----------------------
-	void print();
-	//-----------------------TEST-----------------------
 	sMessage() {}
 	sMessage(eMessageType messageType) {
 		this->messageType = messageType;
@@ -29,4 +26,6 @@ struct sMessage {
 	int byteNum; //该消息的比特数量
 	int DRA_ONTTI;  //在DRA方式下，传输该消息需要占用多少个TTI
 
+
+	std::string toString();
 };
