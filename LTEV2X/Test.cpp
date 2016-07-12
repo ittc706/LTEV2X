@@ -9,6 +9,7 @@
 
 #include"Test.h"
 #include"System.h"
+#include"Utility.h"
 
 
 using namespace std;
@@ -64,7 +65,7 @@ void cSystem::configure() {//系统仿真参数配置
 	m_Config.periodicEventNTTI = 20;
 	m_Config.locationUpdateNTTI = 50;
 
-	m_Config.VUENum = 40;
+	m_Config.VUENum = 20;
 	m_Config.RSUNum = 2;
 	m_Config.eNBNum = 1;
 }
@@ -75,6 +76,9 @@ void cSystem::initialization() {
 	m_STTI = 0;
 	//m_STTI = abs(rand() % 1000);
 	m_TTI = m_STTI;
+	Log::ATTI = &m_TTI;
+	Log::STTI = &m_STTI;
+
 	m_eNBVec = vector<ceNB>(m_Config.eNBNum);
 	m_RSUVec = vector<cRSU>(m_Config.RSUNum);
 	m_VeUEVec = vector<cVeUE>(m_Config.VUENum);

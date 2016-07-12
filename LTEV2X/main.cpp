@@ -51,6 +51,6 @@ int main() {
 	g_OutDRAProcessInfo.close();
 	g_OutClasterPerformInfo.close();
 	g_OutEventListInfo.close();
-
+	Log::out.close();
 	system("pause");
 }

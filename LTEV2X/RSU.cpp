@@ -8,6 +8,7 @@
 #include"Exception.h"
 #include"Event.h"
 #include"Global.h"
+#include"Utility.h"
 
 using namespace std;
 
@@ -144,13 +145,13 @@ void cRSU::DRAProcessSystemLevelRSUSwitchList(int TTI, const std::vector<cVeUE>&
 }
 
 
-void cRSU::DRASelectBasedOnP13(int TTI, std::vector<cVeUE>&v) {
+void cRSU::DRASelectBasedOnP13(int TTI, std::vector<cVeUE>&systemVeUEVec) {
 }
 
-void cRSU::DRASelectBasedOnP23(int TTI, std::vector<cVeUE>&v) {
+void cRSU::DRASelectBasedOnP23(int TTI, std::vector<cVeUE>&systemVeUEVec) {
 }
 
-void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&v) {
+void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec) {
 	int relativeTTI = TTI%gc_DRA_NTTI;
 
 	int clusterIdx = DRAGetClusterIdx(TTI);
@@ -166,10 +167,10 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&v) {
 		/*-----------------------WARN-----------------------
 		* 没有考虑到如果可用资源为0的情况
 		*-----------------------WARN-----------------------*/
-		int FBId = v[VeUEId].RBSelectBasedOnP2(curAvaliableFB);
+		int FBId = systemVeUEVec[VeUEId].RBSelectBasedOnP2(curAvaliableFB);
 
 		//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
-		int occupiedTTI = v[VeUEId].m_Message.DRA_ONTTI;
+		int occupiedTTI = systemVeUEVec[VeUEId].m_Message.DRA_ONTTI;
 
 
 		//计算当前消息所占用资源块的释放时刻,并写入m_DRA_RBIsAvailable
@@ -204,20 +205,22 @@ void cRSU::DRAConflictListener(int TTI) {
 	//-----------------------TEST-----------------------
 	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;clusterIdx++) {
 		for (int FBIdx = 0;FBIdx < gc_DRA_FBNum;FBIdx++) {
-			list<sDRAScheduleInfo> &list = m_DRAScheduleList[clusterIdx][FBIdx];
-			if (list.size() > 1) {//多于一个VeUE在当前TTI，该FB上传输，即发生了冲突，将其添加到冲突列表等待重新加入呼叫链表
-				for (sDRAScheduleInfo &info : list) {
+			list<sDRAScheduleInfo> &lst = m_DRAScheduleList[clusterIdx][FBIdx];
+			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该FB上传输，即发生了冲突，将其添加到冲突列表等待重新加入呼叫链表
+				for (sDRAScheduleInfo &info : lst) {
 					m_DRAConflictInfoList.push_back(tuple<int,int,int>(info.VeUEId, clusterIdx, FBIdx));
 				}		
 			}
-			else if (list.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
+			else if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 			    /*-----------------------WARN-----------------------
 				* 没有考虑当VeUE正在传输信号时，分簇将其分入另一个簇的情况
 				*-----------------------WARN-----------------------*/
 
 				/*如果当前TTI==m_DRA_RBIsAvailable[clusterIdx][FBIdx]更新对应的数据*/
-				if (TTI == m_DRA_RBIsAvailable[clusterIdx][FBIdx])
-					m_DRAScheduleList[clusterIdx][FBIdx].clear();
+				if (TTI == m_DRA_RBIsAvailable[clusterIdx][FBIdx]) {
+					Log::log("Transmit Succeed", lst.begin()->toLogString());
+					m_DRAScheduleList[clusterIdx][FBIdx].clear();			
+				}
 			}
 		}
 	}

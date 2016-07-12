@@ -7,12 +7,12 @@
 #include"eNB.h"
 #include"Message.h"
 #include"Event.h"
+#include"Utility.h"
 
 
 class cSystem{
 	//-----------------------TEST-----------------------
 public:
-
 	//-----------------------TEST-----------------------
 private:
 	/*------------------数据成员------------------*/

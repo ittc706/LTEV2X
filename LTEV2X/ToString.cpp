@@ -51,3 +51,12 @@ string cRSU::toString() {
 	ss << "        }" << endl;
 	return ss.str();
 }
+
+
+string sDRAScheduleInfo::toLogString() {
+	ostringstream ss;
+	ss<<"[ VeUEID = ";
+	ss << left << setw(5) << VeUEId;
+	ss << " , FBIdx = " << left << setw(5) << FBIdx<< " ] ";
+	return ss.str();
+}

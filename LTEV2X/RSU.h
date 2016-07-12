@@ -149,17 +149,17 @@ public:
 	/*
 	* 基于P1和P3的资源分配
 	*/
-	void DRASelectBasedOnP13(int TTI,std::vector<cVeUE>&v);
+	void DRASelectBasedOnP13(int TTI,std::vector<cVeUE>&systemVeUEVec);
 
 	/*
 	* 基于P2和P3的资源分配
 	*/
-	void DRASelectBasedOnP23(int TTI,std::vector<cVeUE>&v);
+	void DRASelectBasedOnP23(int TTI,std::vector<cVeUE>&systemVeUEVec);
 
 	/*
 	* 基于P1、P2和P3的资源分配
 	*/
-	void DRASelectBasedOnP123(int TTI,std::vector<cVeUE>&v);
+	void DRASelectBasedOnP123(int TTI,std::vector<cVeUE>&systemVeUEVec);
 
 	/*
 	* 帧听冲突
