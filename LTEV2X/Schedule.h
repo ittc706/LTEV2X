@@ -76,7 +76,7 @@ struct sDRAScheduleInfo {
 		}
 	}
 	
-	std::string toLogString();
+	std::string toLogString(int n);
 
 	/*------------------²âÊÔÓÃµÄº¯Êı------------------*/
 	void print() {

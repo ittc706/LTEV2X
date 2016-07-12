@@ -10,10 +10,9 @@ class cVeUE {
 	//-----------------------TEST-----------------------
 public:
 	static int count;
-	cVeUE();
 	//-----------------------TEST-----------------------
 public:
-	int m_VeUEId;//用户ID
+	const int m_VeUEId=count++;//用户ID
 	int m_RSUId;//所在的RSU的Id
 	int m_ClusterIdx;//所在簇de编号
 
@@ -34,5 +33,5 @@ public:
 	int RBSelectBasedOnP2(const std::vector<int> &v);
 
 
-	std::string toString();//用于打印VeUE信息
+	std::string toString(int n);//用于打印VeUE信息
 };

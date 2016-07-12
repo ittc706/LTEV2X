@@ -13,6 +13,7 @@ void cSystem::process() {
 	/*仿真初始化*/
 	initialization();
 
+	/*打印事件链表*/
 	writeEventListInfo(g_OutEventListInfo);
 
 	for (int count = 0;count < m_NTTI;count++) {
@@ -20,6 +21,44 @@ void cSystem::process() {
 		DRASchedule();
 		m_ATTI++;
 	}
+}
+
+void cSystem::configure() {//系统仿真参数配置
+	m_NTTI = 200;//仿真TTI时间
+	m_Config.periodicEventNTTI = 20;
+	m_Config.locationUpdateNTTI = 50;
+
+	m_Config.VUENum = 10;
+	m_Config.RSUNum = 4;
+	m_Config.eNBNum = 1;
+}
+
+
+void cSystem::initialization() {
+	srand((unsigned)time(NULL));//iomanip
+	m_STTI = 0;
+	//m_STTI = abs(rand() % 1000);
+	m_ATTI = m_STTI;
+	Log::ATTI = &m_ATTI;
+	Log::STTI = &m_STTI;
+
+	m_eNBVec = vector<ceNB>(m_Config.eNBNum);
+	m_RSUVec = vector<cRSU>(m_Config.RSUNum);
+	m_VeUEVec = vector<cVeUE>(m_Config.VUENum);
+	m_EventTTIList = vector<list<int>>(m_NTTI);
+
+
+
+	//由于RSU和基站位置固定，随机将RSU撒给基站进行初始化即可
+	for (int RSUId = 0;RSUId < m_Config.RSUNum;RSUId++) {
+		int eNBId = rand() % m_Config.eNBNum;
+		m_eNBVec[eNBId].m_RSUIdList.push_back(RSUId);
+	}
+
+	m_DRAMode = P123;
+
+	buildEventList();
+
 }
 
 void cSystem::buildEventList() {
@@ -64,7 +103,7 @@ void cSystem::writeClusterPerformInfo(ofstream &out) {
 	out << "    VUE Info: " << endl;
 	out << "    {" << endl;
 	for (cVeUE &_VeUE : m_VeUEVec) 
-		out << "        " << _VeUE.toString() << endl;
+		out << _VeUE.toString(2) << endl;
 	out << "    }" << endl;
 
 	out << "\n\n\n";
@@ -73,14 +112,14 @@ void cSystem::writeClusterPerformInfo(ofstream &out) {
 	out << "    eNB Info: " << endl;
 	out << "    {" << endl;
 	for (ceNB &_eNB : m_eNBVec)
-		out << "        " << _eNB.toString() << endl;
+		out << _eNB.toString(2) << endl;
 	out << "    }" << endl;
 
 	//打印RSU信息
 	out << "    RSU Info: " << endl;
 	out << "    {" << endl;
 	for (cRSU &_RSU : m_RSUVec)
-		out << _RSU.toString() << endl;
+		out << _RSU.toString(2) << endl;
 	out << "    }" << endl;
 
 	out << "\n\n\n";

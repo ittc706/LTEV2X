@@ -2,10 +2,10 @@
 
 using namespace std;
 
-ofstream g_OutDRAScheduleInfo("output\\DRAScheduleInfo.txt");
-ofstream g_OutDRAProcessInfo("output\\DRAProcessInfo.txt");
-ofstream g_OutClasterPerformInfo("output\\ClasterPerformInfo.txt");
-ofstream g_OutEventListInfo("output\\EventListInfo.txt");
+ofstream g_OutDRAScheduleInfo("DRAOutput\\DRAScheduleInfo.txt");
+ofstream g_OutDRAProcessInfo("DRAOutput\\DRAProcessInfo.txt");
+ofstream g_OutClasterPerformInfo("DRAOutput\\ClasterPerformInfo.txt");
+ofstream g_OutEventListInfo("DRAOutput\\EventListInfo.txt");
 
 
 int max(int t1, int t2) {

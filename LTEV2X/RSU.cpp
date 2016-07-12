@@ -12,10 +12,19 @@
 
 using namespace std;
 
+int cRSU::count = 0;
+
+cRSU::cRSU() :m_DRAClusterNum(4) {
+	m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
+	m_DRA_RBIsAvailable = vector<vector<int>>(m_DRAClusterNum, vector<int>(gc_DRA_FBNum, -1));
+	m_DRAScheduleList = vector<vector<list<sDRAScheduleInfo>>>(m_DRAClusterNum, vector<list<sDRAScheduleInfo>>(gc_DRA_FBNum));
+}
+
+
 int cRSU::DRAGetClusterIdx(int ATTI) {
 	int roundATTI = ATTI%gc_DRA_NTTI; //将ATTI映射到[0-gc_DRA_NTTI)的范围
-	for (int i = 0; i < m_DRAClusterNum; i++)
-		if (roundATTI <= get<1>(m_DRAClusterTDRInfo[i])) return i;
+	for (int clusterIdx = 0; clusterIdx < m_DRAClusterNum; clusterIdx++)
+		if (roundATTI <= get<1>(m_DRAClusterTDRInfo[clusterIdx])) return clusterIdx;
 	return -1;
 }
 
@@ -41,42 +50,49 @@ void cRSU::DRAInformationClean() {
 
 
 void cRSU::DRAGroupSizeBasedTDM() {
-	/*假定每个簇至少有一辆车，因此每个簇至少分配一个TTI时隙*/
-	m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(m_DRAClusterNum, tuple<int, int, int>(0, 0, 1));
-	/*除了每个簇分配的一个时隙外，剩余可分配的时隙数量*/
-	int remainNTI = gc_DRA_NTTI - m_DRAClusterNum;
-
-	/*clusterSize存储每个簇的VeUE数目(double类型),！！！在接下来的迭代中，VeUE的数目是个浮点数！！！*/
-	std::vector<double> clusterSize(m_DRAClusterNum, 0);
+	/*初始化*/
+	m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(m_DRAClusterNum, tuple<int, int, int>(0, 0, 0));
 
 	/*计算每个TTI时隙对应的VeUE数目(double)，!!!浮点数!!！*/
-	double VUESizePerTTI = 1 / static_cast<double>(gc_DRA_NTTI)*static_cast<double>(m_VeUEList.size());
+	double VUESizePerTTI = static_cast<double>(m_VeUEIdList.size()) / static_cast<double>(gc_DRA_NTTI);
 
-	/*由于直接给每个簇分配了一个TTI时隙，因此每个簇的大小需要进行调整，需要减去VUESizePerMTI*/
-	for (int i = 0; i < m_DRAClusterNum; i++) 
-		clusterSize[i] = static_cast<double>(m_DRAClusterVeUEIdList[i].size()) - VUESizePerTTI;
+	/*clusterSize存储每个簇的VeUE数目(double)，!!!浮点数!!！*/
+	std::vector<double> clusterSize(m_DRAClusterNum, 0);
+
+	/*初始化clusterSize*/
+	for (int clusterIdx = 0; clusterIdx < m_DRAClusterNum; clusterIdx++)
+		clusterSize[clusterIdx] = static_cast<double>(m_DRAClusterVeUEIdList[clusterIdx].size());
+
+	/*首先给至少有一辆车的簇分配一份TTI*/
+	int basicNTTI = 0;
+	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;clusterIdx++) {
+		if (m_DRAClusterVeUEIdList[clusterIdx].size() != 0) {//如果该簇内至少有一辆VeUE，直接分配给一个单位的时域资源
+			get<2>(m_DRAClusterTDRInfo[clusterIdx]) = 1;
+			clusterSize[clusterIdx] -= VUESizePerTTI;
+			basicNTTI++;
+		}
+	}
+
+
+	/*除了给不为空的簇分配的一个TTI外，剩余可分配的TTI数量*/
+	int remainNTTI = gc_DRA_NTTI - basicNTTI;
 	
-
 	/*对于剩下的资源块，循环将下一时隙分配给当前比例最高的簇，分配之后，更改对应的比例（减去该时隙对应的VeUE数）*/
-	while (remainNTI > 0) {
+	while (remainNTTI > 0) {
 		int dex = getMaxIndex(clusterSize);
 		if (dex == -1) throw Exp("还存在没有分配的时域资源，但是每个簇内的VeUE已经为负数");
 		get<2>(m_DRAClusterTDRInfo[dex])++;
-		remainNTI--;
+		remainNTTI--;
 		clusterSize[dex] -= VUESizePerTTI;
 	}
 
-	for (int i = 0;i < m_DRAClusterNum;i++)
-		get<1>(m_DRAClusterTDRInfo[i]) = get<2>(m_DRAClusterTDRInfo[i]);
-
-	get<1>(m_DRAClusterTDRInfo[0])--;//使区间范围从0开始
-
-	for (int i = 1; i < m_DRAClusterNum; i++) {
-		get<1>(m_DRAClusterTDRInfo[i]) += get<1>(m_DRAClusterTDRInfo[i - 1]);
-		get<0>(m_DRAClusterTDRInfo[i]) = get<1>(m_DRAClusterTDRInfo[i]) - get<2>(m_DRAClusterTDRInfo[i]) + 1;
+	/*开始生成区间范围，闭区间*/
+	get<0>(m_DRAClusterTDRInfo[0]) = 0;
+	get<1>(m_DRAClusterTDRInfo[0]) = get<0>(m_DRAClusterTDRInfo[0]) + get<2>(m_DRAClusterTDRInfo[0]) - 1;
+	for (int clusterIdx = 1;clusterIdx < m_DRAClusterNum;clusterIdx++) {
+		get<0>(m_DRAClusterTDRInfo[clusterIdx]) = get<1>(m_DRAClusterTDRInfo[clusterIdx - 1]) + 1;
+		get<1>(m_DRAClusterTDRInfo[clusterIdx]) = get<0>(m_DRAClusterTDRInfo[clusterIdx]) + get<2>(m_DRAClusterTDRInfo[clusterIdx]) - 1;
 	}
-
-	get<0>(m_DRAClusterTDRInfo[0]) = get<1>(m_DRAClusterTDRInfo[0]) - get<2>(m_DRAClusterTDRInfo[0]) + 1;
 }
 
 
@@ -164,13 +180,18 @@ void cRSU::DRASelectBasedOnP123(int ATTI, std::vector<cVeUE>&systemVeUEVec, cons
 	for (int i = 0; i < gc_DRA_FBNum; i++)
 		if (ATTI > m_DRA_RBIsAvailable[clusterIdx][i]) curAvaliableFB.push_back(i); //将可以占用的RB编号存入
 
+
+	if (curAvaliableFB.size() == 0) {//如果资源全部已经被占用了，那么将接入链表全部转入等待链表
+		for (int eventId : m_DRAAdmissionEventIdList)
+			pushToRSULevelWaitingEventIdList(eventId);
+		return;//直接返回
+	}
+
 	for (int eventId : m_DRAAdmissionEventIdList) {//遍历该簇内呼叫链表中的事件
 		int VeUEId = systemEventVec[eventId].VeUEId;
 		//为当前用户在可用的RB块中随机选择一个，每个用户自行随机选择可用FB块
 
-		/*-----------------------WARN-----------------------
-		* 没有考虑到如果可用资源为0的情况
-		*-----------------------WARN-----------------------*/
+		
 		int FBId = systemVeUEVec[VeUEId].RBSelectBasedOnP2(curAvaliableFB);
 
 		//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
@@ -203,10 +224,12 @@ void cRSU::DRASelectBasedOnP123(int ATTI, std::vector<cVeUE>&systemVeUEVec, cons
 
 
 void cRSU::DRAConflictListener(int ATTI) {
-	//-----------------------TEST-----------------------
-	/*如果每个簇的列表不为空，说明上一次的冲突还未处理完毕，说明程序需要修正*/
+	/*-----------------------WARN-----------------------
+	* 如果每个簇的列表不为空，说明上一次的冲突还未处理完毕，说明程序需要修正
+	-----------------------WARN-----------------------*/
 	if (m_DRAConflictInfoList.size() != 0) throw Exp("cRSU::DRAConflictListener()");
-	//-----------------------TEST-----------------------
+
+
 	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;clusterIdx++) {
 		for (int FBIdx = 0;FBIdx < gc_DRA_FBNum;FBIdx++) {
 			list<sDRAScheduleInfo> &lst = m_DRAScheduleList[clusterIdx][FBIdx];
@@ -222,7 +245,7 @@ void cRSU::DRAConflictListener(int ATTI) {
 
 				/*如果当前TTI==m_DRA_RBIsAvailable[clusterIdx][FBIdx]更新对应的数据*/
 				if (ATTI == m_DRA_RBIsAvailable[clusterIdx][FBIdx]) {
-					Log::log("Transmit Succeed", lst.begin()->toLogString());
+					Log::log("Transmit Succeed", lst.begin()->toLogString(0));
 					m_DRAScheduleList[clusterIdx][FBIdx].clear();			
 				}
 			}

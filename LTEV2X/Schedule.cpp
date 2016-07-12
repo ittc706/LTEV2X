@@ -184,17 +184,17 @@ void cSystem::DRAPerformCluster(bool clusterFlag) {
 
 	/*清除上一次的分簇信息*/
 	for (ceNB &_eNB : m_eNBVec) {
-		_eNB.m_VeUEList.clear();
+		_eNB.m_VeUEIdList.clear();
 	}
 	for (cRSU &_RSU : m_RSUVec) {
-		_RSU.m_VeUEList.clear();
+		_RSU.m_VeUEIdList.clear();
 	}
 
 
 	/*随机将VeUE分配给RSU*/
 	for (int VeUEId = 0;VeUEId < m_Config.VUENum;VeUEId++) {
 		int RSUId = rand() % m_Config.RSUNum;
-		m_RSUVec[RSUId].m_VeUEList.push_back(VeUEId);
+		m_RSUVec[RSUId].m_VeUEIdList.push_back(VeUEId);
 		m_VeUEVec[VeUEId].m_RSUId = RSUId;
 	}
 
@@ -204,7 +204,7 @@ void cSystem::DRAPerformCluster(bool clusterFlag) {
 		for (int clusterIdx = 0;clusterIdx < _RSU.m_DRAClusterNum;clusterIdx++)
 			_RSU.m_DRAClusterVeUEIdList[clusterIdx].clear();
 		//将现在RSU内的VeUE随机分入不同的簇
-		for (int VeUEId : _RSU.m_VeUEList) {
+		for (int VeUEId : _RSU.m_VeUEIdList) {
 			int clusterIdx = rand() % _RSU.m_DRAClusterNum;
 			_RSU.m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
 			m_VeUEVec[VeUEId].m_ClusterIdx = clusterIdx;
@@ -214,8 +214,8 @@ void cSystem::DRAPerformCluster(bool clusterFlag) {
 	//更新基站的VeUE容器
 	for (ceNB &_eNB:m_eNBVec) {
 		for (int RSUId : _eNB.m_RSUIdList) {
-			for (int VeUEId : m_RSUVec[RSUId].m_VeUEList) {
-				_eNB.m_VeUEList.push_back(VeUEId);
+			for (int VeUEId : m_RSUVec[RSUId].m_VeUEIdList) {
+				_eNB.m_VeUEIdList.push_back(VeUEId);
 			}
 		}
 	}

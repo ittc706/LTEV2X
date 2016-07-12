@@ -20,12 +20,12 @@ public:
 	/*
 	* 当前RSU的ID
 	*/
-	int m_RSUId;
+	const int m_RSUId=count++;
 
 	/*
 	* 当前RSU范围内的VeUEId编号容器
 	*/
-	std::list<int> m_VeUEList;
+	std::list<int> m_VeUEIdList;
 
 	/***************************************************************
 	------------------------上行调度--------------------------------
@@ -185,7 +185,7 @@ public:
 	/*
 	* 生成包含RSU信息的string
 	*/
-	std::string toString();
+	std::string toString(int n);
 
 	/*--------------------辅助函数--------------------*/
 private:
