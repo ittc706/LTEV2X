@@ -8,8 +8,7 @@ public:
 	static int * ATTI;
 	static int * STTI;
 
-	static std::ofstream out;
-    static void log(std::string TAG,std::string msg);
+	static void log(std::ofstream &out, std::string TAG, std::string msg);
 };
 
 

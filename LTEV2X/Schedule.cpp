@@ -145,8 +145,21 @@ void cSystem::DRASchedule() {
 	/*根据簇大小进行时域资源的划分*/
 	DRAGroupSizeBasedTDM(clusterFlag);
 
-	/*建立呼叫链表，遍历RSU内的m_VecVUE，生成m_CallList*/
-	DRAUpdateCallList();
+	/*建立接纳链表，遍历RSU内的m_VecVUE，生成m_CallList*/
+	DRAUpdateAdmissionList();
+
+	/*-----------------------WARN-----------------------
+	* 如果m_DRA_RSUSwitchEventIdList不为空，说明程序需要修正
+	-----------------------WARN-----------------------*/
+	if (m_DRA_RSUSwitchEventIdList.size() != 0) throw Exp("接纳链表全部生成后，System级别的切换链表仍不为空！");
+	
+	g_OutDRAProcessInfo << "    处理完事件链表、等待链表以及切换链表后的接纳链表：" << endl;
+	for (cRSU &_RSU : m_RSUVec) {
+		_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 0);//写入接纳链表的信息
+	}
+	g_OutDRAProcessInfo << endl;
+
+
 
 	/*当前m_TTI的DRA算法*/
 	switch (m_DRAMode) {
@@ -163,6 +176,8 @@ void cSystem::DRASchedule() {
 
 	/*帧听冲突*/
 	DRAConflictListener();
+
+
 
 	//-----------------------TEST-----------------------
 	g_OutDRAScheduleInfo << "}" << endl;
@@ -238,12 +253,16 @@ void cSystem::DRAGroupSizeBasedTDM(bool clusterFlag) {
 }
 
 
-void cSystem::DRAUpdateCallList() {
+void cSystem::DRAUpdateAdmissionList() {
 	/*首先，处理System级别的事件触发链表*/
 	for (cRSU &_RSU : m_RSUVec)
 		_RSU.DRAProcessSystemLevelEventList(m_ATTI, m_STTI, m_VeUEVec, m_EventVec,m_EventTTIList);
 
-	/*其次，处理RSU级别的冲突链表*/
+	/*其次，处理调度表（处理的情况是，数据发送完之前离开了当前的RSU），需要将该事件推送到System级别的RSU切换链表中*/
+	for (cRSU &_RSU : m_RSUVec)
+		_RSU.DRAProcessRSULevelScheduleInfoTable(m_ATTI, m_VeUEVec, m_EventVec, m_DRA_RSUSwitchEventIdList);
+
+	/*然后，处理RSU级别的等待链表*/
 	for (cRSU &_RSU : m_RSUVec)
 		_RSU.DRAProcessRSULevelWaitingVeUEIdList(m_ATTI, m_VeUEVec, m_EventVec, m_DRA_RSUSwitchEventIdList);
 
@@ -252,14 +271,10 @@ void cSystem::DRAUpdateCallList() {
 	for (cRSU &_RSU : m_RSUVec)
 		_RSU.DRAProcessSystemLevelRSUSwitchList(m_ATTI, m_VeUEVec, m_EventVec, m_DRA_RSUSwitchEventIdList);
 
-	if (m_DRA_RSUSwitchEventIdList.size() != 0) throw Exp("cSystem::DRAUpdateCallList()");
 
-	g_OutDRAProcessInfo << "    处理完事件链表、等待链表以及切换链表后的呼叫链表：" << endl;
-	for (cRSU &_RSU : m_RSUVec) {
-		_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 0);//写入呼叫链表的信息
-		//_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 1);//写入等待链表的信息
-	}
-	g_OutDRAProcessInfo << endl;
+	/*注意，这里再次处理一遍等待链表，因为RSU切换链表会将切换的事件压入等待链表，或者接纳链表*/
+	for (cRSU &_RSU : m_RSUVec)
+		_RSU.DRAProcessRSULevelWaitingVeUEIdList(m_ATTI, m_VeUEVec, m_EventVec, m_DRA_RSUSwitchEventIdList);
 }
 
 void cSystem::DRASelectBasedOnP13() {
@@ -277,12 +292,11 @@ void cSystem::DRASelectBasedOnP123() {
 
 
 
+
 void cSystem::DRAConflictListener() {
-	g_OutDRAProcessInfo << "    采集完冲突之后的冲突链表：" << endl;
 	for (cRSU &_RSU : m_RSUVec) {
 		_RSU.DRAConflictListener(m_ATTI);
 	}
-	g_OutDRAProcessInfo << endl;
 
 	g_OutDRAProcessInfo << "    处理完冲突表后的等待链表：" << endl;
 	for (cRSU &_RSU : m_RSUVec) {

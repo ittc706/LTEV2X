@@ -7,6 +7,8 @@
 #include"System.h"
 using namespace std;
 
+extern int newCount;
+extern int deleteCount;
 
 int main() {
 	/*
@@ -42,14 +44,21 @@ int main() {
 	*/
 	/*≤‚ ‘---DRABasedOnP123()---*/
 	
-	cSystem _system;
-	_system.process();
+	try {
+		cSystem _system;
+		_system.process();
+	}
+	catch (Exp e) {
+		cout << e.what() << endl;
+	}
 
+	cout << "newCount: " << newCount << " , deleteCount: " << deleteCount << endl;
 
 	g_OutDRAScheduleInfo.close();
 	g_OutDRAProcessInfo.close();
 	g_OutClasterPerformInfo.close();
 	g_OutEventListInfo.close();
-	Log::out.close();
+	g_OutLogInfo.close();
+
 	system("pause");
 }

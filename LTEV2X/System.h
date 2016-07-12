@@ -70,14 +70,15 @@ public :
 	eDRAMode m_DRAMode;
 
 	/*
-	* DRA情况下RSU切换导致信息无法正常发送的VeUEId集合
-	* 用于存放以下两种情况的VeUEId
-	* VeUE发送信息完毕之前，进行了分簇，且分入了与原来不同的簇内
-	* VeUE发送信息冲突，并且已经添加进对应RSU的冲突链表，但是在进行下一次重传之前，进行了分簇，并且分入了与原来不同的簇内
-	* 总而言之，是存储信息发送尚未成功且发生VeUE所属RSU切换的VeUEId
+	* DRA情况下RSU切换导致信息无法正常发送的eventId集合
+	* 用于存放以下两种情况的eventId
+	* VeUE发送信息完毕之前，进行了分簇，且分入了与原来不同的簇内(！！！尚未处理这个情况！！！）
+	* VeUE发送信息出现冲突，并且已经添加进对应RSU的等候链表，但是在进行下一次重传之前，进行了分簇，并且分入了与原来不同的簇内
+	* 总而言之，是存储信息发送尚未成功且发生VeUE所属RSU切换的eventId
 	* 该链表会在进行分簇之后全部转存入对应RSU的WaitingSet中
 	*/
 	std::list<int> m_DRA_RSUSwitchEventIdList;
+
 	/*--------------------接口函数--------------------*/
 	void DRASchedule();
 
@@ -86,7 +87,7 @@ private:
 	void DRAInformationClean();//资源分配信息清空
 	void DRAPerformCluster(bool clusterFlag);//对RSU内的VeUE进行分簇
 	void DRAGroupSizeBasedTDM(bool clusterFlag);//基于簇大小的时分复用
-	void DRAUpdateCallList();//建立呼叫链表
+	void DRAUpdateAdmissionList();//建立接纳链表
 
 
 	void DRASelectBasedOnP13();//基于P1和P3的资源分配

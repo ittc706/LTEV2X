@@ -8,10 +8,10 @@ using namespace std;
 int *Log::ATTI = nullptr;
 int *Log::STTI = nullptr;
 
-ofstream Log::out= ofstream("DRAOutput\\LogInfo.txt");
 
-void Log::log(std::string TAG, std::string msg) {
-	out << "[ ATTI = " << left << setw(4) << *ATTI << " , RTTI = " << left << setw(4) << *ATTI - *STTI << " ] ";
+
+void Log::log(std::ofstream &out, std::string TAG, std::string msg) {
+	out << "[ ATTI = " << left << setw(3) << *ATTI << " , RTTI = " << left << setw(3) << *ATTI - *STTI << " ] ";
 	out << "    " << left << setw(8) << TAG;
 	out << "    " << msg << endl;
 }

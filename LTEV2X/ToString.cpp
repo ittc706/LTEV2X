@@ -132,7 +132,23 @@ string cRSU::toString(int n) {
 string sDRAScheduleInfo::toLogString(int n) {
 	ostringstream ss;
 	ss<<"[ eventId = ";
-	ss << left << setw(5) << eventId;
-	ss << " , FBIdx = " << left << setw(5) << FBIdx<< " ] ";
+	ss << left << setw(3) << eventId;
+	ss << " , FBIdx = " << left << setw(3) << FBIdx<< " ] ";
+	return ss.str();
+}
+
+
+std::string sDRAScheduleInfo::toString(int n) {
+	string indent;
+	for (int i = 0;i < n;i++)
+		indent.append("    ");
+	ostringstream ss;
+	ss << indent << "{";
+	ss << "eventId = " << eventId;
+	ss << " , occupy Interval = {";
+	for (tuple<int, int> t : occupiedIntervalList) {
+		ss << "[ " << get<0>(t) << " , " << get<1>(t) << " ] , ";
+	}
+	ss << "} }";
 	return ss.str();
 }

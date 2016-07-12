@@ -24,12 +24,12 @@ void cSystem::process() {
 }
 
 void cSystem::configure() {//系统仿真参数配置
-	m_NTTI = 200;//仿真TTI时间
+	m_NTTI = 50;//仿真TTI时间
 	m_Config.periodicEventNTTI = 20;
 	m_Config.locationUpdateNTTI = 50;
 
-	m_Config.VUENum = 10;
-	m_Config.RSUNum = 4;
+	m_Config.VUENum = 20;
+	m_Config.RSUNum = 2;
 	m_Config.eNBNum = 1;
 }
 
@@ -78,10 +78,10 @@ void cSystem::buildEventList() {
 			list<int>lst = startTTIVec[TTIOffset];
 			for (int VeUEId : lst) {
 				if (VeUEId == -1) {//非法ID，可在此插入随机性事件
-								   /*-----------------------WARN-----------------------
-								   * 这里可以插入随机性事件，为了保证始终能运行到这里（列表不为空即可），
-								   * 在初始化lst的时候插入了非法的VeUEId=-1
-								   *-----------------------WARN-----------------------*/
+				/*-----------------------WARN-----------------------
+				* 这里可以插入随机性事件，为了保证始终能运行到这里（列表不为空即可），
+				* 在初始化lst的时候插入了非法的VeUEId=-1
+				*-----------------------WARN-----------------------*/
 				}
 				else {//合法ID，添加该事件
 					if (RTTI + TTIOffset < m_NTTI) {

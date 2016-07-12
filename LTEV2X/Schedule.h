@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#include<list>
 #include<utility>
 #include<iostream>
 #include<tuple>
@@ -53,12 +54,14 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 
 struct sDRAScheduleInfo {
 	int eventId;//事件编号
+	int RSUId;//RSU编号
 	int FBIdx;//频域块编号
-	std::vector<std::tuple<int, int>> occupiedInterval;//当前VeUE进行传输的实际TTI区间（闭区间）
+	std::list<std::tuple<int, int>> occupiedIntervalList;//当前VeUE进行传输的实际TTI区间（闭区间）
 
 	sDRAScheduleInfo() {}
-	sDRAScheduleInfo(int ATTI,int eventId,int FBIdx, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
+	sDRAScheduleInfo(int ATTI,int eventId,int RSUId,int FBIdx, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedIntervalList(std::list<std::tuple<int, int>>(0)) {
 		this->eventId = eventId;
+		this->RSUId = RSUId;
 		this->FBIdx = FBIdx;
 		int begin = std::get<0>(ClasterTTI),
 			end = std::get<1>(ClasterTTI),
@@ -67,21 +70,23 @@ struct sDRAScheduleInfo {
 		int nextTurnBeginTTI = ATTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
 		int remainTTI = end - relativeTTI + 1;//当前一轮调度中剩余可用的时隙数量
 		int overTTI = occupiedTTI - remainTTI;//超出当前一轮调度可用时隙数量的部分
-		if (overTTI <= 0) occupiedInterval.push_back(std::tuple<int, int>(ATTI, ATTI + occupiedTTI - 1));
+		if (overTTI <= 0) occupiedIntervalList.push_back(std::tuple<int, int>(ATTI, ATTI + occupiedTTI - 1));
 		else {
-			occupiedInterval.push_back(std::tuple<int, int>(ATTI, ATTI + remainTTI - 1));
+			occupiedIntervalList.push_back(std::tuple<int, int>(ATTI, ATTI + remainTTI - 1));
 			int n = overTTI / len;
-			for (int i = 0; i < n; i++) occupiedInterval.push_back(std::tuple<int, int>(nextTurnBeginTTI + i*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + len - 1 + i*gc_DRA_NTTI));
-			if (overTTI%len != 0) occupiedInterval.push_back(std::tuple<int, int>(nextTurnBeginTTI + n*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1));
+			for (int i = 0; i < n; i++) occupiedIntervalList.push_back(std::tuple<int, int>(nextTurnBeginTTI + i*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + len - 1 + i*gc_DRA_NTTI));
+			if (overTTI%len != 0) occupiedIntervalList.push_back(std::tuple<int, int>(nextTurnBeginTTI + n*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1));
 		}
 	}
 	
 	std::string toLogString(int n);
 
+	std::string toString(int n);
+
 	/*------------------测试用的函数------------------*/
 	void print() {
 		std::cout << "OccupiedInterval: ";
-		for (const std::tuple<int, int> &t : occupiedInterval)
+		for (const std::tuple<int, int> &t : occupiedIntervalList)
 			std::cout << "[ " << std::get<0>(t) << " , " << std::get<1>(t) << " ] , ";
 		std::cout << std::endl;
 	}

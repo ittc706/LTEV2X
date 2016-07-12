@@ -10,6 +10,7 @@ extern std::ofstream g_OutDRAScheduleInfo;
 extern std::ofstream g_OutDRAProcessInfo;
 extern std::ofstream g_OutClasterPerformInfo;
 extern std::ofstream g_OutEventListInfo;
+extern std::ofstream g_OutLogInfo;
 
 
 /*===========================================

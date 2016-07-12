@@ -80,7 +80,7 @@ public:
 	std::vector<std::list<int>> m_DRAClusterVeUEIdList;  
 
 	/*
-	* 用于存放当前TTI接纳的事件
+	* 用于存放当前TTI的接纳事件链表
 	*/
 	std::vector<int> m_DRAAdmissionEventIdList; 
 
@@ -89,13 +89,14 @@ public:
 	* 外层下标代表簇编号
 	* 内层下标代表FB编号
 	*/
-	std::vector<std::vector<std::list<sDRAScheduleInfo>>> m_DRAScheduleList;
+	std::vector<std::vector<sDRAScheduleInfo*>> m_DRAScheduleInfoTable;
 	
 	/*
-	* 冲突列表
-	* 列表元素是tuple，分别代表VeUEId,ClusterIdx以及FBIdx，其中ClusterIdx以及FBIdx是用于冲突处理释放对应的频域资源
+	* 当前时刻当前RSU内处于传输状态的事件链表
+	* 外层下标代表FB编号
+	* 内层用list用于处理冲突
 	*/
-	std::list<std::tuple<int,int,int>> m_DRAConflictInfoList;
+	std::vector<std::list<sDRAScheduleInfo*>> m_DRATransimitEventIdList;
 
 
 	/*
@@ -128,19 +129,29 @@ public:
 
 	/*
 	* 在System级别的函数内部被调用
-	* 用于处理System级别的事件链表，将事件转存入相应的链表中（RSU级别的呼叫链表或者RSU级别的等待链表）
+	* 用于处理System级别的事件链表，将事件转存入相应的链表中（RSU级别的接纳链表或者RSU级别的等待链表）
 	*/
-	void DRAProcessSystemLevelEventList(int ATTI, int STTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventList, const std::vector<std::list<int>>& systemEventTTIList);//从System级别的RSU切换链表转入当前时刻的呼叫链表
+	void DRAProcessSystemLevelEventList(int ATTI, int STTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventList, const std::vector<std::list<int>>& systemEventTTIList);
 
 	/*
 	* 在System级别的函数内部被调用
-	* 用于处理RSU级别的等待链表，将事件转存入相应的链表中（RSU级别的呼叫链表或者System级别的RSU切换链表）
+	* 用于处理RSU级别的调度表
+	* 将发生了RSU切换的的事件推送到System级别的RSU切换链表中，因此要优先于DRAProcessSystemLevelRSUSwitchList的调用
+	* 将发生了RSU内小簇切换的事件推送到RSU级别的等待链表中，因此要优先于DRAProcessRSULevelWaitingVeUEIdList的调用
 	*/
-	void DRAProcessRSULevelWaitingVeUEIdList(int ATTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventVec, std::list<int> &systemDRA_RSUSwitchEventIdList);//将上一个TTI冲突的用户()重新添加到呼叫链表中
+	void DRAProcessRSULevelScheduleInfoTable(int ATTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventVec, std::list<int> &systemDRA_RSUSwitchEventIdList);
 
 	/*
 	* 在System级别的函数内部被调用
-	* 用于处理System级别的RSU切换链表，将事件转存入相应的链表中（RSU级别的呼叫链表或者RSU级别的等待链表）
+	* 用于处理RSU级别的等待链表，
+	* 将发生了RSU切换的事件推送到System级别的RSU切换链表中
+	*/
+	void DRAProcessRSULevelWaitingVeUEIdList(int ATTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventVec, std::list<int> &systemDRA_RSUSwitchEventIdList);
+
+
+	/*
+	* 在System级别的函数内部被调用
+	* 用于处理System级别的RSU切换链表，将事件转存入相应的链表中（RSU级别的接纳链表或者RSU级别的等待链表）
 	* 处理完毕后，该链表的大小为0
 	*/
 	void DRAProcessSystemLevelRSUSwitchList(int ATTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventVec, std::list<int> &systemDRA_RSUSwitchEventIdList);
@@ -161,16 +172,11 @@ public:
 	*/
 	void DRASelectBasedOnP123(int ATTI,std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec);
 
+
 	/*
 	* 帧听冲突
 	*/
 	void DRAConflictListener(int ATTI);
-
-	/*
-	* 维护m_DRAScheduleList以及m_DRA_RBIsAvailable
-	*/
-	void DRAConflictSolve(int ATTI);
-
 
 	/*
 	* 将调度信息写入文件中，测试用！
@@ -193,20 +199,35 @@ private:
 	* 在DRAGroupSizeBasedTDM(...)内部被调用
 	* 用于求出vector容器最大值的索引
 	*/
-	int getMaxIndex(const std::vector<double>&v);
+	int getMaxIndex(const std::vector<double>&clusterSize);
 
 	/*
-	* 将CallVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	* 用于查找指定VeUEId所属的簇编号
+	* 不要用这个函数来判断VeUE是否属于该RSU（直接用VeUE对象的RSU编号来判断即可）
+	* 这个函数的使用前提是，已知车辆已在簇中
 	*/
-	void pushToRSULevelCallVeEventIdList(int eventId);
+	int getClusterIdxOfVeUE(int VeUEId);
 
 	/*
-	* 将WaitingVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	* 将RSU级别的CallVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToRSULevelAdmissionEventIdList(int eventId);
+
+	/*
+	* 将RSU级别的WaitingVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
 	void pushToRSULevelWaitingEventIdList(int eventId);
 
 	/*
-	* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	* 将System级别的SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
 	void pushToSystemLevelRSUSwitchEventIdList(int eventId, std::list<int>& systemDRA_RSUSwitchVeUEIdList);
+
+	/* 
+	* 将System级别的
+	*/
+
+	void pushToScheduleInfoTable(int clusterIdx,int FBIdx, sDRAScheduleInfo*p);
+
+	void pullFromScheduleInfoTable(int ATTI);
 };
