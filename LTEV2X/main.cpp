@@ -54,6 +54,8 @@ int main() {
 
 	cout << "newCount: " << newCount << " , deleteCount: " << deleteCount << endl;
 
+
+
 	g_OutDRAScheduleInfo.close();
 	g_OutDRAProcessInfo.close();
 	g_OutClasterPerformInfo.close();

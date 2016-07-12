@@ -24,11 +24,11 @@ void cSystem::process() {
 }
 
 void cSystem::configure() {//系统仿真参数配置
-	m_NTTI = 50;//仿真TTI时间
+	m_NTTI = 200;//仿真TTI时间
 	m_Config.periodicEventNTTI = 20;
 	m_Config.locationUpdateNTTI = 50;
 
-	m_Config.VUENum = 20;
+	m_Config.VUENum = 10;
 	m_Config.RSUNum = 2;
 	m_Config.eNBNum = 1;
 }
@@ -65,16 +65,16 @@ void cSystem::buildEventList() {
 	/*按时间顺序（事件的ID与时间相关，ID越小，事件发生的时间越小生成事件链表*/
 
 	//首先生成各个车辆的周期性事件的起始时刻
-	vector<list<int>> startTTIVec(gc_DRA_NTTI, list<int>({ -1 }));
+	vector<list<int>> startTTIVec(m_Config.periodicEventNTTI, list<int>({ -1 }));
 	for (int VeUEId = 0; VeUEId < m_Config.VUENum; VeUEId++) {
-		int startTTI = rand() % gc_DRA_NTTI;
+		int startTTI = rand() % m_Config.periodicEventNTTI;
 		startTTIVec[startTTI].push_back(VeUEId);
 	}
 
 	/*根据startTTIVec依次填充PERIOD事件*/
 	int RTTI = 0;
 	while (RTTI < m_NTTI) {
-		for (int TTIOffset = 0; TTIOffset < gc_DRA_NTTI; TTIOffset++) {
+		for (int TTIOffset = 0; TTIOffset < m_Config.periodicEventNTTI; TTIOffset++) {
 			list<int>lst = startTTIVec[TTIOffset];
 			for (int VeUEId : lst) {
 				if (VeUEId == -1) {//非法ID，可在此插入随机性事件
