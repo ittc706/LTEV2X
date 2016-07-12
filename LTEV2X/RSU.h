@@ -71,7 +71,7 @@ public:
 	* 内层下标代表FB块编号
 	* 若"TTI>m_DRA_RBIsAvailable[i][j]"代表簇i的资源块j可用
 	*/
-	std::vector<std::vector<int>> m_DRA_RBIsAvailable;  
+	std::vector<std::vector<bool>> m_DRA_RBIsAvailable;  
 
 	/*
 	* 存放VeUE的ID的容器
@@ -181,12 +181,12 @@ public:
 	/*
 	* 将调度信息写入文件中，测试用！
 	*/
-	void DRAWriteScheduleInfo(std::ofstream& out);
+	void DRAWriteScheduleInfo(std::ofstream& out,int ATTI);
 
 	/*
 	* 将处理流程中的调息写入文件中，测试用！
 	*/
-	void DRAWriteProcessInfo(std::ofstream& out,int type);
+	void DRAWriteProcessInfo(std::ofstream& out,int type, const std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 生成包含RSU信息的string

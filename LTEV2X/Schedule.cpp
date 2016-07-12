@@ -126,12 +126,12 @@ void cSystem::exchange(std::vector<sPFInfo>& v, int i, int j) {
 
 
 void cSystem::DRASchedule() {
-	//-----------------------TEST-----------------------
+	//-----------------------OUTPUT-----------------------
 	g_OutDRAScheduleInfo << "ATTI = " << left << setw(6) << m_ATTI << "RTTI = " << left << setw(6) << m_ATTI - m_STTI << endl;
 	g_OutDRAScheduleInfo << "{" << endl;
 	g_OutDRAProcessInfo << "ATTI = " << left << setw(6) << m_ATTI << "RTTI = " << left << setw(6) << m_ATTI - m_STTI << endl;
 	g_OutDRAProcessInfo << "{" << endl;
-	//-----------------------TEST-----------------------
+	//-----------------------OUTPUT-----------------------
 
 
 	bool clusterFlag = (m_ATTI - m_STTI) % m_Config.locationUpdateNTTI == 0;
@@ -155,7 +155,7 @@ void cSystem::DRASchedule() {
 	
 	g_OutDRAProcessInfo << "    处理完事件链表、等待链表以及切换链表后的接纳链表：" << endl;
 	for (cRSU &_RSU : m_RSUVec) {
-		_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 0);//写入接纳链表的信息
+		_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 0, m_EventVec);//写入接纳链表的信息
 	}
 	g_OutDRAProcessInfo << endl;
 
@@ -179,12 +179,12 @@ void cSystem::DRASchedule() {
 
 
 
-	//-----------------------TEST-----------------------
+	//-----------------------OUTPUT-----------------------
 	g_OutDRAScheduleInfo << "}" << endl;
 	g_OutDRAScheduleInfo << "\n\n" << endl;
 	g_OutDRAProcessInfo << "}" << endl;
 	g_OutDRAProcessInfo << "\n\n" << endl;
-	//-----------------------TEST-----------------------
+	//-----------------------OUTPUT-----------------------
 }
 
 
@@ -300,7 +300,7 @@ void cSystem::DRAConflictListener() {
 
 	g_OutDRAProcessInfo << "    处理完冲突表后的等待链表：" << endl;
 	for (cRSU &_RSU : m_RSUVec) {
-		_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 1);
+		_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 1, m_EventVec);
 	}
 	g_OutDRAProcessInfo << endl;
 }

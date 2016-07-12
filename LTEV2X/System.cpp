@@ -142,11 +142,11 @@ void cSystem::writeClusterPerformInfo(ofstream &out) {
 void cSystem::writeEventListInfo(ofstream &out) {
 	//打印事件链表信息
 	for (int i = 0; i < m_NTTI; i++) {
-		out << "ATTI = " << left << setw(6) << m_STTI + i << "RTTI = " << left << setw(6) << i << endl;
+		out << "[ ATTI = " << left << setw(3) << m_STTI + i << " , RTTI = " << left << setw(3) << i << " ]" << endl;
 		out << "{" << endl;
 		for (int eventId : m_EventTTIList[i]) {
 			sEvent& e = m_EventVec[eventId];
-			out << "    " << e.toString() << " }" << endl;
+			out << "    " << e.toString() << endl;
 		}
 		out << "}\n\n" << endl;
 	}

@@ -10,9 +10,9 @@ string sEvent::toString() {
 	ostringstream ss;
 	ss << "{ EventId = " << left << setw(3) << eventId;
 	ss << " , VeUEId = " << left << setw(3) << VeUEId;
-	ss << "[ ATTI = " << left << setw(3) << ATTI;
-	ss << " , RTTI = " << left << setw(3) << RTTI;
-	ss << "] £¬ Message = " << message.toString();
+	//ss << "[ ATTI = " << left << setw(3) << ATTI;
+	//ss << " , RTTI = " << left << setw(3) << RTTI;
+	ss << "] £¬ Message = " << message.toString() << " }";
 	return ss.str();
 }
 
