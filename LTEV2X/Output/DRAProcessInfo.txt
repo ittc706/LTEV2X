@@ -2,7 +2,7 @@ ATTI = 0     RTTI = 0
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 3 , }
+    RSU[1] 's CallVeUEIdList : { 0 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
@@ -27,8 +27,8 @@ ATTI = 1     RTTI = 1
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 1 , }
 
 }
 
@@ -38,15 +38,15 @@ ATTI = 2     RTTI = 2
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 2 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 1 , }
 
 }
 
@@ -55,7 +55,7 @@ ATTI = 2     RTTI = 2
 ATTI = 3     RTTI = 3     
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 1 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -63,8 +63,8 @@ ATTI = 3     RTTI = 3
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , }
+    RSU[1] 's WaitingVeUEIdList : { 1 , }
 
 }
 
@@ -73,16 +73,16 @@ ATTI = 3     RTTI = 3
 ATTI = 4     RTTI = 4     
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 4 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 4 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 15 , 16 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , }
+    RSU[1] 's WaitingVeUEIdList : { 1 , }
 
 }
 
@@ -91,16 +91,16 @@ ATTI = 4     RTTI = 4
 ATTI = 5     RTTI = 5     
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 7 , }
-    RSU[1] 's CallVeUEIdList : { 15 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , }
+    RSU[1] 's WaitingVeUEIdList : { 1 , }
 
 }
 
@@ -110,15 +110,15 @@ ATTI = 6     RTTI = 6
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 13 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , }
+    RSU[1] 's WaitingVeUEIdList : { 1 , }
 
 }
 
@@ -135,8 +135,8 @@ ATTI = 7     RTTI = 7
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , }
+    RSU[1] 's WaitingVeUEIdList : { 1 , 5 , }
 
 }
 
@@ -146,15 +146,15 @@ ATTI = 8     RTTI = 8
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 1 , 5 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -171,8 +171,8 @@ ATTI = 9     RTTI = 9
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -189,8 +189,8 @@ ATTI = 10    RTTI = 10
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , 7 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , }
 
 }
 
@@ -200,15 +200,15 @@ ATTI = 11    RTTI = 11
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 8 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , 7 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , }
 
 }
 
@@ -225,14 +225,68 @@ ATTI = 12    RTTI = 12
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 3 , 7 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , }
 
 }
 
 
 
 ATTI = 13    RTTI = 13    
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 3 , 7 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , }
+
+}
+
+
+
+ATTI = 14    RTTI = 14    
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { 10 , }
+    RSU[1] 's CallVeUEIdList : { 9 , }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 3 , 7 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , }
+
+}
+
+
+
+ATTI = 15    RTTI = 15    
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { 3 , }
+    RSU[1] 's CallVeUEIdList : { }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 7 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 11 , }
+
+}
+
+
+
+ATTI = 16    RTTI = 16    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -243,62 +297,8 @@ ATTI = 13    RTTI = 13
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , }
-
-}
-
-
-
-ATTI = 14    RTTI = 14    
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , }
-
-}
-
-
-
-ATTI = 15    RTTI = 15    
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 6 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , }
-
-}
-
-
-
-ATTI = 16    RTTI = 16    
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 8 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , 12 , }
+    RSU[0] 's WaitingVeUEIdList : { 7 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , }
 
 }
 
@@ -307,16 +307,16 @@ ATTI = 16    RTTI = 16
 ATTI = 17    RTTI = 17    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 8 , 9 , 17 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 14 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 14 , }
-    RSU[1] 's WaitingVeUEIdList : { 16 , 12 , }
+    RSU[0] 's WaitingVeUEIdList : { 7 , 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 13 , }
 
 }
 
@@ -326,21 +326,57 @@ ATTI = 18    RTTI = 18
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 10 , 16 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 14 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , }
+    RSU[0] 's WaitingVeUEIdList : { 7 , 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 13 , }
 
 }
 
 
 
 ATTI = 19    RTTI = 19    
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { 16 , }
+    RSU[1] 's CallVeUEIdList : { }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 7 , 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 13 , 15 , }
+
+}
+
+
+
+ATTI = 20    RTTI = 20    
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 17 , }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 7 , 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 13 , 15 , 18 , 20 , }
+
+}
+
+
+
+ATTI = 21    RTTI = 21    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -351,44 +387,8 @@ ATTI = 19    RTTI = 19
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 14 , 18 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 0 , }
-
-}
-
-
-
-ATTI = 20    RTTI = 20    
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 14 , 18 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 0 , 3 , }
-
-}
-
-
-
-ATTI = 21    RTTI = 21    
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 8 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 14 , 18 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 0 , 3 , }
+    RSU[0] 's WaitingVeUEIdList : { 7 , 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 13 , 15 , 18 , 20 , 21 , }
 
 }
 
@@ -405,8 +405,8 @@ ATTI = 22    RTTI = 22
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 14 , 18 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 0 , 3 , }
+    RSU[0] 's WaitingVeUEIdList : { 7 , 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 13 , 15 , 18 , 20 , 21 , 22 , }
 
 }
 
@@ -415,16 +415,16 @@ ATTI = 22    RTTI = 22
 ATTI = 23    RTTI = 23    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 23 , }
+    RSU[1] 's CallVeUEIdList : { 18 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 14 , 18 , 6 , 1 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 0 , 3 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 7 , 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 13 , 15 , 20 , 21 , 22 , }
 
 }
 
@@ -434,15 +434,15 @@ ATTI = 24    RTTI = 24
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 16 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 14 , 18 , 6 , 1 , 4 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 0 , 3 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 7 , 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 6 , 13 , 15 , 20 , 21 , 22 , 24 , }
 
 }
 
@@ -451,16 +451,16 @@ ATTI = 24    RTTI = 24
 ATTI = 25    RTTI = 25    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 5 , }
-    RSU[1] 's CallVeUEIdList : { 0 , 3 , }
+    RSU[0] 's CallVeUEIdList : { 7 , }
+    RSU[1] 's CallVeUEIdList : { 6 , 13 , 20 , 22 , 24 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
+    RSU[1] 's ConflictList : { [ 6 , 0 , 4 ] [ 13 , 0 , 4 ] [ 20 , 0 , 8 ] [ 24 , 0 , 8 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 14 , 18 , 6 , 1 , 4 , 7 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 15 , 21 , 6 , 13 , 20 , 24 , }
 
 }
 
@@ -470,15 +470,15 @@ ATTI = 26    RTTI = 26
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 6 , 13 , 20 , 24 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 14 , 18 , 6 , 1 , 4 , 7 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 15 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 15 , 21 , }
 
 }
 
@@ -495,8 +495,8 @@ ATTI = 27    RTTI = 27
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 14 , 18 , 6 , 1 , 4 , 7 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 15 , 13 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 15 , 21 , 25 , }
 
 }
 
@@ -505,16 +505,16 @@ ATTI = 27    RTTI = 27
 ATTI = 28    RTTI = 28    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 14 , 18 , 1 , 4 , 7 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { [ 1 , 1 , 0 ] [ 7 , 1 , 0 ] }
+    RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 1 , 7 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 15 , 13 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 15 , 21 , 25 , }
 
 }
 
@@ -523,7 +523,7 @@ ATTI = 28    RTTI = 28
 ATTI = 29    RTTI = 29    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 1 , 7 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -531,8 +531,8 @@ ATTI = 29    RTTI = 29
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 12 , 2 , 15 , 13 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 12 , }
+    RSU[1] 's WaitingVeUEIdList : { 15 , 21 , 25 , }
 
 }
 
@@ -541,16 +541,16 @@ ATTI = 29    RTTI = 29
 ATTI = 30    RTTI = 30    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 12 , 15 , 13 , }
+    RSU[0] 's CallVeUEIdList : { 12 , }
+    RSU[1] 's CallVeUEIdList : { 26 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 2 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , }
+    RSU[1] 's WaitingVeUEIdList : { 15 , 21 , 25 , }
 
 }
 
@@ -567,8 +567,8 @@ ATTI = 31    RTTI = 31
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 2 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , }
+    RSU[1] 's WaitingVeUEIdList : { 15 , 21 , 25 , 28 , }
 
 }
 
@@ -585,8 +585,8 @@ ATTI = 32    RTTI = 32
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 2 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , }
+    RSU[1] 's WaitingVeUEIdList : { 15 , 21 , 25 , 28 , }
 
 }
 
@@ -596,15 +596,15 @@ ATTI = 33    RTTI = 33
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 15 , 21 , 25 , 28 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 2 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -614,15 +614,15 @@ ATTI = 34    RTTI = 34
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 29 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 2 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 30 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -631,7 +631,7 @@ ATTI = 34    RTTI = 34
 ATTI = 35    RTTI = 35    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 30 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -639,8 +639,8 @@ ATTI = 35    RTTI = 35
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 2 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , }
+    RSU[1] 's WaitingVeUEIdList : { 31 , }
 
 }
 
@@ -650,15 +650,15 @@ ATTI = 36    RTTI = 36
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 12 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 2 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , }
+    RSU[1] 's WaitingVeUEIdList : { 31 , }
 
 }
 
@@ -667,7 +667,7 @@ ATTI = 36    RTTI = 36
 ATTI = 37    RTTI = 37    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 14 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -675,8 +675,8 @@ ATTI = 37    RTTI = 37
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 2 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 31 , 33 , 34 , }
 
 }
 
@@ -686,15 +686,15 @@ ATTI = 38    RTTI = 38
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 2 , 2 , 11 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 31 , 33 , 34 , }
 
 }
 
@@ -703,16 +703,16 @@ ATTI = 38    RTTI = 38
 ATTI = 39    RTTI = 39    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 18 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 35 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 19 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , 36 , }
+    RSU[1] 's WaitingVeUEIdList : { 31 , 33 , 34 , }
 
 }
 
@@ -721,7 +721,7 @@ ATTI = 39    RTTI = 39
 ATTI = 40    RTTI = 40    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 6 , }
+    RSU[0] 's CallVeUEIdList : { 36 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -729,8 +729,8 @@ ATTI = 40    RTTI = 40
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 9 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 19 , 3 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 31 , 33 , 34 , 37 , 38 , 40 , }
 
 }
 
@@ -740,15 +740,15 @@ ATTI = 41    RTTI = 41
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 39 , 31 , 34 , 37 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
+    RSU[1] 's ConflictList : { [ 31 , 2 , 1 ] [ 37 , 2 , 1 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 9 , 17 , 5 , 8 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 19 , 3 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 38 , 40 , 41 , 31 , 37 , }
 
 }
 
@@ -757,16 +757,16 @@ ATTI = 41    RTTI = 41
 ATTI = 42    RTTI = 42    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 9 , 17 , 8 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 31 , 37 , }
 
     采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { [ 9 , 3 , 3 ] [ 17 , 3 , 3 ] }
-    RSU[1] 's ConflictList : { }
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { [ 31 , 2 , 6 ] [ 37 , 2 , 6 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 9 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 19 , 3 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 38 , 40 , 41 , 42 , 31 , 37 , }
 
 }
 
@@ -775,16 +775,16 @@ ATTI = 42    RTTI = 42
 ATTI = 43    RTTI = 43    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 9 , 17 , }
-    RSU[1] 's CallVeUEIdList : { 10 , 19 , }
+    RSU[0] 's CallVeUEIdList : { 43 , }
+    RSU[1] 's CallVeUEIdList : { 31 , 37 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 1 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 3 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 38 , 40 , 41 , 42 , }
 
 }
 
@@ -794,15 +794,15 @@ ATTI = 44    RTTI = 44
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 16 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 1 , 4 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 3 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 38 , 40 , 41 , 42 , 44 , }
 
 }
 
@@ -811,7 +811,7 @@ ATTI = 44    RTTI = 44
 ATTI = 45    RTTI = 45    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 9 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -819,8 +819,8 @@ ATTI = 45    RTTI = 45
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 1 , 4 , 7 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 3 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 38 , 40 , 41 , 42 , 44 , }
 
 }
 
@@ -837,8 +837,8 @@ ATTI = 46    RTTI = 46
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 1 , 4 , 7 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 3 , 15 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 38 , 40 , 41 , 42 , 44 , }
 
 }
 
@@ -855,8 +855,8 @@ ATTI = 47    RTTI = 47
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 1 , 4 , 7 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 3 , 15 , 13 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 38 , 40 , 41 , 42 , 44 , 45 , }
 
 }
 
@@ -866,57 +866,21 @@ ATTI = 48    RTTI = 48
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 38 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 1 , 4 , 7 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 3 , 15 , 13 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 40 , 41 , 42 , 44 , 45 , }
 
 }
 
 
 
 ATTI = 49    RTTI = 49    
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 17 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 1 , 4 , 7 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 3 , 15 , 13 , 11 , }
-
-}
-
-
-
-ATTI = 50    RTTI = 50    
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 15 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 4 , 7 , 3 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , }
-
-}
-
-
-
-ATTI = 51    RTTI = 51    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -927,8 +891,44 @@ ATTI = 51    RTTI = 51
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 4 , 7 , 3 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 27 , 32 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 40 , 41 , 42 , 44 , 45 , }
+
+}
+
+
+
+ATTI = 50    RTTI = 50    
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { 41 , }
+    RSU[1] 's CallVeUEIdList : { }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 32 , 44 , 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 40 , 42 , 46 , 47 , 27 , }
+
+}
+
+
+
+ATTI = 51    RTTI = 51    
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 48 , }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 32 , 44 , 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 40 , 42 , 46 , 47 , 27 , }
 
 }
 
@@ -945,8 +945,8 @@ ATTI = 52    RTTI = 52
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 4 , 7 , 3 , 13 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 32 , 44 , 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 40 , 42 , 46 , 47 , 27 , }
 
 }
 
@@ -963,8 +963,8 @@ ATTI = 53    RTTI = 53
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 6 , 4 , 7 , 3 , 13 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 32 , 44 , 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 40 , 42 , 46 , 47 , 27 , }
 
 }
 
@@ -973,7 +973,7 @@ ATTI = 53    RTTI = 53
 ATTI = 54    RTTI = 54    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 6 , 13 , }
+    RSU[0] 's CallVeUEIdList : { 50 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -981,8 +981,8 @@ ATTI = 54    RTTI = 54
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 32 , 44 , 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 40 , 42 , 46 , 47 , 27 , 49 , }
 
 }
 
@@ -992,15 +992,15 @@ ATTI = 55    RTTI = 55
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 51 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 32 , 44 , 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 40 , 42 , 46 , 47 , 27 , 49 , }
 
 }
 
@@ -1010,6 +1010,24 @@ ATTI = 56    RTTI = 56
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 40 , 42 , 49 , }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 32 , 44 , 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 46 , 47 , 27 , }
+
+}
+
+
+
+ATTI = 57    RTTI = 57    
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { 52 , 32 , 44 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1017,14 +1035,14 @@ ATTI = 56    RTTI = 56
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , 12 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 46 , 47 , 27 , 53 , 54 , }
 
 }
 
 
 
-ATTI = 57    RTTI = 57    
+ATTI = 58    RTTI = 58    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -1035,26 +1053,8 @@ ATTI = 57    RTTI = 57
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , 12 , 14 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , }
-
-}
-
-
-
-ATTI = 58    RTTI = 58    
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 2 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , 12 , 14 , }
-    RSU[1] 's WaitingVeUEIdList : { 0 , 11 , 1 , 10 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 46 , 47 , 27 , 53 , 54 , }
 
 }
 
@@ -1064,15 +1064,15 @@ ATTI = 59    RTTI = 59
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 0 , 0 , 11 , 1 , 10 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 0 , 3 , 5 ] [ 1 , 3 , 5 ] [ 10 , 3 , 5 ] [ 0 , 3 , 6 ] [ 11 , 3 , 6 ] }
+    RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , 12 , 14 , 19 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 0 , 1 , 10 , 0 , 11 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 55 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 46 , 47 , 27 , 53 , 54 , 56 , }
 
 }
 
@@ -1082,15 +1082,15 @@ ATTI = 60    RTTI = 60
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 0 , 1 , 10 , 0 , 11 , }
+    RSU[1] 's CallVeUEIdList : { 60 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 0 , 3 , 5 ] [ 10 , 3 , 5 ] }
+    RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , 12 , 14 , 19 , 3 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 0 , 10 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 55 , 58 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 46 , 47 , 27 , 53 , 54 , 56 , 57 , }
 
 }
 
@@ -1099,16 +1099,16 @@ ATTI = 60    RTTI = 60
 ATTI = 61    RTTI = 61    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 8 , }
-    RSU[1] 's CallVeUEIdList : { 0 , 10 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 59 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , 12 , 14 , 19 , 3 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 55 , 58 , 61 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 46 , 47 , 27 , 53 , 54 , 56 , 57 , }
 
 }
 
@@ -1117,16 +1117,16 @@ ATTI = 61    RTTI = 61
 ATTI = 62    RTTI = 62    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 6 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 62 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 7 , 3 , 5 , 12 , 14 , 19 , 3 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 55 , 58 , 61 , }
+    RSU[1] 's WaitingVeUEIdList : { 33 , 46 , 47 , 27 , 53 , 54 , 56 , 57 , }
 
 }
 
@@ -1135,16 +1135,16 @@ ATTI = 62    RTTI = 62
 ATTI = 63    RTTI = 63    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 7 , 3 , 14 , 3 , }
-    RSU[1] 's CallVeUEIdList : { 1 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 33 , 46 , 53 , 54 , }
 
     采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { [ 7 , 2 , 4 ] [ 3 , 2 , 4 ] [ 14 , 2 , 4 ] }
+    RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 5 , 12 , 19 , 15 , 7 , 3 , 14 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 55 , 58 , 61 , }
+    RSU[1] 's WaitingVeUEIdList : { 47 , 27 , 56 , 57 , 63 , }
 
 }
 
@@ -1153,7 +1153,7 @@ ATTI = 63    RTTI = 63
 ATTI = 64    RTTI = 64    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 7 , 3 , 14 , }
+    RSU[0] 's CallVeUEIdList : { 55 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1161,8 +1161,8 @@ ATTI = 64    RTTI = 64
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 5 , 12 , 19 , 15 , 4 , 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 58 , 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 47 , 27 , 56 , 57 , 63 , }
 
 }
 
@@ -1171,7 +1171,7 @@ ATTI = 64    RTTI = 64
 ATTI = 65    RTTI = 65    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 7 , 9 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1179,8 +1179,8 @@ ATTI = 65    RTTI = 65
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 5 , 12 , 19 , 15 , 4 , 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 58 , 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 47 , 27 , 56 , 57 , 63 , }
 
 }
 
@@ -1197,8 +1197,8 @@ ATTI = 66    RTTI = 66
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 5 , 12 , 19 , 15 , 4 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 58 , 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 47 , 27 , 56 , 57 , 63 , }
 
 }
 
@@ -1208,15 +1208,15 @@ ATTI = 67    RTTI = 67
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 11 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 5 , 12 , 19 , 15 , 4 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 45 , 58 , 61 , 64 , 65 , }
+    RSU[1] 's WaitingVeUEIdList : { 47 , 27 , 56 , 57 , 63 , }
 
 }
 
@@ -1225,7 +1225,7 @@ ATTI = 67    RTTI = 67
 ATTI = 68    RTTI = 68    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 45 , 58 , 65 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1233,8 +1233,8 @@ ATTI = 68    RTTI = 68
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 5 , 12 , 19 , 15 , 4 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 47 , 27 , 56 , 57 , 63 , }
 
 }
 
@@ -1244,15 +1244,15 @@ ATTI = 69    RTTI = 69
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 47 , 27 , 57 , 63 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
+    RSU[1] 's ConflictList : { [ 57 , 3 , 9 ] [ 63 , 3 , 9 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 5 , 4 , 5 , 12 , 19 , 15 , 4 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 56 , 57 , 63 , }
 
 }
 
@@ -1261,16 +1261,16 @@ ATTI = 69    RTTI = 69
 ATTI = 70    RTTI = 70    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 5 , 4 , 5 , 12 , 4 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 67 , 57 , 63 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 56 , 66 , }
 
 }
 
@@ -1287,8 +1287,8 @@ ATTI = 71    RTTI = 71
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 56 , 66 , 68 , }
 
 }
 
@@ -1297,7 +1297,7 @@ ATTI = 71    RTTI = 71
 ATTI = 72    RTTI = 72    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 5 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1305,8 +1305,8 @@ ATTI = 72    RTTI = 72
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 56 , 66 , 68 , }
 
 }
 
@@ -1323,8 +1323,8 @@ ATTI = 73    RTTI = 73
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 61 , 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 56 , 66 , 68 , }
 
 }
 
@@ -1341,8 +1341,8 @@ ATTI = 74    RTTI = 74
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 61 , 64 , 70 , }
+    RSU[1] 's WaitingVeUEIdList : { 56 , 66 , 68 , 69 , }
 
 }
 
@@ -1351,16 +1351,16 @@ ATTI = 74    RTTI = 74
 ATTI = 75    RTTI = 75    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 19 , 15 , }
-    RSU[1] 's CallVeUEIdList : { 18 , }
+    RSU[0] 's CallVeUEIdList : { 61 , 70 , }
+    RSU[1] 's CallVeUEIdList : { 71 , 56 , 68 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 69 , }
 
 }
 
@@ -1377,8 +1377,8 @@ ATTI = 76    RTTI = 76
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , 13 , 12 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 64 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 69 , }
 
 }
 
@@ -1395,8 +1395,8 @@ ATTI = 77    RTTI = 77
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , 13 , 12 , 14 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 64 , 72 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 69 , 73 , 74 , }
 
 }
 
@@ -1413,8 +1413,8 @@ ATTI = 78    RTTI = 78
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , 13 , 12 , 14 , 2 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 10 , }
+    RSU[0] 's WaitingVeUEIdList : { 64 , 72 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 69 , 73 , 74 , }
 
 }
 
@@ -1423,16 +1423,16 @@ ATTI = 78    RTTI = 78
 ATTI = 79    RTTI = 79    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 16 , 13 , 2 , }
-    RSU[1] 's CallVeUEIdList : { 17 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 76 , }
 
     采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { [ 16 , 1 , 0 ] [ 13 , 1 , 0 ] }
+    RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 16 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 64 , 72 , 75 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 69 , 73 , 74 , }
 
 }
 
@@ -1441,7 +1441,7 @@ ATTI = 79    RTTI = 79
 ATTI = 80    RTTI = 80    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 16 , 13 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1449,8 +1449,8 @@ ATTI = 80    RTTI = 80
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 3 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 64 , 72 , 75 , 78 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 69 , 73 , 74 , 77 , 80 , }
 
 }
 
@@ -1459,16 +1459,16 @@ ATTI = 80    RTTI = 80
 ATTI = 81    RTTI = 81    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 8 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 81 , }
+    RSU[1] 's CallVeUEIdList : { 79 , 69 , 80 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 3 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 64 , 72 , 75 , 78 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 73 , 74 , 77 , }
 
 }
 
@@ -1477,16 +1477,16 @@ ATTI = 81    RTTI = 81
 ATTI = 82    RTTI = 82    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 6 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 64 , 72 , }
+    RSU[1] 's CallVeUEIdList : { 82 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 3 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 75 , 78 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 73 , 74 , 77 , }
 
 }
 
@@ -1503,8 +1503,8 @@ ATTI = 83    RTTI = 83
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 3 , 15 , }
-    RSU[1] 's WaitingVeUEIdList : { 10 , 0 , 18 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 75 , 78 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 73 , 74 , 77 , 83 , }
 
 }
 
@@ -1513,16 +1513,16 @@ ATTI = 83    RTTI = 83
 ATTI = 84    RTTI = 84    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 16 , }
-    RSU[1] 's CallVeUEIdList : { 10 , 0 , 1 , }
+    RSU[0] 's CallVeUEIdList : { 84 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 3 , 15 , 4 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 75 , 78 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 73 , 74 , 77 , 83 , }
 
 }
 
@@ -1539,8 +1539,8 @@ ATTI = 85    RTTI = 85
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 3 , 15 , 4 , 7 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 75 , 78 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 73 , 74 , 77 , 83 , }
 
 }
 
@@ -1549,7 +1549,7 @@ ATTI = 85    RTTI = 85
 ATTI = 86    RTTI = 86    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 13 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1557,8 +1557,8 @@ ATTI = 86    RTTI = 86
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 3 , 15 , 4 , 7 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 75 , 78 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 73 , 74 , 77 , 83 , }
 
 }
 
@@ -1568,15 +1568,15 @@ ATTI = 87    RTTI = 87
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 11 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 14 , 19 , 3 , 15 , 4 , 7 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 75 , 78 , 85 , }
+    RSU[1] 's WaitingVeUEIdList : { 66 , 73 , 74 , 77 , 83 , }
 
 }
 
@@ -1585,16 +1585,16 @@ ATTI = 87    RTTI = 87
 ATTI = 88    RTTI = 88    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 14 , 3 , 7 , 9 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 66 , 73 , 74 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 19 , 15 , 4 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 75 , 78 , 85 , }
+    RSU[1] 's WaitingVeUEIdList : { 77 , 83 , }
 
 }
 
@@ -1603,7 +1603,7 @@ ATTI = 88    RTTI = 88
 ATTI = 89    RTTI = 89    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 75 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1611,8 +1611,8 @@ ATTI = 89    RTTI = 89
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 19 , 15 , 4 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 78 , 85 , }
+    RSU[1] 's WaitingVeUEIdList : { 77 , 83 , }
 
 }
 
@@ -1622,15 +1622,15 @@ ATTI = 90    RTTI = 90
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 86 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 19 , 15 , 4 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 78 , 85 , }
+    RSU[1] 's WaitingVeUEIdList : { 77 , 83 , 87 , }
 
 }
 
@@ -1647,8 +1647,8 @@ ATTI = 91    RTTI = 91
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 19 , 15 , 4 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 78 , 85 , }
+    RSU[1] 's WaitingVeUEIdList : { 77 , 83 , 87 , 88 , }
 
 }
 
@@ -1665,8 +1665,8 @@ ATTI = 92    RTTI = 92
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 19 , 15 , 4 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 78 , 85 , }
+    RSU[1] 's WaitingVeUEIdList : { 77 , 83 , 87 , 88 , }
 
 }
 
@@ -1675,7 +1675,7 @@ ATTI = 92    RTTI = 92
 ATTI = 93    RTTI = 93    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 78 , 85 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1683,8 +1683,8 @@ ATTI = 93    RTTI = 93
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 19 , 15 , 4 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 77 , 83 , 87 , 88 , }
 
 }
 
@@ -1694,15 +1694,15 @@ ATTI = 94    RTTI = 94
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 77 , 83 , 87 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 12 , 19 , 15 , 4 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 90 , }
+    RSU[1] 's WaitingVeUEIdList : { 88 , 89 , }
 
 }
 
@@ -1711,7 +1711,7 @@ ATTI = 94    RTTI = 94
 ATTI = 95    RTTI = 95    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 12 , 4 , 5 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1719,8 +1719,8 @@ ATTI = 95    RTTI = 95
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 90 , }
+    RSU[1] 's WaitingVeUEIdList : { 88 , 89 , 91 , }
 
 }
 
@@ -1729,7 +1729,7 @@ ATTI = 95    RTTI = 95
 ATTI = 96    RTTI = 96    
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 12 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1737,8 +1737,8 @@ ATTI = 96    RTTI = 96
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 90 , }
+    RSU[1] 's WaitingVeUEIdList : { 88 , 89 , 91 , }
 
 }
 
@@ -1755,8 +1755,8 @@ ATTI = 97    RTTI = 97
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , 14 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 90 , 92 , }
+    RSU[1] 's WaitingVeUEIdList : { 88 , 89 , 91 , 93 , 94 , }
 
 }
 
@@ -1766,15 +1766,15 @@ ATTI = 98    RTTI = 98
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 10 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , 14 , 2 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 90 , 92 , }
+    RSU[1] 's WaitingVeUEIdList : { 88 , 89 , 91 , 93 , 94 , }
 
 }
 
@@ -1784,15 +1784,15 @@ ATTI = 99    RTTI = 99
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 0 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 15 , 14 , 2 , 19 , }
-    RSU[1] 's WaitingVeUEIdList : { 18 , 17 , 18 , }
+    RSU[0] 's WaitingVeUEIdList : { 90 , 92 , 95 , }
+    RSU[1] 's WaitingVeUEIdList : { 88 , 89 , 91 , 93 , 94 , 96 , }
 
 }
 
@@ -1801,16 +1801,16 @@ ATTI = 99    RTTI = 99
 ATTI = 100   RTTI = 100   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 3 , }
+    RSU[0] 's CallVeUEIdList : { 95 , 89 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 15 , 14 , 2 , 19 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 88 , 91 , 93 , 94 , 96 , 98 , 100 , 90 , }
 
 }
 
@@ -1820,15 +1820,15 @@ ATTI = 101   RTTI = 101
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 99 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 15 , 14 , 2 , 19 , 8 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 88 , 91 , 93 , 94 , 96 , 98 , 100 , 90 , 101 , }
 
 }
 
@@ -1837,16 +1837,16 @@ ATTI = 101   RTTI = 101
 ATTI = 102   RTTI = 102   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 17 , 19 , 15 , 19 , }
+    RSU[0] 's CallVeUEIdList : { 102 , }
+    RSU[1] 's CallVeUEIdList : { 88 , 91 , 94 , 98 , 90 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 15 , 1 , 3 ] [ 19 , 1 , 3 ] }
+    RSU[1] 's ConflictList : { [ 88 , 1 , 4 ] [ 94 , 1 , 4 ] [ 98 , 1 , 4 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 8 , 6 , 15 , 19 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 88 , 94 , 98 , }
 
 }
 
@@ -1855,16 +1855,16 @@ ATTI = 102   RTTI = 102
 ATTI = 103   RTTI = 103   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 15 , 15 , 19 , }
+    RSU[0] 's CallVeUEIdList : { 103 , }
+    RSU[1] 's CallVeUEIdList : { 88 , 94 , 98 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 15 , 1 , 6 ] [ 19 , 1 , 6 ] }
+    RSU[1] 's ConflictList : { [ 88 , 1 , 8 ] [ 94 , 1 , 8 ] [ 98 , 1 , 8 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 8 , 6 , 1 , 15 , 19 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 88 , 94 , 98 , }
 
 }
 
@@ -1873,16 +1873,16 @@ ATTI = 103   RTTI = 103
 ATTI = 104   RTTI = 104   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 4 , }
-    RSU[1] 's CallVeUEIdList : { 15 , 19 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 88 , 94 , 98 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 8 , 6 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -1891,7 +1891,7 @@ ATTI = 104   RTTI = 104
 ATTI = 105   RTTI = 105   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 9 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1899,8 +1899,8 @@ ATTI = 105   RTTI = 105
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 8 , 6 , 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -1917,8 +1917,8 @@ ATTI = 106   RTTI = 106
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 8 , 6 , 1 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -1927,7 +1927,7 @@ ATTI = 106   RTTI = 106
 ATTI = 107   RTTI = 107   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 105 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1935,8 +1935,8 @@ ATTI = 107   RTTI = 107
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , 16 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 8 , 6 , 1 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -1946,15 +1946,15 @@ ATTI = 108   RTTI = 108
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 8 , 7 , 13 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 8 , 2 , 2 ] [ 13 , 2 , 2 ] }
+    RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , 16 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 6 , 1 , 8 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -1964,15 +1964,15 @@ ATTI = 109   RTTI = 109
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 8 , 13 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , 16 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 6 , 1 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -1981,7 +1981,7 @@ ATTI = 109   RTTI = 109
 ATTI = 110   RTTI = 110   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 107 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -1989,8 +1989,8 @@ ATTI = 110   RTTI = 110
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 18 , 16 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 6 , 1 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , 106 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -1999,16 +1999,16 @@ ATTI = 110   RTTI = 110
 ATTI = 111   RTTI = 111   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 18 , 18 , 16 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 108 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 6 , 1 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , 106 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -2025,8 +2025,8 @@ ATTI = 112   RTTI = 112
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 6 , 1 , 17 , 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , 106 , }
+    RSU[1] 's WaitingVeUEIdList : { 93 , 96 , 100 , 101 , 104 , }
 
 }
 
@@ -2036,15 +2036,15 @@ ATTI = 113   RTTI = 113
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 93 , 96 , 101 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , 2 , 6 , 1 , 17 , 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , 106 , }
+    RSU[1] 's WaitingVeUEIdList : { 100 , 104 , }
 
 }
 
@@ -2053,16 +2053,16 @@ ATTI = 113   RTTI = 113
 ATTI = 114   RTTI = 114   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 14 , 2 , 6 , 1 , 5 , }
+    RSU[0] 's CallVeUEIdList : { 109 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 6 , 3 , 2 ] [ 5 , 3 , 2 ] }
+    RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 6 , 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , 106 , }
+    RSU[1] 's WaitingVeUEIdList : { 100 , 104 , 110 , }
 
 }
 
@@ -2072,15 +2072,15 @@ ATTI = 115   RTTI = 115
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 6 , 5 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , 106 , }
+    RSU[1] 's WaitingVeUEIdList : { 100 , 104 , 110 , 111 , }
 
 }
 
@@ -2090,15 +2090,15 @@ ATTI = 116   RTTI = 116
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 12 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 92 , 97 , 106 , }
+    RSU[1] 's WaitingVeUEIdList : { 100 , 104 , 110 , 111 , }
 
 }
 
@@ -2107,16 +2107,16 @@ ATTI = 116   RTTI = 116
 ATTI = 117   RTTI = 117   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 14 , }
+    RSU[0] 's CallVeUEIdList : { 112 , 92 , 106 , }
+    RSU[1] 's CallVeUEIdList : { 113 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 100 , 104 , 110 , 111 , 114 , }
 
 }
 
@@ -2125,16 +2125,16 @@ ATTI = 117   RTTI = 117
 ATTI = 118   RTTI = 118   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 10 , }
-    RSU[1] 's CallVeUEIdList : { 2 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 97 , }
+    RSU[1] 's WaitingVeUEIdList : { 100 , 104 , 110 , 111 , 114 , }
 
 }
 
@@ -2143,16 +2143,16 @@ ATTI = 118   RTTI = 118
 ATTI = 119   RTTI = 119   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 18 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 116 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , }
+    RSU[0] 's WaitingVeUEIdList : { 97 , 115 , }
+    RSU[1] 's WaitingVeUEIdList : { 100 , 104 , 110 , 111 , 114 , }
 
 }
 
@@ -2162,15 +2162,15 @@ ATTI = 120   RTTI = 120
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 120 , 100 , 104 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
+    RSU[1] 's ConflictList : { [ 120 , 3 , 6 ] [ 100 , 3 , 6 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 3 , }
+    RSU[0] 's WaitingVeUEIdList : { 97 , 115 , 117 , }
+    RSU[1] 's WaitingVeUEIdList : { 110 , 111 , 114 , 118 , 120 , 100 , }
 
 }
 
@@ -2180,15 +2180,15 @@ ATTI = 121   RTTI = 121
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 120 , 100 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 3 , 8 , }
+    RSU[0] 's WaitingVeUEIdList : { 97 , 115 , 117 , }
+    RSU[1] 's WaitingVeUEIdList : { 110 , 111 , 114 , 118 , 119 , 121 , }
 
 }
 
@@ -2197,16 +2197,16 @@ ATTI = 121   RTTI = 121
 ATTI = 122   RTTI = 122   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 0 , }
-    RSU[1] 's CallVeUEIdList : { 6 , }
+    RSU[0] 's CallVeUEIdList : { 97 , 117 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 3 , 8 , }
+    RSU[0] 's WaitingVeUEIdList : { 115 , 122 , }
+    RSU[1] 's WaitingVeUEIdList : { 110 , 111 , 114 , 118 , 119 , 121 , }
 
 }
 
@@ -2216,15 +2216,15 @@ ATTI = 123   RTTI = 123
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 1 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 3 , 8 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 115 , 122 , 123 , }
+    RSU[1] 's WaitingVeUEIdList : { 110 , 111 , 114 , 118 , 119 , 121 , }
 
 }
 
@@ -2234,15 +2234,15 @@ ATTI = 124   RTTI = 124
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 124 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 11 , 4 , 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 3 , 8 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 115 , 122 , 123 , }
+    RSU[1] 's WaitingVeUEIdList : { 110 , 111 , 114 , 118 , 119 , 121 , }
 
 }
 
@@ -2251,16 +2251,16 @@ ATTI = 124   RTTI = 124
 ATTI = 125   RTTI = 125   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 11 , }
-    RSU[1] 's CallVeUEIdList : { 3 , }
+    RSU[0] 's CallVeUEIdList : { 115 , 122 , 123 , }
+    RSU[1] 's CallVeUEIdList : { 119 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 16 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 8 , 15 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 110 , 111 , 114 , 118 , 121 , }
 
 }
 
@@ -2277,8 +2277,8 @@ ATTI = 126   RTTI = 126
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 16 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 17 , 19 , 8 , 15 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 110 , 111 , 114 , 118 , 121 , }
 
 }
 
@@ -2287,16 +2287,16 @@ ATTI = 126   RTTI = 126
 ATTI = 127   RTTI = 127   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 11 , }
-    RSU[1] 's CallVeUEIdList : { 17 , 19 , 15 , }
+    RSU[0] 's CallVeUEIdList : { 125 , }
+    RSU[1] 's CallVeUEIdList : { 110 , 111 , 114 , 118 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 17 , 1 , 3 ] [ 15 , 1 , 3 ] }
+    RSU[1] 's ConflictList : { [ 110 , 1 , 8 ] [ 111 , 1 , 8 ] [ 114 , 1 , 8 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 16 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 8 , 7 , 13 , 17 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 121 , 110 , 111 , 114 , }
 
 }
 
@@ -2306,39 +2306,21 @@ ATTI = 128   RTTI = 128
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 17 , 15 , }
+    RSU[1] 's CallVeUEIdList : { 110 , 111 , 114 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 16 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 8 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
 
 }
 
 
 
 ATTI = 129   RTTI = 129   
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 4 , 9 , }
-    RSU[1] 's CallVeUEIdList : { 17 , }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 8 , 7 , 13 , }
-
-}
-
-
-
-ATTI = 130   RTTI = 130   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -2349,8 +2331,26 @@ ATTI = 130   RTTI = 130
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 8 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
+
+}
+
+
+
+ATTI = 130   RTTI = 130   
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { 127 , }
+    RSU[1] 's CallVeUEIdList : { }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 126 , }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
 
 }
 
@@ -2360,15 +2360,15 @@ ATTI = 131   RTTI = 131
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 128 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 8 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
 
 }
 
@@ -2385,8 +2385,8 @@ ATTI = 132   RTTI = 132
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 8 , 7 , 13 , 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
 
 }
 
@@ -2396,15 +2396,15 @@ ATTI = 133   RTTI = 133
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 8 , 7 , 13 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
 
 }
 
@@ -2413,16 +2413,16 @@ ATTI = 133   RTTI = 133
 ATTI = 134   RTTI = 134   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 129 , }
+    RSU[1] 's CallVeUEIdList : { 130 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
 
 }
 
@@ -2432,15 +2432,15 @@ ATTI = 135   RTTI = 135
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 131 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 16 , }
-    RSU[1] 's WaitingVeUEIdList : { 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
 
 }
 
@@ -2449,7 +2449,7 @@ ATTI = 135   RTTI = 135
 ATTI = 136   RTTI = 136   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 16 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -2457,8 +2457,8 @@ ATTI = 136   RTTI = 136
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { }
-    RSU[1] 's WaitingVeUEIdList : { 5 , 12 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , }
+    RSU[1] 's WaitingVeUEIdList : { 121 , }
 
 }
 
@@ -2468,15 +2468,15 @@ ATTI = 137   RTTI = 137
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 134 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { }
-    RSU[1] 's WaitingVeUEIdList : { 5 , 12 , 14 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , 132 , }
+    RSU[1] 's WaitingVeUEIdList : { 121 , 133 , }
 
 }
 
@@ -2485,16 +2485,16 @@ ATTI = 137   RTTI = 137
 ATTI = 138   RTTI = 138   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 10 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 121 , 133 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { }
-    RSU[1] 's WaitingVeUEIdList : { 5 , 12 , 14 , 2 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , 132 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -2503,16 +2503,16 @@ ATTI = 138   RTTI = 138
 ATTI = 139   RTTI = 139   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 18 , }
-    RSU[1] 's CallVeUEIdList : { 5 , 12 , 14 , 2 , }
+    RSU[0] 's CallVeUEIdList : { 135 , }
+    RSU[1] 's CallVeUEIdList : { 136 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 5 , 3 , 2 ] [ 14 , 3 , 2 ] }
+    RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 5 , 14 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , 132 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -2522,15 +2522,15 @@ ATTI = 140   RTTI = 140
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 5 , 14 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , 132 , 137 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 140 , }
 
 }
 
@@ -2540,15 +2540,15 @@ ATTI = 141   RTTI = 141
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 141 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , }
+    RSU[0] 's WaitingVeUEIdList : { 126 , 132 , 137 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 140 , 139 , }
 
 }
 
@@ -2557,16 +2557,16 @@ ATTI = 141   RTTI = 141
 ATTI = 142   RTTI = 142   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 6 , }
+    RSU[0] 's CallVeUEIdList : { 126 , 132 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , }
+    RSU[0] 's WaitingVeUEIdList : { 137 , 142 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 140 , 139 , }
 
 }
 
@@ -2576,24 +2576,6 @@ ATTI = 143   RTTI = 143
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 1 , }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , 15 , }
-
-}
-
-
-
-ATTI = 144   RTTI = 144   
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 16 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -2601,14 +2583,14 @@ ATTI = 144   RTTI = 144
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 4 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , 15 , }
+    RSU[0] 's WaitingVeUEIdList : { 137 , 142 , 143 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 140 , 139 , }
 
 }
 
 
 
-ATTI = 145   RTTI = 145   
+ATTI = 144   RTTI = 144   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -2619,8 +2601,26 @@ ATTI = 145   RTTI = 145
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 4 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , 15 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 137 , 142 , 143 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 140 , 139 , 144 , }
+
+}
+
+
+
+ATTI = 145   RTTI = 145   
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 140 , 144 , }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 137 , 142 , 143 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 139 , }
 
 }
 
@@ -2637,8 +2637,8 @@ ATTI = 146   RTTI = 146
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 4 , 9 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , 15 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 137 , 142 , 143 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 139 , }
 
 }
 
@@ -2647,7 +2647,7 @@ ATTI = 146   RTTI = 146
 ATTI = 147   RTTI = 147   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 0 , }
+    RSU[0] 's CallVeUEIdList : { 137 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -2655,8 +2655,8 @@ ATTI = 147   RTTI = 147
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 9 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , 15 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 143 , 145 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 139 , }
 
 }
 
@@ -2673,8 +2673,8 @@ ATTI = 148   RTTI = 148
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 9 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , 15 , 7 , 13 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 143 , 145 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 139 , }
 
 }
 
@@ -2691,8 +2691,8 @@ ATTI = 149   RTTI = 149
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 9 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 19 , 3 , 8 , 15 , 7 , 13 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 143 , 145 , }
+    RSU[1] 's WaitingVeUEIdList : { 138 , 139 , }
 
 }
 
@@ -2701,7 +2701,7 @@ ATTI = 149   RTTI = 149
 ATTI = 150   RTTI = 150   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 11 , }
+    RSU[0] 's CallVeUEIdList : { 147 , 138 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -2709,8 +2709,8 @@ ATTI = 150   RTTI = 150
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 19 , 3 , 8 , 13 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 15 , 7 , 9 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , }
 
 }
 
@@ -2719,16 +2719,16 @@ ATTI = 150   RTTI = 150
 ATTI = 151   RTTI = 151   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 15 , 9 , }
+    RSU[0] 's CallVeUEIdList : { 148 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { [ 15 , 1 , 4 ] [ 9 , 1 , 4 ] }
+    RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 19 , 3 , 8 , 13 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 15 , 9 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , }
 
 }
 
@@ -2738,15 +2738,15 @@ ATTI = 152   RTTI = 152
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 15 , 9 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 19 , 3 , 8 , 13 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , }
 
 }
 
@@ -2763,8 +2763,8 @@ ATTI = 153   RTTI = 153
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 19 , 3 , 8 , 13 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , }
 
 }
 
@@ -2773,16 +2773,16 @@ ATTI = 153   RTTI = 153
 ATTI = 154   RTTI = 154   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 5 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 149 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 19 , 3 , 8 , 13 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , }
 
 }
 
@@ -2799,8 +2799,8 @@ ATTI = 155   RTTI = 155
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 19 , 3 , 8 , 13 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , }
 
 }
 
@@ -2817,8 +2817,8 @@ ATTI = 156   RTTI = 156
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 4 , 19 , 3 , 8 , 13 , 17 , 12 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , }
 
 }
 
@@ -2827,40 +2827,22 @@ ATTI = 156   RTTI = 156
 ATTI = 157   RTTI = 157   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 4 , 3 , 17 , 12 , }
-    RSU[1] 's CallVeUEIdList : { 14 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 152 , 153 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , 154 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , }
 
 }
 
 
 
 ATTI = 158   RTTI = 158   
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 2 , 10 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
-
-}
-
-
-
-ATTI = 159   RTTI = 159   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -2871,8 +2853,26 @@ ATTI = 159   RTTI = 159
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , 154 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , }
+
+}
+
+
+
+ATTI = 159   RTTI = 159   
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 155 , 156 , }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , 154 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , }
 
 }
 
@@ -2881,16 +2881,16 @@ ATTI = 159   RTTI = 159
 ATTI = 160   RTTI = 160   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 3 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 157 , 158 , }
+    RSU[1] 's CallVeUEIdList : { 160 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , 154 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , }
 
 }
 
@@ -2907,8 +2907,8 @@ ATTI = 161   RTTI = 161
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , 8 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , 154 , 159 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , 161 , }
 
 }
 
@@ -2925,8 +2925,8 @@ ATTI = 162   RTTI = 162
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 142 , 146 , 139 , 154 , 159 , 162 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , 161 , }
 
 }
 
@@ -2935,16 +2935,16 @@ ATTI = 162   RTTI = 162
 ATTI = 163   RTTI = 163   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 15 , }
+    RSU[0] 's CallVeUEIdList : { 142 , 162 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 146 , 139 , 154 , 159 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , 161 , 163 , }
 
 }
 
@@ -2953,16 +2953,16 @@ ATTI = 163   RTTI = 163
 ATTI = 164   RTTI = 164   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 4 , }
-    RSU[1] 's CallVeUEIdList : { 16 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 164 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 146 , 139 , 154 , 159 , }
+    RSU[1] 's WaitingVeUEIdList : { 143 , 145 , 150 , 151 , 161 , 163 , }
 
 }
 
@@ -2972,15 +2972,15 @@ ATTI = 165   RTTI = 165
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 9 , }
+    RSU[1] 's CallVeUEIdList : { 143 , 145 , 150 , 151 , 161 , 163 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
+    RSU[1] 's ConflictList : { [ 145 , 2 , 8 ] [ 150 , 2 , 8 ] }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 146 , 139 , 154 , 159 , }
+    RSU[1] 's WaitingVeUEIdList : { 145 , 150 , }
 
 }
 
@@ -2989,16 +2989,16 @@ ATTI = 165   RTTI = 165
 ATTI = 166   RTTI = 166   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 146 , 154 , }
+    RSU[1] 's CallVeUEIdList : { 145 , 150 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , 8 , 6 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 139 , 159 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -3008,57 +3008,21 @@ ATTI = 167   RTTI = 167
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 1 , }
+    RSU[1] 's CallVeUEIdList : { 165 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 19 , 8 , 13 , 0 , 18 , 19 , 8 , 6 , 13 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 139 , 159 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
 
 
 ATTI = 168   RTTI = 168   
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 19 , 8 , 13 , 0 , 19 , 8 , 13 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { [ 19 , 3 , 5 ] [ 19 , 3 , 5 ] [ 8 , 3 , 9 ] [ 0 , 3 , 9 ] }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 6 , 11 , 19 , 19 , 8 , 0 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 7 , }
-
-}
-
-
-
-ATTI = 169   RTTI = 169   
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 19 , 19 , 8 , 0 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 6 , 11 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 7 , }
-
-}
-
-
-
-ATTI = 170   RTTI = 170   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -3069,8 +3033,44 @@ ATTI = 170   RTTI = 170
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 6 , 11 , 17 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 139 , 159 , }
+    RSU[1] 's WaitingVeUEIdList : { }
+
+}
+
+
+
+ATTI = 169   RTTI = 169   
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 139 , 159 , }
+    RSU[1] 's WaitingVeUEIdList : { }
+
+}
+
+
+
+ATTI = 170   RTTI = 170   
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { 166 , }
+    RSU[1] 's CallVeUEIdList : { }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 139 , 159 , 167 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -3080,14 +3080,14 @@ ATTI = 171   RTTI = 171
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 7 , 7 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 6 , 11 , 17 , }
+    RSU[0] 's WaitingVeUEIdList : { 139 , 159 , 167 , 168 , }
     RSU[1] 's WaitingVeUEIdList : { }
 
 }
@@ -3097,7 +3097,7 @@ ATTI = 171   RTTI = 171
 ATTI = 172   RTTI = 172   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 139 , 159 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -3105,7 +3105,7 @@ ATTI = 172   RTTI = 172
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 6 , 11 , 17 , 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 167 , 168 , }
     RSU[1] 's WaitingVeUEIdList : { }
 
 }
@@ -3123,7 +3123,7 @@ ATTI = 173   RTTI = 173
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 6 , 11 , 17 , 5 , }
+    RSU[0] 's WaitingVeUEIdList : { 167 , 168 , }
     RSU[1] 's WaitingVeUEIdList : { }
 
 }
@@ -3141,8 +3141,8 @@ ATTI = 174   RTTI = 174
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 6 , 11 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { 167 , 168 , }
+    RSU[1] 's WaitingVeUEIdList : { 169 , 170 , }
 
 }
 
@@ -3151,7 +3151,7 @@ ATTI = 174   RTTI = 174
 ATTI = 175   RTTI = 175   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 6 , 11 , }
+    RSU[0] 's CallVeUEIdList : { 167 , 168 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -3159,8 +3159,8 @@ ATTI = 175   RTTI = 175
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 17 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 169 , 170 , 171 , }
 
 }
 
@@ -3170,15 +3170,15 @@ ATTI = 176   RTTI = 176
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 169 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 17 , 5 , 12 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , }
 
 }
 
@@ -3188,15 +3188,15 @@ ATTI = 177   RTTI = 177
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 14 , }
+    RSU[1] 's CallVeUEIdList : { 172 , 173 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 17 , 5 , 12 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { 174 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , }
 
 }
 
@@ -3213,8 +3213,8 @@ ATTI = 178   RTTI = 178
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 18 , 17 , 5 , 12 , 2 , 10 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { 174 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , }
 
 }
 
@@ -3223,16 +3223,16 @@ ATTI = 178   RTTI = 178
 ATTI = 179   RTTI = 179   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 18 , 18 , 5 , }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 175 , 176 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 17 , 12 , 2 , 10 , 0 , 19 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { 174 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , }
 
 }
 
@@ -3241,16 +3241,16 @@ ATTI = 179   RTTI = 179
 ATTI = 180   RTTI = 180   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 177 , 178 , }
+    RSU[1] 's CallVeUEIdList : { 180 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 17 , 12 , 2 , 10 , 0 , 19 , 3 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { 174 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , }
 
 }
 
@@ -3267,8 +3267,8 @@ ATTI = 181   RTTI = 181
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 17 , 12 , 2 , 10 , 0 , 19 , 3 , 8 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , }
 
 }
 
@@ -3277,7 +3277,7 @@ ATTI = 181   RTTI = 181
 ATTI = 182   RTTI = 182   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 17 , 12 , 2 , 10 , 3 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -3285,8 +3285,8 @@ ATTI = 182   RTTI = 182
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , 182 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , }
 
 }
 
@@ -3296,15 +3296,15 @@ ATTI = 183   RTTI = 183
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 15 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , 182 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , 183 , }
 
 }
 
@@ -3313,16 +3313,16 @@ ATTI = 183   RTTI = 183
 ATTI = 184   RTTI = 184   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 4 , }
-    RSU[1] 's CallVeUEIdList : { 16 , }
+    RSU[0] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 184 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , 182 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , 183 , }
 
 }
 
@@ -3332,15 +3332,15 @@ ATTI = 185   RTTI = 185
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 9 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , 182 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , 183 , }
 
 }
 
@@ -3357,8 +3357,8 @@ ATTI = 186   RTTI = 186
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , 13 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , 182 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , 183 , }
 
 }
 
@@ -3375,14 +3375,32 @@ ATTI = 187   RTTI = 187
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , 13 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , 182 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , 183 , 185 , }
 
 }
 
 
 
 ATTI = 188   RTTI = 188   
+{
+    处理完事件链表、等待链表以及切换链表后的呼叫链表：
+    RSU[0] 's CallVeUEIdList : { 182 , }
+    RSU[1] 's CallVeUEIdList : { }
+
+    采集完冲突之后的冲突链表：
+    RSU[0] 's ConflictList : { }
+    RSU[1] 's ConflictList : { }
+
+    处理完冲突表后的等待链表：
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , 183 , 185 , }
+
+}
+
+
+
+ATTI = 189   RTTI = 189   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
@@ -3393,26 +3411,8 @@ ATTI = 188   RTTI = 188
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , 13 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , 7 , }
-
-}
-
-
-
-ATTI = 189   RTTI = 189   
-{
-    处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 17 , }
-    RSU[1] 's CallVeUEIdList : { }
-
-    采集完冲突之后的冲突链表：
-    RSU[0] 's ConflictList : { }
-    RSU[1] 's ConflictList : { }
-
-    处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , 13 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , }
+    RSU[1] 's WaitingVeUEIdList : { 170 , 171 , 181 , 183 , 185 , }
 
 }
 
@@ -3422,15 +3422,15 @@ ATTI = 190   RTTI = 190
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 170 , 171 , 181 , 183 , 185 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , 13 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 174 , 179 , 186 , 187 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -3439,7 +3439,7 @@ ATTI = 190   RTTI = 190
 ATTI = 191   RTTI = 191   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 174 , 186 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -3447,8 +3447,8 @@ ATTI = 191   RTTI = 191
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , 13 , 11 , }
-    RSU[1] 's WaitingVeUEIdList : { 1 , 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 179 , 187 , 188 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -3458,15 +3458,15 @@ ATTI = 192   RTTI = 192
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 1 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 0 , 19 , 8 , 6 , 13 , 11 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 179 , 187 , 188 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -3475,7 +3475,7 @@ ATTI = 192   RTTI = 192
 ATTI = 193   RTTI = 193   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 0 , 19 , 8 , 13 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -3483,8 +3483,8 @@ ATTI = 193   RTTI = 193
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 11 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 179 , 187 , 188 , }
+    RSU[1] 's WaitingVeUEIdList : { }
 
 }
 
@@ -3494,15 +3494,15 @@ ATTI = 194   RTTI = 194
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 190 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 11 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 179 , 187 , 188 , }
+    RSU[1] 's WaitingVeUEIdList : { 189 , }
 
 }
 
@@ -3512,15 +3512,15 @@ ATTI = 195   RTTI = 195
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { }
+    RSU[1] 's CallVeUEIdList : { 191 , }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 11 , 5 , }
-    RSU[1] 's WaitingVeUEIdList : { 7 , }
+    RSU[0] 's WaitingVeUEIdList : { 179 , 187 , 188 , }
+    RSU[1] 's WaitingVeUEIdList : { 189 , }
 
 }
 
@@ -3530,15 +3530,15 @@ ATTI = 196   RTTI = 196
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
     RSU[0] 's CallVeUEIdList : { }
-    RSU[1] 's CallVeUEIdList : { 7 , }
+    RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
     RSU[0] 's ConflictList : { }
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 11 , 5 , 12 , }
-    RSU[1] 's WaitingVeUEIdList : { }
+    RSU[0] 's WaitingVeUEIdList : { 179 , 187 , 188 , }
+    RSU[1] 's WaitingVeUEIdList : { 189 , }
 
 }
 
@@ -3547,7 +3547,7 @@ ATTI = 196   RTTI = 196
 ATTI = 197   RTTI = 197   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { }
+    RSU[0] 's CallVeUEIdList : { 179 , }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -3555,8 +3555,8 @@ ATTI = 197   RTTI = 197
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 11 , 5 , 12 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , }
+    RSU[0] 's WaitingVeUEIdList : { 187 , 188 , 194 , }
+    RSU[1] 's WaitingVeUEIdList : { 189 , 192 , 193 , }
 
 }
 
@@ -3573,8 +3573,8 @@ ATTI = 198   RTTI = 198
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 11 , 5 , 12 , 2 , 10 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , }
+    RSU[0] 's WaitingVeUEIdList : { 187 , 188 , 194 , }
+    RSU[1] 's WaitingVeUEIdList : { 189 , 192 , 193 , }
 
 }
 
@@ -3583,7 +3583,7 @@ ATTI = 198   RTTI = 198
 ATTI = 199   RTTI = 199   
 {
     处理完事件链表、等待链表以及切换链表后的呼叫链表：
-    RSU[0] 's CallVeUEIdList : { 0 , 19 , }
+    RSU[0] 's CallVeUEIdList : { }
     RSU[1] 's CallVeUEIdList : { }
 
     采集完冲突之后的冲突链表：
@@ -3591,8 +3591,8 @@ ATTI = 199   RTTI = 199
     RSU[1] 's ConflictList : { }
 
     处理完冲突表后的等待链表：
-    RSU[0] 's WaitingVeUEIdList : { 6 , 11 , 5 , 12 , 2 , 10 , 18 , }
-    RSU[1] 's WaitingVeUEIdList : { 14 , }
+    RSU[0] 's WaitingVeUEIdList : { 187 , 188 , 194 , }
+    RSU[1] 's WaitingVeUEIdList : { 189 , 192 , 193 , 195 , 196 , }
 
 }
 

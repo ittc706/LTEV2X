@@ -80,9 +80,9 @@ public:
 	std::vector<std::list<int>> m_DRAClusterVeUEIdList;  
 
 	/*
-	* 用于存放当前TTI呼叫VeUE的ID
+	* 用于存放当前TTI接纳的事件
 	*/
-	std::vector<int> m_DRACallVeUEIdList; 
+	std::vector<int> m_DRAAdmissionEventIdList; 
 
 	/*
 	* 存放调度调度信息
@@ -106,13 +106,13 @@ public:
 	*		2、事件链表中当前的事件触发，但VeUE未在可发送消息的时段，转入等待链表
 	*		3、VeUE在传输消息后，发生冲突，解决冲突后，转入等待链表
 	*/
-	std::list<int> m_DRAWaitingVeUEIdList;
+	std::list<int> m_DRAWaitingEventIdList;
 
 	/*--------------------接口函数--------------------*/
 	/*
 	* 根据此刻的TTI返回当前进行资源分配的簇的编号
 	*/
-	int DRAGetClusterIdx(int TTI);
+	int DRAGetClusterIdx(int ATTI);
 
 	/*
 	* 资源分配信息清空
@@ -130,46 +130,46 @@ public:
 	* 在System级别的函数内部被调用
 	* 用于处理System级别的事件链表，将事件转存入相应的链表中（RSU级别的呼叫链表或者RSU级别的等待链表）
 	*/
-	void DRAProcessSystemLevelEventList(int TTI, int STTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<std::list<sEvent>>& systemEventList);//从System级别的RSU切换链表转入当前时刻的呼叫链表
+	void DRAProcessSystemLevelEventList(int ATTI, int STTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventList, const std::vector<std::list<int>>& systemEventTTIList);//从System级别的RSU切换链表转入当前时刻的呼叫链表
 
 	/*
 	* 在System级别的函数内部被调用
 	* 用于处理RSU级别的等待链表，将事件转存入相应的链表中（RSU级别的呼叫链表或者System级别的RSU切换链表）
 	*/
-	void DRAProcessRSULevelWaitingVeUEIdList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::list<int> &systemDRA_RSUSwitchVeUEIdList);//将上一个TTI冲突的用户()重新添加到呼叫链表中
+	void DRAProcessRSULevelWaitingVeUEIdList(int ATTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventVec, std::list<int> &systemDRA_RSUSwitchEventIdList);//将上一个TTI冲突的用户()重新添加到呼叫链表中
 
 	/*
 	* 在System级别的函数内部被调用
 	* 用于处理System级别的RSU切换链表，将事件转存入相应的链表中（RSU级别的呼叫链表或者RSU级别的等待链表）
 	* 处理完毕后，该链表的大小为0
 	*/
-	void DRAProcessSystemLevelRSUSwitchList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::list<int> &systemDRA_RSUSwitchVeUEIdList);
+	void DRAProcessSystemLevelRSUSwitchList(int ATTI, const std::vector<cVeUE>& systemVeUEVec, const std::vector<sEvent>& systemEventVec, std::list<int> &systemDRA_RSUSwitchEventIdList);
 
 
 	/*
 	* 基于P1和P3的资源分配
 	*/
-	void DRASelectBasedOnP13(int TTI,std::vector<cVeUE>&systemVeUEVec);
+	void DRASelectBasedOnP13(int ATTI,std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 基于P2和P3的资源分配
 	*/
-	void DRASelectBasedOnP23(int TTI,std::vector<cVeUE>&systemVeUEVec);
+	void DRASelectBasedOnP23(int ATTI,std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 基于P1、P2和P3的资源分配
 	*/
-	void DRASelectBasedOnP123(int TTI,std::vector<cVeUE>&systemVeUEVec);
+	void DRASelectBasedOnP123(int ATTI,std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 帧听冲突
 	*/
-	void DRAConflictListener(int TTI);
+	void DRAConflictListener(int ATTI);
 
 	/*
 	* 维护m_DRAScheduleList以及m_DRA_RBIsAvailable
 	*/
-	void DRAConflictSolve(int TTI);
+	void DRAConflictSolve(int ATTI);
 
 
 	/*
@@ -198,15 +198,15 @@ private:
 	/*
 	* 将CallVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
-	void pushToRSULevelCallVeUEIdList(int VeUEId);
+	void pushToRSULevelCallVeEventIdList(int eventId);
 
 	/*
 	* 将WaitingVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
-	void pushToRSULevelWaitingVeUEIdList(int VeUEId);
+	void pushToRSULevelWaitingEventIdList(int eventId);
 
 	/*
 	* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
-	void pushToSystemLevelRSUSwitchVeUEIdList(int VeUEId, std::list<int>& systemDRA_RSUSwitchVeUEIdList);
+	void pushToSystemLevelRSUSwitchEventIdList(int eventId, std::list<int>& systemDRA_RSUSwitchVeUEIdList);
 };

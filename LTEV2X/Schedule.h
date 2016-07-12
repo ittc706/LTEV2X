@@ -52,24 +52,24 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 
 
 struct sDRAScheduleInfo {
-	int VeUEId;//VeUEID
+	int eventId;//事件编号
 	int FBIdx;//频域块编号
 	std::vector<std::tuple<int, int>> occupiedInterval;//当前VeUE进行传输的实际TTI区间（闭区间）
 
 	sDRAScheduleInfo() {}
-	sDRAScheduleInfo(int TTI,int VeUEId,int FBIdx, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
-		this->VeUEId = VeUEId;
+	sDRAScheduleInfo(int ATTI,int eventId,int FBIdx, std::tuple<int, int, int>ClasterTTI, int occupiedTTI) :occupiedInterval(std::vector<std::tuple<int, int>>(0)) {
+		this->eventId = eventId;
 		this->FBIdx = FBIdx;
 		int begin = std::get<0>(ClasterTTI),
 			end = std::get<1>(ClasterTTI),
 			len = std::get<2>(ClasterTTI);
-		int relativeTTI = TTI%gc_DRA_NTTI;
-		int nextTurnBeginTTI = TTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
+		int relativeTTI = ATTI%gc_DRA_NTTI;
+		int nextTurnBeginTTI = ATTI - relativeTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
 		int remainTTI = end - relativeTTI + 1;//当前一轮调度中剩余可用的时隙数量
 		int overTTI = occupiedTTI - remainTTI;//超出当前一轮调度可用时隙数量的部分
-		if (overTTI <= 0) occupiedInterval.push_back(std::tuple<int, int>(TTI, TTI + occupiedTTI - 1));
+		if (overTTI <= 0) occupiedInterval.push_back(std::tuple<int, int>(ATTI, ATTI + occupiedTTI - 1));
 		else {
-			occupiedInterval.push_back(std::tuple<int, int>(TTI, TTI + remainTTI - 1));
+			occupiedInterval.push_back(std::tuple<int, int>(ATTI, ATTI + remainTTI - 1));
 			int n = overTTI / len;
 			for (int i = 0; i < n; i++) occupiedInterval.push_back(std::tuple<int, int>(nextTurnBeginTTI + i*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + len - 1 + i*gc_DRA_NTTI));
 			if (overTTI%len != 0) occupiedInterval.push_back(std::tuple<int, int>(nextTurnBeginTTI + n*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1));

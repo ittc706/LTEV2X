@@ -6,16 +6,31 @@
 #include<sstream>
 using namespace std;
 
+string sEvent::toString() {
+	ostringstream ss;
+	ss << "{ EventId = " << left << setw(5) << eventId;
+	ss << " , VeUEId = " << left << setw(5) << VeUEId;
+	ss << "[ ATTI = " << left << setw(4) << ATTI;
+	ss << " , RTTI = " << left << setw(4) << RTTI;
+	ss << "]   Message = " << message.toString();
+	return ss.str();
+}
+
+
 string sMessage::toString() {
 	ostringstream ss;
-	ss << "[ byteNum = " << left<<setw(5)<<byteNum << " ,  DRA_ONTTI = " << left << setw(5) << DRA_ONTTI << " ]";
+	ss << "[ byteNum = " << left << setw(5) << byteNum;
+	ss << " , DRA_ONTTI = " << left << setw(5) << DRA_ONTTI;
+	ss << " , MessageType = " << (messageType == PERIOD ? "PEROID" : "ELSE") << " ] ";
 	return ss.str();
 }
 
 
 string cVeUE::toString() {
 	ostringstream ss;
-	ss << "{ VeUE Id = " << left << setw(5) << m_VEId << " , RSU Id = " << left << setw(5) << m_RSUId << " , Cluster Idx = " << left << setw(5) << m_ClusterIdx << m_Message.toString()  << " }";
+	ss << "{ VeUE Id = " << left << setw(5) << m_VeUEId;
+	ss << " , RSU Id = " << left << setw(5) << m_RSUId;
+	ss << " , Cluster Idx = " << left << setw(5) << m_ClusterIdx << " }";
 	return ss.str();
 }
 
@@ -55,8 +70,8 @@ string cRSU::toString() {
 
 string sDRAScheduleInfo::toLogString() {
 	ostringstream ss;
-	ss<<"[ VeUEID = ";
-	ss << left << setw(5) << VeUEId;
+	ss<<"[ eventId = ";
+	ss << left << setw(5) << eventId;
 	ss << " , FBIdx = " << left << setw(5) << FBIdx<< " ] ";
 	return ss.str();
 }

@@ -127,14 +127,14 @@ void cSystem::exchange(std::vector<sPFInfo>& v, int i, int j) {
 
 void cSystem::DRASchedule() {
 	//-----------------------TEST-----------------------
-	g_OutDRAScheduleInfo << "ATTI = " << left << setw(6) << m_TTI << "RTTI = " << left << setw(6) << m_TTI - m_STTI << endl;
+	g_OutDRAScheduleInfo << "ATTI = " << left << setw(6) << m_ATTI << "RTTI = " << left << setw(6) << m_ATTI - m_STTI << endl;
 	g_OutDRAScheduleInfo << "{" << endl;
-	g_OutDRAProcessInfo << "ATTI = " << left << setw(6) << m_TTI << "RTTI = " << left << setw(6) << m_TTI - m_STTI << endl;
+	g_OutDRAProcessInfo << "ATTI = " << left << setw(6) << m_ATTI << "RTTI = " << left << setw(6) << m_ATTI - m_STTI << endl;
 	g_OutDRAProcessInfo << "{" << endl;
 	//-----------------------TEST-----------------------
 
 
-	bool clusterFlag = (m_TTI - m_STTI) % m_Config.locationUpdateNTTI == 0;
+	bool clusterFlag = (m_ATTI - m_STTI) % m_Config.locationUpdateNTTI == 0;
 
 	/*资源分配信息清空:包括每个RSU内的m_CallList等*/
 	DRAInformationClean();
@@ -241,18 +241,18 @@ void cSystem::DRAGroupSizeBasedTDM(bool clusterFlag) {
 void cSystem::DRAUpdateCallList() {
 	/*首先，处理System级别的事件触发链表*/
 	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRAProcessSystemLevelEventList(m_TTI, m_STTI, m_VeUEVec, m_EventList);
+		_RSU.DRAProcessSystemLevelEventList(m_ATTI, m_STTI, m_VeUEVec, m_EventVec,m_EventTTIList);
 
 	/*其次，处理RSU级别的冲突链表*/
 	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRAProcessRSULevelWaitingVeUEIdList(m_TTI, m_VeUEVec, m_DRA_RSUSwitchVeUEIdList);
+		_RSU.DRAProcessRSULevelWaitingVeUEIdList(m_ATTI, m_VeUEVec, m_EventVec, m_DRA_RSUSwitchEventIdList);
 
 
 	/*最后，处理System级别的RSU切换链表*/
 	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRAProcessSystemLevelRSUSwitchList(m_TTI, m_VeUEVec, m_DRA_RSUSwitchVeUEIdList);
+		_RSU.DRAProcessSystemLevelRSUSwitchList(m_ATTI, m_VeUEVec, m_EventVec, m_DRA_RSUSwitchEventIdList);
 
-	if (m_DRA_RSUSwitchVeUEIdList.size() != 0) throw Exp("cSystem::DRAUpdateCallList()");
+	if (m_DRA_RSUSwitchEventIdList.size() != 0) throw Exp("cSystem::DRAUpdateCallList()");
 
 	g_OutDRAProcessInfo << "    处理完事件链表、等待链表以及切换链表后的呼叫链表：" << endl;
 	for (cRSU &_RSU : m_RSUVec) {
@@ -272,7 +272,7 @@ void cSystem::DRASelectBasedOnP23() {
 
 void cSystem::DRASelectBasedOnP123() {
 	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRASelectBasedOnP123(m_TTI,m_VeUEVec);
+		_RSU.DRASelectBasedOnP123(m_ATTI,m_VeUEVec, m_EventVec);
 }
 
 
@@ -280,7 +280,7 @@ void cSystem::DRASelectBasedOnP123() {
 void cSystem::DRAConflictListener() {
 	g_OutDRAProcessInfo << "    采集完冲突之后的冲突链表：" << endl;
 	for (cRSU &_RSU : m_RSUVec) {
-		_RSU.DRAConflictListener(m_TTI);
+		_RSU.DRAConflictListener(m_ATTI);
 	}
 	g_OutDRAProcessInfo << endl;
 

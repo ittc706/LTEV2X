@@ -1,19 +1,27 @@
 #pragma once
 #include<list>
+#include<string>
 #include"Message.h"
 
-struct sEvent {//消息类
+struct sEvent {//事件类
+	static int count;
 	/*数据成员*/
+	const int eventId = count++;//事件ID
 	int VeUEId;//用户ID
-	int callSetupTTI;//呼叫发起时刻
+	int ATTI;//事件触发绝对TTI
+	int RTTI;//事件触发相对TTI
 	sMessage message;
 
-	sEvent() {};
-	sEvent(int id, int time, eMessageType messageType) { 
-		VeUEId = id;
-		callSetupTTI = time; 
+	sEvent(){}
+
+	sEvent(int VeUEId, int ATTI, int RTTI,eMessageType messageType) { 
+		this->VeUEId = VeUEId;
+		this->ATTI = ATTI; 
+		this->RTTI = RTTI;
 		message = sMessage(messageType);
 	};
+
+	std::string toString();
 };
 
 

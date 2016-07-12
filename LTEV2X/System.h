@@ -18,12 +18,18 @@ private:
 	/*------------------数据成员------------------*/
 	sConfig m_Config;//系统配置参数
 	int m_STTI;//仿真起始时刻TTI（随机生成的非负整数作为起始时刻）
-	int m_TTI;//当前TTI时刻
+	int m_ATTI;//当前绝对的TTI时刻
 	int m_NTTI;//仿真总共的TTI
 	std::vector<ceNB> m_eNBVec;//基站容器
 	std::vector<cRSU> m_RSUVec;//RSU容器
 	std::vector<cVeUE> m_VeUEVec;//VeUE容器
-	std::vector<std::list<sEvent>> m_EventList;//呼叫发起事件链表，m_CallSetupList[i][j]代表第i个TTI的事件表
+	std::vector<sEvent> m_EventVec;//事件容器
+	
+	/*
+	* 外层下标为时间槽（代表RTTI）
+	* 与事件容器不同，事件触发链表将相同时刻触发的事件的ID置于相同的时间槽中
+	*/
+	std::vector<std::list<int>> m_EventTTIList;//事件触发链表，m_EventList[i]代表第i个TTI的事件表
 	
 public:
 	/*------------------系统流程控制------------------*/
@@ -32,7 +38,8 @@ public:
 	void destroy();//释放资源
 	void process();//系统仿真流程
 
-
+private:
+	void buildEventList();
 
 
 	/***************************************************************
@@ -70,7 +77,7 @@ public :
 	* 总而言之，是存储信息发送尚未成功且发生VeUE所属RSU切换的VeUEId
 	* 该链表会在进行分簇之后全部转存入对应RSU的WaitingSet中
 	*/
-	std::list<int> m_DRA_RSUSwitchVeUEIdList;
+	std::list<int> m_DRA_RSUSwitchEventIdList;
 	/*--------------------接口函数--------------------*/
 	void DRASchedule();
 

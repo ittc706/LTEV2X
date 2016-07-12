@@ -14,7 +14,10 @@
 
 using namespace std;
 
-
+int sEvent::count = 0;
+int cVeUE::count = 0;
+int ceNB::count = 0;
+int cRSU::count = 0;
 
 vector<int> Function::getVector(int size){
 	return vector<int>(size, 0);
@@ -75,14 +78,14 @@ void cSystem::initialization() {
 	srand((unsigned)time(NULL));//iomanip
 	m_STTI = 0;
 	//m_STTI = abs(rand() % 1000);
-	m_TTI = m_STTI;
-	Log::ATTI = &m_TTI;
+	m_ATTI = m_STTI;
+	Log::ATTI = &m_ATTI;
 	Log::STTI = &m_STTI;
 
 	m_eNBVec = vector<ceNB>(m_Config.eNBNum);
 	m_RSUVec = vector<cRSU>(m_Config.RSUNum);
 	m_VeUEVec = vector<cVeUE>(m_Config.VUENum);
-	m_EventList = vector<list<sEvent>>(m_NTTI);
+	m_EventTTIList = vector<list<int>>(m_NTTI);
 
 	
 
@@ -94,43 +97,23 @@ void cSystem::initialization() {
 	
 	m_DRAMode = P123;
 
-	/*生成事件链表*/
-	
-	/*首先给每辆车填充PERIOD事件*/
-	for (int VeUEId = 0;VeUEId < m_Config.VUENum;VeUEId++) {
-		int curRelativeTTI = rand() % m_Config.periodicEventNTTI;//VeUE周期性事件起始的相对TTI
-		while (curRelativeTTI < m_NTTI) {
-			int curAbsoluteTTI = curRelativeTTI + m_STTI;//绝对TTI时刻
-			m_EventList[curRelativeTTI].push_back(sEvent(VeUEId, curAbsoluteTTI, PERIOD));
-			curRelativeTTI += m_Config.periodicEventNTTI;
-		}
-	}
+	buildEventList();
+
 }
 
 
 
 
-int cVeUE::count = 0;
+
 
 cVeUE::cVeUE() {
-	m_VEId = count++;
-	switch (count % 3) {
-	case 0:
-		m_Message = sMessage(PERIOD);
-		break;
-	case 1:
-		m_Message = sMessage(EMERGENCY);
-		break;
-	case 2:
-		m_Message = sMessage(DATA);
-		break;
-	}
+	m_VeUEId = count++;
 }
 
 
 
 
-int ceNB::count = 0;
+
 
 ceNB::ceNB() {
 	m_eNBId = count++;
@@ -138,7 +121,7 @@ ceNB::ceNB() {
 
 
 
-int cRSU::count = 0;
+
 
 cRSU::cRSU() :m_DRAClusterNum(4) {
 	m_RSUId = count++;
