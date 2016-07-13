@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int cVeUE::count = 0;
+int cVeUE::m_VeUECount = 0;
 
 
 

@@ -7,6 +7,7 @@ ofstream g_OutDRAProcessInfo("DRAOutput\\DRAProcessInfo.txt");
 ofstream g_OutClasterPerformInfo("DRAOutput\\ClasterPerformInfo.txt");
 ofstream g_OutEventListInfo("DRAOutput\\EventListInfo.txt");
 ofstream g_OutLogInfo("DRAOutput\\LogInfo.txt");
+ofstream g_OutEventLogInfo("DRAOutput\\EventLogInfo.txt");
 
 
 int max(int t1, int t2) {

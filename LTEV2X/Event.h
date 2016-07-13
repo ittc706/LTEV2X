@@ -3,26 +3,45 @@
 #include<string>
 #include"Message.h"
 
-struct sEvent {//事件类
-	static int count;
+struct sMessage {//消息类
 	/*数据成员*/
-	const int eventId = count++;//事件ID
-	int VeUEId;//用户ID
-	int ATTI;//事件触发绝对TTI
-	int RTTI;//事件触发相对TTI
-	sMessage message;
+	eMessageType messageType;//该消息的类型
+	int byteNum; //该消息的比特数量
+	int DRA_ONTTI;  //在DRA方式下，传输该消息需要占用多少个TTI
 
-	sEvent(){}
+	/*构造函数*/
+	sMessage() {}
+	sMessage(eMessageType messageType);
 
-	sEvent(int VeUEId, int ATTI, int RTTI,eMessageType messageType) { 
-		this->VeUEId = VeUEId;
-		this->ATTI = ATTI; 
-		this->RTTI = RTTI;
-		message = sMessage(messageType);
-	};
-
+	/*功能函数*/
 	std::string toString();
 };
+
+struct sEvent {//事件类
+public:
+	static int s_EventCount;
+
+	/*数据成员*/
+	const int eventId = s_EventCount++;//事件ID
+	int VeUEId;//用户ID
+	int TTI;//事件触发的TTI时刻
+
+private :
+	std::list<std::string> logTrackList;//记录该事件的所有日志
+public:
+	sMessage message;
+
+	/*构造函数*/
+	sEvent(){}
+	sEvent(int VeUEId, int TTI, eMessageType messageType);
+
+	/*功能函数*/
+	std::string toString();//输出string类型的事件消息
+	std::string toLogString(int n);
+	void addLog(std::string s);//压入新的日志
+};
+
+
 
 
 

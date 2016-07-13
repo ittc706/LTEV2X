@@ -17,18 +17,21 @@ void cSystem::process() {
 	writeEventListInfo(g_OutEventListInfo);
 
 	for (int count = 0;count < m_NTTI;count++) {
-		cout << "Current RTTI = " << m_ATTI - m_STTI << endl;
+		cout << "Current TTI = " << m_TTI << endl;
 		DRASchedule();
-		m_ATTI++;
+		m_TTI++;
 	}
+
+	/*打印事件日志信息*/
+	writeEventLogInfo(g_OutEventLogInfo);
 }
 
 void cSystem::configure() {//系统仿真参数配置
-	m_NTTI = 200;//仿真TTI时间
+	m_NTTI = 50;//仿真TTI时间
 	m_Config.periodicEventNTTI = 20;
-	m_Config.locationUpdateNTTI = 50;
+	m_Config.locationUpdateNTTI = 30;
 
-	m_Config.VUENum = 10;
+	m_Config.VUENum = 30;
 	m_Config.RSUNum = 2;
 	m_Config.eNBNum = 1;
 }
@@ -36,11 +39,8 @@ void cSystem::configure() {//系统仿真参数配置
 
 void cSystem::initialization() {
 	srand((unsigned)time(NULL));//iomanip
-	m_STTI = 0;
-	//m_STTI = abs(rand() % 1000);
-	m_ATTI = m_STTI;
-	Log::ATTI = &m_ATTI;
-	Log::STTI = &m_STTI;
+	m_TTI = 0;
+	Log::TTI = &m_TTI;
 
 	m_eNBVec = vector<ceNB>(m_Config.eNBNum);
 	m_RSUVec = vector<cRSU>(m_Config.RSUNum);
@@ -72,8 +72,8 @@ void cSystem::buildEventList() {
 	}
 
 	/*根据startTTIVec依次填充PERIOD事件*/
-	int RTTI = 0;
-	while (RTTI < m_NTTI) {
+	int CTTI = 0;
+	while (CTTI < m_NTTI) {
 		for (int TTIOffset = 0; TTIOffset < m_Config.periodicEventNTTI; TTIOffset++) {
 			list<int>lst = startTTIVec[TTIOffset];
 			for (int VeUEId : lst) {
@@ -84,20 +84,26 @@ void cSystem::buildEventList() {
 				*-----------------------WARN-----------------------*/
 				}
 				else {//合法ID，添加该事件
-					if (RTTI + TTIOffset < m_NTTI) {
-						sEvent evt = sEvent(VeUEId, RTTI + TTIOffset + m_STTI, RTTI + TTIOffset, PERIOD);
+					if (CTTI + TTIOffset < m_NTTI) {
+						/*-----------------------WARN-----------------------
+						* 这里先生成sEvent的对象，然后将其压入m_EventVec
+						* 由于Vector<T>.push_back是压入传入对象的复制品，因此会调用sEvent的拷贝构造函数
+						* sEvent默认的拷贝构造函数会赋值id成员（因此是安全的）
+						*sEvent如果自定义拷贝构造函数，必须在构造函数的初始化部分拷贝id成员
+						*-----------------------WARN-----------------------*/
+						sEvent evt = sEvent(VeUEId, CTTI + TTIOffset, PERIOD);
 						m_EventVec.push_back(evt);
-						m_EventTTIList[RTTI + TTIOffset].push_back(evt.eventId);
+						m_EventTTIList[CTTI + TTIOffset].push_back(evt.eventId);
 					}
 				}
 			}
 		}
-		RTTI += m_Config.periodicEventNTTI;
+		CTTI += m_Config.periodicEventNTTI;
 	}
 }
 
 void cSystem::writeClusterPerformInfo(ofstream &out) {
-	out << "ATTI = " << left << setw(6) << m_ATTI << "RTTI = " << left << setw(6) << m_ATTI - m_STTI << endl;
+	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	out << "{" << endl;
 	//打印VeUE信息
 	out << "    VUE Info: " << endl;
@@ -125,10 +131,10 @@ void cSystem::writeClusterPerformInfo(ofstream &out) {
 	out << "\n\n\n";
 
 	//打印System级Switch链表
-	out << "    RSUSwitchList Info: " << endl;
+	out << "    SwitchList Info: " << endl;
 	out << "    {" << endl;
 	out << "        [ ";
-	for (int VeUEId : m_DRA_RSUSwitchEventIdList)
+	for (int VeUEId : m_DRASwitchEventIdList)
 		out << VeUEId << " , ";
 	out << "] " << endl;
 	out << "    }" << endl;
@@ -140,14 +146,24 @@ void cSystem::writeClusterPerformInfo(ofstream &out) {
 
 
 void cSystem::writeEventListInfo(ofstream &out) {
-	//打印事件链表信息
 	for (int i = 0; i < m_NTTI; i++) {
-		out << "[ ATTI = " << left << setw(3) << m_STTI + i << " , RTTI = " << left << setw(3) << i << " ]" << endl;
+		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
 		out << "{" << endl;
 		for (int eventId : m_EventTTIList[i]) {
 			sEvent& e = m_EventVec[eventId];
 			out << "    " << e.toString() << endl;
 		}
 		out << "}\n\n" << endl;
+	}
+}
+
+
+void cSystem::writeEventLogInfo(std::ofstream &out) {
+	for (int eventId = 0;eventId < m_EventVec.size();eventId++) {
+		out << "Event[" << left << setw(3) << eventId << "]  ";
+		out << "VeUE[" << m_EventVec[eventId].VeUEId << "]" << endl;
+		out << "{" << endl;
+		out << m_EventVec[eventId].toLogString(1);
+		out << "}" << endl;
 	}
 }

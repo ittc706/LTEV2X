@@ -5,8 +5,7 @@
 
 class Log {
 public:
-	static int * ATTI;
-	static int * STTI;
+	static int * TTI;
 
 	static void log(std::ofstream &out, std::string TAG, std::string msg);
 };

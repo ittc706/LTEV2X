@@ -61,6 +61,7 @@ int main() {
 	g_OutClasterPerformInfo.close();
 	g_OutEventListInfo.close();
 	g_OutLogInfo.close();
+	g_OutEventLogInfo.close();
 
 	system("pause");
 }

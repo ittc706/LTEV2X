@@ -9,10 +9,10 @@
 class cVeUE {
 	//-----------------------TEST-----------------------
 public:
-	static int count;
+	static int m_VeUECount;
 	//-----------------------TEST-----------------------
 public:
-	const int m_VeUEId=count++;//用户ID
+	const int m_VeUEId=m_VeUECount++;//用户ID
 	int m_RSUId;//所在的RSU的Id
 	int m_ClusterIdx;//所在簇de编号
 

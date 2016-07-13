@@ -6,10 +6,10 @@
 class ceNB {
 	//-----------------------TEST-----------------------
 public:
-	static int count;
+	static int s_eNBCount;
 	//-----------------------TEST-----------------------
 public:
-	const int m_eNBId=count++;//基站ID
+	const int m_eNBId=s_eNBCount++;//基站ID
 
 	std::list<int> m_RSUIdList;//该基站中的RSU容器（存储RSU的ID）
 	std::list<int> m_VeUEIdList;//该基站中的VeUE容器（存储VeUE的ID）

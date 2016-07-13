@@ -10,9 +10,19 @@ string sEvent::toString() {
 	ostringstream ss;
 	ss << "{ EventId = " << left << setw(3) << eventId;
 	ss << " , VeUEId = " << left << setw(3) << VeUEId;
-	//ss << "[ ATTI = " << left << setw(3) << ATTI;
-	//ss << " , RTTI = " << left << setw(3) << RTTI;
 	ss << "] £¬ Message = " << message.toString() << " }";
+	return ss.str();
+}
+
+
+string sEvent::toLogString(int n) {
+	string indent;
+	for (int i = 0;i < n;i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	for (string log : logTrackList)
+		ss << indent << log << endl;
 	return ss.str();
 }
 

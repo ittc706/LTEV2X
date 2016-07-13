@@ -5,13 +5,10 @@
 
 using namespace std;
 
-int *Log::ATTI = nullptr;
-int *Log::STTI = nullptr;
-
-
+int *Log::TTI = nullptr;
 
 void Log::log(std::ofstream &out, std::string TAG, std::string msg) {
-	out << "[ ATTI = " << left << setw(3) << *ATTI << " , RTTI = " << left << setw(3) << *ATTI - *STTI << " ] ";
+	out << "[ TTI = " << left << setw(3) << *TTI << "]";
 	out << "    " << left << setw(8) << TAG;
 	out << "    " << msg << endl;
 }
