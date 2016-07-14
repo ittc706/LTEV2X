@@ -18,6 +18,8 @@ extern std::ofstream g_OutEventLogInfo;
 *               常量定义
 * ==========================================*/
 const int gc_DRA_FBNum = 10;
+
+
 const int gc_RBNum = 100;   //子带数量
 const int gc_ByteNumPerRB=100;  //每个RB可传输的比特数量
 const int gc_DRA_NTTI=25; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)

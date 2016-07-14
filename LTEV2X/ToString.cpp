@@ -143,7 +143,7 @@ string sDRAScheduleInfo::toLogString(int n) {
 	ostringstream ss;
 	ss<<"[ eventId = ";
 	ss << left << setw(3) << eventId;
-	ss << " , FBIdx = " << left << setw(3) << FBIdx<< " ] ";
+	ss << " , FBIdx = " << left << setw(3) << patternIdx<< " ] ";
 	return ss.str();
 }
 

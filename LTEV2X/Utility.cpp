@@ -56,3 +56,11 @@ vector<int> Function::makeEqualInterverSequence(int begin, int interval, int num
 	return lst;
 }
 
+
+list<int> Function::makeContinuousSequence(int begin, int end) {
+	list<int> res;
+	for (int i = begin; i <= end; i++)
+		res.push_back(i);
+	return res;
+}
+

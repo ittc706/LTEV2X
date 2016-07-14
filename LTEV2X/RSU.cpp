@@ -18,6 +18,16 @@ using namespace std;
 
 int cRSU::s_RSUCount = 0;
 
+const int cRSU::s_DRAPatternNumPerPatternType[s_DRAPatternTypeNum] = { 20,5 };
+
+const int cRSU::s_DRA_FBNumPerPatternType[s_DRAPatternTypeNum] = { 1,5 };
+
+const std::list<int> cRSU::s_DRAPatternIdxList[s_DRAPatternTypeNum] = { 
+	Function::makeContinuousSequence(0,19),
+	Function::makeContinuousSequence(20,24)
+};
+
+
 cRSU::cRSU() :m_DRAClusterNum(4) {
 	m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
 	m_DRA_RBIsAvailable = vector<vector<bool>>(m_DRAClusterNum, vector<bool>(gc_DRA_FBNum, true));
@@ -54,6 +64,29 @@ int cRSU::getClusterIdxOfVeUE(int VeUEId) {
 	}
 	throw Exp("cRSU::getClusterIdxOfVeUE(int VeUEId)：该车不在当前RSU中");
 }
+
+
+list<tuple<int, int>> cRSU::buildScheduleIntervalList(int TTI,sEvent event, std::tuple<int, int, int>ClasterTTI) {
+	list<tuple<int,int>> ScheduleIntervalList;
+	int eventId = event.eventId;
+	int occupiedTTI = event.message.DRA_ONTTI / cRSU::s_DRA_FBNumPerPatternType[event.message.messageType];
+	int begin = std::get<0>(ClasterTTI),
+		end = std::get<1>(ClasterTTI),
+		len = std::get<2>(ClasterTTI);
+	int roundTTI = TTI%gc_DRA_NTTI;
+	int nextTurnBeginTTI = TTI - roundTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
+	int remainTTI = end - roundTTI + 1;//当前一轮调度中剩余可用的时隙数量
+	int overTTI = occupiedTTI - remainTTI;//超出当前一轮调度可用时隙数量的部分
+	if (overTTI <= 0) ScheduleIntervalList.push_back(std::tuple<int, int>(TTI, TTI + occupiedTTI - 1));
+	else {
+		ScheduleIntervalList.push_back(std::tuple<int, int>(TTI, TTI + remainTTI - 1));
+		int n = overTTI / len;
+		for (int i = 0; i < n; i++) ScheduleIntervalList.push_back(std::tuple<int, int>(nextTurnBeginTTI + i*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + len - 1 + i*gc_DRA_NTTI));
+		if (overTTI%len != 0) ScheduleIntervalList.push_back(std::tuple<int, int>(nextTurnBeginTTI + n*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1));
+	}
+}
+
+
 
 
 void cRSU::DRAInformationClean() {
@@ -326,12 +359,26 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 
 	int clusterIdx = DRAGetClusterIdx(TTI);
 
-	vector<int> curAvaliableFB;//当前TTI可用的频域块
+	/*
+	* 当前TTI可用的Pattern块编号
+	* 下标代表的Pattern种类的编号
+	* 每个list代表该种类Pattern可用的Pattern编号
+	*/
+	vector<int> curAvaliablePatternIdx[s_DRAPatternTypeNum];
+	int temCnt = 0;
+	for (int patternTypeIdx = 0; patternTypeIdx < s_DRAPatternTypeNum; patternTypeIdx++) {
+		for (int patternIdx : s_DRAPatternIdxList[patternTypeIdx]) {
+			if (m_DRA_RBIsAvailable[clusterIdx][patternIdx]) {
+				curAvaliablePatternIdx[patternTypeIdx].push_back(patternIdx);
+				temCnt++;
+			}
+		}
+	}
 
-	for (int FBIdx = 0; FBIdx < gc_DRA_FBNum; FBIdx++) 
-		if (m_DRA_RBIsAvailable[clusterIdx][FBIdx]) curAvaliableFB.push_back(FBIdx); //将可以占用的RB编号存入
+/*	for (int FBIdx = 0; FBIdx < gc_DRA_FBNum; FBIdx++) 
+		if (m_DRA_RBIsAvailable[clusterIdx][FBIdx]) curAvaliablePatternIdx.push_back(FBIdx);*/ //将可以占用的RB编号存入
 
-	if (curAvaliableFB.size() == 0) {//如果资源全部已经被占用了，那么将接入链表全部转入等待链表
+	if (temCnt == 0) {//如果资源全部已经被占用了，那么将接入链表全部转入等待链表
 		for (int eventId : m_DRAAdmitEventIdList)
 			pushToRSULevelWaitEventIdList(eventId);
 		return;//直接返回
@@ -341,18 +388,19 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 
 		int VeUEId = systemEventVec[eventId].VeUEId;
 
-		//为当前用户在可用的RB块中随机选择一个，每个用户自行随机选择可用FB块
-		int FBId = systemVeUEVec[VeUEId].RBSelectBasedOnP2(curAvaliableFB);
+		//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
+		int patternIdx = systemVeUEVec[VeUEId].RBSelectBasedOnP2(curAvaliablePatternIdx, systemEventVec[eventId].message.messageType);
 
 		//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
 		int occupiedTTI = systemEventVec[eventId].message.DRA_ONTTI;
 
 
 		//将资源标记为占用
-		m_DRA_RBIsAvailable[clusterIdx][FBId] = false;
+		m_DRA_RBIsAvailable[clusterIdx][patternIdx] = false;
 
 		//将调度信息压入m_DRATransimitEventIdList中
-		m_DRATransimitEventIdList[FBId].push_back(new sDRAScheduleInfo(TTI, eventId, m_RSUId,FBId, m_DRAClusterTDRInfo[clusterIdx], occupiedTTI));
+		list<tuple<int,int>> scheduleIntervalList = buildScheduleIntervalList(TTI, systemEventVec[eventId], m_DRAClusterTDRInfo[clusterIdx]);
+		m_DRATransimitEventIdList[patternIdx].push_back(new sDRAScheduleInfo(eventId, m_RSUId, patternIdx, scheduleIntervalList));
 		newCount++;
 	}
 

@@ -1,17 +1,192 @@
-﻿  Event.cpp
-  正在生成代码...
-  正在编译...
-  main.cpp
-  eNB.cpp
-  VUE.cpp
-  ToString.cpp
-  System.cpp
-f:\ltev2x\ltev2x\system.cpp(162): warning C4018: “<”: 有符号/无符号不匹配
-  Schedule.cpp
-  RSU.cpp
-  Global.cpp
-  正在生成代码...
-  正在跳过...(未检测到相关更改)
-  linpack_z.cpp
-  blas1_z.cpp
-  LTEV2X.vcxproj -> F:\LTEV2X\Debug\LTEV2X.exe
+﻿生成启动时间为 2016/7/14 11:07:35。
+     1>项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         E:\Visual Studio 2015\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Event.cpp Global.cpp Numerical.cpp RSU.cpp Schedule.cpp System.cpp ToString.cpp VUE.cpp blas1_z.cpp eNB.cpp linpack_z.cpp main.cpp
+         main.cpp
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+         eNB.cpp
+     1>e:\ltev2x\ltev2x\vue.h(34): error C2653: “cRSU”: 不是类或命名空间名称
+     1>e:\ltev2x\ltev2x\vue.h(34): error C2065: “s_DRAPatternTypeNum”: 未声明的标识符
+         VUE.cpp
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+         ToString.cpp
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+         System.cpp
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+         Schedule.cpp
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(165): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(173): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(180): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(188): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(194): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(199): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2065: “cVeUE”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.h(204): error C2923: “std::vector”: 对于参数“_Ty”，“cVeUE”不是有效的 模板 类型变量
+     1>e:\ltev2x\ltev2x\schedule.cpp(259): error C2664: “void cRSU::DRAProcessSystemLevelEventList(int,const std::vector &,std::vector<sEvent,std::allocator<_Ty>> &,const std::vector<std::list<int,std::allocator<int>>,std::allocator<std::list<int,std::allocator<int>>>> &)”: 无法将参数 2 从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector &”
+                 with
+                 [
+                     _Ty=sEvent
+                 ]
+                 and
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(259): note: 原因如下: 无法从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector”
+                 with
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(259): note: 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+     1>e:\ltev2x\ltev2x\schedule.cpp(263): error C2664: “void cRSU::DRAProcessRSULevelScheduleInfoTable(int,const std::vector &,std::vector<sEvent,std::allocator<_Ty>> &,std::list<int,std::allocator<int>> &)”: 无法将参数 2 从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector &”
+                 with
+                 [
+                     _Ty=sEvent
+                 ]
+                 and
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(263): note: 原因如下: 无法从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector”
+                 with
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(263): note: 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+     1>e:\ltev2x\ltev2x\schedule.cpp(267): error C2664: “void cRSU::DRAProcessRSULevelWaitEventIdList(int,const std::vector &,std::vector<sEvent,std::allocator<_Ty>> &,std::list<int,std::allocator<int>> &)”: 无法将参数 2 从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector &”
+                 with
+                 [
+                     _Ty=sEvent
+                 ]
+                 and
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(267): note: 原因如下: 无法从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector”
+                 with
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(267): note: 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+     1>e:\ltev2x\ltev2x\schedule.cpp(272): error C2664: “void cRSU::DRAProcessSystemLevelSwitchList(int,const std::vector &,std::vector<sEvent,std::allocator<_Ty>> &,std::list<int,std::allocator<int>> &)”: 无法将参数 2 从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector &”
+                 with
+                 [
+                     _Ty=sEvent
+                 ]
+                 and
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(272): note: 原因如下: 无法从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector”
+                 with
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(272): note: 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+     1>e:\ltev2x\ltev2x\schedule.cpp(277): error C2664: “void cRSU::DRAProcessRSULevelWaitEventIdList(int,const std::vector &,std::vector<sEvent,std::allocator<_Ty>> &,std::list<int,std::allocator<int>> &)”: 无法将参数 2 从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector &”
+                 with
+                 [
+                     _Ty=sEvent
+                 ]
+                 and
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(277): note: 原因如下: 无法从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“const std::vector”
+                 with
+                 [
+                     _Ty=cVeUE
+                 ]
+         e:\ltev2x\ltev2x\schedule.cpp(277): note: 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+     1>e:\ltev2x\ltev2x\schedule.cpp(290): error C2664: “void cRSU::DRASelectBasedOnP123(int,std::vector &,const std::vector<sEvent,std::allocator<_Ty>> &)”: 无法将参数 2 从“std::vector<cVeUE,std::allocator<_Ty>>”转换为“std::vector &”
+                 with
+                 [
+                     _Ty=sEvent
+                 ]
+                 and
+                 [
+                     _Ty=cVeUE
+                 ]
+         RSU.cpp
+     1>e:\ltev2x\ltev2x\vue.h(34): error C2653: “cRSU”: 不是类或命名空间名称
+     1>e:\ltev2x\ltev2x\vue.h(34): error C2065: “s_DRAPatternTypeNum”: 未声明的标识符
+     1>e:\ltev2x\ltev2x\rsu.cpp(392): error C2664: “int cVeUE::RBSelectBasedOnP2(const std::vector<int,std::allocator<_Ty>> (&)[1],eMessageType)”: 无法将参数 1 从“std::vector<int,std::allocator<_Ty>> [2]”转换为“const std::vector<int,std::allocator<_Ty>> (&)[1]”
+                 with
+                 [
+                     _Ty=int
+                 ]
+         e:\ltev2x\ltev2x\rsu.cpp(392): note: 原因如下: 无法从“std::vector<int,std::allocator<_Ty>> [2]”转换为“const std::vector<int,std::allocator<_Ty>> [1]”
+                 with
+                 [
+                     _Ty=int
+                 ]
+         e:\ltev2x\ltev2x\rsu.cpp(392): note: 没有使该转换得以执行的上下文
+         Global.cpp
+         Event.cpp
+         正在生成代码...
+         正在跳过...(未检测到相关更改)
+         linpack_z.cpp
+         blas1_z.cpp
+         Numerical.cpp
+     1>已完成生成项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”(Build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:04.10

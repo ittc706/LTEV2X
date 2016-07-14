@@ -1,6 +1,7 @@
 #pragma once
 #include<string>
 #include<vector>
+#include<list>
 #include<fstream>
 
 class Log {
@@ -25,4 +26,5 @@ public:
 
 	static std::vector<int> makeEqualInterverSequence(int begin, int interval, int num);
 
+	static std::list<int> makeContinuousSequence(int begin, int end);
 };

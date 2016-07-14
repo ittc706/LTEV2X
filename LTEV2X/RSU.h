@@ -4,6 +4,7 @@
 #include<list>
 #include<string>
 #include<fstream>
+#include<tuple>
 #include"Schedule.h"
 #include"Global.h"
 #include"VUE.h"
@@ -45,6 +46,35 @@ public:
 	---------------------分布式资源管理-----------------------------
 	-------------DRA:Distributed Resource Allocation----------------
 	****************************************************************/
+
+	//-----------------------static-------------------------------
+	/*
+	* Pattern的类型种类
+	* 每个Pattern所占的FB块连续
+	* 不同Pattern的区别是所占的FB块的个数
+	* 目前暂定两个，第一个是周期性事件，一个是数据业务事件
+	*/
+	static const int s_DRAPatternTypeNum=2;
+
+	/*
+	* 在全频段每个Pattern种类对应的Pattern数量
+	* 下标对应着eMessageType中定义的事件类型的数值
+	* 比如，下标0对应着PERIOD；1对应着DATA
+	*/
+	static const int s_DRAPatternNumPerPatternType[s_DRAPatternTypeNum];
+
+	/*
+	* 每个Pattern种类所占的FB数量
+	*/
+	static const int s_DRA_FBNumPerPatternType[s_DRAPatternTypeNum];
+
+	/*
+	* 每个Pattern种类对应的Pattern Idx的列表
+	*/
+	static const std::list<int> s_DRAPatternIdxList[s_DRAPatternTypeNum];
+
+	//-----------------------static-------------------------------
+
 	/*
 	* RSU的类型：
 	* 1、处于十字路口的RSU
@@ -68,13 +98,13 @@ public:
 	/*
 	* FB块释放该资源的TTI时刻（该TTI结束时解除）
 	* 外层下标代表簇编号
-	* 内层下标代表FB块编号
-	* 若"TTI>m_DRA_RBIsAvailable[i][j]"代表簇i的资源块j可用
+	* 内层下标代表Pattern编号
+	* 若"m_DRA_RBIsAvailable[i][j]==true"代表簇i的Pattern块j可用
 	*/
 	std::vector<std::vector<bool>> m_DRA_RBIsAvailable;  
 
 	/*
-	* 存放VeUE的ID的容器
+	* 存放每个簇的VeUE的ID的容器
 	* 下标代表簇的编号
 	*/
 	std::vector<std::list<int>> m_DRAClusterVeUEIdList;  
@@ -87,13 +117,13 @@ public:
 	/*
 	* 存放调度调度信息
 	* 外层下标代表簇编号
-	* 内层下标代表FB编号
+	* 内层下标代表Pattern编号
 	*/
 	std::vector<std::vector<sDRAScheduleInfo*>> m_DRAScheduleInfoTable;
 	
 	/*
 	* 当前时刻当前RSU内处于传输状态的事件链表
-	* 外层下标代表FB编号
+	* 外层下标代表Pattern编号
 	* 内层用list用于处理冲突
 	*/
 	std::vector<std::list<sDRAScheduleInfo*>> m_DRATransimitEventIdList;
@@ -108,6 +138,7 @@ public:
 	*		3、VeUE在传输消息后，发生冲突，解决冲突后，转入等待链表
 	*/
 	std::list<int> m_DRAWaitEventIdList;
+
 
 	/*--------------------接口函数--------------------*/
 	/*
@@ -207,6 +238,13 @@ private:
 	* 这个函数的使用前提是，已知车辆已在簇中
 	*/
 	int getClusterIdxOfVeUE(int VeUEId);
+
+
+	/*
+	* 计算当前事件所对应的调度区间
+	* 在函数DRASelectBasedOnP123(...)内部被调用
+    */
+	std::list<std::tuple<int, int>> buildScheduleIntervalList(int TTI,sEvent event, std::tuple<int, int, int>ClasterTTI);
 
 	/*
 	* 将RSU级别的CallVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
