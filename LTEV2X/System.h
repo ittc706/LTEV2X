@@ -101,6 +101,7 @@ private:
 	void writeClusterPerformInfo(std::ofstream &out);
 	void writeEventListInfo(std::ofstream &out);
 	void writeEventLogInfo(std::ofstream &out);
+	void writeVeUELocationUpdateLogInfo(std::ofstream &out);
 };
 
 

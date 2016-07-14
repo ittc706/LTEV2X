@@ -58,11 +58,12 @@ int main() {
 
 
 	g_OutDRAScheduleInfo.close();
-	g_OutDRAProcessInfo.close();
 	g_OutClasterPerformInfo.close();
 	g_OutEventListInfo.close();
 	g_OutLogInfo.close();
 	g_OutEventLogInfo.close();
+	g_OutVeUELocationUpdateLogInfo.close();
+
 
 	system("pause");
 }

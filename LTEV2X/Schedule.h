@@ -54,13 +54,15 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 
 struct sDRAScheduleInfo {
 	int eventId;//事件编号
+	int VeUEId;//车辆编号
 	int RSUId;//RSU编号
 	int patternIdx;//频域块编号
 	std::list<std::tuple<int, int>> occupiedIntervalList;//当前VeUE进行传输的实际TTI区间（闭区间）
 
 	sDRAScheduleInfo() {}
-	sDRAScheduleInfo(int eventId,int RSUId,int patternIdx, const std::list<std::tuple<int, int>> &occupiedIntervalList) {
+	sDRAScheduleInfo(int eventId,int VeUEId,int RSUId,int patternIdx, const std::list<std::tuple<int, int>> &occupiedIntervalList) {
 		this->eventId = eventId;
+		this->VeUEId = VeUEId;
 		this->RSUId = RSUId;
 		this->patternIdx = patternIdx;
 		this->occupiedIntervalList = occupiedIntervalList;
@@ -68,13 +70,10 @@ struct sDRAScheduleInfo {
 	
 	std::string toLogString(int n);
 
-	std::string toString(int n);
+	/*
+	* 生成表示调度信息的string对象
+	* 包括事件的ID，车辆的ID，以及要传输该事件所占用的TTI区间
+	*/
+	std::string toScheduleString(int n);
 
-	/*------------------测试用的函数------------------*/
-	void print() {
-		std::cout << "OccupiedInterval: ";
-		for (const std::tuple<int, int> &t : occupiedIntervalList)
-			std::cout << "[ " << std::get<0>(t) << " , " << std::get<1>(t) << " ] , ";
-		std::cout << std::endl;
-	}
 };

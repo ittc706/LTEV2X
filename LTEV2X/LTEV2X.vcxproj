@@ -137,6 +137,7 @@
     <ClCompile Include="blas1_z.cpp" />
     <ClCompile Include="eNB.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="FileOutput.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="linpack_z.cpp" />
     <ClCompile Include="main.cpp" />

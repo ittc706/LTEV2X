@@ -7,7 +7,7 @@ struct sMessage {//消息类
 	/*数据成员*/
 	eMessageType messageType;//该消息的类型
 	int byteNum; //该消息的比特数量
-	int DRA_ONTTI;  //在DRA方式下，传输该消息需要占用多少个TTI
+	int DRA_ONTTIPerFB;  //在DRA方式下，用单位FB传输该消息需要占用多少个TTI
 
 	/*构造函数*/
 	sMessage() {}

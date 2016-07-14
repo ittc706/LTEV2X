@@ -25,6 +25,10 @@ void cSystem::process() {
 
 	/*打印事件日志信息*/
 	writeEventLogInfo(g_OutEventLogInfo);
+
+
+	/*打印车辆地理位置更新日志信息*/
+	writeVeUELocationUpdateLogInfo(g_OutVeUELocationUpdateLogInfo);
 }
 
 void cSystem::configure() {//系统仿真参数配置
@@ -103,68 +107,3 @@ void cSystem::buildEventList() {
 	}
 }
 
-void cSystem::writeClusterPerformInfo(ofstream &out) {
-	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
-	out << "{" << endl;
-	//打印VeUE信息
-	out << "    VUE Info: " << endl;
-	out << "    {" << endl;
-	for (cVeUE &_VeUE : m_VeUEVec) 
-		out << _VeUE.toString(2) << endl;
-	out << "    }" << endl;
-
-	out << "\n\n\n";
-
-	//打印基站信息
-	out << "    eNB Info: " << endl;
-	out << "    {" << endl;
-	for (ceNB &_eNB : m_eNBVec)
-		out << _eNB.toString(2) << endl;
-	out << "    }" << endl;
-
-	//打印RSU信息
-	out << "    RSU Info: " << endl;
-	out << "    {" << endl;
-	for (cRSU &_RSU : m_RSUVec)
-		out << _RSU.toString(2) << endl;
-	out << "    }" << endl;
-
-	out << "\n\n\n";
-
-	//打印System级Switch链表
-	out << "    SwitchList Info: " << endl;
-	out << "    {" << endl;
-	out << "        [ ";
-	for (int VeUEId : m_DRASwitchEventIdList)
-		out << VeUEId << " , ";
-	out << "] " << endl;
-	out << "    }" << endl;
-
-	out << "}\n\n" << endl;
-}
-
-
-
-
-void cSystem::writeEventListInfo(ofstream &out) {
-	for (int i = 0; i < m_NTTI; i++) {
-		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
-		out << "{" << endl;
-		for (int eventId : m_EventTTIList[i]) {
-			sEvent& e = m_EventVec[eventId];
-			out << "    " << e.toString() << endl;
-		}
-		out << "}\n\n" << endl;
-	}
-}
-
-
-void cSystem::writeEventLogInfo(std::ofstream &out) {
-	for (int eventId = 0;eventId < static_cast<int>(m_EventVec.size());eventId++) {
-		out << "Event[" << left << setw(3) << eventId << "]  ";
-		out << "VeUE[" << m_EventVec[eventId].VeUEId << "]" << endl;
-		out << "{" << endl;
-		out << m_EventVec[eventId].toLogString(1);
-		out << "}" << endl;
-	}
-}

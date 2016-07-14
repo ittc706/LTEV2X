@@ -128,8 +128,6 @@ void cSystem::DRASchedule() {
 	//-----------------------OUTPUT-----------------------
 	g_OutDRAScheduleInfo << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	g_OutDRAScheduleInfo << "{" << endl;
-	g_OutDRAProcessInfo << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
-	g_OutDRAProcessInfo << "{" << endl;
 	//-----------------------OUTPUT-----------------------
 
 
@@ -152,14 +150,6 @@ void cSystem::DRASchedule() {
 	-----------------------WARN-----------------------*/
 	if (m_DRASwitchEventIdList.size() != 0) throw Exp("接纳链表全部生成后，System级别的切换链表仍不为空！");
 	
-	g_OutDRAProcessInfo << "    处理完事件链表、等待链表以及切换链表后的接纳链表：" << endl;
-	for (cRSU &_RSU : m_RSUVec) {
-		_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 0, m_EventVec);//写入接纳链表的信息
-	}
-	g_OutDRAProcessInfo << endl;
-
-
-
 	/*当前m_TTI的DRA算法*/
 	switch (m_DRAMode) {
 	case P13:
@@ -176,13 +166,9 @@ void cSystem::DRASchedule() {
 	/*帧听冲突*/
 	DRAConflictListener();
 
-
-
 	//-----------------------OUTPUT-----------------------
 	g_OutDRAScheduleInfo << "}" << endl;
 	g_OutDRAScheduleInfo << "\n\n" << endl;
-	g_OutDRAProcessInfo << "}" << endl;
-	g_OutDRAProcessInfo << "\n\n" << endl;
 	//-----------------------OUTPUT-----------------------
 }
 
@@ -202,28 +188,25 @@ void cSystem::DRAPerformCluster(bool clusterFlag) {
 	}
 	for (cRSU &_RSU : m_RSUVec) {
 		_RSU.m_VeUEIdList.clear();
+		for (int clusterIdx = 0;clusterIdx < _RSU.m_DRAClusterNum;clusterIdx++) {
+			_RSU.m_DRAClusterVeUEIdList[clusterIdx].clear();
+		}
 	}
 
 
-	/*随机将VeUE分配给RSU*/
+	/*随机将VeUE分配给RSU中的簇*/
 	for (int VeUEId = 0;VeUEId < m_Config.VUENum;VeUEId++) {
 		int RSUId = rand() % m_Config.RSUNum;
 		m_RSUVec[RSUId].m_VeUEIdList.push_back(VeUEId);
 		m_VeUEVec[VeUEId].m_RSUId = RSUId;
+
+		//再将其分入簇
+		int clusterIdx = rand() % m_RSUVec[RSUId].m_DRAClusterNum;
+		m_RSUVec[RSUId].m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
+		m_VeUEVec[VeUEId].m_ClusterIdx = clusterIdx;
+		m_VeUEVec[VeUEId].m_LocationUpdateLogInfoList.push_back(tuple<int, int>(RSUId, clusterIdx));
 	}
 
-	/*将RSU内的VeUE随机分给簇*/
-	for (cRSU &_RSU : m_RSUVec) {
-		//首先清除上次分簇的集合
-		for (int clusterIdx = 0;clusterIdx < _RSU.m_DRAClusterNum;clusterIdx++)
-			_RSU.m_DRAClusterVeUEIdList[clusterIdx].clear();
-		//将现在RSU内的VeUE随机分入不同的簇
-		for (int VeUEId : _RSU.m_VeUEIdList) {
-			int clusterIdx = rand() % _RSU.m_DRAClusterNum;
-			_RSU.m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
-			m_VeUEVec[VeUEId].m_ClusterIdx = clusterIdx;
-		}
-	}
 
 	//更新基站的VeUE容器
 	for (ceNB &_eNB:m_eNBVec) {
@@ -300,10 +283,4 @@ void cSystem::DRAConflictListener() {
 	for (cRSU &_RSU : m_RSUVec) {
 		_RSU.DRAConflictListener(m_TTI,m_EventVec);
 	}
-
-	g_OutDRAProcessInfo << "    处理完冲突表后的等待链表：" << endl;
-	for (cRSU &_RSU : m_RSUVec) {
-		_RSU.DRAWriteProcessInfo(g_OutDRAProcessInfo, 1, m_EventVec);
-	}
-	g_OutDRAProcessInfo << endl;
 }

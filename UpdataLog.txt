@@ -1,3 +1,6 @@
+version_2016_7_14(删除了Process的TXT输出)
+
+
 version_2016_7_14(增加了基于Pattern的资源强占模式)
 	*将基于FB的资源抢占改为基于Pattern的资源抢占
 	*若要用以前的基于FB的强占模式，只需要将PatternTypeNum改为1即可

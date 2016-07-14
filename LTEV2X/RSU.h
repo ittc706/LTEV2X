@@ -134,7 +134,6 @@ public:
 	*/
 	std::vector<std::list<sDRAScheduleInfo*>> m_DRATransimitEventIdList;
 
-
 	/*
 	* RSU级别的等待列表
 	* 存放的是VeUEId
@@ -144,7 +143,6 @@ public:
 	*		3、VeUE在传输消息后，发生冲突，解决冲突后，转入等待链表
 	*/
 	std::list<int> m_DRAWaitEventIdList;
-
 
 	/*--------------------接口函数--------------------*/
 	/*
@@ -185,14 +183,12 @@ public:
 	*/
 	void DRAProcessRSULevelWaitEventIdList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
-
 	/*
 	* 在System级别的函数内部被调用
 	* 用于处理System级别的RSU切换链表，将事件转存入相应的链表中（RSU级别的接纳链表或者RSU级别的等待链表）
 	* 处理完毕后，该链表的大小为0
 	*/
 	void DRAProcessSystemLevelSwitchList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
-
 
 	/*
 	* 基于P1和P3的资源分配
@@ -209,7 +205,6 @@ public:
 	*/
 	void DRASelectBasedOnP123(int TTI,std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec);
 
-
 	/*
 	* 帧听冲突
 	*/
@@ -219,11 +214,6 @@ public:
 	* 将调度信息写入文件中，测试用！
 	*/
 	void DRAWriteScheduleInfo(std::ofstream& out,int TTI);
-
-	/*
-	* 将处理流程中的调息写入文件中，测试用！
-	*/
-	void DRAWriteProcessInfo(std::ofstream& out,int type, const std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 生成包含RSU信息的string
@@ -244,7 +234,6 @@ private:
 	* 这个函数的使用前提是，已知车辆已在簇中
 	*/
 	int getClusterIdxOfVeUE(int VeUEId);
-
 
 	/*
 	* 计算当前事件所对应的调度区间
@@ -268,10 +257,12 @@ private:
 	void pushToSystemLevelSwitchEventIdList(int eventId, std::list<int>& systemDRASwitchVeUEIdList);
 
 	/* 
-	* 将System级别的
+	* 将RSU级别的ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
 	*/
-
 	void pushToScheduleInfoTable(int clusterIdx,int patternIdx, sDRAScheduleInfo*p);
 
+	/*
+	* 将RSU级别的ScheduleInfoTable的弹出封装起来，便于查看哪里调用，利于调试
+	*/
 	void pullFromScheduleInfoTable(int TTI);
 };

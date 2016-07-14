@@ -71,7 +71,7 @@ int cRSU::getClusterIdxOfVeUE(int VeUEId) {
 list<tuple<int, int>> cRSU::buildScheduleIntervalList(int TTI,sEvent event, std::tuple<int, int, int>ClasterTTI) {
 	list<tuple<int,int>> scheduleIntervalList;
 	int eventId = event.eventId;
-	int occupiedTTI = event.message.DRA_ONTTI / cRSU::s_DRA_FBNumPerPatternType[event.message.messageType];
+	int occupiedTTI = event.message.DRA_ONTTIPerFB / cRSU::s_DRA_FBNumPerPatternType[event.message.messageType];
 	int begin = std::get<0>(ClasterTTI),
 		end = std::get<1>(ClasterTTI),
 		len = std::get<2>(ClasterTTI);
@@ -395,7 +395,7 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 		int patternIdx = systemVeUEVec[VeUEId].RBSelectBasedOnP2(curAvaliablePatternIdx, systemEventVec[eventId].message.messageType);
 
 		//获取当前用户将要传输的信息占用的时隙(Occupy TTI)
-		int occupiedTTI = systemEventVec[eventId].message.DRA_ONTTI;
+		int occupiedTTI = systemEventVec[eventId].message.DRA_ONTTIPerFB;
 
 
 		//将资源标记为占用
@@ -403,7 +403,7 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 
 		//将调度信息压入m_DRATransimitEventIdList中
 		list<tuple<int,int>> scheduleIntervalList = buildScheduleIntervalList(TTI, systemEventVec[eventId], m_DRAClusterTDRInfo[clusterIdx]);
-		m_DRATransimitEventIdList[patternIdx].push_back(new sDRAScheduleInfo(eventId, m_RSUId, patternIdx, scheduleIntervalList));
+		m_DRATransimitEventIdList[patternIdx].push_back(new sDRAScheduleInfo(eventId, VeUEId, m_RSUId, patternIdx, scheduleIntervalList));
 		newCount++;
 	}
 
@@ -518,35 +518,6 @@ void cRSU::pullFromScheduleInfoTable(int TTI) {
 }
 
 
-void cRSU::DRAWriteScheduleInfo(std::ofstream& out,int TTI) {
-	int clusterIdx = DRAGetClusterIdx(TTI);
-	out << "    RSU[" << m_RSUId << "] :" << endl;
-	out << "    {" << endl;
-	for (int patternIdx = 0;patternIdx < s_DRATotalPatternNum;patternIdx++) {
-		out << "        Pattern[ " << left<<setw(3)<<patternIdx << "] : " << (m_DRAPatternIsAvailable[clusterIdx][patternIdx]?"Available":"Unavailable") << endl;
-		for (sDRAScheduleInfo* info : m_DRATransimitEventIdList[patternIdx]) {
-			out<< info->toString(3) << endl;
-		}
-	}
-	out << "    }" << endl;
 
-}
-
-void cRSU::DRAWriteProcessInfo(std::ofstream& out, int type, const std::vector<sEvent>& systemEventVec) {
-	switch (type) {
-	case 0://写入接纳链表的信息
-		out << "    RSU[" << m_RSUId << left << setw(15) << "] 's AdmitEventIdList : { ";
-		for (int eventId : m_DRAAdmitEventIdList)
-			out << "[ eventId = " << left << setw(3) << eventId << " , VeUEId = " << left << setw(3) << systemEventVec[eventId].VeUEId << " ] , ";
-		out << "}" << endl;
-		break;
-	case 1://写入等待链表的信息
-		out << "    RSU[" << m_RSUId << left << setw(15) << "] 's WaitEventIdList : { ";
-		for (int eventId : m_DRAWaitEventIdList)
-			out << "[ eventId = " << left << setw(3) << eventId << " , VeUEId = " << left << setw(3) << systemEventVec[eventId].VeUEId << " ] , ";
-		out << "}" << endl;
-		break;
-	}
-}
 
 

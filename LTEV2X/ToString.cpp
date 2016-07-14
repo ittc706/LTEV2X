@@ -29,7 +29,7 @@ string sEvent::toLogString(int n) {
 string sMessage::toString() {
 	ostringstream ss;
 	ss << "[ byteNum = " << left << setw(3) << byteNum;
-	ss << " , DRA_ONTTI = " << left << setw(3) << DRA_ONTTI;
+	ss << " , DRA_ONTTI = " << left << setw(3) << DRA_ONTTIPerFB;
 	ss << " , MessageType = " << (messageType == PERIOD ? "PEROID" : "ELSE") << " ]";
 	return ss.str();
 }
@@ -147,14 +147,14 @@ string sDRAScheduleInfo::toLogString(int n) {
 }
 
 
-std::string sDRAScheduleInfo::toString(int n) {
+std::string sDRAScheduleInfo::toScheduleString(int n) {
 	string indent;
 	for (int i = 0;i < n;i++)
 		indent.append("    ");
 	ostringstream ss;
 	ss << indent << "{ ";
-	ss << "eventId = " << eventId;
-	ss << " , occupy Interval = { ";
+	ss << "[ eventId = " << left << setw(3) << eventId << " , VeUEID = " << left << setw(3) << VeUEId << " ]";
+	ss << " : occupy Interval = { ";
 	for (tuple<int, int> t : occupiedIntervalList) {
 		ss << "[ " << get<0>(t) << " , " << get<1>(t) << " ] , ";
 	}
