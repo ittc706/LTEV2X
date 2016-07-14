@@ -17,7 +17,7 @@ extern std::ofstream g_OutEventLogInfo;
 /*===========================================
 *               常量定义
 * ==========================================*/
-const int gc_DRA_FBNum = 10;
+//const int gc_DRA_FBNum = 10;
 
 
 const int gc_RBNum = 100;   //子带数量

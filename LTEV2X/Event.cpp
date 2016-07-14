@@ -1,4 +1,6 @@
 #include"Event.h"
+#include"Enumeration.h"
+#include"Global.h"
 
 using namespace std;
 

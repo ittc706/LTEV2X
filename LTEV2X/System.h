@@ -3,9 +3,9 @@
 #include<fstream>
 #include"Schedule.h"
 #include"Config.h"
-#include"VUE.h"
 #include"eNB.h"
-#include"Message.h"
+#include"RSU.h"
+#include"VUE.h"
 #include"Event.h"
 #include"Utility.h"
 
@@ -88,7 +88,7 @@ private:
 	void DRAInformationClean();//资源分配信息清空
 	void DRAPerformCluster(bool clusterFlag);//对RSU内的VeUE进行分簇
 	void DRAGroupSizeBasedTDM(bool clusterFlag);//基于簇大小的时分复用
-	void DRAUpdateAdmitEventIdList();//建立接纳链表
+	void DRAUpdateAdmitEventIdList(bool clusterFlag);//建立接纳链表
 
 
 	void DRASelectBasedOnP13();//基于P1和P3的资源分配

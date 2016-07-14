@@ -1,7 +1,7 @@
 #pragma once
 #include<list>
 #include<string>
-#include"Message.h"
+#include"Enumeration.h"
 
 struct sMessage {//消息类
 	/*数据成员*/

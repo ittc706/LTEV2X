@@ -73,6 +73,12 @@ public:
 	*/
 	static const std::list<int> s_DRAPatternIdxList[s_DRAPatternTypeNum];
 
+
+	/*
+	* 所有Pattern类型的Pattern数量总和
+	*/
+	static const int s_DRATotalPatternNum;
+
 	//-----------------------static-------------------------------
 
 	/*
@@ -96,12 +102,12 @@ public:
 	std::vector<std::tuple<int,int,int>> m_DRAClusterTDRInfo;
 
 	/*
-	* FB块释放该资源的TTI时刻（该TTI结束时解除）
+	* Pattern块释放该资源的TTI时刻（该TTI结束时解除）
 	* 外层下标代表簇编号
 	* 内层下标代表Pattern编号
-	* 若"m_DRA_RBIsAvailable[i][j]==true"代表簇i的Pattern块j可用
+	* 若"m_DRAPatternIsAvailable[i][j]==true"代表簇i的Pattern块j可用
 	*/
-	std::vector<std::vector<bool>> m_DRA_RBIsAvailable;  
+	std::vector<std::vector<bool>> m_DRAPatternIsAvailable;  
 
 	/*
 	* 存放每个簇的VeUE的ID的容器
@@ -153,8 +159,8 @@ public:
 
 	/*
 	* 基于簇大小的时分复用
-	* 每个簇至少分配一个FB
-	* 剩余FB按比例进行分配
+	* 每个簇至少分配一个时隙
+	* 剩余时隙按比例进行分配
 	*/
 	void DRAGroupSizeBasedTDM();
 
@@ -265,7 +271,7 @@ private:
 	* 将System级别的
 	*/
 
-	void pushToScheduleInfoTable(int clusterIdx,int FBIdx, sDRAScheduleInfo*p);
+	void pushToScheduleInfoTable(int clusterIdx,int patternIdx, sDRAScheduleInfo*p);
 
 	void pullFromScheduleInfoTable(int TTI);
 };

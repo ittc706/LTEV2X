@@ -64,3 +64,9 @@ list<int> Function::makeContinuousSequence(int begin, int end) {
 	return res;
 }
 
+int Function::sumArray(const int(&ary)[cRSU::s_DRAPatternTypeNum]) {
+	int res = 0;
+	for (int i : ary)
+		res += i;
+	return res;
+}

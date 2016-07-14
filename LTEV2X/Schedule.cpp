@@ -24,7 +24,6 @@
 #include"Schedule.h"
 #include"System.h"
 #include"Exception.h"
-#include"Definition.h"
 #include"Global.h"
 
 using namespace std;
@@ -146,7 +145,7 @@ void cSystem::DRASchedule() {
 	DRAGroupSizeBasedTDM(clusterFlag);
 
 	/*建立接纳链表，遍历RSU内的m_VecVUE，生成m_CallList*/
-	DRAUpdateAdmitEventIdList();
+	DRAUpdateAdmitEventIdList(clusterFlag);
 
 	/*-----------------------WARN-----------------------
 	* 如果m_DRASwitchEventIdList不为空，说明程序需要修正
@@ -253,28 +252,32 @@ void cSystem::DRAGroupSizeBasedTDM(bool clusterFlag) {
 }
 
 
-void cSystem::DRAUpdateAdmitEventIdList() {
+void cSystem::DRAUpdateAdmitEventIdList(bool clusterFlag) {
 	/*首先，处理System级别的事件触发链表*/
 	for (cRSU &_RSU : m_RSUVec)
 		_RSU.DRAProcessSystemLevelEventList(m_TTI, m_VeUEVec, m_EventVec,m_EventTTIList);
 
-	/*其次，处理调度表（处理的情况是，数据发送完之前离开了当前的RSU），需要将该事件推送到System级别的RSU切换链表中*/
-	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRAProcessRSULevelScheduleInfoTable(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+	/*其次，如果当前TTI进行了分簇，需要处理调度表*/
+	if (clusterFlag) {
+		for (cRSU &_RSU : m_RSUVec)
+			_RSU.DRAProcessRSULevelScheduleInfoTable(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+	}
 
 	/*然后，处理RSU级别的等待链表*/
 	for (cRSU &_RSU : m_RSUVec)
 		_RSU.DRAProcessRSULevelWaitEventIdList(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
 
 
-	/*最后，处理System级别的RSU切换链表*/
-	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRAProcessSystemLevelSwitchList(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+	/*最后，如果当前TTI进行了分簇，需要处理System级别的RSU切换链表*/
+	if (clusterFlag) {
+		for (cRSU &_RSU : m_RSUVec)
+			_RSU.DRAProcessSystemLevelSwitchList(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+		/*注意，这里再次处理一遍等待链表，因为RSU切换链表会将切换的事件压入等待链表，或者接纳链表*/
+		for (cRSU &_RSU : m_RSUVec)
+			_RSU.DRAProcessRSULevelWaitEventIdList(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+	}
 
-
-	/*注意，这里再次处理一遍等待链表，因为RSU切换链表会将切换的事件压入等待链表，或者接纳链表*/
-	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRAProcessRSULevelWaitEventIdList(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+	
 }
 
 void cSystem::DRASelectBasedOnP13() {

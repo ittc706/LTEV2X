@@ -18,9 +18,6 @@
     <ClInclude Include="blas1_z.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Definition.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Enumeration.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -57,9 +54,6 @@
     <ClInclude Include="Event.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Message.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -90,9 +84,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="System.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Config.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ToString.cpp">
