@@ -1,17 +1,23 @@
-﻿  Event.cpp
-  正在生成代码...
-  正在编译...
-  main.cpp
-  eNB.cpp
-  VUE.cpp
-  ToString.cpp
-  System.cpp
-f:\ltev2x\ltev2x\system.cpp(162): warning C4018: “<”: 有符号/无符号不匹配
-  Schedule.cpp
-  RSU.cpp
-  Global.cpp
-  正在生成代码...
-  正在跳过...(未检测到相关更改)
-  linpack_z.cpp
-  blas1_z.cpp
-  LTEV2X.vcxproj -> F:\LTEV2X\Debug\LTEV2X.exe
+﻿生成启动时间为 2016/7/14 14:59:44。
+     1>项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”在节点 2 上(Build 个目标)。
+     1>Link:
+         E:\Visual Studio 2015\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\LTEV2X\Debug\LTEV2X.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\LTEV2X\Debug\LTEV2X.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\LTEV2X\Debug\LTEV2X.lib" /MACHINE:X86 Debug\blas1_z.obj
+         Debug\eNB.obj
+         Debug\Event.obj
+         Debug\Global.obj
+         Debug\linpack_z.obj
+         Debug\main.obj
+         Debug\Numerical.obj
+         Debug\RSU.obj
+         Debug\Schedule.obj
+         Debug\System.obj
+         Debug\ToString.obj
+         Debug\Utility.obj
+         Debug\VUE.obj
+         LINK : 没有找到 E:\LTEV2X\Debug\LTEV2X.exe 或上一个增量链接没有生成它；正在执行完全链接
+         LTEV2X.vcxproj -> E:\LTEV2X\Debug\LTEV2X.exe
+     1>已完成生成项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:00.66

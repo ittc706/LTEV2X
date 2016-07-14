@@ -2,6 +2,7 @@
 #include<fstream>
 #include"System.h"
 #include"Global.h"
+#include"RSU.h"
 
 using namespace std;
 
@@ -159,7 +160,7 @@ void cSystem::writeEventListInfo(ofstream &out) {
 
 
 void cSystem::writeEventLogInfo(std::ofstream &out) {
-	for (int eventId = 0;eventId < m_EventVec.size();eventId++) {
+	for (int eventId = 0;eventId < static_cast<int>(m_EventVec.size());eventId++) {
 		out << "Event[" << left << setw(3) << eventId << "]  ";
 		out << "VeUE[" << m_EventVec[eventId].VeUEId << "]" << endl;
 		out << "{" << endl;

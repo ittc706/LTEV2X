@@ -1,7 +1,9 @@
 #pragma once
 #include<vector>
 #include<string>
-#include"RSU.h"
+#include"Global.h"
+#include"Schedule.h"
+
 
 class ceNB {
 	//-----------------------TEST-----------------------

@@ -4,7 +4,8 @@
 #include<string>
 #include"Global.h"
 #include"Schedule.h"
-#include"Message.h"
+#include"Enumeration.h"
+
 
 class cVeUE {
 	//-----------------------TEST-----------------------
@@ -30,7 +31,8 @@ public:
 	---------------------分布式资源管理-----------------------------
 	****************************************************************/
 
-	int RBSelectBasedOnP2(const std::vector<int> &v);
+	//int RBSelectBasedOnP2(const std::vector<int>(&curAvaliablePatternIdx)[cRSU::s_DRAPatternTypeNum], eMessageType messageType);
+	int RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType);
 
 
 	std::string toString(int n);//用于打印VeUE信息

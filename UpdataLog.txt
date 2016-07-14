@@ -1,3 +1,12 @@
+version_2016_7_14(增加了基于Pattern的资源强占模式)
+	*将基于FB的资源抢占改为基于Pattern的资源抢占
+	*若要用以前的基于FB的强占模式，只需要将PatternTypeNum改为1即可
+	*改变了ScheduleTable向WaitEventIdList以及SwitchEventIdList转换的方法
+		->之前，已经出RSU的车辆没有及时出去（只有到该簇进行传输时，才会对其所属RSU进行判断)
+		->改为，进行分簇后就得调用这个函数，并且遍历所有的簇以及Pattern，来查找切换RSU的车辆）
+	*解决了头文件互相包含引发的大量未声明的错误
+
+
 version_2016_7_12(删除了ATTI，增加了事件的日志史)
 	*将ATTI改为TTI，即从0开始的TTI时刻（之前是起始时刻随机）
 	*增加了事件日志历史，用list维护，可以在程序运行完毕后将日志写入对应的txt
