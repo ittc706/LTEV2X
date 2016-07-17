@@ -1,7 +1,6 @@
 #pragma once
 #include<fstream>
 
-//这里若包含了VUE.h RSU.h eNB.h会引发大量的未声明的错误
 
 /*===========================================
 *               变量定义
@@ -9,7 +8,7 @@
 extern std::ofstream g_OutDRAScheduleInfo;
 extern std::ofstream g_OutClasterPerformInfo;
 extern std::ofstream g_OutEventListInfo;
-extern std::ofstream g_OutLogInfo;
+extern std::ofstream g_OutTTILogInfo;
 extern std::ofstream g_OutEventLogInfo;
 extern std::ofstream g_OutVeUELocationUpdateLogInfo;
 
@@ -17,7 +16,6 @@ extern std::ofstream g_OutVeUELocationUpdateLogInfo;
 /*===========================================
 *               常量定义
 * ==========================================*/
-//const int gc_DRA_FBNum = 10;
 
 
 const int gc_RBNum = 100;   //子带数量
@@ -27,11 +25,19 @@ const int gc_DRA_NTTI=25; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TT
 
 
 
+/*===========================================
+*               全域函数
+* ==========================================*/
+int max(int t1, int t2);
+
 
 
 
 /*===========================================
-*               常量定义
+*        简单的函数定义为内敛形式
 * ==========================================*/
 
-int max(int t1, int t2);
+inline
+int max(int t1, int t2) {
+	return t1 < t2 ? t2 : t1;
+}

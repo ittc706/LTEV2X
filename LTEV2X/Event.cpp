@@ -33,6 +33,3 @@ sEvent::sEvent(int VeUEId, int TTI, eMessageType messageType) {
 	message = sMessage(messageType);
 };
 
-void sEvent::addLog(std::string s) {
-	logTrackList.push_back(s);
-}

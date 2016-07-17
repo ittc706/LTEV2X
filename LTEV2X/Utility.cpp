@@ -5,14 +5,6 @@
 
 using namespace std;
 
-int *Log::TTI = nullptr;
-
-void Log::log(std::ofstream &out, std::string TAG, std::string msg) {
-	out << "[ TTI = " << left << setw(3) << *TTI << "]";
-	out << "    " << left << setw(8) << TAG;
-	out << "    " << msg << endl;
-}
-
 
 vector<int> Function::getVector(int size) {
 	return vector<int>(size, 0);

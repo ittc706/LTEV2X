@@ -1,5 +1,41 @@
-﻿  正在跳过...(未检测到相关更改)
-  linpack_z.cpp
-  blas1_z.cpp
-  Numerical.cpp
-  LTEV2X.vcxproj -> F:\LTEV2X\Debug\LTEV2X.exe
+﻿生成启动时间为 2016/7/17 11:12:42。
+     1>项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         E:\Visual Studio 2015\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Event.cpp FileOutput.cpp Numerical.cpp RSU.cpp Schedule.cpp System.cpp ToString.cpp Utility.cpp VUE.cpp blas1_z.cpp linpack_z.cpp main.cpp
+         RSU.cpp
+         FileOutput.cpp
+         正在生成代码...
+         正在编译...
+         ToString.cpp
+         正在生成代码...
+         正在跳过...(未检测到相关更改)
+         linpack_z.cpp
+         blas1_z.cpp
+         Numerical.cpp
+         main.cpp
+         VUE.cpp
+         Utility.cpp
+         System.cpp
+         Schedule.cpp
+         Event.cpp
+       Link:
+         E:\Visual Studio 2015\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\LTEV2X\Debug\LTEV2X.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\LTEV2X\Debug\LTEV2X.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\LTEV2X\Debug\LTEV2X.lib" /MACHINE:X86 Debug\blas1_z.obj
+         Debug\eNB.obj
+         Debug\Event.obj
+         Debug\FileOutput.obj
+         Debug\Global.obj
+         Debug\linpack_z.obj
+         Debug\main.obj
+         Debug\Numerical.obj
+         Debug\RSU.obj
+         Debug\Schedule.obj
+         Debug\System.obj
+         Debug\ToString.obj
+         Debug\Utility.obj
+         Debug\VUE.obj
+         LTEV2X.vcxproj -> E:\LTEV2X\Debug\LTEV2X.exe
+     1>已完成生成项目“E:\LTEV2X\LTEV2X\LTEV2X.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:03.47

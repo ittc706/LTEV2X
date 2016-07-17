@@ -5,13 +5,6 @@
 #include<fstream>
 #include"RSU.h"
 
-class Log {
-public:
-	static int * TTI;
-
-	static void log(std::ofstream &out, std::string TAG, std::string msg);
-};
-
 
 class Function {
 public:

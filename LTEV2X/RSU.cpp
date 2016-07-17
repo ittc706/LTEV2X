@@ -75,10 +75,20 @@ list<tuple<int, int>> cRSU::buildScheduleIntervalList(int TTI,sEvent event, std:
 	int begin = std::get<0>(ClasterTTI),
 		end = std::get<1>(ClasterTTI),
 		len = std::get<2>(ClasterTTI);
+
+	//当前时刻的相对TTI
 	int roundTTI = TTI%gc_DRA_NTTI;
-	int nextTurnBeginTTI = TTI - roundTTI + gc_DRA_NTTI;//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
-	int remainTTI = end - roundTTI + 1;//当前一轮调度中剩余可用的时隙数量
-	int overTTI = occupiedTTI - remainTTI;//超出当前一轮调度可用时隙数量的部分
+
+	//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
+	int nextTurnBeginTTI = TTI - roundTTI + gc_DRA_NTTI;
+
+	//当前一轮调度中剩余可用的时隙数量
+	int remainTTI = end - roundTTI + 1;
+
+	//超出当前一轮调度可用时隙数量的部分
+	int overTTI = occupiedTTI - remainTTI;
+
+
 	if (overTTI <= 0) scheduleIntervalList.push_back(std::tuple<int, int>(TTI, TTI + occupiedTTI - 1));
 	else {
 		scheduleIntervalList.push_back(std::tuple<int, int>(TTI, TTI + remainTTI - 1));
@@ -98,7 +108,7 @@ void cRSU::DRAInformationClean() {
 
 
 void cRSU::DRAGroupSizeBasedTDM() {
-	/*特殊情况，当该RSU内无一辆车时*/
+	//特殊情况，当该RSU内无一辆车时
 	if (m_VeUEIdList.size() == 0) {
 		/*-----------------------WARN-----------------------
 		* 若赋值为(0,-1,0)会导致获取当前簇编号失败，导致其他地方需要讨论
@@ -108,33 +118,34 @@ void cRSU::DRAGroupSizeBasedTDM() {
 		return;
 	}
 
-	/*初始化*/
+	//初始化
 	m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(m_DRAClusterNum, tuple<int, int, int>(0, 0, 0));
 
-	/*计算每个TTI时隙对应的VeUE数目(double)，!!!浮点数!!！*/
+	//计算每个TTI时隙对应的VeUE数目(double)，!!!浮点数!!！
 	double VeUESizePerTTI = static_cast<double>(m_VeUEIdList.size()) / static_cast<double>(gc_DRA_NTTI);
 
-	/*clusterSize存储每个簇的VeUE数目(double)，!!!浮点数!!！*/
+	//clusterSize存储每个簇的VeUE数目(double)，!!!浮点数!!！
 	std::vector<double> clusterSize(m_DRAClusterNum, 0);
 
-	/*初始化clusterSize*/
+	//初始化clusterSize
 	for (int clusterIdx = 0; clusterIdx < m_DRAClusterNum; clusterIdx++)
 		clusterSize[clusterIdx] = static_cast<double>(m_DRAClusterVeUEIdList[clusterIdx].size());
 
-	/*首先给至少有一辆车的簇分配一份TTI*/
+	//首先给至少有一辆车的簇分配一份TTI
 	int basicNTTI = 0;
 	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;clusterIdx++) {
-		if (m_DRAClusterVeUEIdList[clusterIdx].size() != 0) {//如果该簇内至少有一辆VeUE，直接分配给一个单位的时域资源
+		//如果该簇内至少有一辆VeUE，直接分配给一个单位的时域资源
+		if (m_DRAClusterVeUEIdList[clusterIdx].size() != 0) {
 			get<2>(m_DRAClusterTDRInfo[clusterIdx]) = 1;
 			clusterSize[clusterIdx] -= VeUESizePerTTI;
 			basicNTTI++;
 		}
 	}
 
-	/*除了给不为空的簇分配的一个TTI外，剩余可分配的TTI数量*/
+	//除了给不为空的簇分配的一个TTI外，剩余可分配的TTI数量
 	int remainNTTI = gc_DRA_NTTI - basicNTTI;
 	
-	/*对于剩下的资源块，循环将下一时隙分配给当前比例最高的簇，分配之后，更改对应的比例（减去该时隙对应的VeUE数）*/
+	//对于剩下的资源块，循环将下一时隙分配给当前比例最高的簇，分配之后，更改对应的比例（减去该时隙对应的VeUE数）
 	while (remainNTTI > 0) {
 		int dex = getMaxIndex(clusterSize);
 		if (dex == -1) throw Exp("还存在没有分配的时域资源，但是每个簇内的VeUE已经为负数");
@@ -143,7 +154,7 @@ void cRSU::DRAGroupSizeBasedTDM() {
 		clusterSize[dex] -= VeUESizePerTTI;
 	}
 
-	/*开始生成区间范围，闭区间*/
+	//开始生成区间范围，闭区间
 	get<0>(m_DRAClusterTDRInfo[0]) = 0;
 	get<1>(m_DRAClusterTDRInfo[0]) = get<0>(m_DRAClusterTDRInfo[0]) + get<2>(m_DRAClusterTDRInfo[0]) - 1;
 	for (int clusterIdx = 1;clusterIdx < m_DRAClusterNum;clusterIdx++) {
@@ -155,7 +166,7 @@ void cRSU::DRAGroupSizeBasedTDM() {
 
 void cRSU::DRAProcessSystemLevelEventList(int TTI,const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, const std::vector<std::list<int>>& systemEventTTIList) {
 	int clusterIdx = DRAGetClusterIdx(TTI);//当前可传输数据的簇编号
-	for (int eventId : systemEventTTIList[TTI]) {//"这里改了"
+	for (int eventId : systemEventTTIList[TTI]) {
 		sEvent event = systemEventVec[eventId];
 		int VeUEId = event.VeUEId;
 		if (systemVeUEVec[VeUEId].m_RSUId != m_RSUId) {//当前事件对应的VeUE不在当前RSU中，跳过即可
@@ -163,30 +174,25 @@ void cRSU::DRAProcessSystemLevelEventList(int TTI,const std::vector<cVeUE>& syst
 		}
 		else {//当前事件对应的VeUE在当前RSU中
 			if (systemVeUEVec[VeUEId].m_ClusterIdx == clusterIdx) {//当前时刻事件链表中的VeUE恰好位于该RSU的该簇内，添加到当前接纳链表
+				//将该事件压入接入链表
 				pushToRSULevelAdmitEventIdList(eventId);
+
 				//更新该事件的日志
-				ostringstream ss;
-				ss << "{ TTI: " << left << setw(3) << TTI << " ; From: EventList ; To: RSU[" << m_RSUId << "]'s AdmitEventIdList }";
-				systemEventVec[eventId].addLog(ss.str());
-				//-----------------------OUTPUT-----------------------
-				ss.str("");
-				ss << "Event[" << eventId << "]：";
-				ss << "{ From: EventList ; To: RSU[" << m_RSUId << "]'s AdmitEventIdList }";
-				Log::log(g_OutLogInfo, "Switch", ss.str());
-				//-----------------------OUTPUT-----------------------
+				systemEventVec[eventId].addEventLog(TTI,1, m_RSUId,-1,-1);
+				
+				//记录TTI日志
+				DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 1, eventId, m_RSUId,-1,-1);
+				
 			}
 			else {//否则，当前事件在此时不能立即传输，应转入等待链表
+				  //将该事件压入等待链表
 				pushToRSULevelWaitEventIdList(eventId);
+
 				//更新该事件的日志
-				ostringstream ss;
-				ss << "{ TTI: " << left << setw(3) << TTI << " ; From: EventList ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
-				systemEventVec[eventId].addLog(ss.str());
-				//-----------------------OUTPUT-----------------------
-				ss.str("");
-				ss << "Event[" << eventId << "]：";
-				ss << "{ From: EventList ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
-				Log::log(g_OutLogInfo, "Switch", ss.str());
-				//-----------------------OUTPUT-----------------------
+				systemEventVec[eventId].addEventLog(TTI, 2, m_RSUId,-1,-1);
+				
+				//记录TTI日志
+				DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 2, eventId, m_RSUId,-1,-1);
 			}
 		}
 	}
@@ -213,17 +219,11 @@ void cRSU::DRAProcessRSULevelScheduleInfoTable(int TTI, const std::vector<cVeUE>
 					//释放Pattern资源
 					m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
-
 					//更新该事件的日志
-					ostringstream ss;
-					ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << m_RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
-					systemEventVec[eventId].addLog(ss.str());
-					//-----------------------OUTPUT-----------------------
-					ss.str("");
-					ss << "Event[" << eventId << "]：";
-					ss << "{ From: RSU[" << m_RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
-					Log::log(g_OutLogInfo, "Switch", ss.str());
-					//-----------------------OUTPUT-----------------------
+					systemEventVec[eventId].addEventLog(TTI, 3, m_RSUId, clusterIdx, patternIdx);
+					
+					//记录TTI日志
+					DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 3, eventId, m_RSUId, clusterIdx, patternIdx);
 				}
 				else {
 					if (getClusterIdxOfVeUE(VeUEId) != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
@@ -238,15 +238,10 @@ void cRSU::DRAProcessRSULevelScheduleInfoTable(int TTI, const std::vector<cVeUE>
 						m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
 						//更新该事件的日志
-						ostringstream ss;
-						ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << m_RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
-						systemEventVec[eventId].addLog(ss.str());
-						//-----------------------OUTPUT-----------------------
-						ss.str("");
-						ss << "Event[" << eventId << "]：";
-						ss << "{ From: RSU[" << m_RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
-						Log::log(g_OutLogInfo, "Switch", ss.str());
-						//-----------------------OUTPUT-----------------------
+						systemEventVec[eventId].addEventLog(TTI, 4, m_RSUId, clusterIdx, patternIdx);
+						
+						//记录TTI日志
+						DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 4, eventId, m_RSUId, clusterIdx, patternIdx);
 					}
 					else {//既没有发生RSU切换，也没有发生RSU内簇切换，什么也不做
 						//doing nothing
@@ -269,15 +264,10 @@ void cRSU::DRAProcessRSULevelWaitEventIdList(int TTI, const std::vector<cVeUE>& 
 			it=m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
 
 			//更新该事件的日志
-			ostringstream ss;
-			ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << m_RSUId << "]'s WaitEventIdList ; To: SwitchList }";
-			systemEventVec[eventId].addLog(ss.str());
-			//-----------------------OUTPUT-----------------------
-			ss.str("");
-			ss << "Event[" << eventId << "]：";
-			ss << "{ From: RSU[" << m_RSUId << "]'s WaitEventIdList ; To: SwitchList }";
-			Log::log(g_OutLogInfo, "Switch", ss.str());
-			//-----------------------OUTPUT-----------------------
+			systemEventVec[eventId].addEventLog(TTI, 5, m_RSUId, -1, -1);
+			
+			//记录TTI日志
+			DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 5, eventId, m_RSUId, -1, -1);
 		}
 		else {//仍然处于当前RSU范围内
 			if (systemVeUEVec[VeUEId].m_ClusterIdx == clusterIdx) {//该VeUE处于正在调度的簇内
@@ -285,15 +275,10 @@ void cRSU::DRAProcessRSULevelWaitEventIdList(int TTI, const std::vector<cVeUE>& 
 				it=m_DRAWaitEventIdList.erase(it);//将其从冲突链表中删除
 
 				//更新该事件的日志
-				ostringstream ss;
-				ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << m_RSUId << "]'s WaitEventIdList ; To: RSU[" << m_RSUId << "]'s AdmitEventIdList }";
-				systemEventVec[eventId].addLog(ss.str());
-				//-----------------------OUTPUT-----------------------
-				ss.str("");
-				ss << "Event[" << eventId << "]：";
-				ss << "{ From: RSU[" << m_RSUId << "]'s WaitEventIdList ; To: RSU[" << m_RSUId << "]'s AdmitEventIdList }";
-				Log::log(g_OutLogInfo, "Switch", ss.str());
-				//-----------------------OUTPUT-----------------------
+				systemEventVec[eventId].addEventLog(TTI, 6, m_RSUId, -1, -1);
+				
+				//记录TTI日志
+				DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 6, eventId, m_RSUId, -1, -1);
 			}
 			else {//该VeUE不在当前被调度的簇内
 				it++;
@@ -322,30 +307,20 @@ void cRSU::DRAProcessSystemLevelSwitchList(int TTI, const std::vector<cVeUE>& sy
 				it=systemDRASwitchEventIdList.erase(it);
 
 				//更新该事件的日志
-				ostringstream ss;
-				ss << "{ TTI: " << left << setw(3) << TTI << " ; From: SwitchList ; To: RSU[" << m_RSUId << "]'s AdmitEventIdList }";
-				systemEventVec[eventId].addLog(ss.str());
-				//-----------------------OUTPUT-----------------------
-				ss.str("");
-				ss << "Event[" << eventId << "]：";
-				ss << "{ From: SwitchList ; To: RSU[" << m_RSUId << "]'s AdmitEventIdList }";
-				Log::log(g_OutLogInfo, "Switch", ss.str());
-				//-----------------------OUTPUT-----------------------
+				systemEventVec[eventId].addEventLog(TTI, 7, m_RSUId, -1, -1);
+				
+				//记录TTI日志
+				DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 7, eventId, m_RSUId, -1, -1);
 			}
 			else {//不属于当前簇，转入等待链表
 				pushToRSULevelWaitEventIdList(eventId);
 				it=systemDRASwitchEventIdList.erase(it);
 
 				//更新该事件的日志
-				ostringstream ss;
-				ss << "{ TTI: " << left << setw(3) << TTI << " ; From: SwitchList ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
-				systemEventVec[eventId].addLog(ss.str());
-				//-----------------------OUTPUT-----------------------
-				ss.str("");
-				ss << "Event[" << eventId << "]：";
-				ss << "{ From: SwitchList ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
-				Log::log(g_OutLogInfo, "Switch", ss.str());
-				//-----------------------OUTPUT-----------------------
+				systemEventVec[eventId].addEventLog(TTI, 8, m_RSUId, -1, -1);
+				
+				//记录TTI日志
+				DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 8, eventId, m_RSUId, -1, -1);
 			}
 		}
 	}
@@ -427,15 +402,10 @@ void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 				pushToRSULevelWaitEventIdList(info->eventId);
 	
 				//更新该事件的日志
-				ostringstream ss;
-				ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << m_RSUId << "]'s AdmitEventIdLIst ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
-				systemEventVec[info->eventId].addLog(ss.str());
-				//-----------------------OUTPUT-----------------------
-				ss.str("");
-				ss << "Event[" << info->eventId << "]：";
-				ss << "{ RSU[" << m_RSUId << "]'s AdmitEventIdLIst ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
-				Log::log(g_OutLogInfo, "Conflict", ss.str());
-				//-----------------------OUTPUT-----------------------
+				systemEventVec[info->eventId].addEventLog(TTI, 9, m_RSUId, -1, -1);
+				
+				//记录TTI日志
+				DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 9, info->eventId, m_RSUId, -1, -1);
 
 				//释放资源
 				delete info;
@@ -461,15 +431,10 @@ void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 			if(OIList.size()==0){//说明该数据已经传输完毕
 
 				//更新该事件的日志
-				ostringstream ss;
-				ss << "{ TTI: " << left << setw(3) << TTI << " ; RSU[" << m_RSUId << "]   ClusterIdx["<<clusterIdx<<"]    PatternIdx["<<patternIdx<<"] }";
-				systemEventVec[info->eventId].addLog(ss.str());
-				//-----------------------OUTPUT-----------------------
-				ss.str("");
-				ss << "Event[" << info->eventId << "]：";
-				ss << "{ RSU[" << m_RSUId << "]   ClusterIdx[" << clusterIdx << "]    PatternIdx[" << patternIdx << "] }";
-				Log::log(g_OutLogInfo, "Succeed", ss.str());
-				//-----------------------OUTPUT-----------------------
+				systemEventVec[info->eventId].addEventLog(TTI,0, m_RSUId,clusterIdx,patternIdx);
+				
+				//记录TTI日志
+				DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 0, info->eventId, m_RSUId, clusterIdx, patternIdx);
 
 				//删除该调度信息
 				delete *lst.begin();
@@ -490,32 +455,9 @@ void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 
 
 
-void cRSU::pushToRSULevelAdmitEventIdList(int eventId) {
-	m_DRAAdmitEventIdList.push_back(eventId);
-}
 
-void cRSU::pushToRSULevelWaitEventIdList(int eventId) {
-	m_DRAWaitEventIdList.push_back(eventId);
-}
 
-void cRSU::pushToSystemLevelSwitchEventIdList(int VeUEId, std::list<int>& systemDRASwitchVeUEIdList) {
-	systemDRASwitchVeUEIdList.push_back(VeUEId);
-}
 
-void cRSU::pushToScheduleInfoTable(int clusterIdx, int patternIdx, sDRAScheduleInfo*p) {
-	m_DRAScheduleInfoTable[clusterIdx][patternIdx] = p;
-}
-
-void cRSU::pullFromScheduleInfoTable(int TTI) {
-	int clusterIdx = DRAGetClusterIdx(TTI);
-	/*将处于调度表中当前可以传输的信息压入m_DRATransimitEventIdList*/
-	for (int patternIdx = 0;patternIdx < s_DRATotalPatternNum;patternIdx++) {
-		if (m_DRAScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
-			m_DRATransimitEventIdList[patternIdx].push_back(m_DRAScheduleInfoTable[clusterIdx][patternIdx]);
-			m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
-		}
-	}
-}
 
 
 

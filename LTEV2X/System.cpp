@@ -45,7 +45,6 @@ void cSystem::configure() {//系统仿真参数配置
 void cSystem::initialization() {
 	srand((unsigned)time(NULL));//iomanip
 	m_TTI = 0;
-	Log::TTI = &m_TTI;
 
 	m_eNBVec = vector<ceNB>(m_Config.eNBNum);
 	m_RSUVec = vector<cRSU>(m_Config.RSUNum);

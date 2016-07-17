@@ -216,6 +216,11 @@ public:
 	void DRAWriteScheduleInfo(std::ofstream& out,int TTI);
 
 	/*
+	* 将以TTI为关键字的日志信息写入文件中，测试用！
+	*/
+	void DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int clusterIdx, int patternIdx);
+
+	/*
 	* 生成包含RSU信息的string
 	*/
 	std::string toString(int n);
@@ -266,3 +271,36 @@ private:
 	*/
 	void pullFromScheduleInfoTable(int TTI);
 };
+
+
+inline
+void cRSU::pushToRSULevelAdmitEventIdList(int eventId) {
+	m_DRAAdmitEventIdList.push_back(eventId);
+}
+
+inline
+void cRSU::pushToRSULevelWaitEventIdList(int eventId) {
+	m_DRAWaitEventIdList.push_back(eventId);
+}
+
+inline
+void cRSU::pushToSystemLevelSwitchEventIdList(int VeUEId, std::list<int>& systemDRASwitchVeUEIdList) {
+	systemDRASwitchVeUEIdList.push_back(VeUEId);
+}
+
+inline
+void cRSU::pushToScheduleInfoTable(int clusterIdx, int patternIdx, sDRAScheduleInfo*p) {
+	m_DRAScheduleInfoTable[clusterIdx][patternIdx] = p;
+}
+
+inline
+void cRSU::pullFromScheduleInfoTable(int TTI) {
+	int clusterIdx = DRAGetClusterIdx(TTI);
+	/*将处于调度表中当前可以传输的信息压入m_DRATransimitEventIdList*/
+	for (int patternIdx = 0; patternIdx < s_DRATotalPatternNum; patternIdx++) {
+		if (m_DRAScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
+			m_DRATransimitEventIdList[patternIdx].push_back(m_DRAScheduleInfoTable[clusterIdx][patternIdx]);
+			m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+		}
+	}
+}
