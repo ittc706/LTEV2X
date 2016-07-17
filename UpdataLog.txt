@@ -1,3 +1,8 @@
+version_2016_7_17(删除了对部分文件的追踪)
+	*.db
+	*.suo
+
+
 version_2016_7_17(删除了Log类，调整了日志记录)
 	*将EventLog以及TTILog以函数的形式进行记录
 

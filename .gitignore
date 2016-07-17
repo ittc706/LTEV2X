@@ -34,3 +34,5 @@
 # Run-time generated files
 *.opensdf
 DRAOutput/
+*.db
+*.suo
