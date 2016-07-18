@@ -37,8 +37,3 @@ DRAOutput/
 *.db
 *.suo
 x64/
-Debug/
-*.sln
-*.sdf
-*.vcxproj
-*.filters
