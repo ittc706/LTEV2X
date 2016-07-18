@@ -423,6 +423,9 @@ void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 		if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
 			//-----------------------冲突处理-----------------------
 			for (sDRAScheduleInfo* &info : lst) {
+				//更新该事件的日志
+				systemEventVec[info->eventId].addEventLog(TTI, 10, m_RSUId, clusterIdx, patternIdx);
+
 				//首先将事件压入waiting列表
 				pushToRSULevelWaitEventIdList(info->eventId);
 	
