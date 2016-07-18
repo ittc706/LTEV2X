@@ -34,7 +34,7 @@ cRSU::cRSU() :m_DRAClusterNum(4) {
 	m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
 	m_DRAPatternIsAvailable = vector<vector<bool>>(m_DRAClusterNum, vector<bool>(s_DRATotalPatternNum, true));
 	m_DRAScheduleInfoTable = vector<vector<sDRAScheduleInfo*>>(m_DRAClusterNum, vector<sDRAScheduleInfo*>(s_DRATotalPatternNum,nullptr));
-	m_DRATransimitEventIdList = vector<list<sDRAScheduleInfo*>>(s_DRATotalPatternNum, list<sDRAScheduleInfo*>(0, nullptr));
+	m_DRATransimitScheduleInfoList = vector<list<sDRAScheduleInfo*>>(s_DRATotalPatternNum, list<sDRAScheduleInfo*>(0, nullptr));
 }
 
 
@@ -378,7 +378,7 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 
 		//将调度信息压入m_DRATransimitEventIdList中
 		list<tuple<int,int>> scheduleIntervalList = buildScheduleIntervalList(TTI, systemEventVec[eventId], m_DRAClusterTDRInfo[clusterIdx]);
-		m_DRATransimitEventIdList[patternIdx].push_back(new sDRAScheduleInfo(eventId, VeUEId, m_RSUId, patternIdx, scheduleIntervalList));
+		pushToRSULevelTransmitScheduleInfoList(new sDRAScheduleInfo(eventId, VeUEId, m_RSUId, patternIdx, scheduleIntervalList), patternIdx);
 		newCount++;
 	}
 
@@ -389,15 +389,40 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 	//-----------------------OUTPUT-----------------------
 }
 
+void cRSU::DRADelaystatistics(int TTI,std::vector<sEvent>& systemEventVec) {
+	/*
+	* 该函数应该在DRASelectBasedOnP..之后调用
+	* 此时事件处于等待链表、传输链表、或者调度表中（非当前簇）
+	*/
+	
+	//处理等待链表
+	for (int eventId : m_DRAWaitEventIdList)
+		systemEventVec[eventId].queuingDelay++;
 
+	//处理此刻正在将要传输的传输链表
+	for (int patternIdx = 0; patternIdx < s_DRATotalPatternNum; patternIdx++) {
+		for (sDRAScheduleInfo* &p : m_DRATransimitScheduleInfoList[patternIdx])
+			systemEventVec[p->eventId].sendDelay++;
+	}
+
+	//处理此刻位于调度表中，但不属于当前簇的事件
+	int curClusterIdx = DRAGetClusterIdx(TTI);
+	for (int clusterIdx = 0; clusterIdx < m_DRAClusterNum; clusterIdx++) {
+		if (clusterIdx == curClusterIdx) continue;
+		for (sDRAScheduleInfo *p : m_DRAScheduleInfoTable[clusterIdx]) {
+			if (p == nullptr) continue;
+			systemEventVec[p->eventId].queuingDelay++;
+		}		
+	}
+}
 
 void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 	int clusterIdx = DRAGetClusterIdx(TTI);
 	for (int patternIdx = 0;patternIdx < s_DRATotalPatternNum;patternIdx++) {
-		list<sDRAScheduleInfo*> &lst = m_DRATransimitEventIdList[patternIdx];
+		list<sDRAScheduleInfo*> &lst = m_DRATransimitScheduleInfoList[patternIdx];
 		if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
 			//-----------------------冲突处理-----------------------
-			for (sDRAScheduleInfo* info : lst) {
+			for (sDRAScheduleInfo* &info : lst) {
 				//首先将事件压入waiting列表
 				pushToRSULevelWaitEventIdList(info->eventId);
 	
@@ -414,12 +439,15 @@ void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 			}
 			//释放资源
 			m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
-			//-----------------------冲突处理-----------------------
-
 
 		}
 		else if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
+			
 			sDRAScheduleInfo *info = *lst.begin();
+
+			//更新该事件的日志
+			systemEventVec[info->eventId].addEventLog(TTI, 10, m_RSUId, clusterIdx, patternIdx);
+
 			//维护占用区间
 			list<tuple<int, int>> &OIList = info->occupiedIntervalList;
 
@@ -448,9 +476,14 @@ void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 				*lst.begin() = nullptr;
 			}
 		}
+		else {//没有事件在该pattern上传输
+			//do nothing
+		}
+		//处理完后，将该pattern上的数据清空（此时要不本身就是空，要不就是nullptr指针）
 		lst.clear();
 	}
 }
+
 
 
 

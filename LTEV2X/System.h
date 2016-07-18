@@ -11,9 +11,6 @@
 
 
 class cSystem{
-	//-----------------------TEST-----------------------
-public:
-	//-----------------------TEST-----------------------
 private:
 	/*------------------数据成员------------------*/
 	sConfig m_Config;//系统配置参数
@@ -95,6 +92,7 @@ private:
 	void DRASelectBasedOnP23();//基于P2和P3的资源分配
 	void DRASelectBasedOnP123();//基于P1、P2和P3的资源分配
 
+	void DRADelaystatistics();//时延统计
 	void DRAConflictListener();//帧听冲突
 
 	/*--------------------辅助函数--------------------*/

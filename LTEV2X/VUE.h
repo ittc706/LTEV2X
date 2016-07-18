@@ -20,7 +20,7 @@ public:
 	std::list<std::tuple<int,int>> m_LocationUpdateLogInfoList;
 
 	/***************************************************************
-	------------------------调度模块--------------------------------
+	---------------------集中式资源管理-----------------------------
 	****************************************************************/
 
 	bool m_IsScheduledUL;    //UpLink是否在被调度
@@ -39,3 +39,9 @@ public:
 
 	std::string toString(int n);//用于打印VeUE信息
 };
+
+inline
+int cVeUE::RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
+	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
+	return curAvaliablePatternIdx[messageType][rand() % size];
+}

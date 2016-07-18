@@ -38,8 +38,6 @@ public:
 	double m_SINR[gc_RBNum];
 	sFeedbackInfo m_FeedbackUL;//将要发送给基站端的反馈信息
 
-	std::vector<double> m_CQIPredictIdeal;
-	std::vector<double> m_CQIPredictRealistic;
 
 
 	/***************************************************************
@@ -128,11 +126,11 @@ public:
 	std::vector<std::vector<sDRAScheduleInfo*>> m_DRAScheduleInfoTable;
 	
 	/*
-	* 当前时刻当前RSU内处于传输状态的事件链表
+	* 当前时刻当前RSU内处于传输状态的调度信息链表
 	* 外层下标代表Pattern编号
 	* 内层用list用于处理冲突
 	*/
-	std::vector<std::list<sDRAScheduleInfo*>> m_DRATransimitEventIdList;
+	std::vector<std::list<sDRAScheduleInfo*>> m_DRATransimitScheduleInfoList;
 
 	/*
 	* RSU级别的等待列表
@@ -211,6 +209,15 @@ public:
 	void DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec);
 
 	/*
+	* 时延统计
+	* 统计资源占用的累计TTI
+	* 统计等待累计TTI
+	* 在DRASelectBasedOnP..之后对其调用
+	* 此时所有已触发的事件存在于WaitEventIdList中，或者存在于TransimitScheduleInfoList中，或者ScheduleInfoTable中
+	*/
+	void DRADelaystatistics(int TTI,std::vector<sEvent>& systemEventVec);
+
+	/*
 	* 将调度信息写入文件中，测试用！
 	*/
 	void DRAWriteScheduleInfo(std::ofstream& out,int TTI);
@@ -261,6 +268,11 @@ private:
 	*/
 	void pushToSystemLevelSwitchEventIdList(int eventId, std::list<int>& systemDRASwitchVeUEIdList);
 
+	/*
+	* 将RSU级别的TransimitScheduleInfo的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToRSULevelTransmitScheduleInfoList(sDRAScheduleInfo* p,int patternIdx);
+
 	/* 
 	* 将RSU级别的ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
 	*/
@@ -289,6 +301,11 @@ void cRSU::pushToSystemLevelSwitchEventIdList(int VeUEId, std::list<int>& system
 }
 
 inline
+void cRSU::pushToRSULevelTransmitScheduleInfoList(sDRAScheduleInfo* p,int patternIdx) {
+	m_DRATransimitScheduleInfoList[patternIdx].push_back(p);
+}
+
+inline
 void cRSU::pushToScheduleInfoTable(int clusterIdx, int patternIdx, sDRAScheduleInfo*p) {
 	m_DRAScheduleInfoTable[clusterIdx][patternIdx] = p;
 }
@@ -299,7 +316,7 @@ void cRSU::pullFromScheduleInfoTable(int TTI) {
 	/*将处于调度表中当前可以传输的信息压入m_DRATransimitEventIdList*/
 	for (int patternIdx = 0; patternIdx < s_DRATotalPatternNum; patternIdx++) {
 		if (m_DRAScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
-			m_DRATransimitEventIdList[patternIdx].push_back(m_DRAScheduleInfoTable[clusterIdx][patternIdx]);
+			m_DRATransimitScheduleInfoList[patternIdx].push_back(m_DRAScheduleInfoTable[clusterIdx][patternIdx]);
 			m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
 		}
 	}

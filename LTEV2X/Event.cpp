@@ -27,7 +27,7 @@ sMessage::sMessage(eMessageType messageType) {
 
 
 
-sEvent::sEvent(int VeUEId, int TTI, eMessageType messageType) {
+sEvent::sEvent(int VeUEId, int TTI, eMessageType messageType) :propagationDelay(0), sendDelay(0), processingDelay(0), queuingDelay(0) {
 	this->VeUEId = VeUEId;
 	this->TTI = TTI;
 	message = sMessage(messageType);

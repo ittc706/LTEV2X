@@ -50,9 +50,11 @@ void cSystem::writeEventListInfo(ofstream &out) {
 
 void cSystem::writeEventLogInfo(std::ofstream &out) {
 	for (int eventId = 0;eventId < static_cast<int>(m_EventVec.size());eventId++) {
-		out << "Event[" << left << setw(3) << eventId << "]  ";
-		out << "VeUE[" << m_EventVec[eventId].VeUEId << "]" << endl;
+		out << "Event[" << eventId << "]";
 		out << "{" << endl;
+		out << "    " << "VeUEId = " << m_EventVec[eventId].VeUEId << endl;
+		out << "    " << "sendDelay = " << m_EventVec[eventId].sendDelay << "(TTI)" << endl;
+		out << "    " << "queuingDelay = " << m_EventVec[eventId].queuingDelay << "(TTI)" << endl;
 		out << m_EventVec[eventId].toLogString(1);
 		out << "}" << endl;
 	}
@@ -77,7 +79,7 @@ void cRSU::DRAWriteScheduleInfo(std::ofstream& out, int TTI) {
 	out << "    {" << endl;
 	for (int patternIdx = 0;patternIdx < s_DRATotalPatternNum;patternIdx++) {
 		out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
-		for (sDRAScheduleInfo* info : m_DRATransimitEventIdList[patternIdx]) {
+		for (sDRAScheduleInfo* info : m_DRATransimitScheduleInfoList[patternIdx]) {
 			out << info->toScheduleString(3) << endl;
 		}
 	}
@@ -172,34 +174,37 @@ void sEvent::addEventLog(int TTI,int type,int RSUId,int clusterIdx,int patternId
 	stringstream ss;
 	switch (type) {
 	case 0:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; RSU[" << RSUId << "]   ClusterIdx[" << clusterIdx << "]    PatternIdx[" << patternIdx << "] }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - Transimit Succeed At: RSU[" << RSUId << "] - ClusterIdx[" << clusterIdx << "] - PatternIdx[" << patternIdx << "] }";
 		break;
 	case 1:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: EventList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: EventList - To: RSU[" << RSUId << "]'s AdmitEventIdList }";
 		break;
 	case 2:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: EventList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: EventList - To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		break;
 	case 3:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] - To: SwitchList }";
 		break;
 	case 4:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] - To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		break;
 	case 5:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << RSUId << "]'s WaitEventIdList ; To: SwitchList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s WaitEventIdList - To: SwitchList }";
 		break;
 	case 6:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << RSUId << "]'s WaitEventIdList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s WaitEventIdList - To: RSU[" << RSUId << "]'s AdmitEventIdList }";
 		break;
 	case 7:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: SwitchList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: SwitchList - To: RSU[" << RSUId << "]'s AdmitEventIdList }";
 		break;
 	case 8:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: SwitchList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: SwitchList - To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		break;
 	case 9:
-		ss << "{ TTI: " << left << setw(3) << TTI << " ; From: RSU[" << RSUId << "]'s AdmitEventIdLIst ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s AdmitEventIdLIst - To: RSU[" << RSUId << "]'s WaitEventIdList }";
+		break;
+	case 10:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - Transimit At: RSU[" << RSUId << "] - Cluster[" << clusterIdx << "] - Pattern[" << patternIdx << "] }";
 		break;
 	}
 	logTrackList.push_back(ss.str());

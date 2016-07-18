@@ -46,7 +46,7 @@ void cSystem::scheduleInfoClean() {
 
 void cSystem::schedulePF_RP_CSI_UL() {
 	for (ceNB &_eNB : m_eNBVec) {//对每一个基站进行一次调度
-		int k = _eNB.m_RSUIdList.size();
+		int k = static_cast<int>(_eNB.m_RSUIdList.size());
 		vector<vector<bool>> SPU(k, vector<bool>(gc_RBNum));//每个RSU用一个vector<bool>来管理其SPU，true代表已选如该子带
 		vector<int> S;//未分配的子带集合(存储子带的ID）
 		
@@ -68,7 +68,7 @@ void cSystem::schedulePF_RP_CSI_UL() {
 		//开始排序算法
 		int p = 1;
 		while (S.size() != 0) {
-			sPFInfo pPFInfo = selectKthPF(F, p, 0, F.size() - 1);
+			sPFInfo pPFInfo = selectKthPF(F, p, 0, static_cast<int>(F.size()) - 1);
 			int u = pPFInfo.RSUId;
 			int v = pPFInfo.SubbandId;
 
@@ -133,16 +133,16 @@ void cSystem::DRASchedule() {
 
 	bool clusterFlag = m_TTI  % m_Config.locationUpdateNTTI == 0;
 
-	/*资源分配信息清空:包括每个RSU内的m_CallList等*/
+	//资源分配信息清空:包括每个RSU内的m_CallList等
 	DRAInformationClean();
 
-	/*根据地理位置进行分簇*/
+	//根据地理位置进行分簇
 	DRAPerformCluster(clusterFlag);
 
-	/*根据簇大小进行时域资源的划分*/
+	//根据簇大小进行时域资源的划分
 	DRAGroupSizeBasedTDM(clusterFlag);
 
-	/*建立接纳链表，遍历RSU内的m_VecVUE，生成m_CallList*/
+	//建立接纳链表，遍历RSU内的m_VecVUE，生成m_CallList
 	DRAUpdateAdmitEventIdList(clusterFlag);
 
 	/*-----------------------WARN-----------------------
@@ -150,7 +150,7 @@ void cSystem::DRASchedule() {
 	-----------------------WARN-----------------------*/
 	if (m_DRASwitchEventIdList.size() != 0) throw Exp("接纳链表全部生成后，System级别的切换链表仍不为空！");
 	
-	/*当前m_TTI的DRA算法*/
+	//当前m_TTI的DRA算法
 	switch (m_DRAMode) {
 	case P13:
 		DRASelectBasedOnP13();
@@ -163,7 +163,9 @@ void cSystem::DRASchedule() {
 		break;
 	}
 
-	/*帧听冲突*/
+	DRADelaystatistics();
+
+	//帧听冲突
 	DRAConflictListener();
 
 	//-----------------------OUTPUT-----------------------
@@ -277,6 +279,10 @@ void cSystem::DRASelectBasedOnP123() {
 }
 
 
+void cSystem::DRADelaystatistics() {
+	for (cRSU &_RSU : m_RSUVec)
+		_RSU.DRADelaystatistics(m_TTI,m_EventVec);
+}
 
 
 void cSystem::DRAConflictListener() {
