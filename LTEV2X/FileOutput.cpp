@@ -77,7 +77,7 @@ void cRSU::DRAWriteScheduleInfo(std::ofstream& out, int TTI) {
 	int clusterIdx = DRAGetClusterIdx(TTI);
 	out << "    RSU[" << m_RSUId << "] :" << endl;
 	out << "    {" << endl;
-	for (int patternIdx = 0;patternIdx < s_DRATotalPatternNum;patternIdx++) {
+	for (int patternIdx = 0;patternIdx < gc_DRATotalPatternNum;patternIdx++) {
 		out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
 		for (sDRAScheduleInfo* info : m_DRATransimitScheduleInfoList[patternIdx]) {
 			out << info->toScheduleString(3) << endl;
@@ -166,6 +166,52 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		out << "    " << left << setw(11) << "[9]Conflict";
 		out << "    " << ss.str() << endl;
 		break;
+	case 21:
+		ss << "Event[ " << left << setw(3) << eventId << "]: ";
+		ss << "{ From: EventList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
+		out << "[ TTI = " << left << setw(3) << TTI << "]";
+		out << "    " << left << setw(11) << "[21]Switch";
+		out << "    " << ss.str() << endl;
+		break;
+	case 23:
+		ss << "Event[ " << left << setw(3) << eventId << "]: ";
+		ss << "{ From: RSU[" << RSUId << "]'s EmergencyScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
+		out << "[ TTI = " << left << setw(3) << TTI << "]";
+		out << "    " << left << setw(11) << "[23]Switch";
+		out << "    " << ss.str() << endl;
+		break;
+	case 25:
+		ss.str("");
+		ss << "Event[ " << left << setw(3) << eventId << "]: ";
+		ss << "{ From: RSU[" << RSUId << "]'s EmergencyWaitEventIdList ; To: SwitchList }";
+		out << "[ TTI = " << left << setw(3) << TTI << "]";
+		out << "    " << left << setw(11) << "[25]Switch";
+		out << "    " << ss.str() << endl;
+		break;
+	case 26:
+		ss.str("");
+		ss << "Event[ " << left << setw(3) << eventId << "]: ";
+		ss << "{ From: RSU[" << RSUId << "]'s EmergencyWaitEventIdList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
+		out << "[ TTI = " << left << setw(3) << TTI << "]";
+		out << "    " << left << setw(11) << "[26]Switch";
+		out << "    " << ss.str() << endl;
+		break;
+	case 27:
+		ss.str("");
+		ss << "Event[ " << left << setw(3) << eventId << "]: ";
+		ss << "{ From: SwitchList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
+		out << "[ TTI = " << left << setw(3) << TTI << "]";
+		out << "    " << left << setw(11) << "[27]Switch";
+		out << "    " << ss.str() << endl;
+		break;
+	case 29:
+		ss.str("");
+		ss << "Event[ " << left << setw(3) << eventId << "]: ";
+		ss << "{ RSU[" << RSUId << "]'s EmergencyAdmitEventIdLIst ; To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
+		out << "[ TTI = " << left << setw(3) << TTI << "]";
+		out << "    " << left << setw(11) << "[29]Conflict";
+		out << "    " << ss.str() << endl;
+		break;
 	}
 }
 
@@ -205,6 +251,27 @@ void sEvent::addEventLog(int TTI,int type,int RSUId,int clusterIdx,int patternId
 		break;
 	case 10:
 		ss << "{ TTI: " << left << setw(3) << TTI << " - Transimit At: RSU[" << RSUId << "] - Cluster[" << clusterIdx << "] - Pattern[" << patternIdx << "] }";
+		break;
+	case 21:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: EventList - To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
+		break;
+	case 23:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s EmergencyScheduleTable[" << clusterIdx << "][" << patternIdx << "] - To: SwitchList }";
+		break;
+	case 25:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s EmergencyWaitEventIdList - To: SwitchList }";
+		break;
+	case 26:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s EmergencyWaitEventIdList - To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
+		break;
+	case 27:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: SwitchList - To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
+		break;
+	case 29:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s EmergencyAdmitEventIdLIst - To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
+		break;
+	case 30:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - Transimit At: RSU[" << RSUId << "] - Pattern[" << patternIdx << "] }";
 		break;
 	}
 	logTrackList.push_back(ss.str());

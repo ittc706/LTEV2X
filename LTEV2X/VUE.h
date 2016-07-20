@@ -33,9 +33,8 @@ public:
 	---------------------分布式资源管理-----------------------------
 	****************************************************************/
 
-	//int RBSelectBasedOnP2(const std::vector<int>(&curAvaliablePatternIdx)[cRSU::s_DRAPatternTypeNum], eMessageType messageType);
 	int RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType);
-
+	int RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
 
 	std::string toString(int n);//用于打印VeUE信息
 };
@@ -43,5 +42,13 @@ public:
 inline
 int cVeUE::RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
 	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
+	if (size == 0) return -1;
 	return curAvaliablePatternIdx[messageType][rand() % size];
+}
+
+inline
+int cVeUE::RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
+	int size = static_cast<int>(curAvaliableEmergencyPatternIdx.size());
+	if (size == 0) return -1;
+	return curAvaliableEmergencyPatternIdx[rand() % size];
 }

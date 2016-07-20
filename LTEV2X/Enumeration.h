@@ -7,9 +7,9 @@ enum eScheduleMode {
 
 
 enum eMessageType {
-	PERIOD=0,  //周期性信息（包括VeUE的基本信息，车速，位置，方向等等）
-	DATA=1,    //数据业务(文本，视频，声音等等）
-	EMERGENCY=2   //紧急信息（比如车祸信息，优先级较高）
+	EMERGENCY = -1,   //紧急信息（比如车祸信息，优先级较高）
+	PERIOD = 0,  //周期性信息（包括VeUE的基本信息，车速，位置，方向等等）
+	DATA = 1     //数据业务(文本，视频，声音等等）
 };
 
 

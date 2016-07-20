@@ -34,6 +34,7 @@ void cSystem::process() {
 void cSystem::configure() {//系统仿真参数配置
 	m_NTTI = 50;//仿真TTI时间
 	m_Config.periodicEventNTTI = 20;
+	m_Config.emergencyLamda = 10;
 	m_Config.locationUpdateNTTI = 30;
 
 	m_Config.VUENum = 30;
@@ -59,8 +60,10 @@ void cSystem::initialization() {
 		m_eNBVec[eNBId].m_RSUIdList.push_back(RSUId);
 	}
 
+	//选择DRA模式
 	m_DRAMode = P123;
 
+	//创建事件链表
 	buildEventList();
 
 }
@@ -68,41 +71,52 @@ void cSystem::initialization() {
 void cSystem::buildEventList() {
 	/*按时间顺序（事件的ID与时间相关，ID越小，事件发生的时间越小生成事件链表*/
 
+	srand((unsigned)time(NULL));//iomanip
 	//首先生成各个车辆的周期性事件的起始时刻
-	vector<list<int>> startTTIVec(m_Config.periodicEventNTTI, list<int>({ -1 }));
+	vector<list<int>> startTTIVec(m_Config.periodicEventNTTI, list<int>());
 	for (int VeUEId = 0; VeUEId < m_Config.VUENum; VeUEId++) {
 		int startTTI = rand() % m_Config.periodicEventNTTI;
 		startTTIVec[startTTI].push_back(VeUEId);
 	}
 
-	/*根据startTTIVec依次填充PERIOD事件*/
+	srand((unsigned)time(NULL));//iomanip
+    //根据startTTIVec依次填充PERIOD事件并在其中插入服从泊松分布的紧急事件
+	int countEmergency = 0;
 	int CTTI = 0;
 	while (CTTI < m_NTTI) {
 		for (int TTIOffset = 0; TTIOffset < m_Config.periodicEventNTTI; TTIOffset++) {
 			list<int>lst = startTTIVec[TTIOffset];
 			for (int VeUEId : lst) {
-				if (VeUEId == -1) {//非法ID，可在此插入随机性事件
-				/*-----------------------WARN-----------------------
-				* 这里可以插入随机性事件，为了保证始终能运行到这里（列表不为空即可），
-				* 在初始化lst的时候插入了非法的VeUEId=-1
-				*-----------------------WARN-----------------------*/
+				//----------------WRONG--------------------
+				//下面算的p好像不是触发概率，而是单位事件内触发的次数
+				//产生服从泊松分布的紧急事件
+				double p = m_Config.emergencyLamda / m_NTTI;//触发的概率
+				double r = static_cast<double>(rand()) / RAND_MAX;//产生[0-1)分布的随机数
+				if (r < p&&CTTI + TTIOffset < m_NTTI) {//若随机数小于概率p，即认为该事件触发
+					sEvent evt = sEvent(VeUEId, CTTI + TTIOffset, EMERGENCY);
+					m_EventVec.push_back(evt);
+					m_EventTTIList[CTTI + TTIOffset].push_back(evt.eventId);
+					countEmergency++;
 				}
-				else {//合法ID，添加该事件
-					if (CTTI + TTIOffset < m_NTTI) {
-						/*-----------------------WARN-----------------------
-						* 这里先生成sEvent的对象，然后将其压入m_EventVec
-						* 由于Vector<T>.push_back是压入传入对象的复制品，因此会调用sEvent的拷贝构造函数
-						* sEvent默认的拷贝构造函数会赋值id成员（因此是安全的）
-						*sEvent如果自定义拷贝构造函数，必须在构造函数的初始化部分拷贝id成员
-						*-----------------------WARN-----------------------*/
-						sEvent evt = sEvent(VeUEId, CTTI + TTIOffset, PERIOD);
-						m_EventVec.push_back(evt);
-						m_EventTTIList[CTTI + TTIOffset].push_back(evt.eventId);
-					}
-				}
+				//----------------WRONG--------------------
+
+				//产生周期性事件
+				if (CTTI + TTIOffset < m_NTTI) {
+					/*-----------------------ATTENTION-----------------------
+					* 这里先生成sEvent的对象，然后将其压入m_EventVec
+					* 由于Vector<T>.push_back是压入传入对象的复制品，因此会调用sEvent的拷贝构造函数
+					* sEvent默认的拷贝构造函数会赋值id成员（因此是安全的）
+					*sEvent如果自定义拷贝构造函数，必须在构造函数的初始化部分拷贝id成员
+					*-----------------------ATTENTION-----------------------*/
+					sEvent evt = sEvent(VeUEId, CTTI + TTIOffset, PERIOD);
+					m_EventVec.push_back(evt);
+					m_EventTTIList[CTTI + TTIOffset].push_back(evt.eventId);
+				}	
 			}
 		}
 		CTTI += m_Config.periodicEventNTTI;
 	}
+
+	cout << "countEmergency: " << countEmergency << endl;
 }
 

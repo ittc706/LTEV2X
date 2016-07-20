@@ -46,37 +46,7 @@ public:
 	****************************************************************/
 
 	//-----------------------static-------------------------------
-	/*
-	* Pattern的类型种类
-	* 每个Pattern所占的FB块连续
-	* 不同Pattern的区别是所占的FB块的个数
-	* 目前暂定两个，第一个是周期性事件，一个是数据业务事件
-	*/
-	static const int s_DRAPatternTypeNum=2;
-
-	/*
-	* 在全频段每个Pattern种类对应的Pattern数量
-	* 下标对应着eMessageType中定义的事件类型的数值
-	* 比如，下标0对应着PERIOD；1对应着DATA
-	*/
-	static const int s_DRAPatternNumPerPatternType[s_DRAPatternTypeNum];
-
-	/*
-	* 每个Pattern种类所占的FB数量
-	*/
-	static const int s_DRA_FBNumPerPatternType[s_DRAPatternTypeNum];
-
-	/*
-	* 每个Pattern种类对应的Pattern Idx的列表
-	*/
-	static const std::list<int> s_DRAPatternIdxList[s_DRAPatternTypeNum];
-
-
-	/*
-	* 所有Pattern类型的Pattern数量总和
-	*/
-	static const int s_DRATotalPatternNum;
-
+	
 	//-----------------------static-------------------------------
 
 	/*
@@ -100,23 +70,33 @@ public:
 	std::vector<std::tuple<int,int,int>> m_DRAClusterTDRInfo;
 
 	/*
-	* Pattern块释放该资源的TTI时刻（该TTI结束时解除）
-	* 外层下标代表簇编号
-	* 内层下标代表Pattern编号
-	* 若"m_DRAPatternIsAvailable[i][j]==true"代表簇i的Pattern块j可用
-	*/
-	std::vector<std::vector<bool>> m_DRAPatternIsAvailable;  
-
-	/*
 	* 存放每个簇的VeUE的ID的容器
 	* 下标代表簇的编号
 	*/
 	std::vector<std::list<int>> m_DRAClusterVeUEIdList;  
 
 	/*
+	* Pattern块释是否可用的标记
+	* 外层下标代表簇编号
+	* 内层下标代表Pattern编号
+	* 若"m_DRAPatternIsAvailable[i][j]==true"代表簇i的Pattern块j可用
+	*/
+	std::vector<std::vector<bool>> m_DRAPatternIsAvailable;
+
+	/*
 	* 用于存放当前TTI的接纳事件链表
 	*/
-	std::vector<int> m_DRAAdmitEventIdList; 
+	std::list<int> m_DRAAdmitEventIdList; 
+
+	/*
+	* RSU级别的等待列表
+	* 存放的是VeUEId
+	* 其来源有：
+	*		1、分簇后，由System级的切换链表转入该RSU级别的等待链表
+	*		2、事件链表中当前的事件触发，但VeUE未在可发送消息的时段，转入等待链表
+	*		3、VeUE在传输消息后，发生冲突，解决冲突后，转入等待链表
+	*/
+	std::list<int> m_DRAWaitEventIdList;
 
 	/*
 	* 存放调度调度信息
@@ -132,15 +112,34 @@ public:
 	*/
 	std::vector<std::list<sDRAScheduleInfo*>> m_DRATransimitScheduleInfoList;
 
+
 	/*
-	* RSU级别的等待列表
-	* 存放的是VeUEId
-	* 其来源有：
-	*		1、分簇后，由System级的切换链表转入该RSU级别的等待链表
-	*		2、事件链表中当前的事件触发，但VeUE未在可发送消息的时段，转入等待链表
-	*		3、VeUE在传输消息后，发生冲突，解决冲突后，转入等待链表
+	* Pattern块释是否可用的标记
+	* 下标代表Pattern编号
+	* 若"m_DRAPatternIsAvailable[i][j]==true"代表簇i的Pattern块j可用
 	*/
-	std::list<int> m_DRAWaitEventIdList;
+	std::vector<bool> m_DRAEmergencyPatternIsAvailable;
+
+	/*
+	* 当前时刻等待接入的紧急事件列表
+	*/
+	std::list<int> m_DRAEmergencyAdmitEventIdList;
+
+	/*
+	* 当前时刻处于等待接入状态的紧急事件列表
+	*/
+	std::list<int> m_DRAEmergencyWaitEventIdList;
+
+	/*
+	* 当前时刻处于传输状态的紧急事件调度信息列表
+	* 外层下标代表pattern编号
+	*/
+	std::vector<std::list<sDRAScheduleInfo*>> m_DRAEmergencyTransimitScheduleInfoList;
+
+	/*
+	* 当前时刻处于调度状态的紧急事件调度信息列表
+	*/
+	std::vector<sDRAScheduleInfo*> m_DRAEmergencyScheduleInfoTable;
 
 	/*--------------------接口函数--------------------*/
 	/*
@@ -164,7 +163,7 @@ public:
 	* 在System级别的函数内部被调用
 	* 用于处理System级别的事件链表，将事件转存入相应的链表中（RSU级别的接纳链表或者RSU级别的等待链表）
 	*/
-	void DRAProcessSystemLevelEventList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, const std::vector<std::list<int>>& systemEventTTIList);
+	void DRAProcessEventList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, const std::vector<std::list<int>>& systemEventTTIList);
 
 	/*
 	* 在System级别的函数内部被调用
@@ -172,21 +171,24 @@ public:
 	* 将发生了RSU切换的的事件推送到System级别的RSU切换链表中，因此要优先于DRAProcessSystemLevelSwitchList的调用
 	* 将发生了RSU内小簇切换的事件推送到RSU级别的等待链表中，因此要优先于DRAProcessRSULevelWaitVeUEIdList的调用
 	*/
-	void DRAProcessRSULevelScheduleInfoTable(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
+	void DRAProcessScheduleInfoTableWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
 	/*
 	* 在System级别的函数内部被调用
 	* 用于处理RSU级别的等待链表，
 	* 将发生了RSU切换的事件推送到System级别的RSU切换链表中
 	*/
-	void DRAProcessRSULevelWaitEventIdList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
+	void DRAProcessWaitEventIdList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
+
+
+	void DRAProcessWaitEventIdListWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
 	/*
 	* 在System级别的函数内部被调用
 	* 用于处理System级别的RSU切换链表，将事件转存入相应的链表中（RSU级别的接纳链表或者RSU级别的等待链表）
 	* 处理完毕后，该链表的大小为0
 	*/
-	void DRAProcessSystemLevelSwitchList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
+	void DRAProcessSwitchListWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
 	/*
 	* 基于P1和P3的资源分配
@@ -251,58 +253,81 @@ private:
 	* 计算当前事件所对应的调度区间
 	* 在函数DRASelectBasedOnP123(...)内部被调用
     */
-	std::list<std::tuple<int, int>> buildScheduleIntervalList(int TTI,sEvent event, std::tuple<int, int, int>ClasterTTI);
+	std::list<std::tuple<int, int>> buildScheduleIntervalList(int TTI,const sEvent& event, std::tuple<int, int, int>ClasterTTI);
+	std::list<std::tuple<int, int>> buildEmergencyScheduleInterval(int TTI, const sEvent& event);
+
 
 	/*
-	* 将RSU级别的CallVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	* 将AdmitEventIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
-	void pushToRSULevelAdmitEventIdList(int eventId);
+	void pushToAdmitEventIdList(int eventId);
+	void pushToEmergencyAdmitEventIdList(int eventId);
 
 	/*
-	* 将RSU级别的WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
-	void pushToRSULevelWaitEventIdList(int eventId);
+	void pushToWaitEventIdList(int eventId);
+	void pushToEmergencyWaitEventIdList(int eventId);
 
 	/*
-	* 将System级别的SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
-	void pushToSystemLevelSwitchEventIdList(int eventId, std::list<int>& systemDRASwitchVeUEIdList);
+	void pushToSwitchEventIdList(int eventId, std::list<int>& systemDRASwitchVeUEIdList);
 
 	/*
-	* 将RSU级别的TransimitScheduleInfo的添加封装起来，便于查看哪里调用，利于调试
+	* 将TransimitScheduleInfo的添加封装起来，便于查看哪里调用，利于调试
 	*/
-	void pushToRSULevelTransmitScheduleInfoList(sDRAScheduleInfo* p,int patternIdx);
+	void pushToTransmitScheduleInfoList(sDRAScheduleInfo* p,int patternIdx);
+	void pushToEmergencyTransmitScheduleInfoList(sDRAScheduleInfo* p, int patternIdx);
 
 	/* 
-	* 将RSU级别的ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
+	* 将ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
 	*/
 	void pushToScheduleInfoTable(int clusterIdx,int patternIdx, sDRAScheduleInfo*p);
+	void pushToEmergencyScheduleInfoTable(int patternIdx, sDRAScheduleInfo*p);
 
 	/*
 	* 将RSU级别的ScheduleInfoTable的弹出封装起来，便于查看哪里调用，利于调试
 	*/
 	void pullFromScheduleInfoTable(int TTI);
+	void pullFromEmergencyScheduleInfoTable();
+
 };
 
 
 inline
-void cRSU::pushToRSULevelAdmitEventIdList(int eventId) {
+void cRSU::pushToAdmitEventIdList(int eventId) {
 	m_DRAAdmitEventIdList.push_back(eventId);
 }
 
 inline
-void cRSU::pushToRSULevelWaitEventIdList(int eventId) {
+void cRSU::pushToEmergencyAdmitEventIdList(int eventId) {
+	m_DRAEmergencyAdmitEventIdList.push_back(eventId);
+}
+
+inline
+void cRSU::pushToWaitEventIdList(int eventId) {
 	m_DRAWaitEventIdList.push_back(eventId);
 }
 
 inline
-void cRSU::pushToSystemLevelSwitchEventIdList(int VeUEId, std::list<int>& systemDRASwitchVeUEIdList) {
+void cRSU::pushToEmergencyWaitEventIdList(int eventId) {
+	m_DRAEmergencyWaitEventIdList.push_back(eventId);
+}
+
+inline
+void cRSU::pushToSwitchEventIdList(int VeUEId, std::list<int>& systemDRASwitchVeUEIdList) {
 	systemDRASwitchVeUEIdList.push_back(VeUEId);
 }
 
 inline
-void cRSU::pushToRSULevelTransmitScheduleInfoList(sDRAScheduleInfo* p,int patternIdx) {
+void cRSU::pushToTransmitScheduleInfoList(sDRAScheduleInfo* p,int patternIdx) {
 	m_DRATransimitScheduleInfoList[patternIdx].push_back(p);
+}
+
+inline
+void cRSU::pushToEmergencyTransmitScheduleInfoList(sDRAScheduleInfo* p, int patternIdx) {
+	m_DRAEmergencyTransimitScheduleInfoList[patternIdx].push_back(p);
 }
 
 inline
@@ -311,13 +336,28 @@ void cRSU::pushToScheduleInfoTable(int clusterIdx, int patternIdx, sDRAScheduleI
 }
 
 inline
+void cRSU::pushToEmergencyScheduleInfoTable(int patternIdx, sDRAScheduleInfo*p) {
+	m_DRAEmergencyScheduleInfoTable[patternIdx] = p;
+}
+
+inline
 void cRSU::pullFromScheduleInfoTable(int TTI) {
 	int clusterIdx = DRAGetClusterIdx(TTI);
 	/*将处于调度表中当前可以传输的信息压入m_DRATransimitEventIdList*/
-	for (int patternIdx = 0; patternIdx < s_DRATotalPatternNum; patternIdx++) {
+	for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
 		if (m_DRAScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
 			m_DRATransimitScheduleInfoList[patternIdx].push_back(m_DRAScheduleInfoTable[clusterIdx][patternIdx]);
 			m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+		}
+	}
+}
+
+inline
+void cRSU::pullFromEmergencyScheduleInfoTable() {
+	for (int patternIdx = 0;patternIdx < gc_DRAEmergencyTotalPatternNum;patternIdx++) {
+		if (m_DRAEmergencyScheduleInfoTable[patternIdx] != nullptr) {
+			m_DRAEmergencyTransimitScheduleInfoList[patternIdx].push_back(m_DRAEmergencyScheduleInfoTable[patternIdx]);
+			m_DRAEmergencyScheduleInfoTable[patternIdx] = nullptr;
 		}
 	}
 }

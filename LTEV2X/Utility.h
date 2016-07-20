@@ -20,5 +20,4 @@ public:
 
 	static std::list<int> makeContinuousSequence(int begin, int end);
 
-	static int sumArray(const int(&ary)[cRSU::s_DRAPatternTypeNum]);
 };

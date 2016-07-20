@@ -27,10 +27,22 @@ string sEvent::toLogString(int n) {
 
 
 string sMessage::toString() {
+	string s;
+	switch (messageType) {
+	case PERIOD:
+		s = "PERIOD";
+		break;
+	case EMERGENCY:
+		s = "EMERGENCY";
+		break;
+	case DATA:
+		s = "DATA";
+		break;
+	}
 	ostringstream ss;
 	ss << "[ byteNum = " << left << setw(3) << byteNum;
 	ss << " , DRA_ONTTI = " << left << setw(3) << DRA_ONTTIPerFB;
-	ss << " , MessageType = " << (messageType == PERIOD ? "PEROID" : "ELSE") << " ]";
+	ss << " , MessageType = " << s << " ]";
 	return ss.str();
 }
 

@@ -92,6 +92,7 @@ private:
 	void DRASelectBasedOnP23();//基于P2和P3的资源分配
 	void DRASelectBasedOnP123();//基于P1、P2和P3的资源分配
 
+	void DRAWriteScheduleInfo();//记录调度信息日志
 	void DRADelaystatistics();//时延统计
 	void DRAConflictListener();//帧听冲突
 
