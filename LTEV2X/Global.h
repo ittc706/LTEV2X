@@ -27,7 +27,7 @@ const int gc_DRAEmergencyFBNumPerPattern = 1;//每个紧急事件的Pattern占用的FB数量
 const int gc_DRAPatternTypeNum = 2;//非紧急事件的Pattern的类型种类
 const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum]= { 20,5 };//在全频段每个Pattern种类对应的Pattern数量
 const int gc_DRA_FBNumPerPatternType[gc_DRAPatternTypeNum]={ 1,5 };//每个Pattern种类所占的FB数量
-const std::list<int> gc_DRAPatternIdxList[gc_DRAPatternTypeNum]={ //每个Pattern种类对应的Pattern Idx的列表
+const std::list<int> gc_DRAPatternIdxTable[gc_DRAPatternTypeNum]={ //每个Pattern种类对应的Pattern Idx的列表
 	{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19},
 	{20,21,22,23,24}
 };
@@ -39,16 +39,15 @@ const int gc_DRATotalPatternNum = 25;//所有非EmergencyPattern类型的Pattern数量总
 /*===========================================
 *               全域函数声明
 * ==========================================*/
-int max(int t1, int t2);
-
 
 
 
 /*===========================================
-*        简单的函数定义为内敛形式
+*                内敛函数定义
 * ==========================================*/
 
 inline
 int max(int t1, int t2) {
 	return t1 < t2 ? t2 : t1;
 }
+

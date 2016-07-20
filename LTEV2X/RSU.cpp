@@ -459,13 +459,13 @@ void cRSU::DRAProcessSwitchListWhenLocationUpdate(int TTI, const std::vector<cVe
 }
 
 
-void cRSU::DRASelectBasedOnP13(int TTI, std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec) {
+void cRSU::DRASelectBasedOnP13(int TTI, std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec) {
 }
 
-void cRSU::DRASelectBasedOnP23(int TTI, std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec) {
+void cRSU::DRASelectBasedOnP23(int TTI, std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec) {
 }
 
-void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec) {
+void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec) {
 	/*  EMERGENCY  */
 
 	/*
@@ -484,13 +484,17 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 		//为当前用户在可用的EmergencyPattern块中随机选择一个，每个用户自行随机选择可用EmergencyPattern块
 		int patternIdx = systemVeUEVec[VeUEId].RBEmergencySelectBasedOnP2(curAvaliableEmergencyPatternIdx);
 		
-		//-------------------UNDONE------------------------
-		if (patternIdx == -1) {
+		if (patternIdx == -1) {//无对应Pattern类型的pattern资源可用
 			pushToEmergencyWaitEventIdList(eventId);
-			//日志
+			
+			//更新该事件的日志
+			systemEventVec[eventId].addEventLog(TTI, 31, m_RSUId, -1, -1);
+
+			//记录TTI日志
+			DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 31, eventId, m_RSUId, -1, -1);
+
 			continue;
 		}
-		//-------------------UNDONE------------------------
 
 		//将资源标记为占用
 		m_DRAEmergencyPatternIsAvailable[patternIdx] = false;
@@ -517,7 +521,7 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 	*/
 	vector<vector<int>> curAvaliablePatternIdx(gc_DRAPatternTypeNum);
 	for (int patternTypeIdx = 0; patternTypeIdx < gc_DRAPatternTypeNum; patternTypeIdx++) {
-		for (int patternIdx : gc_DRAPatternIdxList[patternTypeIdx]) {
+		for (int patternIdx : gc_DRAPatternIdxTable[patternTypeIdx]) {
 			if (m_DRAPatternIsAvailable[clusterIdx][patternIdx]) {
 				curAvaliablePatternIdx[patternTypeIdx].push_back(patternIdx);
 			}
@@ -531,13 +535,16 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, const
 		//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
 		int patternIdx = systemVeUEVec[VeUEId].RBSelectBasedOnP2(curAvaliablePatternIdx, systemEventVec[eventId].message.messageType);
 		
-		//---------------UNDONE----------------
 		if (patternIdx == -1) {//该用户传输的信息类型没有pattern剩余了
 			pushToWaitEventIdList(eventId);
-			//这里待添加日志
+
+			//更新该事件的日志
+			systemEventVec[eventId].addEventLog(TTI, 11, m_RSUId, -1, -1);
+
+			//记录TTI日志
+			DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 11, eventId, m_RSUId, -1, -1);
 			continue;
 		}
-		//---------------UNDONE----------------
 
 		//将资源标记为占用
 		m_DRAPatternIsAvailable[clusterIdx][patternIdx] = false;

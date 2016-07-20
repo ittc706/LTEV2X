@@ -34,7 +34,7 @@ void cSystem::process() {
 void cSystem::configure() {//系统仿真参数配置
 	m_NTTI = 50;//仿真TTI时间
 	m_Config.periodicEventNTTI = 20;
-	m_Config.emergencyLamda = 10;
+	m_Config.emergencyLamda = 1;
 	m_Config.locationUpdateNTTI = 30;
 
 	m_Config.VUENum = 30;

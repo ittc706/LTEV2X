@@ -40,14 +40,10 @@ public:
 
 
 
-	/***************************************************************
-	---------------------分布式资源管理-----------------------------
-	-------------DRA:Distributed Resource Allocation----------------
-	****************************************************************/
-
-	//-----------------------static-------------------------------
-	
-	//-----------------------static-------------------------------
+	/*--------------------------------------------------------------
+	*                      分布式资源管理
+	*            DRA:Distributed Resource Allocation
+	* -------------------------------------------------------------*/
 
 	/*
 	* RSU的类型：
@@ -193,17 +189,17 @@ public:
 	/*
 	* 基于P1和P3的资源分配
 	*/
-	void DRASelectBasedOnP13(int TTI,std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec);
+	void DRASelectBasedOnP13(int TTI,std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 基于P2和P3的资源分配
 	*/
-	void DRASelectBasedOnP23(int TTI,std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec);
+	void DRASelectBasedOnP23(int TTI,std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 基于P1、P2和P3的资源分配
 	*/
-	void DRASelectBasedOnP123(int TTI,std::vector<cVeUE>&systemVeUEVec, const std::vector<sEvent>& systemEventVec);
+	void DRASelectBasedOnP123(int TTI,std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 帧听冲突
