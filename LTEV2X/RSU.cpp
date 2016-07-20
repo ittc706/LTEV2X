@@ -14,13 +14,10 @@
 
 using namespace std;
 
-//记录动态创建的对象的次数
-int newCount = 0;
+int newCount = 0;//记录动态创建的对象的次数
 
-//记录删除动态创建对象的次数
-int deleteCount = 0;
+int deleteCount = 0;//记录删除动态创建对象的次数
 
-// TEST
 int cRSU::s_RSUCount = 0;
 
 
@@ -119,13 +116,13 @@ void cRSU::DRAInformationClean() {
 }
 
 
-void cRSU::DRAGroupSizeBasedTDM() {
+void cRSU::DRAGroupSizeBasedTDM(std::vector<cVeUE>& systemVeUEVec) {
 	//特殊情况，当该RSU内无一辆车时
 	if (m_VeUEIdList.size() == 0) {
-		/*-----------------------WARN-----------------------
+		/*-----------------------ATTENTION-----------------------
 		* 若赋值为(0,-1,0)会导致获取当前簇编号失败，导致其他地方需要讨论
 		* 因此直接给每个簇都赋值为整个区间，反正也没有任何作用，免得其他部分讨论
-		*-----------------------WARN-----------------------*/
+		*------------------------ATTENTION-----------------------*/
 		m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(m_DRAClusterNum, tuple<int, int, int>(0, gc_DRA_NTTI-1, gc_DRA_NTTI));
 		return;
 	}
@@ -173,6 +170,13 @@ void cRSU::DRAGroupSizeBasedTDM() {
 		get<0>(m_DRAClusterTDRInfo[clusterIdx]) = get<1>(m_DRAClusterTDRInfo[clusterIdx - 1]) + 1;
 		get<1>(m_DRAClusterTDRInfo[clusterIdx]) = get<0>(m_DRAClusterTDRInfo[clusterIdx]) + get<2>(m_DRAClusterTDRInfo[clusterIdx]) - 1;
 	}
+
+
+	//将调度区间写入该RSU内的每一个车辆
+	for (int clusterIdx = 0;clusterIdx < m_DRAClusterNum;++clusterIdx) {
+		for (int VeUEId : m_DRAClusterVeUEIdList[clusterIdx])
+			systemVeUEVec[VeUEId].m_ScheduleInterval = tuple<int, int>(get<0>(m_DRAClusterTDRInfo[clusterIdx]), get<1>(m_DRAClusterTDRInfo[clusterIdx]));
+	}
 }
 
 
@@ -206,7 +210,6 @@ void cRSU::DRAProcessEventList(int TTI,const std::vector<cVeUE>& systemVeUEVec, 
 
 					//记录TTI日志
 					DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 1, eventId, m_RSUId, -1, -1);
-
 				}
 				else {//否则，当前事件在此时不能立即传输，应转入等待链表
 					  //将该事件压入等待链表
@@ -225,7 +228,6 @@ void cRSU::DRAProcessEventList(int TTI,const std::vector<cVeUE>& systemVeUEVec, 
 
 
 void cRSU::DRAProcessScheduleInfoTableWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList) {
-	//开始处理 m_DRAScheduleInfoTable
 	/*  EMERGENCY  */
 	for (int patternIdx = 0;patternIdx < gc_DRAEmergencyTotalPatternNum;patternIdx++) {
 		if (m_DRAEmergencyScheduleInfoTable[patternIdx] == nullptr) {//当前EmergencyPattern无事件传输
@@ -316,7 +318,6 @@ void cRSU::DRAProcessScheduleInfoTableWhenLocationUpdate(int TTI, const std::vec
 
 void cRSU::DRAProcessWaitEventIdList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec,std::list<int> &systemDRASwitchEventIdList) {
 	/*  EMERGENCY  */
-	//开始处理m_DRAEmergencyWaitEventIdList
 	for (int eventId : m_DRAEmergencyWaitEventIdList) {
 		pushToEmergencyAdmitEventIdList(eventId);//将事件压入接入链表
 
@@ -331,16 +332,13 @@ void cRSU::DRAProcessWaitEventIdList(int TTI, const std::vector<cVeUE>& systemVe
 	m_DRAEmergencyWaitEventIdList.clear();
 	/*  EMERGENCY  */
 
-	
+
 	//开始处理 m_DRAWaitEventIdList
 	int clusterIdx = DRAGetClusterIdx(TTI);//处于调度中的簇编号
 	list<int>::iterator it = m_DRAWaitEventIdList.begin();
 	while(it!= m_DRAWaitEventIdList.end()){
 		int eventId = *it;
 		int VeUEId = systemEventVec[eventId].VeUEId;
-		//-----------------------WARN-----------------------
-		if (systemVeUEVec[VeUEId].m_RSUId != m_RSUId) throw Exp("cRSU::DRAProcessRSULevelWaitEventIdList");
-		//-----------------------WARN-----------------------
 		if (systemVeUEVec[VeUEId].m_ClusterIdx == clusterIdx) {//该事件当前可以进行调度
 			pushToAdmitEventIdList(eventId);//添加到RSU级别的接纳链表中
 			it = m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
@@ -468,10 +466,8 @@ void cRSU::DRASelectBasedOnP23(int TTI, std::vector<cVeUE>&systemVeUEVec, std::v
 void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec) {
 	/*  EMERGENCY  */
 
-	/*
-	* 当前可用的EmergencyPattern编号
-	*/
-	vector<int> curAvaliableEmergencyPatternIdx(gc_DRAPatternTypeNum);
+	vector<int> curAvaliableEmergencyPatternIdx(gc_DRAPatternTypeNum);//当前可用的EmergencyPattern编号
+
 	for (int patternIdx = 0;patternIdx < gc_DRAEmergencyTotalPatternNum;patternIdx++) {
 		if (m_DRAEmergencyPatternIsAvailable[patternIdx]) {
 			curAvaliableEmergencyPatternIdx.push_back(patternIdx);
@@ -499,7 +495,6 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, std::
 		//将资源标记为占用
 		m_DRAEmergencyPatternIsAvailable[patternIdx] = false;
 
-
 		//将调度信息压入m_DRAEmergencyTransimitEventIdList中
 		list<tuple<int, int>> scheduleIntervalList = buildEmergencyScheduleInterval(TTI, systemEventVec[eventId]);
 		pushToEmergencyTransmitScheduleInfoList(new sDRAScheduleInfo(eventId, VeUEId, m_RSUId, patternIdx, scheduleIntervalList),patternIdx);
@@ -520,6 +515,7 @@ void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, std::
 	* 每个内层vector代表该种类Pattern可用的Pattern编号
 	*/
 	vector<vector<int>> curAvaliablePatternIdx(gc_DRAPatternTypeNum);
+
 	for (int patternTypeIdx = 0; patternTypeIdx < gc_DRAPatternTypeNum; patternTypeIdx++) {
 		for (int patternIdx : gc_DRAPatternIdxTable[patternTypeIdx]) {
 			if (m_DRAPatternIsAvailable[clusterIdx][patternIdx]) {

@@ -6,15 +6,14 @@
 
 
 class ceNB {
-	//-----------------------TEST-----------------------
-public:
+	/*  TEST  */
 	static int s_eNBCount;
-	//-----------------------TEST-----------------------
+	/*  TEST  */
 public:
-	const int m_eNBId=s_eNBCount++;//基站ID
+	const int m_eNBId=s_eNBCount++;//基站Id
 
-	std::list<int> m_RSUIdList;//该基站中的RSU容器（存储RSU的ID）
-	std::list<int> m_VeUEIdList;//该基站中的VeUE容器（存储VeUE的ID）
+	std::list<int> m_RSUIdList;//该基站中的RSU容器（存储RSU的Id）
+	std::list<int> m_VeUEIdList;//该基站中的VeUE容器（存储VeUE的Id）
 
 	/***************************************************************
 	------------------------调度模块--------------------------------

@@ -11,26 +11,23 @@
 #include"Event.h"
 
 class cRSU {
-	//-----------------------TEST-----------------------
+	/*  TEST  */
 public:
 	static int s_RSUCount;
 	cRSU();
 	
-	//-----------------------TEST-----------------------
+	/*  TEST  */
 public:
-	/*
-	* 当前RSU的ID
-	*/
-	const int m_RSUId=s_RSUCount++;
 
-	/*
-	* 当前RSU范围内的VeUEId编号容器
-	*/
-	std::list<int> m_VeUEIdList;
+	const int m_RSUId=s_RSUCount++;//当前RSU的Id
 
-	/***************************************************************
-	------------------------上行调度--------------------------------
-	****************************************************************/
+	std::list<int> m_VeUEIdList;//当前RSU范围内的VeUEId编号容器
+
+
+	/*--------------------------------------------------------------
+	*                      上行调度
+	* -------------------------------------------------------------*/
+	
 	double m_AccumulateThroughput;   //累计吞吐量
 	bool m_IsScheduledUL;    //UpLink是否在被调度
 	bool m_IsScheduledDL;    //DownLink是否在被调度
@@ -66,7 +63,7 @@ public:
 	std::vector<std::tuple<int,int,int>> m_DRAClusterTDRInfo;
 
 	/*
-	* 存放每个簇的VeUE的ID的容器
+	* 存放每个簇的VeUE的Id的容器
 	* 下标代表簇的编号
 	*/
 	std::vector<std::list<int>> m_DRAClusterVeUEIdList;  
@@ -153,7 +150,7 @@ public:
 	* 每个簇至少分配一个时隙
 	* 剩余时隙按比例进行分配
 	*/
-	void DRAGroupSizeBasedTDM();
+	void DRAGroupSizeBasedTDM(std::vector<cVeUE>& systemVeUEVec);
 
 	/*
 	* 在System级别的函数内部被调用

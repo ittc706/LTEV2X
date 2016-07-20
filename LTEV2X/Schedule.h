@@ -72,7 +72,7 @@ struct sDRAScheduleInfo {
 
 	/*
 	* 生成表示调度信息的string对象
-	* 包括事件的ID，车辆的ID，以及要传输该事件所占用的TTI区间
+	* 包括事件的Id，车辆的Id，以及要传输该事件所占用的TTI区间
 	*/
 	std::string toScheduleString(int n);
 

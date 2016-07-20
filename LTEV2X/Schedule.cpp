@@ -48,7 +48,7 @@ void cSystem::schedulePF_RP_CSI_UL() {
 	for (ceNB &_eNB : m_eNBVec) {//对每一个基站进行一次调度
 		int k = static_cast<int>(_eNB.m_RSUIdList.size());
 		vector<vector<bool>> SPU(k, vector<bool>(gc_RBNum));//每个RSU用一个vector<bool>来管理其SPU，true代表已选如该子带
-		vector<int> S;//未分配的子带集合(存储子带的ID）
+		vector<int> S;//未分配的子带集合(存储子带的Id）
 		
 		//初始化子带集合S（这里需要不需要？每次调度前应该没有子带被占用吧）
 		for (int subbandId = 0; subbandId < gc_RBNum; subbandId++) 
@@ -138,10 +138,6 @@ void cSystem::DRASchedule() {
 
 	//建立接纳链表，遍历RSU内的m_VecVUE，生成m_CallList
 	DRAUpdateAdmitEventIdList(clusterFlag);
-
-	//-----------------------WARN-----------------------
-	if (m_DRASwitchEventIdList.size() != 0) throw Exp("接纳链表全部生成后，System级别的切换链表仍不为空！");
-	//-----------------------WARN-----------------------
 	
 	//当前m_TTI的DRA算法
 	switch (m_DRAMode) {
@@ -214,15 +210,10 @@ void cSystem::DRAPerformCluster(bool clusterFlag) {
 
 
 
-
-
-
-
-
 void cSystem::DRAGroupSizeBasedTDM(bool clusterFlag) {
 	if (!clusterFlag)return;
 	for (cRSU& _RSU : m_RSUVec) 
-		_RSU.DRAGroupSizeBasedTDM();
+		_RSU.DRAGroupSizeBasedTDM(m_VeUEVec);
 
 	writeClusterPerformInfo(g_OutClasterPerformInfo);
 }

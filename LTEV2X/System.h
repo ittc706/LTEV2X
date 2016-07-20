@@ -23,7 +23,7 @@ private:
 	
 	/*
 	* 外层下标为时间槽（代表TTI）
-	* 与事件容器不同，事件触发链表将相同时刻触发的事件的ID置于相同的时间槽中
+	* 与事件容器不同，事件触发链表将相同时刻触发的事件的Id置于相同的时间槽中
 	*/
 	std::vector<std::list<int>> m_EventTTIList;//事件触发链表，m_EventList[i]代表第i个TTI的事件表
 	
@@ -40,9 +40,9 @@ private:
 	void buildEventList();
 
 
-	/***************************************************************
-	------------------------调度模块--------------------------------
-	****************************************************************/
+	/*--------------------------------------------------------------
+	*                      上行调度
+	* -------------------------------------------------------------*/
 public:
 	/*--------------------接口函数--------------------*/
 	void centralizedSchedule();//调度总控制
@@ -60,25 +60,18 @@ public:
 
 
 
-	/***************************************************************
-	---------------------分布式资源管理-----------------------------
-	-------------DRA:Distributed Resource Allocation----------------
-	****************************************************************/
+	/*--------------------------------------------------------------
+	*                      分布式资源管理
+	*            DRA:Distributed Resource Allocation
+	* -------------------------------------------------------------*/
 public :
 	eDRAMode m_DRAMode;
 
-	/*
-	* DRA情况下RSU切换导致信息无法正常发送的eventId集合
-	* 用于存放以下两种情况的eventId
-	* VeUE发送信息完毕之前，进行了分簇，且分入了与原来不同的簇内(！！！尚未处理这个情况！！！）
-	* VeUE发送信息出现冲突，并且已经添加进对应RSU的等候链表，但是在进行下一次重传之前，进行了分簇，并且分入了与原来不同的簇内
-	* 总而言之，是存储信息发送尚未成功且发生VeUE所属RSU切换的eventId
-	* 该链表会在进行分簇之后全部转存入对应RSU的WaitEventIdList或者AdmitEventIdList中
-	*/
-	std::list<int> m_DRASwitchEventIdList;
+	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
+
 
 	/*--------------------接口函数--------------------*/
-	void DRASchedule();
+	void DRASchedule();//DRA调度总控
 
 private:
 	/*--------------------实现函数--------------------*/
@@ -97,10 +90,10 @@ private:
 	void DRAConflictListener();//帧听冲突
 
 	/*--------------------辅助函数--------------------*/
-	void writeClusterPerformInfo(std::ofstream &out);
-	void writeEventListInfo(std::ofstream &out);
-	void writeEventLogInfo(std::ofstream &out);
-	void writeVeUELocationUpdateLogInfo(std::ofstream &out);
+	void writeClusterPerformInfo(std::ofstream &out);//写入分簇信息的日志
+	void writeEventListInfo(std::ofstream &out);//写入时间列表的信息
+	void writeEventLogInfo(std::ofstream &out);//写入以事件的日志信息
+	void writeVeUELocationUpdateLogInfo(std::ofstream &out); //写入地理位置更新日志
 };
 
 

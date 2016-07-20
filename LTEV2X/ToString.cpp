@@ -55,7 +55,8 @@ string cVeUE::toString(int n) {
 	ostringstream ss;
 	ss << indent<< "{ VeUEId = " << left << setw(3) << m_VeUEId;
 	ss << " , RSUId = " << left << setw(3) << m_RSUId;
-	ss << " , ClusterIdx = " << left << setw(3) << m_ClusterIdx << " }";
+	ss << " , ClusterIdx = " << left << setw(3) << m_ClusterIdx;
+	ss << " , ScheduleInterval = [" << left << setw(3) << get<0>(m_ScheduleInterval) << "," << left << setw(3) << get<1>(m_ScheduleInterval) << "] }";
 	return ss.str();
 }
 
@@ -165,7 +166,7 @@ std::string sDRAScheduleInfo::toScheduleString(int n) {
 		indent.append("    ");
 	ostringstream ss;
 	ss << indent << "{ ";
-	ss << "[ eventId = " << left << setw(3) << eventId << " , VeUEID = " << left << setw(3) << VeUEId << " ]";
+	ss << "[ eventId = " << left << setw(3) << eventId << " , VeUEId = " << left << setw(3) << VeUEId << " ]";
 	ss << " : occupy Interval = { ";
 	for (tuple<int, int> t : occupiedIntervalList) {
 		ss << "[ " << get<0>(t) << " , " << get<1>(t) << " ] , ";

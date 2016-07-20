@@ -22,14 +22,14 @@ public:
 	static int s_EventCount;
 
 	/*
-	* 事件ID
-	* 每个事件都有唯一的ID，ID从0开始编号
+	* 事件Id
+	* 每个事件都有唯一的Id，Id从0开始编号
 	*/
 	const int eventId = s_EventCount++;
 
 	/*
-	* 用户ID
-	* 该事件对应的用户的ID
+	* 用户Id
+	* 该事件对应的用户的Id
 	*/
 	int VeUEId;//
 	int TTI;//事件触发的TTI时刻

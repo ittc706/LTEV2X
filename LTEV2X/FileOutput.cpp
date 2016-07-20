@@ -243,7 +243,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 	case 29:
 		ss.str("");
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ RSU[" << RSUId << "]'s EmergencyAdmitEventIdLIst ; To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
+		ss << "{ RSU[" << RSUId << "]'s EmergencyTransimitScheduleInfoList ; To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
 		out << "    " << left << setw(11) << "[29]Conflict";
 		out << "    " << ss.str() << endl;
@@ -315,7 +315,7 @@ void sEvent::addEventLog(int TTI,int type,int RSUId,int clusterIdx,int patternId
 		ss << "{ TTI: " << left << setw(3) << TTI << " - From: SwitchList - To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
 		break;
 	case 29:
-		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s EmergencyAdmitEventIdLIst - To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
+		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s EmergencyTransimitScheduleInfoList - To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
 		break;
 	case 30:
 		ss << "{ TTI: " << left << setw(3) << TTI << " - Transimit At: RSU[" << RSUId << "] - Pattern[" << patternIdx << "] }";
