@@ -2,4 +2,4 @@
 
 using namespace std;
 
-int ceNB::s_eNBCount = 0;
+//int ceNB::s_eNBCount = 0;

@@ -7,17 +7,35 @@
 #include"RSU.h"
 #include"VUE.h"
 #include"Event.h"
+#include"Road.h"
 
 
 class cSystem{
+	//LK
+	sConfigure conf;//系统参数配置
+	//void configure();
+	//void Initialization();//系统初始化
+	void Destroy();//系统资源释放
+	void Process();//系统仿真过程
+
+public:
+	void NewChannel(unsigned short UEID);
+	void DeleteChannel(unsigned short UEID);
+	void ChannelGeneration();//信道刷新
+	void FreshLoc(void);
+	void CalChannel(void);
+	int allusers;
+	int freshNum;
+
+
 private:
 	/*------------------数据成员------------------*/
-	sConfig m_Config;//系统配置参数
 	int m_TTI;//当前的TTI时刻
 	int m_NTTI;//仿真总共的TTI
-	std::vector<ceNB> m_eNBVec;//基站容器
-	std::vector<cRSU> m_RSUVec;//RSU容器
-	std::vector<cVeUE> m_VeUEVec;//VeUE容器
+	ceNB* eNB;//基站容器
+	cRoad *Road;
+	cRSU* RSU;//RSU容器
+	cVeUE* veUE;//VeUE容器
 	std::vector<sEvent> m_EventVec;//事件容器
 	
 	/*

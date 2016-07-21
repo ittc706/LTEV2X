@@ -38,29 +38,31 @@ void cSystem::centralizedSchedule() {
 
 
 void cSystem::scheduleInfoClean() {
-	for (ceNB &_eNB : m_eNBVec) 
+	for (int eNBId = 0;eNBId < conf.eNBNum;eNBId++) {
+		ceNB &_eNB = eNB[eNBId];
 		_eNB.m_vecScheduleInfo.clear();
-	
+	}	
 }
 
 
 void cSystem::schedulePF_RP_CSI_UL() {
-	for (ceNB &_eNB : m_eNBVec) {//对每一个基站进行一次调度
+	for (int eNBId = 0;eNBId < conf.eNBNum;eNBId++) {
+		ceNB &_eNB = eNB[eNBId];
 		int k = static_cast<int>(_eNB.m_RSUIdList.size());
 		vector<vector<bool>> SPU(k, vector<bool>(gc_RBNum));//每个RSU用一个vector<bool>来管理其SPU，true代表已选如该子带
 		vector<int> S;//未分配的子带集合(存储子带的Id）
-		
-		//初始化子带集合S（这里需要不需要？每次调度前应该没有子带被占用吧）
-		for (int subbandId = 0; subbandId < gc_RBNum; subbandId++) 
+
+					  //初始化子带集合S（这里需要不需要？每次调度前应该没有子带被占用吧）
+		for (int subbandId = 0; subbandId < gc_RBNum; subbandId++)
 			if (_eNB.m_UnassignedSubband)S.push_back(subbandId);
-		
+
 
 		//计算每个RSU对应不同子带的PF因子
 		vector<sPFInfo> F;//存储PF因子的容器
 		for (int RSUId : _eNB.m_RSUIdList) {
 			for (int subbandId = 0; subbandId < gc_RBNum; subbandId++) {
 				if (_eNB.m_UnassignedSubband[subbandId] == false) continue;//该子带已被分配
-				double t_FactorPF= log10(1 + m_RSUVec[RSUId].m_SINR[subbandId]) / m_RSUVec[RSUId].m_AccumulateThroughput;
+				double t_FactorPF = log10(1 + RSU[RSUId].m_SINR[subbandId]) / RSU[RSUId].m_AccumulateThroughput;
 				F.push_back(sPFInfo(RSUId, subbandId, t_FactorPF));
 			}
 		}
@@ -125,16 +127,19 @@ void cSystem::exchange(std::vector<sPFInfo>& v, int i, int j) {
 
 
 void cSystem::DRASchedule() {
-	bool clusterFlag = m_TTI  % m_Config.locationUpdateNTTI == 0;
+	bool clusterFlag = m_TTI  % conf.locationUpdateNTTI == 0;
 
-	//资源分配信息清空:包括每个RSU内的m_CallList等
+	//资源分配信息清空:包括每个RSU内的接入链表等
 	DRAInformationClean();
 
+	//  WRONG
 	//根据地理位置进行分簇
 	DRAPerformCluster(clusterFlag);
 
 	//根据簇大小进行时域资源的划分
 	DRAGroupSizeBasedTDM(clusterFlag);
+
+	//  WRONG
 
 	//建立接纳链表，遍历RSU内的m_VecVUE，生成m_CallList
 	DRAUpdateAdmitEventIdList(clusterFlag);
@@ -163,8 +168,10 @@ void cSystem::DRASchedule() {
 
 
 void cSystem::DRAInformationClean() {
-	for (cRSU &_RSU : m_RSUVec)
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
 		_RSU.DRAInformationClean();
+	}		
 }
 
 
@@ -172,10 +179,12 @@ void cSystem::DRAPerformCluster(bool clusterFlag) {
 	if (!clusterFlag)return;
 
 	//清除上一次的分簇信息
-	for (ceNB &_eNB : m_eNBVec) {
+	for (int eNBId = 0;eNBId < conf.eNBNum;eNBId++) {
+		ceNB &_eNB = eNB[eNBId];
 		_eNB.m_VeUEIdList.clear();
 	}
-	for (cRSU &_RSU : m_RSUVec) {
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
 		_RSU.m_VeUEIdList.clear();
 		for (int clusterIdx = 0;clusterIdx < _RSU.m_DRAClusterNum;clusterIdx++) {
 			_RSU.m_DRAClusterVeUEIdList[clusterIdx].clear();
@@ -184,23 +193,24 @@ void cSystem::DRAPerformCluster(bool clusterFlag) {
 
 
 	//随机将VeUE分配给RSU中的簇
-	for (int VeUEId = 0;VeUEId < m_Config.VUENum;VeUEId++) {
-		int RSUId = rand() % m_Config.RSUNum;
-		m_RSUVec[RSUId].m_VeUEIdList.push_back(VeUEId);
-		m_VeUEVec[VeUEId].m_RSUId = RSUId;
+	for (int VeUEId = 0;VeUEId < conf.VeUENum;VeUEId++) {
+		int RSUId = rand() % conf.RSUNum;
+		RSU[RSUId].m_VeUEIdList.push_back(VeUEId);
+		veUE[VeUEId].m_RSUId = RSUId;
 
 		//再将其分入簇
-		int clusterIdx = rand() % m_RSUVec[RSUId].m_DRAClusterNum;
-		m_RSUVec[RSUId].m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
-		m_VeUEVec[VeUEId].m_ClusterIdx = clusterIdx;
-		m_VeUEVec[VeUEId].m_LocationUpdateLogInfoList.push_back(tuple<int, int>(RSUId, clusterIdx));
+		int clusterIdx = rand() % RSU[RSUId].m_DRAClusterNum;
+		RSU[RSUId].m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
+		veUE[VeUEId].m_ClusterIdx = clusterIdx;
+		veUE[VeUEId].m_LocationUpdateLogInfoList.push_back(tuple<int, int>(RSUId, clusterIdx));
 	}
 
 
 	//更新基站的VeUE容器
-	for (ceNB &_eNB:m_eNBVec) {
+	for (int eNBId = 0;eNBId < conf.eNBNum;eNBId++) {
+		ceNB &_eNB = eNB[eNBId];
 		for (int RSUId : _eNB.m_RSUIdList) {
-			for (int VeUEId : m_RSUVec[RSUId].m_VeUEIdList) {
+			for (int VeUEId : RSU[RSUId].m_VeUEIdList) {
 				_eNB.m_VeUEIdList.push_back(VeUEId);
 			}
 		}
@@ -212,8 +222,10 @@ void cSystem::DRAPerformCluster(bool clusterFlag) {
 
 void cSystem::DRAGroupSizeBasedTDM(bool clusterFlag) {
 	if (!clusterFlag)return;
-	for (cRSU& _RSU : m_RSUVec) 
-		_RSU.DRAGroupSizeBasedTDM(m_VeUEVec);
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
+		_RSU.DRAGroupSizeBasedTDM(veUE);
+	}
 
 	writeClusterPerformInfo(g_OutClasterPerformInfo);
 }
@@ -221,27 +233,37 @@ void cSystem::DRAGroupSizeBasedTDM(bool clusterFlag) {
 
 void cSystem::DRAUpdateAdmitEventIdList(bool clusterFlag) {
 	//首先，处理System级别的事件触发链表
-	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRAProcessEventList(m_TTI, m_VeUEVec, m_EventVec,m_EventTTIList);
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
+		_RSU.DRAProcessEventList(m_TTI, veUE, m_EventVec, m_EventTTIList);
+	}
 
 	//其次，如果当前TTI进行了分簇，需要处理调度表
 	if (clusterFlag) {
 		if (m_DRASwitchEventIdList.size() != 0) throw Exp("cSystem::DRAUpdateAdmitEventIdList");
 		//处理RSU级别的调度链表
-		for (cRSU &_RSU : m_RSUVec)
-			_RSU.DRAProcessScheduleInfoTableWhenLocationUpdate(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
-		//处理RSU级别的等待链表
-		for (cRSU &_RSU : m_RSUVec)
-			_RSU.DRAProcessWaitEventIdListWhenLocationUpdate(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+		for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+			cRSU &_RSU = RSU[RSUId];
+			_RSU.DRAProcessScheduleInfoTableWhenLocationUpdate(m_TTI, veUE, m_EventVec, m_DRASwitchEventIdList);
+		}
+	    //处理RSU级别的等待链表
+		for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+			cRSU &_RSU = RSU[RSUId];
+			_RSU.DRAProcessWaitEventIdListWhenLocationUpdate(m_TTI, veUE, m_EventVec, m_DRASwitchEventIdList);
+		}
 		//处理System级别的切换链表
-		for (cRSU &_RSU : m_RSUVec)
-			_RSU.DRAProcessSwitchListWhenLocationUpdate(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+		for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+			cRSU &_RSU = RSU[RSUId];
+			_RSU.DRAProcessSwitchListWhenLocationUpdate(m_TTI, veUE, m_EventVec, m_DRASwitchEventIdList);
+		}
 		if (m_DRASwitchEventIdList.size() != 0) throw Exp("cSystem::DRAUpdateAdmitEventIdList");
 	}
 
 	//然后，处理RSU级别的等待链表
-	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRAProcessWaitEventIdList(m_TTI, m_VeUEVec, m_EventVec, m_DRASwitchEventIdList);
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
+		_RSU.DRAProcessWaitEventIdList(m_TTI, veUE, m_EventVec, m_DRASwitchEventIdList);
+	}
 }
 
 void cSystem::DRASelectBasedOnP13() {
@@ -253,29 +275,36 @@ void cSystem::DRASelectBasedOnP23() {
 }
 
 void cSystem::DRASelectBasedOnP123() {
-	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRASelectBasedOnP123(m_TTI,m_VeUEVec, m_EventVec);
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
+		_RSU.DRASelectBasedOnP123(m_TTI, veUE, m_EventVec);
+	}
 }
 
 
 void cSystem::DRAWriteScheduleInfo() {
 	g_OutDRAScheduleInfo << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	g_OutDRAScheduleInfo << "{" << endl;
-	for (cRSU &_RSU : m_RSUVec)
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
 		_RSU.DRAWriteScheduleInfo(g_OutDRAScheduleInfo, m_TTI);
+	}
 	g_OutDRAScheduleInfo << "}" << endl;
 	g_OutDRAScheduleInfo << "\n\n" << endl;
 }
 
 
 void cSystem::DRADelaystatistics() {
-	for (cRSU &_RSU : m_RSUVec)
-		_RSU.DRADelaystatistics(m_TTI,m_EventVec);
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
+		_RSU.DRADelaystatistics(m_TTI, m_EventVec);
+	}
 }
 
 
 void cSystem::DRAConflictListener() {
-	for (cRSU &_RSU : m_RSUVec) {
+	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
+		cRSU &_RSU = RSU[RSUId];
 		_RSU.DRAConflictListener(m_TTI,m_EventVec);
 	}
 }

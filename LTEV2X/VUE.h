@@ -6,17 +6,54 @@
 #include"Global.h"
 #include"Schedule.h"
 #include"Enumeration.h"
+#include"Config.h"
+#include"IMTA.h"
 
 
 class cVeUE {
+public:
+
+	/*LK*/
+	cVeUE(void);
+	~cVeUE(void);
+	void Initialize(sUEConfigure &t_UEConfigure);
+	void Destroy();
+	unsigned short m_wRoadID;
+	int m_locationID;
+	const int m_VeUEId = m_VeUECount++;
+	unsigned short m_RSUId;
+	unsigned short m_ClusterIdx;
+	float m_fX;
+	float m_fY;
+	float m_fAbsX;
+	float m_fAbsY;
+	float m_fv;
+	float m_fvAngle;
+	float m_fantennaAngle;
+	//cChannelModel *channelModel;
+	cIMTA *imta;
+	/*LK*/
+
+
+
+
+
+
+
+
+
+
 	/*  TEST  */
 public:
 	static int m_VeUECount;
 	/*  TEST  */
 public:
-	const int m_VeUEId=m_VeUECount++;//用户Id
-	int m_RSUId;//所在的RSU的Id
-	int m_ClusterIdx;//所在簇的编号
+	//const int m_VeUEId=m_VeUECount++;//用户Id
+	//int m_RSUId;//所在的RSU的Id
+	//int m_ClusterIdx;//所在簇的编号
+
+
+
 	std::tuple<int,int> m_ScheduleInterval;//该VeUE在当前簇内当前一轮调度区间
 	std::list<std::tuple<int,int>> m_LocationUpdateLogInfoList;
 

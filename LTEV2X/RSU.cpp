@@ -9,15 +9,33 @@
 #include"Exception.h"
 #include"Event.h"
 #include"Global.h"
+#include"Function.h"
 
 
 using namespace std;
+
+/*LK*/
+void cRSU::Initialize(sRSUConfigure &t_RSUConfigure)
+{
+	m_RSUId = t_RSUConfigure.wRSUID;
+	m_fAbsX = c_RSUTopoRatio[m_RSUId * 2 + 0] * c_wide;
+	m_fAbsY = c_RSUTopoRatio[m_RSUId * 2 + 1] * c_length;
+	RandomUniform(&m_fantennaAngle, 1, 180.0f, -180.0f, false);
+	printf("RSU：");
+	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_RSUId, m_fAbsX, m_fAbsY);
+	//printf("m_fAbsX=%f,m_fAbsY=%f\n",m_fAbsX,m_fAbsY);
+}
+
+/*LK*/
+
+
+
 
 int newCount = 0;//记录动态创建的对象的次数
 
 int deleteCount = 0;//记录删除动态创建对象的次数
 
-int cRSU::s_RSUCount = 0;
+//int cRSU::s_RSUCount = 0;
 
 
 cRSU::cRSU() :m_DRAClusterNum(4) {
@@ -115,7 +133,7 @@ void cRSU::DRAInformationClean() {
 }
 
 
-void cRSU::DRAGroupSizeBasedTDM(std::vector<cVeUE>& systemVeUEVec) {
+void cRSU::DRAGroupSizeBasedTDM(cVeUE *systemVeUEVec) {
 	//特殊情况，当该RSU内无一辆车时
 	if (m_VeUEIdList.size() == 0) {
 		/*-----------------------ATTENTION-----------------------
@@ -179,7 +197,7 @@ void cRSU::DRAGroupSizeBasedTDM(std::vector<cVeUE>& systemVeUEVec) {
 }
 
 
-void cRSU::DRAProcessEventList(int TTI,const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, const std::vector<std::list<int>>& systemEventTTIList) {
+void cRSU::DRAProcessEventList(int TTI,const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, const std::vector<std::list<int>>& systemEventTTIList) {
 	int clusterIdx = DRAGetClusterIdx(TTI);//当前可传输数据的簇编号
 	for (int eventId : systemEventTTIList[TTI]) {
 		sEvent event = systemEventVec[eventId];
@@ -226,7 +244,7 @@ void cRSU::DRAProcessEventList(int TTI,const std::vector<cVeUE>& systemVeUEVec, 
 }
 
 
-void cRSU::DRAProcessScheduleInfoTableWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList) {
+void cRSU::DRAProcessScheduleInfoTableWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList) {
 	/*  EMERGENCY  */
 	for (int patternIdx = 0;patternIdx < gc_DRAEmergencyTotalPatternNum;patternIdx++) {
 		if (m_DRAEmergencyScheduleInfoTable[patternIdx] == nullptr) {//当前EmergencyPattern无事件传输
@@ -315,7 +333,7 @@ void cRSU::DRAProcessScheduleInfoTableWhenLocationUpdate(int TTI, const std::vec
 }
 
 
-void cRSU::DRAProcessWaitEventIdList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec,std::list<int> &systemDRASwitchEventIdList) {
+void cRSU::DRAProcessWaitEventIdList(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec,std::list<int> &systemDRASwitchEventIdList) {
 	/*  EMERGENCY  */
 	for (int eventId : m_DRAEmergencyWaitEventIdList) {
 		pushToEmergencyAdmitEventIdList(eventId);//将事件压入接入链表
@@ -356,7 +374,7 @@ void cRSU::DRAProcessWaitEventIdList(int TTI, const std::vector<cVeUE>& systemVe
 }
 
 
-void cRSU::DRAProcessWaitEventIdListWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList) {
+void cRSU::DRAProcessWaitEventIdListWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList) {
 	/*  EMERGENCY  */
 	//开始处理m_DRAEmergencyWaitEventIdList
 	list<int>::iterator it = m_DRAEmergencyWaitEventIdList.begin();
@@ -404,7 +422,7 @@ void cRSU::DRAProcessWaitEventIdListWhenLocationUpdate(int TTI, const std::vecto
 }
 
 
-void cRSU::DRAProcessSwitchListWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec,std::list<int> &systemDRASwitchEventIdList) {
+void cRSU::DRAProcessSwitchListWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec,std::list<int> &systemDRASwitchEventIdList) {
 	list<int>::iterator it = systemDRASwitchEventIdList.begin();
 	int clusterIdx = DRAGetClusterIdx(TTI);//当前可传输数据的簇编号
 	while (it != systemDRASwitchEventIdList.end()) {
@@ -456,13 +474,13 @@ void cRSU::DRAProcessSwitchListWhenLocationUpdate(int TTI, const std::vector<cVe
 }
 
 
-void cRSU::DRASelectBasedOnP13(int TTI, std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec) {
+void cRSU::DRASelectBasedOnP13(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec) {
 }
 
-void cRSU::DRASelectBasedOnP23(int TTI, std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec) {
+void cRSU::DRASelectBasedOnP23(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec) {
 }
 
-void cRSU::DRASelectBasedOnP123(int TTI, std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec) {
+void cRSU::DRASelectBasedOnP123(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec) {
 	/*  EMERGENCY  */
 
 	vector<int> curAvaliableEmergencyPatternIdx(gc_DRAPatternTypeNum);//当前可用的EmergencyPattern编号
