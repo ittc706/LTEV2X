@@ -15,7 +15,6 @@ class cRSU {
 public:
 	static int s_RSUCount;
 	cRSU();
-	
 	/*  TEST  */
 public:
 

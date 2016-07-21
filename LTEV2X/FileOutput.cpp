@@ -123,35 +123,35 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ RSU[" << RSUId << "]   ClusterIdx[" << clusterIdx << "]    PatternIdx[" << patternIdx << "] }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[0]Succeed";
+		out << "    " << left << setw(13) << "[0]Succeed";
 		out << "    " << ss.str() << endl;
 		break;
 	case 1:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: EventList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[1]Switch";
+		out << "    " << left << setw(13) << "[1]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 2:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: EventList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[2]Switch";
+		out << "    " << left << setw(13) << "[2]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 3:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[3]Switch";
+		out << "    " << left << setw(13) << "[3]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 4:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: RSU[" << m_RSUId << "]'s WaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[4]Switch";
+		out << "    " << left << setw(13) << "[4]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 5:
@@ -159,7 +159,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s WaitEventIdList ; To: SwitchList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[5]Switch";
+		out << "    " << left << setw(13) << "[5]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 6:
@@ -167,7 +167,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s WaitEventIdList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[6]Switch";
+		out << "    " << left << setw(13) << "[6]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 7:
@@ -175,7 +175,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: SwitchList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[7]Switch";
+		out << "    " << left << setw(13) << "[7]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 8:
@@ -183,7 +183,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: SwitchList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[8]Switch";
+		out << "    " << left << setw(13) << "[8]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 9:
@@ -191,7 +191,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ RSU[" << RSUId << "]'s TransimitScheduleInfoList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[9]Conflict";
+		out << "    " << left << setw(13) << "[9]Conflict";
 		out << "    " << ss.str() << endl;
 		break;
 	case 11:
@@ -199,21 +199,21 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ RSU[" << RSUId << "]'s AdmitEventIdList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[11]Conflict";
+		out << "    " << left << setw(13) << "[11]Conflict";
 		out << "    " << ss.str() << endl;
 		break;
 	case 21:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: EventList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[21]Switch";
+		out << "    " << left << setw(13) << "[21]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 23:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s EmergencyScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[23]Switch";
+		out << "    " << left << setw(13) << "[23]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 25:
@@ -221,7 +221,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s EmergencyWaitEventIdList ; To: SwitchList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[25]Switch";
+		out << "    " << left << setw(13) << "[25]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 26:
@@ -229,7 +229,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s EmergencyWaitEventIdList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[26]Switch";
+		out << "    " << left << setw(13) << "[26]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 27:
@@ -237,7 +237,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: SwitchList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[27]Switch";
+		out << "    " << left << setw(13) << "[27]Switch";
 		out << "    " << ss.str() << endl;
 		break;
 	case 29:
@@ -245,7 +245,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ RSU[" << RSUId << "]'s EmergencyTransimitScheduleInfoList ; To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[29]Conflict";
+		out << "    " << left << setw(13) << "[29]Conflict";
 		out << "    " << ss.str() << endl;
 		break;
 	case 31:
@@ -253,7 +253,7 @@ void cRSU::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type,int eventId,
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ RSU[" << RSUId << "]'s EmergencyAdmitEventIdList ; To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(11) << "[31]Conflict";
+		out << "    " << left << setw(13) << "[31]Conflict";
 		out << "    " << ss.str() << endl;
 		break;
 	}

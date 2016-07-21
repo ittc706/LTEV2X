@@ -22,7 +22,7 @@ sMessage::sMessage(eMessageType messageType) {
 		byteNum = 1000;
 		break;
 	}
-	DRA_ONTTIPerFB = static_cast<int>(std::ceil(static_cast<double>(byteNum) / static_cast<double>(gc_ByteNumPerRB)));
+	DRA_ONTTIPerFB = static_cast<int>(std::ceil(static_cast<double>(byteNum) / static_cast<double>(gc_BitNumPerRB)));
 }
 
 
