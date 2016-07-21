@@ -119,34 +119,41 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="blas1_z.h" />
+    <ClInclude Include="ChannelModel.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="GeographyAndMobility.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="IMTA.h" />
     <ClInclude Include="linpack_z.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Numerical.h" />
+    <ClInclude Include="Road.h" />
     <ClInclude Include="RSU.h" />
     <ClInclude Include="Schedule.h" />
     <ClInclude Include="System.h" />
-    <ClInclude Include="Utility.h" />
     <ClInclude Include="VUE.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blas1_z.cpp" />
+    <ClCompile Include="Channel.cpp" />
+    <ClCompile Include="ChannelModel.cpp" />
     <ClCompile Include="eNB.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="FileOutput.cpp" />
+    <ClCompile Include="GeographyAndMobility.cpp" />
     <ClCompile Include="Global.cpp" />
+    <ClCompile Include="IMTA.cpp" />
     <ClCompile Include="linpack_z.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Numerical.cpp" />
+    <ClCompile Include="Road.cpp" />
     <ClCompile Include="RSU.cpp" />
     <ClCompile Include="Schedule.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="ToString.cpp" />
-    <ClCompile Include="Utility.cpp" />
     <ClCompile Include="VUE.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

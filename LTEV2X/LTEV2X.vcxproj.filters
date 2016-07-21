@@ -54,7 +54,16 @@
     <ClInclude Include="Event.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Utility.h">
+    <ClInclude Include="ChannelModel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GeographyAndMobility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IMTA.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Road.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,7 +107,19 @@
     <ClCompile Include="FileOutput.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Utility.cpp">
+    <ClCompile Include="Channel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelModel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GeographyAndMobility.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IMTA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Road.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
