@@ -9,24 +9,34 @@
 #include"Global.h"
 #include"VUE.h"
 #include"Event.h"
+#include "IMTA.h"
 
 class cRSU {
-	/*  TEST  */
 public:
-	static int s_RSUCount;
 	cRSU();
-	/*  TEST  */
 public:
+	/*--------------------------------------------------------------
+	*                      地理拓扑单元
+	* -------------------------------------------------------------*/
 
-	const int m_RSUId=s_RSUCount++;//当前RSU的Id
-
+	/*------------------数据成员------------------*/
+	int m_RSUId;
 	std::list<int> m_VeUEIdList;//当前RSU范围内的VeUEId编号容器
+	float m_fAbsX;
+	float m_fAbsY;
+	//cChannelModel *channelModel;
+	cIMTA *imta;
+	float m_fantennaAngle;
+
+	/*------------------成员函数------------------*/
+	void initialize(sRSUConfigure &t_RSUConfigure);
 
 
 	/*--------------------------------------------------------------
-	*                      上行调度
+	*                      集中式资源管理单元
 	* -------------------------------------------------------------*/
-	
+	/*------------------数据成员------------------*/
+public:
 	double m_AccumulateThroughput;   //累计吞吐量
 	bool m_IsScheduledUL;    //UpLink是否在被调度
 	bool m_IsScheduledDL;    //DownLink是否在被调度
@@ -35,12 +45,13 @@ public:
 	sFeedbackInfo m_FeedbackUL;//将要发送给基站端的反馈信息
 
 
-
 	/*--------------------------------------------------------------
 	*                      分布式资源管理
 	*            DRA:Distributed Resource Allocation
 	* -------------------------------------------------------------*/
 
+	/*------------------数据成员------------------*/
+public:
 	/*
 	* RSU的类型：
 	* 1、处于十字路口的RSU
@@ -133,7 +144,13 @@ public:
 	*/
 	std::vector<sDRAScheduleInfo*> m_DRAEmergencyScheduleInfoTable;
 
-	/*--------------------接口函数--------------------*/
+
+
+
+	/*------------------成员函数------------------*/
+public:
+	/*接口函数*/
+
 	/*
 	* 根据此刻的TTI返回当前进行资源分配的簇的编号
 	*/
@@ -149,13 +166,13 @@ public:
 	* 每个簇至少分配一个时隙
 	* 剩余时隙按比例进行分配
 	*/
-	void DRAGroupSizeBasedTDM(std::vector<cVeUE>& systemVeUEVec);
+	void DRAGroupSizeBasedTDM(cVeUE *systemVeUEVec);
 
 	/*
 	* 在System级别的函数内部被调用
 	* 用于处理System级别的事件链表，将事件转存入相应的链表中（RSU级别的接纳链表或者RSU级别的等待链表）
 	*/
-	void DRAProcessEventList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, const std::vector<std::list<int>>& systemEventTTIList);
+	void DRAProcessEventList(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, const std::vector<std::list<int>>& systemEventTTIList);
 
 	/*
 	* 在System级别的函数内部被调用
@@ -163,39 +180,39 @@ public:
 	* 将发生了RSU切换的的事件推送到System级别的RSU切换链表中，因此要优先于DRAProcessSystemLevelSwitchList的调用
 	* 将发生了RSU内小簇切换的事件推送到RSU级别的等待链表中，因此要优先于DRAProcessRSULevelWaitVeUEIdList的调用
 	*/
-	void DRAProcessScheduleInfoTableWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
+	void DRAProcessScheduleInfoTableWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
 	/*
 	* 在System级别的函数内部被调用
 	* 用于处理RSU级别的等待链表，
 	* 将发生了RSU切换的事件推送到System级别的RSU切换链表中
 	*/
-	void DRAProcessWaitEventIdList(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
+	void DRAProcessWaitEventIdList(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
 
-	void DRAProcessWaitEventIdListWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
+	void DRAProcessWaitEventIdListWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
 	/*
 	* 在System级别的函数内部被调用
 	* 用于处理System级别的RSU切换链表，将事件转存入相应的链表中（RSU级别的接纳链表或者RSU级别的等待链表）
 	* 处理完毕后，该链表的大小为0
 	*/
-	void DRAProcessSwitchListWhenLocationUpdate(int TTI, const std::vector<cVeUE>& systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
+	void DRAProcessSwitchListWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
 	/*
 	* 基于P1和P3的资源分配
 	*/
-	void DRASelectBasedOnP13(int TTI,std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec);
+	void DRASelectBasedOnP13(int TTI,cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 基于P2和P3的资源分配
 	*/
-	void DRASelectBasedOnP23(int TTI,std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec);
+	void DRASelectBasedOnP23(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 基于P1、P2和P3的资源分配
 	*/
-	void DRASelectBasedOnP123(int TTI,std::vector<cVeUE>&systemVeUEVec, std::vector<sEvent>& systemEventVec);
+	void DRASelectBasedOnP123(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec);
 
 	/*
 	* 帧听冲突
@@ -226,8 +243,10 @@ public:
 	*/
 	std::string toString(int n);
 
-	/*--------------------辅助函数--------------------*/
+
 private:
+	/*实现函数*/
+
 	/*
 	* 在DRAGroupSizeBasedTDM(...)内部被调用
 	* 用于求出vector容器最大值的索引

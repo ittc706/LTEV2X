@@ -1,6 +1,13 @@
 #pragma once
 
 
+enum eLocationType { //Œª÷√¿‡–Õ 
+	Los, 
+	Nlos, 
+	None 
+}; 
+
+
 enum eScheduleMode {
 
 };
