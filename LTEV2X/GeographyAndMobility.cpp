@@ -1,10 +1,10 @@
 #include "GeographyAndMobility.h"
 #include "System.h"
-#include "Definition.h"
+#include "Enumeration.h"
 
 
-void cSystem::ChannelGeneration()
+
+void cSystem::channelGeneration()
 {
-	FreshLoc();//运动模型
-
+	freshLoc();//运动模型
 }

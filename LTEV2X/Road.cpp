@@ -1,39 +1,7 @@
 #include "Road.h"
 
-ceNB::ceNB(void)
-{
-}
 
-ceNB::~ceNB(void)
-{
-}
-
-void ceNB::Initialize(seNBConfigure &t_eNBConfigure)
-{
-	m_wRoadID = t_eNBConfigure.wRoadID;
-	m_eNBId = t_eNBConfigure.weNBID;
-	m_fX = t_eNBConfigure.fX;
-	m_fY = t_eNBConfigure.fY;
-	m_fAbsX = t_eNBConfigure.fAbsX;
-	m_fAbsY = t_eNBConfigure.fAbsY;
-	printf("»ùÕ¾£º");
-	printf("m_fAbsX=%f,m_fAbsY=%f\n",m_fAbsX,m_fAbsY);
-}
-
-
-cRoad::cRoad(void)
-{
-	m_peNB = NULL;
-}
-
-
-cRoad::~cRoad(void)
-{
-	;
-}
-
-
-void cRoad::Initialize(sRoadConfigure &t_RoadConfigure)
+void cRoad::initialize(sRoadConfigure &t_RoadConfigure)
 {
 	m_wRoadID = t_RoadConfigure.wRoadID;
 	m_fAbsX = c_roadTopoRatio[m_wRoadID * 2 + 0]*c_wide;
@@ -53,7 +21,7 @@ void cRoad::Initialize(sRoadConfigure &t_RoadConfigure)
 	eNBConfigure.fAbsX = m_fAbsX+eNBConfigure.fX;
 	eNBConfigure.fAbsY = m_fAbsY+eNBConfigure.fY;
 	eNBConfigure.weNBID = t_RoadConfigure.weNBOffset;
-	m_peNB->Initialize(eNBConfigure);
+	m_peNB->initialize(eNBConfigure);
 	}
 
 
@@ -134,7 +102,3 @@ void cRoad::Initialize(sRoadConfigure &t_RoadConfigure)
 	//}
 }
 
-void cRoad::Destroy()
-{
-	;
-}

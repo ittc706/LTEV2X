@@ -1,10 +1,9 @@
 #pragma once
-#include "Constant.h"
-#include "Definition.h"
+#include"Enumeration.h"
 
 struct sMobility{
-int tmp;
+    int tmp;
 };
 struct sGeography{
-int tmp;
+    int tmp;
 };

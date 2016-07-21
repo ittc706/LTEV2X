@@ -3,23 +3,12 @@
 #include<math.h>
 #include"VUE.h"
 #include"RSU.h"
-#include"Function.h"
 
 using namespace std;
 
 int cVeUE::m_VeUECount = 0;
 
-
-
-cVeUE::cVeUE(void)
-{
-}
-
-cVeUE::~cVeUE(void)
-{
-}
-
-void cVeUE::Initialize(sUEConfigure &t_UEConfigure)
+void cVeUE::initialize(sUEConfigure &t_UEConfigure)
 {
 	m_wRoadID = t_UEConfigure.wRoadID;
 	m_locationID = t_UEConfigure.locationID;
@@ -46,9 +35,3 @@ void cVeUE::Initialize(sUEConfigure &t_UEConfigure)
 	RandomUniform(&m_fantennaAngle, 1, 180.0f, -180.0f, false);
 
 }
-
-
-void cVeUE::Destroy()
-{
-}
-

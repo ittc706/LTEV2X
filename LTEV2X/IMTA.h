@@ -1,10 +1,12 @@
 #pragma once
+#include <math.h>
+#include <string>
+#include <map>
 #include "ChannelModel.h"
 
-class cIMTA 
-{
+class cIMTA {
 /*protected*/
-	public:
+public:
 	static const unsigned char m_scbySubPathNum = 20;
 	static const unsigned char m_scbyMidPathNum = 3;
 	static const float m_sacfConstantInHLoS[25];

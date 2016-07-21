@@ -11,8 +11,8 @@ void cSystem::writeClusterPerformInfo(ofstream &out) {
 	//打印VeUE信息
 	out << "    VUE Info: " << endl;
 	out << "    {" << endl;
-	for (int VeUEId = 0;VeUEId < conf.VeUENum;VeUEId++) {
-		cVeUE &_VeUE = veUE[VeUEId];
+	for (int VeUEId = 0;VeUEId < m_Config.VeUENum;VeUEId++) {
+		cVeUE &_VeUE = m_VeUEAry[VeUEId];
 		out << _VeUE.toString(2) << endl;
 	}
 	out << "    }\n" << endl;
@@ -20,8 +20,8 @@ void cSystem::writeClusterPerformInfo(ofstream &out) {
 	//打印基站信息
 	out << "    eNB Info: " << endl;
 	out << "    {" << endl;
-	for (int eNBId = 0;eNBId < conf.eNBNum;eNBId++) {
-		ceNB &_eNB = eNB[eNBId];
+	for (int eNBId = 0;eNBId < m_Config.eNBNum;eNBId++) {
+		ceNB &_eNB = m_eNBAry[eNBId];
 		out << _eNB.toString(2) << endl;
 	}
 	out << "    }\n" << endl;
@@ -29,8 +29,8 @@ void cSystem::writeClusterPerformInfo(ofstream &out) {
 	//打印RSU信息
 	out << "    RSU Info: " << endl;
 	out << "    {" << endl;
-	for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
-		cRSU &_RSU = RSU[RSUId];
+	for (int RSUId = 0;RSUId < m_Config.RSUNum;RSUId++) {
+		cRSU &_RSU = m_RSUAry[RSUId];
 		out << _RSU.toString(2) << endl;
 	}
 	out << "    }" << endl;
@@ -81,10 +81,10 @@ void cSystem::writeEventLogInfo(std::ofstream &out) {
 
 
 void cSystem::writeVeUELocationUpdateLogInfo(std::ofstream &out) {
-	for (int VeUEId = 0;VeUEId < conf.VeUENum;VeUEId++) {
+	for (int VeUEId = 0;VeUEId < m_Config.VeUENum;VeUEId++) {
 		out << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
 		out << "{" << endl;
-		for (const tuple<int, int> &t : veUE[VeUEId].m_LocationUpdateLogInfoList)
+		for (const tuple<int, int> &t : m_VeUEAry[VeUEId].m_LocationUpdateLogInfoList)
 			out << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
 		out << "}" << endl;
 	}

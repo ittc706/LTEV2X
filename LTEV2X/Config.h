@@ -1,15 +1,13 @@
 #pragma once
 #include"Enumeration.h"
-#include"Definition.h"
+
 
 struct sConfigure {//系统仿真参数
+
 	int periodicEventNTTI;//周期性事件的周期（单位TTI）
 	double emergencyLamda;//紧急事件的期望值（在给定的仿真周期内的期望值）
-
 	int locationUpdateNTTI;//车辆刷新位置的周期
 
-
-	//LK
 	float ISD;
 	float fc;
 	int VeUENum;//车辆总数

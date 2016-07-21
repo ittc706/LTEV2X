@@ -12,34 +12,31 @@
 #include "IMTA.h"
 
 class cRSU {
-	/*  TEST  */
 public:
-	//static int s_RSUCount;
 	cRSU();
-	/*  TEST  */
 public:
-    //共有部分
-	//const int m_RSUId=s_RSUCount++;//当前RSU的Id
+	/*--------------------------------------------------------------
+	*                      地理拓扑单元
+	* -------------------------------------------------------------*/
+
+	/*------------------数据成员------------------*/
 	int m_RSUId;
 	std::list<int> m_VeUEIdList;//当前RSU范围内的VeUEId编号容器
-
-	//场景部分
-	void Initialize(sRSUConfigure &t_RSUConfigure);
-	void Destroy();
-
-	//unsigned short m_RSUId;//merge
-	//std::list<int> m_VeUEIdList;//merge
 	float m_fAbsX;
 	float m_fAbsY;
 	//cChannelModel *channelModel;
 	cIMTA *imta;
 	float m_fantennaAngle;
 
+	/*------------------成员函数------------------*/
+	void initialize(sRSUConfigure &t_RSUConfigure);
+
 
 	/*--------------------------------------------------------------
-	*                      上行调度
+	*                      集中式资源管理单元
 	* -------------------------------------------------------------*/
-	
+	/*------------------数据成员------------------*/
+public:
 	double m_AccumulateThroughput;   //累计吞吐量
 	bool m_IsScheduledUL;    //UpLink是否在被调度
 	bool m_IsScheduledDL;    //DownLink是否在被调度
@@ -48,12 +45,13 @@ public:
 	sFeedbackInfo m_FeedbackUL;//将要发送给基站端的反馈信息
 
 
-
 	/*--------------------------------------------------------------
 	*                      分布式资源管理
 	*            DRA:Distributed Resource Allocation
 	* -------------------------------------------------------------*/
 
+	/*------------------数据成员------------------*/
+public:
 	/*
 	* RSU的类型：
 	* 1、处于十字路口的RSU
@@ -146,7 +144,13 @@ public:
 	*/
 	std::vector<sDRAScheduleInfo*> m_DRAEmergencyScheduleInfoTable;
 
-	/*--------------------接口函数--------------------*/
+
+
+
+	/*------------------成员函数------------------*/
+public:
+	/*接口函数*/
+
 	/*
 	* 根据此刻的TTI返回当前进行资源分配的簇的编号
 	*/
@@ -239,8 +243,10 @@ public:
 	*/
 	std::string toString(int n);
 
-	/*--------------------辅助函数--------------------*/
+
 private:
+	/*实现函数*/
+
 	/*
 	* 在DRAGroupSizeBasedTDM(...)内部被调用
 	* 用于求出vector容器最大值的索引

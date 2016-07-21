@@ -1,3 +1,11 @@
+version_2016_7_21(合并后的调整)
+	*排除了所有warning
+	*将Definition删除，数据类型移入Enumeration.h
+	*将Road.h中的eNB类移入eNB.h
+	*将Const.h以及Function.h移入Global.h
+	*将System类中的命名进行更正，其他类型尚未修改
+
+
 version_2016_7_21(与场景模块合并)
 	*剩余问题：地理位置更新，分簇
 	*内存泄漏

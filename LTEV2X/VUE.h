@@ -12,12 +12,12 @@
 
 class cVeUE {
 public:
+	static int m_VeUECount;
 
-	/*LK*/
-	cVeUE(void);
-	~cVeUE(void);
-	void Initialize(sUEConfigure &t_UEConfigure);
-	void Destroy();
+	/*--------------------------------------------------------------
+	*                      地理拓扑单元
+	* -------------------------------------------------------------*/
+	void initialize(sUEConfigure &t_UEConfigure);
 	unsigned short m_wRoadID;
 	int m_locationID;
 	const int m_VeUEId = m_VeUECount++;
@@ -32,33 +32,10 @@ public:
 	float m_fantennaAngle;
 	//cChannelModel *channelModel;
 	cIMTA *imta;
-	/*LK*/
 
-
-
-
-
-
-
-
-
-
-	/*  TEST  */
-public:
-	static int m_VeUECount;
-	/*  TEST  */
-public:
-	//const int m_VeUEId=m_VeUECount++;//用户Id
-	//int m_RSUId;//所在的RSU的Id
-	//int m_ClusterIdx;//所在簇的编号
-
-
-
-	std::tuple<int,int> m_ScheduleInterval;//该VeUE在当前簇内当前一轮调度区间
-	std::list<std::tuple<int,int>> m_LocationUpdateLogInfoList;
 
 	/*--------------------------------------------------------------
-	*                      上行调度
+	*                      集中式资源管理单元
 	* -------------------------------------------------------------*/
 
 	bool m_IsScheduledUL;    //UpLink是否在被调度
@@ -68,9 +45,11 @@ public:
 	std::vector<double> m_CQIPredictRealistic;
 
 	/*--------------------------------------------------------------
-	*                      分布式资源管理
+	*                      分布式资源管理单元
 	*            DRA:Distributed Resource Allocation
 	* -------------------------------------------------------------*/
+	std::tuple<int, int> m_ScheduleInterval;//该VeUE在当前簇内当前一轮调度区间
+	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
 
 	int RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType);
 	int RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);

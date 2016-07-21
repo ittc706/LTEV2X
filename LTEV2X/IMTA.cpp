@@ -1,7 +1,8 @@
-#include "IMTA.h"
-#include "Function.h"
 #include <cmath>
 #include <memory.h>
+#include "IMTA.h"
+#include "Global.h"
+
 
 const float cIMTA::m_sacfConstantInHLoS[25] =
 {
@@ -240,15 +241,15 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 	{
 	case Los:
 		m_bLoS = true;
-		if(3<t_eLocation.fDistance<fDistanceBP)
+		if(3<t_eLocation.fDistance&&t_eLocation.fDistance<fDistanceBP)
 		{
 		m_fPLSF = 22.7f * log10(t_eLocation.fDistance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);//×ª»»ÎªGHz
 		}
 		else 
 		{
-			if(fDistanceBP<t_eLocation.fDistance<5000)
+			if(fDistanceBP<t_eLocation.fDistance&&t_eLocation.fDistance<5000)
 		    {
-		     m_fPLSF = 40.0f * log10(t_eLocation.fDistance) + 7.56f - 2 * 17.3 * log10(t_eLocation.fUEAntH-1) + 2.7f *(log10(t_fFrequency) - 9.0f);
+		     m_fPLSF = 40.0f * log10(t_eLocation.fDistance) + 7.56f - 2 * 17.3f * log10(t_eLocation.fUEAntH-1) + 2.7f *(log10(t_fFrequency) - 9.0f);
 		    }
 			else if(t_eLocation.fDistance<3)
 			{
@@ -261,39 +262,39 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 		break;
 	case Nlos:
 		fTemp = (2.8f - 0.0024f * t_eLocation.fDistance1) > 1.84f ? (2.8f - 0.0024f * t_eLocation.fDistance1) : 1.84f;
-		if(3<t_eLocation.fDistance1<fDistanceBP)
+		if(3<t_eLocation.fDistance1&&t_eLocation.fDistance1<fDistanceBP)
 		{
 		fPL1 = 22.7f * log10(t_eLocation.fDistance1) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
 		}
 		else 
 		{
-			if(fDistanceBP<t_eLocation.fDistance1<5000)
+			if(fDistanceBP<t_eLocation.fDistance1&&t_eLocation.fDistance1<5000)
 		    {
-		     fPL1 = 40.0f * log10(t_eLocation.fDistance1) + 7.56f - 2 * 17.3 * log10(t_eLocation.fUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
+		     fPL1 = 40.0f * log10(t_eLocation.fDistance1) + 7.56f - 2 * 17.3f * log10(t_eLocation.fUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
 		    }
 			else if(t_eLocation.fDistance1<3)
 			{
 		     fPL1 = 22.7f * log10(t_eLocation.fDistance1) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 			}
 		}
-		fPL1=fPL1 + 17.3f - 12.5*fTemp + 10 * fTemp * log10(t_eLocation.fDistance1) + 3 * (log10(t_fFrequency) - 9.0f);
+		fPL1=fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.fDistance1) + 3 * (log10(t_fFrequency) - 9.0f);
 		fTemp = (2.8f - 0.0024f * t_eLocation.fDistance2) > 1.84f ? (2.8f - 0.0024f * t_eLocation.fDistance2) : 1.84f;
-		if(3<t_eLocation.fDistance2<fDistanceBP)
+		if(3<t_eLocation.fDistance2&&t_eLocation.fDistance2<fDistanceBP)
 		{
 		fPL2 = 22.7f * log10(t_eLocation.fDistance2) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 		}
 		else 
 		{
-			if(fDistanceBP<t_eLocation.fDistance2<5000)
+			if(fDistanceBP<t_eLocation.fDistance2&&t_eLocation.fDistance2<5000)
 		    {
-		     fPL2 = 40.0f * log10(t_eLocation.fDistance2) + 7.56f - 2 * 17.3 * log10(t_eLocation.fUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
+		     fPL2 = 40.0f * log10(t_eLocation.fDistance2) + 7.56f - 2 * 17.3f * log10(t_eLocation.fUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
 		    }
 			else if(t_eLocation.fDistance1<3)
 			{
 		     fPL2 = 22.7f * log10(t_eLocation.fDistance2) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
 			}
 		}
-		fPL2 = fPL2 + 17.3f - 12.5*fTemp + 10 * fTemp * log10(t_eLocation.fDistance2) + 3 * (log10(t_fFrequency) - 9.0f);
+		fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.fDistance2) + 3 * (log10(t_fFrequency) - 9.0f);
 		m_fPLSF = fPL1 < fPL2 ? fPL1 : fPL2;	
 	default:
 		break;
@@ -423,7 +424,7 @@ bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
 	float fPowerTotal = 0.0f;
 	float *pfAoD = new float[m_byPathNum];
 	float *pfAoA = new float[m_byPathNum];
-	unsigned char abyIndex[m_scbySubPathNum];
+//	unsigned char abyIndex[m_scbySubPathNum];
 	float *pfXAoD = new float[m_byPathNum];
 	float *pfXAoA = new float[m_byPathNum];
 	float fPowerMax;
@@ -450,8 +451,7 @@ bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
 		pfPathPower[byTempPath] /= fPowerTotal;
 	}
 
-	SelectMax(pfPathPower, m_byPathNum, &m_byPathFirst, &m_byPathSecond);
-
+	SelectMax(pfPathPower, static_cast<unsigned char>(m_byPathNum), &m_byPathFirst, &m_byPathSecond);
 
 		if (m_bLoS)
 	{

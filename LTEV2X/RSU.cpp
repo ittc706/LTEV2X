@@ -9,13 +9,12 @@
 #include"Exception.h"
 #include"Event.h"
 #include"Global.h"
-#include"Function.h"
 
 
 using namespace std;
 
 /*LK*/
-void cRSU::Initialize(sRSUConfigure &t_RSUConfigure)
+void cRSU::initialize(sRSUConfigure &t_RSUConfigure)
 {
 	m_RSUId = t_RSUConfigure.wRSUID;
 	m_fAbsX = c_RSUTopoRatio[m_RSUId * 2 + 0] * c_wide;

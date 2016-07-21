@@ -11,66 +11,68 @@
 
 
 class cSystem{
-	//LK
-	sConfigure conf;//系统参数配置
-	//void configure();
-	//void Initialization();//系统初始化
-	void Destroy();//系统资源释放
-	void Process();//系统仿真过程
-
 public:
-	void NewChannel(unsigned short UEID);
-	void DeleteChannel(unsigned short UEID);
-	void ChannelGeneration();//信道刷新
-	void FreshLoc(void);
-	void CalChannel(void);
-	int allusers;
-	int freshNum;
 
+	/*--------------------------------------------------------------
+	*                      全局控制单元
+	* -------------------------------------------------------------*/
 
-private:
 	/*------------------数据成员------------------*/
+	sConfigure m_Config;//系统参数配置
 	int m_TTI;//当前的TTI时刻
 	int m_NTTI;//仿真总共的TTI
-	ceNB* eNB;//基站容器
-	cRoad *Road;
-	cRSU* RSU;//RSU容器
-	cVeUE* veUE;//VeUE容器
+	ceNB* m_eNBAry;//基站容器
+	cRoad *m_RoadAry;//道路容器
+	cRSU* m_RSUAry;//RSU容器
+	cVeUE* m_VeUEAry;//VeUE容器
 	std::vector<sEvent> m_EventVec;//事件容器
-	
 	/*
 	* 外层下标为时间槽（代表TTI）
 	* 与事件容器不同，事件触发链表将相同时刻触发的事件的Id置于相同的时间槽中
 	*/
 	std::vector<std::list<int>> m_EventTTIList;//事件触发链表，m_EventList[i]代表第i个TTI的事件表
-	
+
+	/*------------------成员函数------------------*/
 public:
-	/*------------------系统流程控制------------------*/
+	/*接口函数*/
 	void configure();//系统仿真参数配置
 	void initialization();//系统参数配置，完成系统初始化
 	void destroy();//释放资源
 	void process();//系统仿真流程
 
-	
-
 private:
+	/*实现函数*/
 	void buildEventList();
-
-
 	/*--------------------------------------------------------------
-	*                      上行调度
+	*                      地理拓扑单元
 	* -------------------------------------------------------------*/
 public:
-	/*--------------------接口函数--------------------*/
+	/*------------------数据成员------------------*/
+	int m_AllUsers;
+	int m_FreshNum;
+
+	/*------------------成员函数------------------*/
+	void newChannel(unsigned short UEID);
+	void deleteChannel(unsigned short UEID);
+	void channelGeneration();//信道刷新
+	void freshLoc(void);
+	void calChannel(void);
+	
+
+	/*--------------------------------------------------------------
+	*                      集中式资源管理单元
+	* -------------------------------------------------------------*/
+	/*------------------成员函数------------------*/
+public:
+	/*接口函数*/
 	void centralizedSchedule();//调度总控制
 
 private:
-	/*--------------------私有实现函数--------------------*/
+	/*实现函数*/
 	void scheduleInfoClean();//清除当前扇区所有用户的调度信息
 	void schedulePF_RP_CSI_UL();//上行PF-RP调度
 
 	//线性时间选取算法
-public:
 	sPFInfo selectKthPF(std::vector<sPFInfo>& vecF, int k, int p, int r);
 	int partition(std::vector<sPFInfo>& vecF, int p, int r);
 	void exchange(std::vector<sPFInfo>& vecF, int i, int j);
@@ -78,20 +80,22 @@ public:
 
 
 	/*--------------------------------------------------------------
-	*                      分布式资源管理
+	*                      分布式资源管理单元
 	*            DRA:Distributed Resource Allocation
 	* -------------------------------------------------------------*/
 public :
+	/*------------------数据成员------------------*/
 	eDRAMode m_DRAMode;
-
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
 
-	/*--------------------接口函数--------------------*/
+	/*------------------成员函数------------------*/
+public:
+	/*接口函数*/
 	void DRASchedule();//DRA调度总控
 
 private:
-	/*--------------------实现函数--------------------*/
+	/*实现函数*/
 	void DRAInformationClean();//资源分配信息清空
 	void DRAPerformCluster(bool clusterFlag);//对RSU内的VeUE进行分簇
 	void DRAGroupSizeBasedTDM(bool clusterFlag);//基于簇大小的时分复用
@@ -106,7 +110,7 @@ private:
 	void DRADelaystatistics();//时延统计
 	void DRAConflictListener();//帧听冲突
 
-	/*--------------------辅助函数--------------------*/
+    //日志记录函数
 	void writeClusterPerformInfo(std::ofstream &out);//写入分簇信息的日志
 	void writeEventListInfo(std::ofstream &out);//写入时间列表的信息
 	void writeEventLogInfo(std::ofstream &out);//写入以事件的日志信息

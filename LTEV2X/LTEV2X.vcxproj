@@ -121,12 +121,9 @@
     <ClInclude Include="blas1_z.h" />
     <ClInclude Include="ChannelModel.h" />
     <ClInclude Include="Config.h" />
-    <ClInclude Include="Constant.h" />
-    <ClInclude Include="Definition.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="Exception.h" />
-    <ClInclude Include="Function.h" />
     <ClInclude Include="GeographyAndMobility.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="IMTA.h" />
@@ -137,7 +134,6 @@
     <ClInclude Include="RSU.h" />
     <ClInclude Include="Schedule.h" />
     <ClInclude Include="System.h" />
-    <ClInclude Include="Utility.h" />
     <ClInclude Include="VUE.h" />
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +143,6 @@
     <ClCompile Include="eNB.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="FileOutput.cpp" />
-    <ClCompile Include="Function.cpp" />
     <ClCompile Include="GeographyAndMobility.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="IMTA.cpp" />
@@ -159,7 +154,6 @@
     <ClCompile Include="Schedule.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="ToString.cpp" />
-    <ClCompile Include="Utility.cpp" />
     <ClCompile Include="VUE.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
