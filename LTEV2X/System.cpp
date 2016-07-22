@@ -25,7 +25,7 @@ void cSystem::process() {
 			for (int ii = 0;ii < m_Config.VeUENum;ii++)
 				g_OutTemp << "VeUEId = " << ii << "   RSUId = " << m_VeUEAry[ii].m_RSUId << "   ClusterIdx = " << m_VeUEAry[ii].m_ClusterIdx << endl;
 		}
-		//DRASchedule();
+		DRASchedule();
 		m_TTI++;
 	}
 
@@ -95,10 +95,10 @@ void cSystem::configure() {//系统仿真参数配置
 	*                 无线资源管理单元参数配置
 	* -------------------------------------------------------------*/
 
-	m_NTTI = 200;//仿真TTI时间
+	m_NTTI = 2;//仿真TTI时间
 	m_Config.periodicEventNTTI = 100;
 	m_Config.emergencyLamda = 1;
-	m_Config.locationUpdateNTTI = 150;
+	m_Config.locationUpdateNTTI = 1;
 
 	//选择DRA模式
 	m_DRAMode = P123;

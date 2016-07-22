@@ -74,6 +74,19 @@ const unsigned short c_WrapAroundRoad[c_roadNumber][9] =
 
 };
 
+const unsigned short c_RSUClusterNum[c_RSUNumber] = {
+	8,4,8,4,8,4,8,4,8,
+	4,4,4,4,4,
+	4,4,4,4,4,
+	8,4,8,4,8,4,8,4,8,4,8,4,8,
+	4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,
+	8,4,8,4,8,4,8,4,8,4,8,4,8,
+	4,4,4,4,4,
+	4,4,4,4,4,
+	8,4,8,4,8,4,8,4,8
+};
+
 const float c_RSUTopoRatio[c_RSUNumber * 2] =
 {
 	-2.0f, 1.5f,

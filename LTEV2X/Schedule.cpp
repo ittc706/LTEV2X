@@ -183,11 +183,11 @@ void cSystem::DRAUpdateClusterInfo(bool clusterFlag) {
 		cRSU &_RSU = m_RSUAry[RSUId];
 		for (int VeUEId : _RSU.m_VeUEIdList) {
 			int clusterIdx = m_VeUEAry[VeUEId].m_ClusterIdx;
-			cout << clusterIdx << endl;
+			cout << "clusterIdx: " << clusterIdx << endl;
+			cout << "ClusterNum: " << _RSU.m_DRAClusterNum << endl;
 			_RSU.m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
 		}
 	}
-
 
 	////清除上一次的分簇信息
 	//for (int eNBId = 0;eNBId < m_Config.eNBNum;eNBId++) {

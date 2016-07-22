@@ -13,9 +13,13 @@
 
 using namespace std;
 
-/*LK*/
-void cRSU::initialize(sRSUConfigure &t_RSUConfigure)
-{
+int newCount = 0;//记录动态创建的对象的次数
+
+int deleteCount = 0;//记录删除动态创建对象的次数
+
+cRSU::cRSU() {}
+
+void cRSU::initialize(sRSUConfigure &t_RSUConfigure){
 	m_RSUId = t_RSUConfigure.wRSUID;
 	m_fAbsX = c_RSUTopoRatio[m_RSUId * 2 + 0] * c_wide;
 	m_fAbsY = c_RSUTopoRatio[m_RSUId * 2 + 1] * c_length;
@@ -23,34 +27,24 @@ void cRSU::initialize(sRSUConfigure &t_RSUConfigure)
 	printf("RSU：");
 	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_RSUId, m_fAbsX, m_fAbsY);
 	//printf("m_fAbsX=%f,m_fAbsY=%f\n",m_fAbsX,m_fAbsY);
-}
-
-/*LK*/
 
 
 
-
-int newCount = 0;//记录动态创建的对象的次数
-
-int deleteCount = 0;//记录删除动态创建对象的次数
-
-//int cRSU::s_RSUCount = 0;
-
-
-cRSU::cRSU(){
+	//无线管理单元参量初始化
+	m_DRAClusterNum = c_RSUClusterNum[m_RSUId];
 	//WRONG
-	///*  EMERGENCY  */
-	//m_DRAEmergencyPatternIsAvailable = vector<bool>(gc_DRAEmergencyTotalPatternNum,true);
-	//m_DRAEmergencyScheduleInfoTable = vector<sDRAScheduleInfo*>(gc_DRAEmergencyTotalPatternNum);
-	//m_DRAEmergencyTransimitScheduleInfoList= vector<list<sDRAScheduleInfo*>>(gc_DRAEmergencyTotalPatternNum);
-	///*  EMERGENCY  */
+	/*  EMERGENCY  */
+	m_DRAEmergencyPatternIsAvailable = vector<bool>(gc_DRAEmergencyTotalPatternNum, true);
+	m_DRAEmergencyScheduleInfoTable = vector<sDRAScheduleInfo*>(gc_DRAEmergencyTotalPatternNum);
+	m_DRAEmergencyTransimitScheduleInfoList = vector<list<sDRAScheduleInfo*>>(gc_DRAEmergencyTotalPatternNum);
+	/*  EMERGENCY  */
 
 
-	//m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
-	//m_DRAPatternIsAvailable = vector<vector<bool>>(m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum, true));
-	//m_DRAScheduleInfoTable = vector<vector<sDRAScheduleInfo*>>(m_DRAClusterNum, vector<sDRAScheduleInfo*>(gc_DRATotalPatternNum,nullptr));
-	//m_DRATransimitScheduleInfoList = vector<list<sDRAScheduleInfo*>>(gc_DRATotalPatternNum, list<sDRAScheduleInfo*>(0, nullptr));
-	////WRONG
+	m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
+	m_DRAPatternIsAvailable = vector<vector<bool>>(m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum, true));
+	m_DRAScheduleInfoTable = vector<vector<sDRAScheduleInfo*>>(m_DRAClusterNum, vector<sDRAScheduleInfo*>(gc_DRATotalPatternNum, nullptr));
+	m_DRATransimitScheduleInfoList = vector<list<sDRAScheduleInfo*>>(gc_DRATotalPatternNum, list<sDRAScheduleInfo*>(0, nullptr));
+	//WRONG
 }
 
 
