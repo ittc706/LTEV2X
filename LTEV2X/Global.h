@@ -236,6 +236,15 @@ const int gc_DRATotalPatternNum = getDRATotalPatternNum();//所有非EmergencyPatte
 
 
 
+/*===========================================
+*          无线资源管理单元常量
+* ==========================================*/
+const int gc_PeriodMessageBitNum = 7200;
+const int gc_EmergencyMessageBitNum = 5400;
+const int gc_DataMessageBitNum = 180000;
+
+
+
 
 
 /*===========================================

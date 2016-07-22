@@ -41,8 +41,7 @@ string sMessage::toString() {
 		break;
 	}
 	ostringstream ss;
-	ss << "[ byteNum = " << left << setw(3) << byteNum;
-	ss << " , DRA_ONTTI = " << left << setw(3) << DRA_ONTTIPerFB;
+	ss << "[ byteNum = " << left << setw(3) << bitNum;
 	ss << " , MessageType = " << s << " ]";
 	return ss.str();
 }

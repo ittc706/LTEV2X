@@ -1,13 +1,13 @@
 #pragma once
 #include<list>
 #include<string>
+#include"Global.h"
 #include"Enumeration.h"
 
 struct sMessage {//消息类
 	/*数据成员*/
 	eMessageType messageType;//该消息的类型
-	int byteNum; //该消息的比特数量
-	int DRA_ONTTIPerFB;  //在DRA方式下，用单位FB传输该消息需要占用多少个TTI
+	int bitNum; //该消息的比特数量
 
 	/*构造函数*/
 	sMessage() {}
@@ -21,17 +21,9 @@ struct sEvent {//事件类
 public:
 	static int s_EventCount;
 
-	/*
-	* 事件Id
-	* 每个事件都有唯一的Id，Id从0开始编号
-	*/
-	const int eventId = s_EventCount++;
-
-	/*
-	* 用户Id
-	* 该事件对应的用户的Id
-	*/
-	int VeUEId;//
+	/*数据成员*/
+	const int eventId = s_EventCount++;//每个事件都有唯一的Id，Id从0开始编号
+	int VeUEId;//该事件对应的用户的Id
 	int TTI;//事件触发的TTI时刻
 
 	/*

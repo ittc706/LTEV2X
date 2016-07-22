@@ -1,3 +1,12 @@
+version_2016_7_21(修复BUG，进行调整)
+	*在channelGeneration调用前后，对于RSU内的VeUEIdList进行维护，在位置更新进行前进行清空
+	*RSU.VeUEIdList是在freshLoc调用过程中写入的
+	*根据RSU.VeUEIdList，将其写入eNB.VeUEIdList
+	*目前eNB.RSUIdList尚未正确初始化，因此eNB.VeUEIdList也是错误的，需要场景模块在撒点时，初始化eNB.RSUIdList
+	*删除了Message类中占用TTI时隙的数据成员，将byteNum改为bitNum，并在Global中设置每种消息的bit数量
+	*每个消息占用的TTI时间，需要根据消息的bit数量，以及一个RB在单位TTI内传输的bit数量，以及该消息对应的Pattern所占用的FB数量进行计算
+
+
 version_2016_7_21(解决内存泄露)
 	*解决地理拓扑单元大部分内存泄露问题
 	*地理单元增加相应的注释

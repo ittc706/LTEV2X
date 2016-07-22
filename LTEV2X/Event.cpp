@@ -13,16 +13,15 @@ sMessage::sMessage(eMessageType messageType) {
 	this->messageType = messageType;
 	switch (messageType) {
 	case PERIOD:
-		byteNum = 300;
+		bitNum = gc_PeriodMessageBitNum;
 		break;
 	case EMERGENCY:
-		byteNum = 200;
+		bitNum = gc_EmergencyMessageBitNum;
 		break;
 	case DATA:
-		byteNum = 1000;
+		bitNum = gc_DataMessageBitNum;
 		break;
 	}
-	DRA_ONTTIPerFB = static_cast<int>(std::ceil(static_cast<double>(byteNum) / static_cast<double>(gc_BitNumPerRB)));
 }
 
 

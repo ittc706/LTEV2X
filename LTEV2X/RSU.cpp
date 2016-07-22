@@ -81,7 +81,7 @@ int cRSU::getClusterIdxOfVeUE(int VeUEId) {
 list<tuple<int, int>> cRSU::buildScheduleIntervalList(int TTI, const sEvent& event, std::tuple<int, int, int>ClasterTTI) {
 	list<tuple<int,int>> scheduleIntervalList;
 	int eventId = event.eventId;
-	int occupiedTTI = event.message.DRA_ONTTIPerFB / gc_DRA_FBNumPerPatternType[event.message.messageType];
+	int occupiedTTI = event.message.bitNum / gc_BitNumPerRB / gc_DRA_FBNumPerPatternType[event.message.messageType];
 	int begin = std::get<0>(ClasterTTI),
 		end = std::get<1>(ClasterTTI),
 		len = std::get<2>(ClasterTTI);
@@ -114,7 +114,7 @@ std::list<std::tuple<int, int>> cRSU::buildEmergencyScheduleInterval(int TTI, co
 	std::list<std::tuple<int, int>> scheduleIntervalList;
 	std::tuple<int, int> scheduleInterval;
 	int eventId = event.eventId;
-	int occupiedTTI = event.message.DRA_ONTTIPerFB / gc_DRAEmergencyFBNumPerPattern;
+	int occupiedTTI = event.message.bitNum / gc_BitNumPerRB / gc_DRAEmergencyFBNumPerPattern;
 	get<0>(scheduleInterval) = TTI;
 	get<1>(scheduleInterval) = TTI + occupiedTTI - 1;
 	scheduleIntervalList.push_back(scheduleInterval);
