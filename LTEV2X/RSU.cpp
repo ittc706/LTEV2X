@@ -37,18 +37,20 @@ int deleteCount = 0;//记录删除动态创建对象的次数
 //int cRSU::s_RSUCount = 0;
 
 
-cRSU::cRSU() :m_DRAClusterNum(4) {
-	/*  EMERGENCY  */
-	m_DRAEmergencyPatternIsAvailable = vector<bool>(gc_DRAEmergencyTotalPatternNum,true);
-	m_DRAEmergencyScheduleInfoTable = vector<sDRAScheduleInfo*>(gc_DRAEmergencyTotalPatternNum);
-	m_DRAEmergencyTransimitScheduleInfoList= vector<list<sDRAScheduleInfo*>>(gc_DRAEmergencyTotalPatternNum);
-	/*  EMERGENCY  */
+cRSU::cRSU(){
+	//WRONG
+	///*  EMERGENCY  */
+	//m_DRAEmergencyPatternIsAvailable = vector<bool>(gc_DRAEmergencyTotalPatternNum,true);
+	//m_DRAEmergencyScheduleInfoTable = vector<sDRAScheduleInfo*>(gc_DRAEmergencyTotalPatternNum);
+	//m_DRAEmergencyTransimitScheduleInfoList= vector<list<sDRAScheduleInfo*>>(gc_DRAEmergencyTotalPatternNum);
+	///*  EMERGENCY  */
 
 
-	m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
-	m_DRAPatternIsAvailable = vector<vector<bool>>(m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum, true));
-	m_DRAScheduleInfoTable = vector<vector<sDRAScheduleInfo*>>(m_DRAClusterNum, vector<sDRAScheduleInfo*>(gc_DRATotalPatternNum,nullptr));
-	m_DRATransimitScheduleInfoList = vector<list<sDRAScheduleInfo*>>(gc_DRATotalPatternNum, list<sDRAScheduleInfo*>(0, nullptr));
+	//m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
+	//m_DRAPatternIsAvailable = vector<vector<bool>>(m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum, true));
+	//m_DRAScheduleInfoTable = vector<vector<sDRAScheduleInfo*>>(m_DRAClusterNum, vector<sDRAScheduleInfo*>(gc_DRATotalPatternNum,nullptr));
+	//m_DRATransimitScheduleInfoList = vector<list<sDRAScheduleInfo*>>(gc_DRATotalPatternNum, list<sDRAScheduleInfo*>(0, nullptr));
+	////WRONG
 }
 
 

@@ -133,8 +133,8 @@ void cSystem::DRASchedule() {
 	DRAInformationClean();
 
 	//  WRONG
-	//根据地理位置进行分簇
-	DRAPerformCluster(clusterFlag);
+	//地理位置更新后，会更新与簇相关的信息
+	DRAUpdateClusterInfo(clusterFlag);
 
 	//根据簇大小进行时域资源的划分
 	DRAGroupSizeBasedTDM(clusterFlag);
@@ -175,47 +175,58 @@ void cSystem::DRAInformationClean() {
 }
 
 
-void cSystem::DRAPerformCluster(bool clusterFlag) {
+void cSystem::DRAUpdateClusterInfo(bool clusterFlag) {
 	if (!clusterFlag)return;
 
-	//清除上一次的分簇信息
-	for (int eNBId = 0;eNBId < m_Config.eNBNum;eNBId++) {
-		ceNB &_eNB = m_eNBAry[eNBId];
-		_eNB.m_VeUEIdList.clear();
-	}
+
 	for (int RSUId = 0;RSUId < m_Config.RSUNum;RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
-		_RSU.m_VeUEIdList.clear();
-		for (int clusterIdx = 0;clusterIdx < _RSU.m_DRAClusterNum;clusterIdx++) {
-			_RSU.m_DRAClusterVeUEIdList[clusterIdx].clear();
+		for (int VeUEId : _RSU.m_VeUEIdList) {
+			int clusterIdx = m_VeUEAry[VeUEId].m_ClusterIdx;
+			cout << clusterIdx << endl;
+			_RSU.m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
 		}
 	}
 
 
-	//随机将VeUE分配给RSU中的簇
-	for (int VeUEId = 0;VeUEId < m_Config.VeUENum;VeUEId++) {
-		int RSUId = rand() % m_Config.RSUNum;
-		m_RSUAry[RSUId].m_VeUEIdList.push_back(VeUEId);
-		m_VeUEAry[VeUEId].m_RSUId = RSUId;
+	////清除上一次的分簇信息
+	//for (int eNBId = 0;eNBId < m_Config.eNBNum;eNBId++) {
+	//	ceNB &_eNB = m_eNBAry[eNBId];
+	//	_eNB.m_VeUEIdList.clear();
+	//}
+	//for (int RSUId = 0;RSUId < m_Config.RSUNum;RSUId++) {
+	//	cRSU &_RSU = m_RSUAry[RSUId];
+	//	_RSU.m_VeUEIdList.clear();
+	//	for (int clusterIdx = 0;clusterIdx < _RSU.m_DRAClusterNum;clusterIdx++) {
+	//		_RSU.m_DRAClusterVeUEIdList[clusterIdx].clear();
+	//	}
+	//}
 
-		//再将其分入簇
-		int clusterIdx = rand() % m_RSUAry[RSUId].m_DRAClusterNum;
-		m_RSUAry[RSUId].m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
-		m_VeUEAry[VeUEId].m_ClusterIdx = clusterIdx;
-		m_VeUEAry[VeUEId].m_LocationUpdateLogInfoList.push_back(tuple<int, int>(RSUId, clusterIdx));
-	}
 
+	////随机将VeUE分配给RSU中的簇
+	//for (int VeUEId = 0;VeUEId < m_Config.VeUENum;VeUEId++) {
+	//	int RSUId = rand() % m_Config.RSUNum;
+	//	m_RSUAry[RSUId].m_VeUEIdList.push_back(VeUEId);
+	//	m_VeUEAry[VeUEId].m_RSUId = RSUId;
 
-	//更新基站的VeUE容器
-	for (int eNBId = 0;eNBId < m_Config.eNBNum;eNBId++) {
-		ceNB &_eNB = m_eNBAry[eNBId];
-		for (int RSUId : _eNB.m_RSUIdList) {
-			for (int VeUEId : m_RSUAry[RSUId].m_VeUEIdList) {
-				_eNB.m_VeUEIdList.push_back(VeUEId);
-			}
-		}
-	}
+	//	//再将其分入簇
+	//	int clusterIdx = rand() % m_RSUAry[RSUId].m_DRAClusterNum;
+	//	m_RSUAry[RSUId].m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
+	//	m_VeUEAry[VeUEId].m_ClusterIdx = clusterIdx;
+	//	m_VeUEAry[VeUEId].m_LocationUpdateLogInfoList.push_back(tuple<int, int>(RSUId, clusterIdx));
+	//}
 
+	//UNDO
+	////更新基站的VeUE容器
+	//for (int eNBId = 0;eNBId < m_Config.eNBNum;eNBId++) {
+	//	ceNB &_eNB = m_eNBAry[eNBId];
+	//	for (int RSUId : _eNB.m_RSUIdList) {
+	//		for (int VeUEId : m_RSUAry[RSUId].m_VeUEIdList) {
+	//			_eNB.m_VeUEIdList.push_back(VeUEId);
+	//		}
+	//	}
+	//}
+	//UNDO
 }
 
 

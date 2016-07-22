@@ -8,25 +8,29 @@ using namespace std;
 
 void cSystem::process() {
 
-	/*参数配置*/
+	//参数配置
 	configure();
 
-	/*仿真初始化*/
+	//仿真初始化
 	initialization();
 
-	/*打印事件链表*/
+	//打印事件链表
 	writeEventListInfo(g_OutEventListInfo);
 
+	//开始仿真
 	for (int count = 0;count < m_NTTI;count++) {
 		cout << "Current TTI = " << m_TTI << endl;
-		if(count%100==0)channelGeneration();
-		DRASchedule();
+		if (count % m_Config.locationUpdateNTTI == 0) {
+			channelGeneration();
+			for (int ii = 0;ii < m_Config.VeUENum;ii++)
+				g_OutTemp << "VeUEId = " << ii << "   RSUId = " << m_VeUEAry[ii].m_RSUId << "   ClusterIdx = " << m_VeUEAry[ii].m_ClusterIdx << endl;
+		}
+		//DRASchedule();
 		m_TTI++;
 	}
 
-	/*打印事件日志信息*/
+	//打印事件日志信息
 	writeEventLogInfo(g_OutEventLogInfo);
-
 
 	/*打印车辆地理位置更新日志信息*/
 	writeVeUELocationUpdateLogInfo(g_OutVeUELocationUpdateLogInfo);

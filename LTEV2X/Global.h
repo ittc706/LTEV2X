@@ -189,6 +189,7 @@ extern std::ofstream g_OutEventListInfo;
 extern std::ofstream g_OutTTILogInfo;
 extern std::ofstream g_OutEventLogInfo;
 extern std::ofstream g_OutVeUELocationUpdateLogInfo;
+extern std::ofstream g_OutTemp;
 
 
 /*===========================================

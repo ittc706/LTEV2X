@@ -95,7 +95,7 @@ public:
 private:
 	/*实现函数*/
 	void DRAInformationClean();//资源分配信息清空
-	void DRAPerformCluster(bool clusterFlag);//对RSU内的VeUE进行分簇
+	void DRAUpdateClusterInfo(bool clusterFlag);//在分簇后，更新与簇相关的数据
 	void DRAGroupSizeBasedTDM(bool clusterFlag);//基于簇大小的时分复用
 	void DRAUpdateAdmitEventIdList(bool clusterFlag);//建立接纳链表
 

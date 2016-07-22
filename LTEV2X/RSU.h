@@ -63,7 +63,7 @@ public:
 	* 一个RSU覆盖范围内的簇的个数
 	* 与RSU的类型"m_RSUType"有关
 	*/
-	const int m_DRAClusterNum;
+	int m_DRAClusterNum;
 
 	/*
 	* TDR:Time Domain Resource

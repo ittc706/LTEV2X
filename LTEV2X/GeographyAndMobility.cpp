@@ -4,7 +4,6 @@
 
 
 
-void cSystem::channelGeneration()
-{
+void cSystem::channelGeneration(){
 	freshLoc();//运动模型
 }
