@@ -119,7 +119,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="blas1_z.h" />
-    <ClInclude Include="ChannelModel.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
@@ -139,7 +138,6 @@
   <ItemGroup>
     <ClCompile Include="blas1_z.cpp" />
     <ClCompile Include="Channel.cpp" />
-    <ClCompile Include="ChannelModel.cpp" />
     <ClCompile Include="eNB.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="FileOutput.cpp" />

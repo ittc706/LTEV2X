@@ -37,7 +37,7 @@ public:
 	/*接口函数*/
 	void configure();//系统仿真参数配置
 	void initialization();//系统参数配置，完成系统初始化
-	void destroy();//释放资源
+	void destroy();//释放资源，UNDONE
 	void process();//系统仿真流程
 
 private:
@@ -52,11 +52,9 @@ public:
 	int m_FreshNum;
 
 	/*------------------成员函数------------------*/
-	void newChannel(unsigned short UEID);
-	void deleteChannel(unsigned short UEID);
-	void channelGeneration();//信道刷新
+
+	void channelGeneration();//信道产生与刷新
 	void freshLoc(void);
-	void calChannel(void);
 	
 
 	/*--------------------------------------------------------------

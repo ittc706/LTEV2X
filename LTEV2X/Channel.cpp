@@ -318,10 +318,16 @@ void cSystem::freshLoc(void)
 		//   	    }
 		//	}
 		//}
-	
+	delete flag;
 	delete [] H;
 	delete []ch_buffer;
 	delete []ch_sin;
 	delete []ch_cos;
+	delete []antenna.pfTxSlantAngle;
+	delete []antenna.pfTxAntSpacing;
+	delete []antenna.pfRxSlantAngle;
+	delete []antenna.pfRxAntSpacing;
+	delete []m_VeUEAry[UserIdx1].imta;
    }
+
 }

@@ -1,8 +1,8 @@
 #pragma once
 #include"Enumeration.h"
 
-
-struct sConfigure {//系统仿真参数
+/*系统基本的仿真参数*/
+struct sConfigure {
 
 	int periodicEventNTTI;//周期性事件的周期（单位TTI）
 	double emergencyLamda;//紧急事件的期望值（在给定的仿真周期内的期望值）
@@ -26,13 +26,10 @@ struct sConfigure {//系统仿真参数
 
 };
 
-
+/*eNB配置参数*/
 struct seNBConfigure
 {
 	sConfigure* sys_config;
-	//float fAntAngle;
-	//unsigned short wAntTxNum;
-	//unsigned short wAntRxNum;
 	unsigned short wRoadID;
 	unsigned short weNBID;
 	float fX;
@@ -40,7 +37,7 @@ struct seNBConfigure
 	float fAbsX;
 	float fAbsY;
 };
-
+/*Road配置参数*/
 struct sRoadConfigure
 {
 	sConfigure* sys_config;
@@ -53,7 +50,7 @@ struct sRoadConfigure
 	unsigned short wLaneOffset;
 };
 
-
+/*UE配置参数*/
 struct sUEConfigure
 {
 	unsigned short wRoadID;
@@ -65,11 +62,13 @@ struct sUEConfigure
 	float fv;
 };
 
+/*RSU配置参数*/
 struct sRSUConfigure
 {
 	unsigned short wRSUID;
 };
 
+/*地理位置配置参数*/
 struct sLocation
 {
 	bool bManhattan;
@@ -83,6 +82,7 @@ struct sLocation
 
 };
 
+/*天线配置参数*/
 struct sAntenna
 {
 	float fTxAngle; // degree

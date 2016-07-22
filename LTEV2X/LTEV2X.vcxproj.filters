@@ -54,9 +54,6 @@
     <ClInclude Include="Event.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ChannelModel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GeographyAndMobility.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -108,9 +105,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Channel.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ChannelModel.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GeographyAndMobility.cpp">

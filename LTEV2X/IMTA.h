@@ -2,13 +2,19 @@
 #include <math.h>
 #include <string>
 #include <map>
-#include "ChannelModel.h"
+#include "Config.h"
+#include "Enumeration.h"
+#include "Global.h"
 
+/*===========================================
+*               IMTA信道模型
+* ==========================================*/
 class cIMTA {
-/*protected*/
 public:
+	//路径数
 	static const unsigned char m_scbySubPathNum = 20;
 	static const unsigned char m_scbyMidPathNum = 3;
+	//相关系数矩阵
 	static const float m_sacfConstantInHLoS[25];
 	static const float m_sacfConstantInHNLoS[25];
 	static const float m_sacfConstantUMiLoS[25];
@@ -20,10 +26,12 @@ public:
 	static const float m_sacfConstantUMaNLoS[25];
 	static const float m_sacfConstantRMaLoS[25];
 	static const float m_sacfConstantRMaNLoS[25];
+	//角度偏移数组
 	static const float m_sacfAngleOffset[m_scbySubPathNum];
 	static const float m_sacfMidPathDelayOffset[m_scbyMidPathNum];
 	static const unsigned char m_sacbyMidPathIndex[m_scbySubPathNum];
 
+	//信道所需基本常量
 	float m_fAntGain;
 	float m_fMaxAttenu; // dBm
 	unsigned char m_byTxAntNum;
@@ -35,6 +43,7 @@ public:
 	float m_fTxAngle;
 	float m_fRxAngle;
 
+	//信道所需配置常量
 	unsigned short m_byPathNum;
 	float m_fVelocity;
 	float m_fvAngle;
@@ -51,22 +60,15 @@ public:
 	float m_fKDB;
 	float m_fD;
 
-	//unsigned short m_wFFTNum;
-	//unsigned char m_byFFTOrder;
-	//float m_fFFTTime;
-	//unsigned short m_wHNum;
 
 	bool m_bLoS;
 	bool m_bBuilt;
 	bool m_bEnable;
 	float m_fPLSF;
 
-	//IppsFFTSpec_C_32fc* m_pIppFFTSpec;
-	//Ipp8u *m_p8uBuffer;
-	//unsigned short *m_pwFFTIndex;
-
 	unsigned char m_byPathFirst;
 	unsigned char m_byPathSecond;
+	//信道所需存储常量
 	float *m_pfGain;
 	float *m_pfSinAoD;
 	float *m_pfCosAoD;

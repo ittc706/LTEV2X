@@ -4,22 +4,6 @@
 #include "Global.h"
 
 
-const float cIMTA::m_sacfConstantInHLoS[25] =
-{
-	0.621223718347157f, 0.327023628702021f, 0.498450068093346f, -0.397383499536540f, -0.317443730363866f,
-	0.327023628702021f, 0.923620836374881f, 0.115165693298854f, -0.148559279659243f, 0.068169644262314f,
-	0.498450068093346f, 0.115165693298854f, 0.832109040182439f, -0.183583051030518f, 0.110345826045748f,
-	-0.397383499536540f, -0.148559279659243f, -0.183583051030518f, 0.856754854739268f, 0.228658865951530f,
-	-0.317443730363866f, 0.068169644262314f, 0.110345826045748f, 0.228658865951530f, 0.911109927149224f
-};
-const float cIMTA::m_sacfConstantInHNLoS[25] =
-{
-	0.937210184455461f, 0.213628632168364f, -0.031342219949974f, -0.273893305722215f, 0.0f,
-	0.213628632168364f, 0.976387959392929f, 0.006857515511760f, 0.031342219949974f, 0.0f,
-	-0.031342219949974f, 0.006857515511760f, 0.976387959392929f, -0.213628632168364f, 0.0f,
-	-0.273893305722215f, 0.031342219949974f, -0.213628632168364f, 0.937210184455461f, 0.0f,
-	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
-};
 const float cIMTA::m_sacfConstantUMiLoS[25] =
 {
 	0.753065949852806f, 0.241023875447849f, 0.454091158552085f, -0.097177920212920f, -0.398944655540474f,
@@ -125,10 +109,6 @@ cIMTA::cIMTA(void)
 	m_fGainLoS = 0;
 	m_fSinAoDLoS = 0;
 	m_pfPhaseLoS = 0;
-	//m_pfGainLoS = 0;
-	//m_pfSinAoDLoS = 0;
-	//m_ppfPhaseLoS = 0;
-	//m_pwFFTIndex = 0;
 	m_fAntGain = 0;
     m_fMaxAttenu = 0; // dBm
 	m_byTxAntNum = 0;
@@ -137,15 +117,15 @@ cIMTA::cIMTA(void)
 	m_bBuilt = false;
 	m_bEnable = false;
 	m_fPLSF = 0.0f;
-	m_pfTxAntSpacing = new float[m_byTxAntNum];
-	m_pfTxSlantAngle = new float[m_byTxAntNum];
-	m_pfRxAntSpacing = new float[m_byRxAntNum];
-	m_pfRxSlantAngle = new float[m_byRxAntNum];
+	m_pfTxAntSpacing = 0;
+	m_pfTxSlantAngle = 0;
+	m_pfRxAntSpacing = 0;
+	m_pfRxSlantAngle = 0;
 }
 
 cIMTA::~cIMTA(void)
 {
-	//Refresh();
+	Refresh();
 	if (m_pfTxAntSpacing)
 	{
 		delete []m_pfTxAntSpacing;
@@ -214,23 +194,6 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 	m_fRxAngle = t_eAntenna.fRxAngle * c_Degree2PI;
 	m_fVelocity = t_fVelocity / 3.6f * t_fFrequency * c_PI2 / c_C;
 	m_fvAngle = t_fVAngle * c_Degree2PI;
-
-	//m_wFFTNum = 1;
-	//m_byFFTOrder = 0;
-	//m_wHNum = t_wHNum;
-	//while (true)
-	//{
-	//	if (m_wHNum > m_wFFTNum)
-	//	{
-	//		m_wFFTNum <<= 1;
-	//		++ m_byFFTOrder;
-	//	}
-	//	else
-	//	{
-	//		m_fFFTTime = 1.0f / t_fHBandWidth / m_wFFTNum;
-	//		break;
-	//	}
-	//}
 
 	float fTemp;
 	float fSFSTD;
@@ -617,7 +580,7 @@ bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
 
 
 		//fprintf(fp2,"%f\n",m_pfPhase[0]);
-
+	delete[]pfPhasePol;
 	delete []pfSlantVV;
 	delete []pfSlantVH;
 	delete []pfSlantHV;
@@ -628,7 +591,6 @@ bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
 	delete []pfXAoA;
 	delete []pfAoD;
 	delete []pfAoA;
-
 	return true;
 }
 
@@ -637,22 +599,6 @@ void cIMTA::Calculate( float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float 
 	float fCos;
 	float fSin;
 
-		//for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
-		//{
-		//	for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
-		//	{
-		//		for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
-		//		{
-		//			for (unsigned char byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
-		//			{
-		//				t_pfTemp[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum + byTempRxAnt * m_byPathNum * m_scbySubPathNum + byTempPath * m_scbySubPathNum + byTempSubPath] =
-		//					m_pfTxAntSpacing[byTempRxAnt] * m_pfSinAoD[byTempPath * m_scbySubPathNum + byTempSubPath] +
-		//					m_pfRxAntSpacing[byTempTxAnt] * m_pfSinAoA[byTempPath * m_scbySubPathNum + byTempSubPath] +
-		//					m_pfCosAoA[byTempPath * m_scbySubPathNum + byTempSubPath] * t_fT;
-		//			}
-		//		}
-		//	}
-		//}
 
 		for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 		{
@@ -708,37 +654,6 @@ void cIMTA::Calculate( float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float 
 
 void cIMTA::Refresh(void)
 {
-//	if (m_pwFFTIndex)
-//	{
-//		delete []m_pwFFTIndex;
-//		m_pwFFTIndex = 0;
-//	}
-//	if (m_ppfGain)
-//	{
-//		for (unsigned char byTempSec = 0; byTempSec != m_byBSSecNum; ++ byTempSec)
-//		{
-//			if (m_ppfGain[byTempSec])
-//			{
-//				delete []m_ppfGain[byTempSec];
-//				m_ppfGain[byTempSec] = 0;
-//			}
-//		}
-//		delete []m_ppfGain;
-//		m_ppfGain = 0;
-//	}
-//	if (m_ppfSinAoD)
-//	{
-//		for (unsigned char byTempSec = 0; byTempSec != m_byBSSecNum; ++ byTempSec)
-//		{
-//			if (m_ppfSinAoD[byTempSec])
-//			{
-//				delete []m_ppfSinAoD[byTempSec];
-//				m_ppfSinAoD[byTempSec] = 0;
-//			}
-//		}
-//		delete []m_ppfSinAoD;
-//		m_ppfSinAoD = 0;
-//	}
 	if (m_pfGain)
 	{
 		delete []m_pfGain;
@@ -769,52 +684,11 @@ void cIMTA::Refresh(void)
 		delete []m_pfCosAoA;
 		m_pfCosAoA = 0;
 	}
-//	if (m_pfGainLoS)
-//	{
-//		delete []m_pfGainLoS;
-//		m_pfGainLoS = 0;
-//	}
-//	if (m_pfSinAoDLoS)
-//	{
-//		delete []m_pfSinAoDLoS;
-//		m_pfSinAoDLoS = 0;
-//	}
-//	if (m_ppfPhase)
-//	{
-//		for (unsigned char byTempSec = 0; byTempSec != m_byBSSecNum; ++ byTempSec)
-//		{
-//			if (m_ppfPhase[byTempSec])
-//			{
-//				delete []m_ppfPhase[byTempSec];
-//				m_ppfPhase[byTempSec] = 0;
-//			}
-//		}
-//		delete []m_ppfPhase;
-//		m_ppfPhase = 0;
-//	}
-//	if (m_ppfPhaseLoS)
-//	{
-//		for (unsigned char byTempSec = 0; byTempSec != m_byBSSecNum; ++ byTempSec)
-//		{
-//			if (m_ppfPhaseLoS[byTempSec])
-//			{
-//				delete []m_ppfPhaseLoS[byTempSec];
-//				m_ppfPhaseLoS[byTempSec] = 0;
-//			}
-//		}
-//		delete []m_ppfPhaseLoS;
-//		m_ppfPhaseLoS = 0;
-//	}
-//	if (m_pIppFFTSpec)
-//	{
-//		ippsFFTFree_C_32fc(m_pIppFFTSpec);
-//		m_pIppFFTSpec = 0;
-//	}
-//	if (m_p8uBuffer)
-//	{
-//		ippsFree(m_p8uBuffer);
-//		m_p8uBuffer = 0;
-//	}
-//
-//	return;
+
+	if (m_pfPhaseLoS)
+	{
+		delete[]m_pfPhaseLoS ;
+		m_pfPhaseLoS = 0;
+	}
+
 }
