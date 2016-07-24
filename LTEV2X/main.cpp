@@ -21,6 +21,7 @@ int main() {
 	}
     */
 
+	long double start = clock();
 
 	try {
 		cSystem _system;
@@ -32,7 +33,11 @@ int main() {
 
 	cout << "newCount: " << newCount << " , deleteCount: " << deleteCount << endl;
 
+	long double end = clock();
 
+	cout.setf(ios::fixed);
+	cout << "\nRunning Time :" << setprecision(1) << (end - start) / 1000.0L << " s\n" << endl;
+	cout.unsetf(ios::fixed);
 
 	g_OutDRAScheduleInfo.close();
 	g_OutClasterPerformInfo.close();

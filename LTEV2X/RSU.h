@@ -8,12 +8,12 @@
 #include"Schedule.h"
 #include"Global.h"
 #include"VUE.h"
-#include"Event.h"
+#include"Traffic.h"
 #include "IMTA.h"
 
 class cRSU {
 public:
-	cRSU();
+	cRSU() {}
 	/*--------------------------------------------------------------
 	*                      地理拓扑单元
 	* -------------------------------------------------------------*/

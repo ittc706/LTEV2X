@@ -6,7 +6,7 @@
 #include"eNB.h"
 #include"RSU.h"
 #include"VUE.h"
-#include"Event.h"
+#include"Traffic.h"
 #include"Road.h"
 
 
@@ -25,13 +25,6 @@ public:
 	cRoad *m_RoadAry;//道路容器
 	cRSU* m_RSUAry;//RSU容器
 	cVeUE* m_VeUEAry;//VeUE容器
-	std::vector<sEvent> m_EventVec;//事件容器
-	/*
-	* 外层下标为时间槽（代表TTI）
-	* 与事件容器不同，事件触发链表将相同时刻触发的事件的Id置于相同的时间槽中
-	*/
-	std::vector<std::list<int>> m_EventTTIList;//事件触发链表，m_EventList[i]代表第i个TTI的事件表
-
 	/*------------------成员函数------------------*/
 public:
 	/*接口函数*/
@@ -40,9 +33,23 @@ public:
 	void destroy();//释放资源，UNDONE
 	void process();//系统仿真流程
 
-private:
-	/*实现函数*/
+	/*--------------------------------------------------------------
+	*                      业务模型与控制单元
+	* -------------------------------------------------------------*/
+public:
+	/*------------------数据成员------------------*/
+	std::vector<sEvent> m_EventVec;//事件容器
+	/*
+	* 外层下标为时间槽（代表TTI）
+	* 与事件容器不同，事件触发链表将相同时刻触发的事件的Id置于相同的时间槽中
+	*/
+	std::vector<std::list<int>> m_EventTTIList;//事件触发链表，m_EventList[i]代表第i个TTI的事件表
+	
+	/*------------------成员函数------------------*/
 	void buildEventList();
+	void delayStatistics();
+
+
 	/*--------------------------------------------------------------
 	*                      地理拓扑单元
 	* -------------------------------------------------------------*/

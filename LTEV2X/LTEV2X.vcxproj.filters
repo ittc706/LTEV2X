@@ -51,9 +51,6 @@
     <ClInclude Include="RSU.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GeographyAndMobility.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -61,6 +58,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Road.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Traffic.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,9 +98,6 @@
     <ClCompile Include="eNB.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="FileOutput.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -114,6 +111,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Road.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Traffic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

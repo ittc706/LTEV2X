@@ -7,7 +7,7 @@
 #include<iomanip>
 #include"RSU.h"
 #include"Exception.h"
-#include"Event.h"
+#include"Traffic.h"
 #include"Global.h"
 
 
@@ -16,8 +16,6 @@ using namespace std;
 int newCount = 0;//记录动态创建的对象的次数
 
 int deleteCount = 0;//记录删除动态创建对象的次数
-
-cRSU::cRSU() {}
 
 void cRSU::initialize(sRSUConfigure &t_RSUConfigure){
 	m_RSUId = t_RSUConfigure.wRSUID;
@@ -642,6 +640,9 @@ void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 			++get<0>(scheduleInterval);
 			if (get<0>(scheduleInterval) > get<1>(scheduleInterval)) {//已经传输完毕，将资源释放
 
+				//设置传输成功标记
+				systemEventVec[info->eventId].isSuccessded = true;
+
 				//更新该事件的日志
 				systemEventVec[info->eventId].addEventLog(TTI, 0, m_RSUId, -1, patternIdx);
 
@@ -712,8 +713,11 @@ void cRSU::DRAConflictListener(int TTI, std::vector<sEvent>& systemEventVec) {
 					
 			if(OIList.size()==0){//说明该数据已经传输完毕
 
+				//设置传输成功标记
+				systemEventVec[info->eventId].isSuccessded = true;
+
 				//更新该事件的日志
-				systemEventVec[info->eventId].addEventLog(TTI,0, m_RSUId,clusterIdx,patternIdx);
+				systemEventVec[info->eventId].addEventLog(TTI, 0, m_RSUId, clusterIdx, patternIdx);
 				
 				//记录TTI日志
 				DRAWriteTTILogInfo(g_OutTTILogInfo, TTI, 0, info->eventId, m_RSUId, clusterIdx, patternIdx);

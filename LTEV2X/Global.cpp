@@ -13,7 +13,7 @@ ofstream g_OutTTILogInfo("DRAOutput\\TTILogInfo.txt");
 ofstream g_OutEventLogInfo("DRAOutput\\EventLogInfo.txt");
 ofstream g_OutVeUELocationUpdateLogInfo("DRAOutput\\VeUELocationUpdateLogInfo.txt");
 ofstream g_OutTemp("DRAOutput\\Temp.txt");
-
+ofstream g_OutDelayStatistics("DRAOutput\\DelayStatistics.txt");
 
 
 /*===========================================
