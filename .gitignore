@@ -33,7 +33,7 @@
 
 # Run-time generated files
 *.opensdf
-DRAOutput/
+Output/
 *.db
 *.suo
 x64/

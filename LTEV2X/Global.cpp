@@ -6,14 +6,17 @@ using namespace std;
 /*===========================================
 *            输出日志文件流声明
 * ==========================================*/
-ofstream g_OutDRAScheduleInfo("DRAOutput\\DRAScheduleInfo.txt");
-ofstream g_OutClasterPerformInfo("DRAOutput\\ClasterPerformInfo.txt");
-ofstream g_OutEventListInfo("DRAOutput\\EventListInfo.txt");
-ofstream g_OutTTILogInfo("DRAOutput\\TTILogInfo.txt");
-ofstream g_OutEventLogInfo("DRAOutput\\EventLogInfo.txt");
-ofstream g_OutVeUELocationUpdateLogInfo("DRAOutput\\VeUELocationUpdateLogInfo.txt");
-ofstream g_OutTemp("DRAOutput\\Temp.txt");
-ofstream g_OutDelayStatistics("DRAOutput\\DelayStatistics.txt");
+ofstream g_OutTemp("Output\\Temp.txt");
+//DRA单元
+ofstream g_OutDRAScheduleInfo("Output\\DRAOutput\\DRAScheduleInfo.txt");
+ofstream g_OutClasterPerformInfo("Output\\DRAOutput\\ClasterPerformInfo.txt");
+ofstream g_OutEventListInfo("Output\\DRAOutput\\EventListInfo.txt");
+ofstream g_OutTTILogInfo("Output\\DRAOutput\\TTILogInfo.txt");
+ofstream g_OutEventLogInfo("Output\\DRAOutput\\EventLogInfo.txt");
+ofstream g_OutVeUELocationUpdateLogInfo("Output\\DRAOutput\\VeUELocationUpdateLogInfo.txt");
+//Traffic单元
+ofstream g_OutDelayStatistics("Output\\TrafficOutput\\DelayStatistics.txt");
+ofstream g_OutEmergencyPossion("Output\\TrafficOutput\\EmergencyPossion.txt");
 
 
 /*===========================================

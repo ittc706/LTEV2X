@@ -5,7 +5,7 @@
 struct sConfigure {
 
 	int periodicEventNTTI;//周期性事件的周期（单位TTI）
-	double emergencyLamda;//紧急事件的期望值（在给定的仿真周期内的期望值）
+	double emergencyLamda;//紧急事件泊松过程Lamda,单位次/TTI
 	int locationUpdateNTTI;//车辆刷新位置的周期
 
 	float ISD;

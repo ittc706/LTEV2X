@@ -45,6 +45,7 @@ public:
 	*/
 	std::vector<std::list<int>> m_EventTTIList;//事件触发链表，m_EventList[i]代表第i个TTI的事件表
 	
+	std::vector<int> m_VeUEEmergencyNum;//每辆车紧急事件触发的次数，用于验证泊松分布，仿真中并无用处
 	/*------------------成员函数------------------*/
 	void buildEventList();
 	void delayStatistics();

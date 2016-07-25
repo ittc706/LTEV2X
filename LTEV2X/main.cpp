@@ -39,13 +39,15 @@ int main() {
 	cout << "\nRunning Time :" << setprecision(1) << (end - start) / 1000.0L << " s\n" << endl;
 	cout.unsetf(ios::fixed);
 
+	g_OutTemp.close();
 	g_OutDRAScheduleInfo.close();
 	g_OutClasterPerformInfo.close();
 	g_OutEventListInfo.close();
 	g_OutTTILogInfo.close();
 	g_OutEventLogInfo.close();
 	g_OutVeUELocationUpdateLogInfo.close();
-
+	g_OutDelayStatistics.close();
+    g_OutEmergencyPossion.close();
 
 	system("pause");
 }
