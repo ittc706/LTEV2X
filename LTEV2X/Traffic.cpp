@@ -68,7 +68,6 @@ void cSystem::buildEventList() {
 	}
 
 	//将m_VeUEEmergencyNum写入文件用于分析
-	cout << m_VeUEEmergencyNum.size() << endl;
 	for (int num : m_VeUEEmergencyNum)
 		g_OutEmergencyPossion << num << " ";
 	g_OutEmergencyPossion << endl;//这里很关键，将缓存区的数据刷新到流中
