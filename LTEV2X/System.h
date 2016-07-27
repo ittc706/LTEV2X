@@ -48,7 +48,7 @@ public:
 	std::vector<int> m_VeUEEmergencyNum;//每辆车紧急事件触发的次数，用于验证泊松分布，仿真中并无用处
 	/*------------------成员函数------------------*/
 	void buildEventList();
-	void delayStatistics();
+	void processStatistics();
 
 
 	/*--------------------------------------------------------------

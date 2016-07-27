@@ -298,6 +298,7 @@ void sEvent::addEventLog(int TTI,int type,int RSUId,int clusterIdx,int patternId
 		break;
 	case 9:
 		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s TransmitScheduleInfoList - To: RSU[" << RSUId << "]'s WaitEventIdList }";
+		conflictNum++;
 		break;
 	case 10:
 		ss << "{ TTI: " << left << setw(3) << TTI << " - Transimit At: RSU[" << RSUId << "] - Cluster[" << clusterIdx << "] - Pattern[" << patternIdx << "] }";
@@ -322,6 +323,7 @@ void sEvent::addEventLog(int TTI,int type,int RSUId,int clusterIdx,int patternId
 		break;
 	case 29:
 		ss << "{ TTI: " << left << setw(3) << TTI << " - From: RSU[" << RSUId << "]'s EmergencyTransimitScheduleInfoList - To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
+		conflictNum++;
 		break;
 	case 30:
 		ss << "{ TTI: " << left << setw(3) << TTI << " - Transimit At: RSU[" << RSUId << "] - Pattern[" << patternIdx << "] }";

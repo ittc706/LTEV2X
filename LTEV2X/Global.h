@@ -2,6 +2,21 @@
 #include<fstream>
 #include<vector>
 
+/*===========================================
+*            输出日志文件流声明
+* ==========================================*/
+extern std::ofstream g_OutTemp;
+//DRA单元
+extern std::ofstream g_OutDRAScheduleInfo;
+extern std::ofstream g_OutClasterPerformInfo;
+extern std::ofstream g_OutEventListInfo;
+extern std::ofstream g_OutTTILogInfo;
+extern std::ofstream g_OutEventLogInfo;
+extern std::ofstream g_OutVeUELocationUpdateLogInfo;
+//Traffic单元
+extern std::ofstream g_OutDelayStatistics;
+extern std::ofstream g_OutEmergencyPossion;
+extern std::ofstream g_OutConflictNum;
 
 /*===========================================
 *               全域函数声明
@@ -189,24 +204,6 @@ const unsigned short c_RSUInRoad[c_roadNumber][10] =
 
 const float c_FC = 2e9f;
 
-
-
-
-
-/*===========================================
-*            输出日志文件流声明
-* ==========================================*/
-extern std::ofstream g_OutTemp;
-//DRA单元
-extern std::ofstream g_OutDRAScheduleInfo;
-extern std::ofstream g_OutClasterPerformInfo;
-extern std::ofstream g_OutEventListInfo;
-extern std::ofstream g_OutTTILogInfo;
-extern std::ofstream g_OutEventLogInfo;
-extern std::ofstream g_OutVeUELocationUpdateLogInfo;
-//Traffic单元
-extern std::ofstream g_OutDelayStatistics;
-extern std::ofstream g_OutEmergencyPossion;
 
 
 /*===========================================

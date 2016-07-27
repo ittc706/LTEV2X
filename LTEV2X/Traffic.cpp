@@ -28,7 +28,7 @@ sMessage::sMessage(eMessageType messageType) {
 
 
 
-sEvent::sEvent(int VeUEId, int TTI, eMessageType messageType) :isSuccessded(false), propagationDelay(0), sendDelay(0), processingDelay(0), queuingDelay(0) {
+sEvent::sEvent(int VeUEId, int TTI, eMessageType messageType) :isSuccessded(false), propagationDelay(0), sendDelay(0), processingDelay(0), queuingDelay(0), conflictNum(0) {
 	this->VeUEId = VeUEId;
 	this->TTI = TTI;
 	message = sMessage(messageType);
@@ -67,10 +67,6 @@ void cSystem::buildEventList() {
 		}
 	}
 
-	//将m_VeUEEmergencyNum写入文件用于分析
-	for (int num : m_VeUEEmergencyNum)
-		g_OutEmergencyPossion << num << " ";
-	g_OutEmergencyPossion << endl;//这里很关键，将缓存区的数据刷新到流中
 	cout << "countEmergency: " << countEmergency << endl;
 
 
@@ -111,16 +107,27 @@ void cSystem::buildEventList() {
 }
 
 
-void cSystem::delayStatistics() {
-	//先输出等待时延
+void cSystem::processStatistics() {
+	//统计等待时延
 	for (int eventId = 0;eventId < static_cast<int>(m_EventVec.size());eventId++)
 		if (m_EventVec[eventId].isSuccessded)
 			g_OutDelayStatistics << m_EventVec[eventId].queuingDelay << " ";
 	g_OutDelayStatistics << endl;//这里很关键，将缓存区的数据刷新到流中
 
-	//然后输出传输时延
+	//统计传输时延
 	for (int eventId = 0;eventId < static_cast<int>(m_EventVec.size());eventId++)
 		if (m_EventVec[eventId].isSuccessded)
 			g_OutDelayStatistics << m_EventVec[eventId].sendDelay << " ";
 	g_OutDelayStatistics << endl;//这里很关键，将缓存区的数据刷新到流中
+
+	//统计紧急事件分布情况
+	for (int num : m_VeUEEmergencyNum)
+		g_OutEmergencyPossion << num << " ";
+	g_OutEmergencyPossion << endl;//这里很关键，将缓存区的数据刷新到流中
+
+	//统计冲突情况
+	for (sEvent &event : m_EventVec)
+		g_OutConflictNum << event.conflictNum << " ";
+	g_OutConflictNum << endl;
+	
 }

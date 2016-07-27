@@ -55,13 +55,16 @@ public:
 	int queuingDelay;
 
 
+	int conflictNum;//冲突次数
+
+
 private:
 	std::list<std::string> logTrackList;//记录该事件的所有日志
 public:
 	sMessage message;
 
 	/*构造函数*/
-	sEvent() :isSuccessded(false), propagationDelay(0), sendDelay(0), processingDelay(0), queuingDelay(0) {}
+	sEvent() :isSuccessded(false), propagationDelay(0), sendDelay(0), processingDelay(0), queuingDelay(0), conflictNum(0) {}
 	sEvent(int VeUEId, int TTI, eMessageType messageType);
 
 	/*功能函数*/

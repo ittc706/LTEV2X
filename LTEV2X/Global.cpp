@@ -17,6 +17,7 @@ ofstream g_OutVeUELocationUpdateLogInfo("Output\\DRAOutput\\VeUELocationUpdateLo
 //Trafficµ¥Ôª
 ofstream g_OutDelayStatistics("Output\\TrafficOutput\\DelayStatistics.txt");
 ofstream g_OutEmergencyPossion("Output\\TrafficOutput\\EmergencyPossion.txt");
+ofstream g_OutConflictNum("Output\\TrafficOutput\\ConflictNum.txt");
 
 
 /*===========================================

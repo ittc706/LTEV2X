@@ -32,8 +32,8 @@ void cSystem::process() {
 	//打印车辆地理位置更新日志信息
 	writeVeUELocationUpdateLogInfo(g_OutVeUELocationUpdateLogInfo);
 
-	//时延统计
-	delayStatistics();
+	//处理各类数据
+	processStatistics();
 }
 
 void cSystem::configure() {//系统仿真参数配置

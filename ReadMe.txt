@@ -1,3 +1,6 @@
+version_2016_7_25(增加了冲突的统计)
+	*sEvent中增加数据成员conflictNum
+
 version_2016_7_25(修改了泊松分布的生成)
 	*修改了紧急事件泊松分布的生成
 	*增加了用于泊松分布验证的数据成员m_VeUEEmergencyNum
