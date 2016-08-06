@@ -1,3 +1,6 @@
+version_2016_8_6(取消了对txt的追踪)
+
+
 version_2016_7_25(增加了冲突的统计)
 	*sEvent中增加数据成员conflictNum
 
