@@ -33,10 +33,13 @@ public:
 	//cChannelModel *channelModel;
 	cIMTA *imta;
 
-
 	/*--------------------------------------------------------------
-	*                      集中式资源管理单元
+	*                      无线资源管理单元
 	* -------------------------------------------------------------*/
+
+	/*----------------------------------------------------
+	*                      PF调度
+	* ---------------------------------------------------*/
 
 	bool m_IsScheduledUL;    //UpLink是否在被调度
 	sFeedbackInfo m_FeedbackUL;//将要发送给基站端的反馈信息
@@ -44,10 +47,10 @@ public:
 	std::vector<double> m_CQIPredictIdeal;
 	std::vector<double> m_CQIPredictRealistic;
 
-	/*--------------------------------------------------------------
-	*                      分布式资源管理单元
-	*            DRA:Distributed Resource Allocation
-	* -------------------------------------------------------------*/
+	/*----------------------------------------------------
+	*                   分布式资源管理
+	*          DRA:Distributed Resource Allocation
+	* ---------------------------------------------------*/
 	std::tuple<int, int> m_ScheduleInterval;//该VeUE在当前簇内当前一轮调度区间
 	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
 

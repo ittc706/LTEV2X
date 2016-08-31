@@ -85,8 +85,8 @@ public:
 public:
 	cIMTA(void);
 	~cIMTA(void);
-	bool Build(float t_fFrequency/*Hz*/, sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/, std::ofstream &t_fp);
-	bool Enable(bool *t_pbEnable, std::ofstream &t_fp);
+	bool Build(float t_fFrequency/*Hz*/, sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/);
+	bool Enable(bool *t_pbEnable);
 	void Calculate( float t_fT/*s*/, float *t_pfTemp, float *t_pfSin, float *t_pfCos, float *t_pfH);
 	float GetPLSF(void)
 	{

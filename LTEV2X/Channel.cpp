@@ -5,13 +5,6 @@ using namespace std;
 
 void cSystem::freshLoc(void)
 {
-	ofstream fp("H.txt", ofstream::app);
-	//FILE *fp;//建立一个文件操作指针
-    //fp=fopen("H.txt","w+");//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
-	ofstream fp1("H1.txt", ofstream::app);//建立一个文件操作指针
-	//FILE *fp2;//建立一个文件操作指针
-    //fp1=fopen("H1.txt","w+");//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
-	ofstream fp2("H2.txt", ofstream::app);//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
 	for(int UserIdx=0;UserIdx!=m_Config.VeUENum;UserIdx++)
 	{
 		bool RoadChangeFlag=false;
@@ -298,10 +291,10 @@ void cSystem::freshLoc(void)
 	 antenna.pfRxAntSpacing[1] = 0.5f;
 	 
 	 
-	 m_VeUEAry[UserIdx1].imta[RSUIdx].Build(c_FC,location,antenna,m_VeUEAry[UserIdx1].m_fv,m_VeUEAry[UserIdx1].m_fvAngle,fp);//计算了结果代入信道模型计算UE之间信道系数
+	 m_VeUEAry[UserIdx1].imta[RSUIdx].Build(c_FC,location,antenna,m_VeUEAry[UserIdx1].m_fv,m_VeUEAry[UserIdx1].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
 	 bool *flag=new bool();
 	 *flag=true;
-	 m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag,fp);
+	 m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag);
      float *H = new float[1 * 2 * 12 * 20 * 2];
 	 float *ch_buffer = new float[1 * 2 * 12 * 20];
 	 float *ch_sin = new float[1 * 2 * 12 * 20];

@@ -66,16 +66,41 @@ public:
 	
 
 	/*--------------------------------------------------------------
-	*                      集中式资源管理单元
+	*                      无线资源管理单元
 	* -------------------------------------------------------------*/
+	eScheduleMode m_ScheduleMode;
+
+	/*----------------------------------------------------
+	*                      RR调度
+	* ---------------------------------------------------*/
+	/*------------------数据成员------------------*/
+	std::list<int> m_RRSwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
+
 	/*------------------成员函数------------------*/
 public:
 	/*接口函数*/
-	void centralizedSchedule();//调度总控制
+	void RRSchedule();//RR调度总控
+private:
+	/*实现函数*/
+	void RRInformationClean();//资源分配信息清空
+	void RRUpdateWaitEventIdList(bool clusterFlag);//更新等待链表
+
+	void RRWriteScheduleInfo();//记录调度信息日志
+	void RRDelaystatistics();//时延统计
+
+
+	/*----------------------------------------------------
+	*                      PF调度
+	* ---------------------------------------------------*/
+
+	/*------------------成员函数------------------*/
+public:
+	/*接口函数*/
+	void PFSchedule();//调度总控制
 
 private:
 	/*实现函数*/
-	void scheduleInfoClean();//清除当前扇区所有用户的调度信息
+	void PFInformationClean();//清除当前扇区所有用户的调度信息
 	void schedulePF_RP_CSI_UL();//上行PF-RP调度
 
 	//线性时间选取算法
@@ -85,10 +110,10 @@ private:
 
 
 
-	/*--------------------------------------------------------------
-	*                      分布式资源管理单元
-	*            DRA:Distributed Resource Allocation
-	* -------------------------------------------------------------*/
+	/*----------------------------------------------------
+	*                   分布式资源管理
+	*          DRA:Distributed Resource Allocation
+	* ---------------------------------------------------*/
 public :
 	/*------------------数据成员------------------*/
 	eDRAMode m_DRAMode;
@@ -104,7 +129,7 @@ private:
 	/*实现函数*/
 	void DRAInformationClean();//资源分配信息清空
 	void DRAGroupSizeBasedTDM(bool clusterFlag);//基于簇大小的时分复用
-	void DRAUpdateAdmitEventIdList(bool clusterFlag);//建立接纳链表
+	void DRAUpdateAdmitEventIdList(bool clusterFlag);//更新接纳链表
 
 
 	void DRASelectBasedOnP13();//基于P1和P3的资源分配

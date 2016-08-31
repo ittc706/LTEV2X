@@ -148,7 +148,7 @@ cIMTA::~cIMTA(void)
 	}
 }
 
-bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/,std::ofstream &t_fp)
+bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/)
 {
 	m_bBuilt = false;
 	m_fAntGain = t_eAntenna.fAntGain;
@@ -220,8 +220,7 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 			}
 		}
 		fSFSTD = 3.0f;
-		//fprintf(t_fp, "%f\n", t_eLocation.fDistance);
-		//fprintf(t_fp, "%f\n", m_fPLSF);
+
 		break;
 	case Nlos:
 		fTemp = (2.8f - 0.0024f * t_eLocation.fDistance1) > 1.84f ? (2.8f - 0.0024f * t_eLocation.fDistance1) : 1.84f;
@@ -263,10 +262,6 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 		break;
 	}
 
-	//fprintf(t_fp, "%f\n", t_eLocation.fDistance);
-	//fprintf(t_fp, "%f\n", m_fPLSF);
-
-	//m_fPLSF = pow(10.0f, -0.1f * m_fPLSF);// transform m_fPLSF,值为0了
 
 	float fDSMean;
 	float fDSSTD;
@@ -333,7 +328,6 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 	m_fAoD = m_fAoD < 104.0f ? m_fAoD : 104.0f;
 	m_fAoA = pow(10.0f, fASASTD * afTemp[2] + fASAMean);
 	m_fAoA = m_fAoA < 104.0f ? m_fAoA : 104.0f;
-	//fprintf(t_fp,"%f\n",m_fAoA);
 	m_fAoD *= c_Degree2PI;
 	m_fAoA *= c_Degree2PI;
 	//m_fPLSF *= pow(10.0f, fSFSTD * afTemp[3] * 0.1f);
@@ -341,9 +335,6 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 	m_fKDB = fKSTD * afTemp[4] + fKMean;
 	m_fK = pow(10.0f, m_fKDB * 0.1f);
 	m_fDS *= -m_fDSRatio;	
-	//
-	//fprintf(t_fp, "%f\n", t_eLocation.fDistance);
-	//fprintf(t_fp, "%f\n", m_fPLSF);
 
 	if (m_bLoS)
 	{
@@ -362,7 +353,7 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 	return true;
 }
 
-bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
+bool cIMTA::Enable(bool *t_pbEnable)
 {
 	//if (m_bBuilt == false)
 	//{
@@ -435,8 +426,7 @@ bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
 		RandomGaussian(pfAoD, m_byPathNum, 0.0f, m_fAoD / 7.0f);//在winner 2 是除以5.0f
 		RandomGaussian(pfAoA, m_byPathNum, 0.0f, m_fAoA / 7.0f);
 		
-        //FILE *fp4;//建立一个文件操作指针
-        //fp4=fopen("AoA.txt","w+");//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
+
 		for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 		{
 			if (pfXAoD[byTempPath] > 0.0f)
@@ -505,7 +495,6 @@ bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
 				m_pfCosAoA[byTempPath * m_scbySubPathNum + byTempSubPath] = cos(m_pfSinAoA[byTempPath * m_scbySubPathNum + byTempSubPath] - m_fvAngle) * m_fVelocity;
 		     	m_pfSinAoA[byTempPath * m_scbySubPathNum + byTempSubPath] = sin(m_pfSinAoA[byTempPath * m_scbySubPathNum + byTempSubPath]);
 				
-				//fprintf(t_fp,"%d%d%f\n",byTempPath,byTempSubPath,m_pfSinAoA[byTempPath * m_scbySubPathNum + byTempSubPath]);
 			}
 	}
 	
@@ -515,10 +504,6 @@ bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
 			m_fGainLoS = sqrt(m_fK / (1.0f + m_fK) * pow(10.0f, m_fGainLoS));
 		}
 
-		   //FILE *fp3;//建立一个文件操作指针
-     //      fp3=fopen("sinAoA.txt","w+");//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
-		   //if(m_pfSinAoA!=nullptr)
-		   //fprintf(fp3,"%f\n",m_pfSinAoA);
 
 	float *pfPhasePol = new float[m_byPathNum * m_scbySubPathNum * 4];
 	float *pfSlantVV = new float[m_byTxAntNum * m_byRxAntNum];
@@ -579,7 +564,6 @@ bool cIMTA::Enable(bool *t_pbEnable, std::ofstream &t_fp)
 		}
 
 
-		//fprintf(fp2,"%f\n",m_pfPhase[0]);
 	delete[]pfPhasePol;
 	delete []pfSlantVV;
 	delete []pfSlantVH;

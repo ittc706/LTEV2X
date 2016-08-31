@@ -28,16 +28,68 @@
 
 using namespace std;
 
-void cSystem::centralizedSchedule() {
+//<UNDONE>
+void cSystem::RRSchedule() {//RR调度总控
+	//调度前清理工作
+	RRInformationClean();
+}
+
+//<UNDONE>
+void cSystem::RRInformationClean() {//资源分配信息清空
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		cRSU &_RSU = m_RSUAry[RSUId];
+		_RSU.RRInformationClean();
+	}
+}
+
+//<UNDONE>
+void cSystem::RRUpdateWaitEventIdList(bool clusterFlag) {
+	//首先，处理System级别的事件触发链表
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		cRSU &_RSU = m_RSUAry[RSUId];
+		_RSU.RRProcessEventList(m_TTI, m_VeUEAry, m_EventVec, m_EventTTIList);
+	}
+
+	//其次，如果当前TTI进行了分簇，需要处理调度表
+	if (clusterFlag) {
+		if (m_RRSwitchEventIdList.size() != 0) throw Exp("cSystem::RRUpdateAdmitEventIdList");
+		//处理RSU级别的调度链表
+		for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+			cRSU &_RSU = m_RSUAry[RSUId];
+			_RSU.RRProcessScheduleInfoWhenLocationUpdate(m_TTI, m_VeUEAry, m_EventVec, m_RRSwitchEventIdList);
+		}
+		//处理RSU级别的等待链表
+		for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+			cRSU &_RSU = m_RSUAry[RSUId];
+			_RSU.RRProcessWaitEventIdListWhenLocationUpdate(m_TTI, m_VeUEAry, m_EventVec, m_RRSwitchEventIdList);
+		}
+		//处理System级别的切换链表
+		for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+			cRSU &_RSU = m_RSUAry[RSUId];
+			_RSU.RRProcessSwitchListWhenLocationUpdate(m_TTI, m_VeUEAry, m_EventVec, m_RRSwitchEventIdList);
+		}
+		if (m_RRSwitchEventIdList.size() != 0) throw Exp("cSystem::RRUpdateAdmitEventIdList");
+	}
+
+	//然后，处理RSU级别的等待链表
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		cRSU &_RSU = m_RSUAry[RSUId];
+		_RSU.RRProcessWaitEventIdList(m_TTI, m_VeUEAry, m_EventVec, m_RRSwitchEventIdList);
+	}
+}
+
+
+
+void cSystem::PFSchedule() {
 	//清除上一次调度信息
-	scheduleInfoClean();
+	PFInformationClean();
 
 	schedulePF_RP_CSI_UL();
 	
 }
 
 
-void cSystem::scheduleInfoClean() {
+void cSystem::PFInformationClean() {
 	for (int eNBId = 0;eNBId < m_Config.eNBNum;eNBId++) {
 		ceNB &_eNB = m_eNBAry[eNBId];
 		_eNB.m_vecScheduleInfo.clear();
@@ -259,3 +311,5 @@ void cSystem::DRAConflictListener() {
 		_RSU.DRAConflictListener(m_TTI,m_EventVec);
 	}
 }
+
+

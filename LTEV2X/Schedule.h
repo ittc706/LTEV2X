@@ -4,6 +4,7 @@
 #include<utility>
 #include<iostream>
 #include<tuple>
+#include "Enumeration.h"
 #include"Global.h"
 
 struct sScheduleInfo {
@@ -52,6 +53,33 @@ struct sPFInfo {//仅用于PF上行调度算法的数据类型
 };
 
 
+struct sRRScheduleInfo {
+	int eventId;//事件编号
+	eMessageType messageType;//事件类型
+	int VeUEId;//车辆编号
+	int RSUId;//RSU编号
+	std::tuple<int, int> occupiedInterval;//当前VeUE进行传输的实际TTI区间（闭区间）
+
+	sRRScheduleInfo() {}
+	sRRScheduleInfo(int eventId, eMessageType messageType, int VeUEId, int RSUId, const std::tuple<int, int> &occupiedInterval) {
+		this->eventId = eventId;
+		this->messageType = messageType;
+		this->VeUEId = VeUEId;
+		this->RSUId = RSUId;
+		this->occupiedInterval = occupiedInterval;
+	}
+
+	std::string toLogString(int n);
+
+	/*
+	* 生成表示调度信息的string对象
+	* 包括事件的Id，车辆的Id，以及要传输该事件所占用的TTI区间
+	*/
+	std::string toScheduleString(int n);
+
+};
+
+
 struct sDRAScheduleInfo {
 	int eventId;//事件编号
 	int VeUEId;//车辆编号
@@ -75,5 +103,4 @@ struct sDRAScheduleInfo {
 	* 包括事件的Id，车辆的Id，以及要传输该事件所占用的TTI区间
 	*/
 	std::string toScheduleString(int n);
-
 };

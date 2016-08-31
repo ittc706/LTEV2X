@@ -9,7 +9,9 @@ enum eLocationType { //位置类型
 
 
 enum eScheduleMode {
-
+	PF=1,       //基于比例公平的调度
+	RR=2,       //Round-Robin,轮询
+	DRA         //Distributed Resource Allocation,分布式
 };
 
 

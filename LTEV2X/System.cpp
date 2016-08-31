@@ -22,7 +22,15 @@ void cSystem::process() {
 		cout << "Current TTI = " << m_TTI << endl;
 		if (count % m_Config.locationUpdateNTTI == 0)
 			channelGeneration();
-		DRASchedule();
+		switch (m_ScheduleMode) {
+		case PF:
+			break;
+		case RR:
+			break;
+		case DRA:
+			DRASchedule();
+			break;
+		}
 		m_TTI++;
 	}
 
@@ -61,7 +69,6 @@ void cSystem::configure() {//系统仿真参数配置
 		}
 		m_Config.pupr[temp] = k - 1;
 		m_Config.VeUENum = m_Config.VeUENum + k - 1;
-		//printf("%d\n",k-1);
 	}
 	m_Config.wxNum = 36;
 	m_Config.wyNum = 62;
@@ -86,7 +93,6 @@ void cSystem::configure() {//系统仿真参数配置
 
 		m_Config.pueTopo[temp * 2 + 0] = temp_x;
 		m_Config.pueTopo[temp * 2 + 1] = temp_y;
-		//printf("%f,%f\n",temp_x,temp_y);//之后输出到表格直接读入可以省时间
 	}
 	m_Config.fv = 15;//车速设定,km/h
 
@@ -95,12 +101,15 @@ void cSystem::configure() {//系统仿真参数配置
 	*                 无线资源管理单元参数配置
 	* -------------------------------------------------------------*/
 
-	m_NTTI = 2000;//仿真TTI时间
+	m_NTTI = 200;//仿真TTI时间
 	m_Config.periodicEventNTTI = 50;
 	m_Config.emergencyLamda = 0.001;
 	m_Config.locationUpdateNTTI = 100;
 
-	//选择DRA模式
+	//选择调度模式
+	m_ScheduleMode = DRA;
+
+	//选择DRA模式(当调度模式为DRA时，该参数有效)
 	m_DRAMode = P123;
 
 	//事件链表容器
@@ -138,10 +147,6 @@ void cSystem::initialization() {
 		m_RoadAry[temp].initialize(roadConfigure);
 	}
 
-	//       FILE *fp1;//建立一个文件操作指针
-	//        fp1=fopen("eNB.txt","w+");//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
-	//        for(int eNBIdx=0;eNBIdx!=c_eNBNumber;++eNBIdx)
-	//	      fprintf(fp1,"%f\n%f
 	sRSUConfigure RSUConfigure;
 	for (unsigned short RSUIdx = 0;RSUIdx != m_Config.RSUNum;RSUIdx++)
 	{
@@ -149,17 +154,9 @@ void cSystem::initialization() {
 		RSUConfigure.wRSUID = RSUIdx;
 		m_RSUAry[RSUIdx].initialize(RSUConfigure);
 	}
-	//FILE *fp;//建立一个文件操作指针
-	//      fp=fopen("RSU.txt","w+");//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
-	//      for(unsigned short RSUIdx=0;RSUIdx!=conf.RSUNum;RSUIdx++)
-	//fprintf(fp,"%f\n%f\n",RSU[RSUIdx].m_fAbsX,RSU[RSUIdx].m_fAbsY);
-	//fclose(fp);//关闭流
 
 	sUEConfigure ueConfigure;
 	int ueidx = 0;
-
-	//      FILE *fp;//建立一个文件操作指针
-	//      fp=fopen("ue.txt","w+");//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
 
 	for (unsigned short RoadIdx = 0;RoadIdx != m_Config.RoadNum;RoadIdx++)
 	{
@@ -173,21 +170,10 @@ void cSystem::initialization() {
 			ueConfigure.fAbsX = m_RoadAry[RoadIdx].m_fAbsX + ueConfigure.fX;
 			ueConfigure.fAbsY = m_RoadAry[RoadIdx].m_fAbsY + ueConfigure.fY;
 			ueConfigure.fv = m_Config.fv;
-			//fprintf(fp,"%f\n%f\n",ueConfigure.fAbsX,ueConfigure.fAbsY);
 			m_VeUEAry[ueidx++].initialize(ueConfigure);
 
 		}
 	}
-	//fclose(fp);//关闭流
-
-
-	//UNDONE
-	////由于RSU和基站位置固定，随机将RSU撒给基站进行初始化即可
-	//for (int RSUId = 0;RSUId < conf.RSUNum;RSUId++) {
-	//	int eNBId = rand() % conf.eNBNum;
-	//	eNB[eNBId].m_RSUIdList.push_back(RSUId);
-	//}
-	//UNDONE
 
 	//创建事件链表
 	buildEventList();

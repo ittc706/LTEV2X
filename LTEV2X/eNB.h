@@ -25,10 +25,10 @@ public:
 	//UNDONE
 
 
-	/*--------------------------------------------------------------
-	*                      分布式资源管理单元
-	*            DRA:Distributed Resource Allocation
-	* -------------------------------------------------------------*/
+	/*----------------------------------------------------
+	*                   分布式资源管理
+	*          DRA:Distributed Resource Allocation
+	* ---------------------------------------------------*/
 	bool m_UnassignedSubband[gc_RBNum];//所有资源块，标记为true指示未被分配的RB
 	std::vector<sScheduleInfo> m_vecScheduleInfo;//调度信息
 

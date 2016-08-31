@@ -91,6 +91,12 @@ void cSystem::writeVeUELocationUpdateLogInfo(std::ofstream &out) {
 }
 
 
+void cRSU::RRWriteScheduleInfo(std::ofstream& out, int TTI) {
+}
+
+void cRSU::RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int clusterIdx, int patternIdx) {
+}
+
 
 void cRSU::DRAWriteScheduleInfo(std::ofstream& out, int TTI) {
 	int clusterIdx = DRAGetClusterIdx(TTI);
