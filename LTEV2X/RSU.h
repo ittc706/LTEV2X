@@ -201,7 +201,7 @@ public:
 	/*
 	* Pattern块释是否可用的标记
 	* 下标代表Pattern编号
-	* 若"m_DRAPatternIsAvailable[i][j]==true"代表簇i的Pattern块j可用
+	* 若"m_DRAPatternIsAvailable[j]==true"代表Pattern块j可用
 	*/
 	std::vector<bool> m_DRAEmergencyPatternIsAvailable;
 

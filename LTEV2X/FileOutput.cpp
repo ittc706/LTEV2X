@@ -104,7 +104,7 @@ void cRSU::DRAWriteScheduleInfo(std::ofstream& out, int TTI) {
 	out << "    {" << endl;
 	out << "    EMERGENCY:" << endl;
 	for (int patternIdx = 0;patternIdx < gc_DRAEmergencyTotalPatternNum;patternIdx++) {
-		out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
+		out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (m_DRAEmergencyPatternIsAvailable[patternIdx] ? "Available" : "Unavailable") << endl;
 		for (sDRAScheduleInfo* info : m_DRAEmergencyTransimitScheduleInfoList[patternIdx]) {
 			out << info->toScheduleString(3) << endl;
 		}
