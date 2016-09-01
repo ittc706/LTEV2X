@@ -28,13 +28,22 @@ enum eRSUType {
 	HORIZONTAL          //处于水平的道路中    
 };
 
-enum eDRAMode {
-	//P1:  Collision avoidance based on sensing
-	//P2:  Enhanced random resource selection
-	//P3:  Location-based resource selection
-	P13,               //Combination of P1 and P3
-	P23,               //Combination of P2 and P3
-	P123               //Combination of P1 and P2 and P3
+
+
+enum eEventLogType {
+	SUCCEED = 0,
+	EVENT_TO_ADMIT = 1,
+	EVENT_TO_WAIT = 2,
+	SCHEDULETABLE_TO_SWITCH = 3,
+	SCHEDULETABLE_TO_WAIT = 4,
+	WAIT_TO_SWITCH = 5,
+	WAIT_TO_ADMIT = 6,
+	SWITCH_TO_ADMIT = 7,
+	SWITCH_TO_WAIT = 8,
+	TRANSIMIT_TO_WAIT = 9,
+	IS_TRANSIMITTING=10,
+	ADMIT_TO_WAIT = 11,
+
 };
 
 

@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="blas1_z.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Enumeration.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -25,12 +22,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Global.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="linpack_z.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Numerical.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Schedule.h">
@@ -71,16 +62,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="blas1_z.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="linpack_z.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Numerical.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Schedule.cpp">

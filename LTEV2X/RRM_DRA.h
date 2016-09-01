@@ -6,7 +6,6 @@
 #include "Enumeration.h"
 #include "Exception.h"
 
-
 /*===========================================
 *              模块常量定义
 * ==========================================*/
@@ -29,7 +28,23 @@ const int gc_DRATotalPatternNum = [&]() {
 }();//所有非EmergencyPattern类型的Pattern数量总和
 
 
+/*===========================================
+*        用于该模块的枚举类型定义
+* ==========================================*/
+enum eDRAMode {
+	//P1:  Collision avoidance based on sensing
+	//P2:  Enhanced random resource selection
+	//P3:  Location-based resource selection
+	P13,               //Combination of P1 and P3
+	P23,               //Combination of P2 and P3
+	P123               //Combination of P1 and P2 and P3
+};
 
+
+
+/*===========================================
+*            调度信息数据结构
+* ==========================================*/
 struct sDRAScheduleInfo {
 	int eventId;//事件编号
 	int VeUEId;//车辆编号
@@ -56,15 +71,16 @@ struct sDRAScheduleInfo {
 };
 
 
-
+/*===========================================
+*                RSU适配器
+* ==========================================*/
 class RSUAdapterDRA {
 public:
-	cRSU& m_HoldObj;
+	cRSU& m_HoldObj;//该适配器持有的原RSU对象
 	RSUAdapterDRA() = delete;
 	RSUAdapterDRA(cRSU& _RSU);
 
-	//数据成员
-
+	/*------数据成员(新增用于模块数据成员)--------*/
 
 	/*
 	* TDR:Time Domain Resource
@@ -140,7 +156,9 @@ public:
 	*/
 	std::vector<sDRAScheduleInfo*> m_DRAEmergencyScheduleInfoTable;
 
-	//成员函数
+
+	/*------------------成员函数------------------*/
+
 	std::string toString(int n);
 
 	int DRAGetClusterIdx(int TTI);
@@ -188,13 +206,22 @@ public:
 	void DRAPullFromEmergencyScheduleInfoTable();
 };
 
+
+/*===========================================
+*                VeUE适配器
+* ==========================================*/
 class VeUEAdapter {
 public:
-	cVeUE& m_HoldObj;
+	cVeUE& m_HoldObj;//该适配器持有的原VeUE对象
 	VeUEAdapter() = delete;
 	VeUEAdapter(cVeUE& _VeUE) :m_HoldObj(_VeUE) {}
 
+	/*------数据成员(新增用于模块数据成员)--------*/
+
 	std::tuple<int, int> m_ScheduleInterval;//该VeUE在当前簇内当前一轮调度区间
+
+
+	/*------------------成员函数------------------*/
 
 	int RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType);
 	int RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
@@ -204,6 +231,10 @@ public:
 
 
 
+
+/*===========================================
+*                DRA模块
+* ==========================================*/
 class RRM_DRA :public RRM_Basic {
 public:
 	RRM_DRA() = delete;
@@ -213,15 +244,15 @@ public:
 	std::vector<VeUEAdapter> m_VeUEAdapterVec;
 
 
-	//数据成员
-	eDRAMode m_DRAMode;
+	/*------------------数据成员------------------*/
+	eDRAMode m_DRAMode;//资源快选择的策略
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
 	int newCount = 0;//记录动态创建的对象的次数
 
 	int deleteCount = 0;//记录删除动态创建对象的次数
 
-	//成员函数
+	/*------------------成员函数------------------*/
 public:
 	/*接口函数*/
 	void schedule() override;//DRA调度总控，覆盖基累的虚函数
@@ -243,13 +274,13 @@ private:
 	void DRASelectBasedOnP23();//基于P2和P3的资源分配
 	void DRASelectBasedOnP123();//基于P1、P2和P3的资源分配
 
-	void DRAWriteScheduleInfo();//记录调度信息日志
+
 	void DRADelaystatistics();//时延统计
 	void DRAConflictListener();//帧听冲突
 
 	//日志记录函数
-	void DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int clusterIdx, int patternIdx);
-
+	void DRAWriteScheduleInfo(std::ofstream& out);//记录调度信息日志
+	void DRAWriteTTILogInfo(std::ofstream& out, int TTI, eEventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx);
 	void writeClusterPerformInfo(std::ofstream &out);//写入分簇信息的日志
 
 

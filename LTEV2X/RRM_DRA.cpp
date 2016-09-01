@@ -7,7 +7,6 @@
 #include "Exception.h"
 
 using namespace std;
-
 string sDRAScheduleInfo::toLogString(int n) {
 	ostringstream ss;
 	ss << "[ eventId = ";
@@ -160,7 +159,7 @@ void RRM_DRA::schedule() {
 		break;
 	}
 	//写入调度信息
-	DRAWriteScheduleInfo();
+	DRAWriteScheduleInfo(g_OutDRAScheduleInfo);
 
 	//统计时延信息
 	DRADelaystatistics();
@@ -290,10 +289,10 @@ void RRM_DRA::DRAProcessEventList() {
 					_RSUAdapterDRA.DRAPushToEmergencyAdmitEventIdList(eventId);
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, 21, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 21, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, EVENT_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 					/*  EMERGENCY  */
 				}
 				else {//一般性事件，包括周期事件，或者数据业务事件
@@ -302,20 +301,20 @@ void RRM_DRA::DRAProcessEventList() {
 						_RSUAdapterDRA.DRAPushToAdmitEventIdList(eventId);
 
 						//更新该事件的日志
-						m_EventVec[eventId].addEventLog(m_TTI, 1, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+						m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 						//记录TTI日志
-						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 1, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, EVENT_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 					}
 					else {//否则，当前事件在此时不能立即传输，应转入等待链表
 						  //将该事件压入等待链表
 						_RSUAdapterDRA.DRAPushToWaitEventIdList(eventId);
 
 						//更新该事件的日志
-						m_EventVec[eventId].addEventLog(m_TTI, 2, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+						m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 						//记录TTI日志
-						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 2, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 					}
 				}
 			}
@@ -348,10 +347,10 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 					_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, 23, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 23, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
 				}
 				else {//该车辆仍在当前RSU内
 					  //doing nothing 
@@ -382,10 +381,10 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 						_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
 						//更新该事件的日志
-						m_EventVec[eventId].addEventLog(m_TTI, 3, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+						m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 
 						//记录TTI日志
-						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 3, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 					}
 					else {
 						if (_RSUAdapterDRA.DRAGetClusterIdxOfVeUE(VeUEId) != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
@@ -400,10 +399,10 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 							_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
 							//更新该事件的日志
-							m_EventVec[eventId].addEventLog(m_TTI, 4, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+							m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 
 							//记录TTI日志
-							DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 4, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+							DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 						}
 						else {//既没有发生RSU切换，也没有发生RSU内簇切换，什么也不做
 							  //doing nothing
@@ -432,10 +431,10 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 				it = _RSUAdapterDRA.m_DRAEmergencyWaitEventIdList.erase(it);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, 25, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 25, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 			}
 			else {//仍然处于当前RSU范围内
 				it++;
@@ -455,10 +454,10 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 				it = _RSUAdapterDRA.m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
 
 													//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, 5, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 5, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 			}
 			else {//仍然处于当前RSU范围内
 				it++;
@@ -489,10 +488,10 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 					it = m_DRASwitchEventIdList.erase(it);
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, 27, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 27, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SWITCH_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 				}
 				/*  EMERGENCY  */
 
@@ -502,20 +501,20 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 						it = m_DRASwitchEventIdList.erase(it);
 
 						//更新该事件的日志
-						m_EventVec[eventId].addEventLog(m_TTI, 7, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+						m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 						//记录TTI日志
-						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 7, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SWITCH_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 					}
 					else {//不属于当前簇，转入等待链表
 						_RSUAdapterDRA.DRAPushToWaitEventIdList(eventId);
 						it = m_DRASwitchEventIdList.erase(it);
 
 						//更新该事件的日志
-						m_EventVec[eventId].addEventLog(m_TTI, 8, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+						m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 						//记录TTI日志
-						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 8, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 					}
 				}
 
@@ -534,10 +533,10 @@ void RRM_DRA::DRAProcessWaitEventIdList() {
 			_RSUAdapterDRA.DRAPushToEmergencyAdmitEventIdList(eventId);//将事件压入接入链表
 
 		    //更新该事件的日志
-			m_EventVec[eventId].addEventLog(m_TTI, 26, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+			m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 			//记录TTI日志
-			DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 26, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+			DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 		}
 
 		//由于会全部压入Emergency接入链表，因此直接清空就行了，不需要一个个删除
@@ -556,10 +555,10 @@ void RRM_DRA::DRAProcessWaitEventIdList() {
 				it = _RSUAdapterDRA.m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, 6, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 6, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 			}
 			else {//该事件当前不可以进行调度
 				it++;
@@ -605,10 +604,10 @@ void RRM_DRA::DRASelectBasedOnP123() {
 				_RSUAdapterDRA.DRAPushToEmergencyWaitEventIdList(eventId);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, 31, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 31, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, ADMIT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 				continue;
 			}
@@ -656,10 +655,10 @@ void RRM_DRA::DRASelectBasedOnP123() {
 				_RSUAdapterDRA.DRAPushToWaitEventIdList(eventId);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, 11, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 11, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, ADMIT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 				continue;
 			}
 
@@ -679,41 +678,41 @@ void RRM_DRA::DRASelectBasedOnP123() {
 }
 
 
-void RRM_DRA::DRAWriteScheduleInfo() {
-	g_OutDRAScheduleInfo << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
-	g_OutDRAScheduleInfo << "{" << endl;
+void RRM_DRA::DRAWriteScheduleInfo(std::ofstream& out) {
+	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
+	out << "{" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSUAdapterDRA &_RSUAdapterDRA = m_RSUAdapterVec[RSUId];
 		
 		int clusterIdx = _RSUAdapterDRA.DRAGetClusterIdx(m_TTI);
-		g_OutDRAScheduleInfo << "    RSU[" << _RSUAdapterDRA.m_HoldObj.m_RSUId << "] :" << endl;
-		g_OutDRAScheduleInfo << "    {" << endl;
-		g_OutDRAScheduleInfo << "    EMERGENCY:" << endl;
+		out << "    RSU[" << _RSUAdapterDRA.m_HoldObj.m_RSUId << "] :" << endl;
+		out << "    {" << endl;
+		out << "    EMERGENCY:" << endl;
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			g_OutDRAScheduleInfo << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] ? "Available" : "Unavailable") << endl;
+			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] ? "Available" : "Unavailable") << endl;
 			for (sDRAScheduleInfo* info : _RSUAdapterDRA.m_DRAEmergencyTransimitScheduleInfoList[patternIdx]) {
-				g_OutDRAScheduleInfo << info->toScheduleString(3) << endl;
+				out << info->toScheduleString(3) << endl;
 			}
 		}
-		g_OutDRAScheduleInfo << "    PERIOD:" << endl;
+		out << "    PERIOD:" << endl;
 		for (int patternIdx = 0; patternIdx < gc_DRAPatternNumPerPatternType[PERIOD]; patternIdx++) {
-			g_OutDRAScheduleInfo << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
+			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
 			for (sDRAScheduleInfo* info : _RSUAdapterDRA.m_DRATransimitScheduleInfoList[patternIdx]) {
-				g_OutDRAScheduleInfo << info->toScheduleString(3) << endl;
+				out << info->toScheduleString(3) << endl;
 			}
 		}
-		g_OutDRAScheduleInfo << "    DATA:" << endl;
+		out << "    DATA:" << endl;
 		for (int patternIdx = gc_DRAPatternNumPerPatternType[PERIOD]; patternIdx < gc_DRAPatternNumPerPatternType[PERIOD] + gc_DRAPatternNumPerPatternType[DATA]; patternIdx++) {
-			g_OutDRAScheduleInfo << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
+			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
 			for (sDRAScheduleInfo* info : _RSUAdapterDRA.m_DRATransimitScheduleInfoList[patternIdx]) {
-				g_OutDRAScheduleInfo << info->toScheduleString(3) << endl;
+				out << info->toScheduleString(3) << endl;
 			}
 		}
-		g_OutDRAScheduleInfo << "    }" << endl;
+		out << "    }" << endl;
 
 	}
-	g_OutDRAScheduleInfo << "}" << endl;
-	g_OutDRAScheduleInfo << "\n\n" << endl;
+	out << "}" << endl;
+	out << "\n\n" << endl;
 }
 
 
@@ -767,16 +766,16 @@ void RRM_DRA::DRAConflictListener() {
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
 				for (sDRAScheduleInfo* &info : lst) {
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, 30, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
 
 					//首先将事件压入等待列表
 					_RSUAdapterDRA.DRAPushToEmergencyWaitEventIdList(info->eventId);
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, 29, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 29, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 					//释放调度信息对象的内存资源
 					delete info;
@@ -791,7 +790,7 @@ void RRM_DRA::DRAConflictListener() {
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//更新该事件的日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, 30, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
 
 				//维护占用区间
 				tuple<int, int> &scheduleInterval = *(info->occupiedIntervalList.begin());
@@ -803,10 +802,10 @@ void RRM_DRA::DRAConflictListener() {
 					m_EventVec[info->eventId].isSuccessded = true;
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, 0, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 0, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
 
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
@@ -835,16 +834,16 @@ void RRM_DRA::DRAConflictListener() {
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
 				for (sDRAScheduleInfo* &info : lst) {
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, 10, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 
 					//首先将事件压入等待列表
 					_RSUAdapterDRA.DRAPushToWaitEventIdList(info->eventId);
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, 9, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 9, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 					//释放调度信息对象的内存资源
 					delete info;
@@ -860,7 +859,7 @@ void RRM_DRA::DRAConflictListener() {
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//更新该事件的日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, 10, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 
 				//维护占用区间
 				list<tuple<int, int>> &OIList = info->occupiedIntervalList;
@@ -876,10 +875,10 @@ void RRM_DRA::DRAConflictListener() {
 					m_EventVec[info->eventId].isSuccessded = true;
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, 0, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 0, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
@@ -903,10 +902,10 @@ void RRM_DRA::DRAConflictListener() {
 }
 
 
-void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int clusterIdx, int patternIdx) {
+void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, eEventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx) {
 	stringstream ss;
 	switch (type) {
-	case 0:
+	case SUCCEED:
 		ss.str("");
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ RSU[" << RSUId << "]   ClusterIdx[" << clusterIdx << "]    PatternIdx[" << patternIdx << "] }";
@@ -914,35 +913,35 @@ void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int even
 		out << "    " << left << setw(13) << "[0]Succeed";
 		out << "    " << ss.str() << endl;
 		break;
-	case 1:
+	case EVENT_TO_ADMIT:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: EventList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
 		out << "    " << left << setw(13) << "[1]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	case 2:
+	case EVENT_TO_WAIT:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: EventList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
 		out << "    " << left << setw(13) << "[2]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	case 3:
+	case SCHEDULETABLE_TO_SWITCH:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
 		out << "    " << left << setw(13) << "[3]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	case 4:
+	case SCHEDULETABLE_TO_WAIT:
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
 		out << "    " << left << setw(13) << "[4]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	case 5:
+	case WAIT_TO_SWITCH:
 		ss.str("");
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s WaitEventIdList ; To: SwitchList }";
@@ -950,7 +949,7 @@ void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int even
 		out << "    " << left << setw(13) << "[5]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	case 6:
+	case WAIT_TO_ADMIT:
 		ss.str("");
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: RSU[" << RSUId << "]'s WaitEventIdList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
@@ -958,7 +957,7 @@ void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int even
 		out << "    " << left << setw(13) << "[6]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	case 7:
+	case SWITCH_TO_ADMIT:
 		ss.str("");
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: SwitchList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
@@ -966,7 +965,7 @@ void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int even
 		out << "    " << left << setw(13) << "[7]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	case 8:
+	case SWITCH_TO_WAIT:
 		ss.str("");
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ From: SwitchList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
@@ -974,7 +973,7 @@ void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int even
 		out << "    " << left << setw(13) << "[8]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	case 9:
+	case TRANSIMIT_TO_WAIT:
 		ss.str("");
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ RSU[" << RSUId << "]'s TransimitScheduleInfoList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
@@ -982,66 +981,12 @@ void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, int type, int even
 		out << "    " << left << setw(13) << "[9]Conflict";
 		out << "    " << ss.str() << endl;
 		break;
-	case 11:
+	case ADMIT_TO_WAIT:
 		ss.str("");
 		ss << "Event[ " << left << setw(3) << eventId << "]: ";
 		ss << "{ RSU[" << RSUId << "]'s AdmitEventIdList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		out << "[ TTI = " << left << setw(3) << TTI << "]";
 		out << "    " << left << setw(13) << "[11]Conflict";
-		out << "    " << ss.str() << endl;
-		break;
-	case 21:
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: EventList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[21]Switch";
-		out << "    " << ss.str() << endl;
-		break;
-	case 23:
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: RSU[" << RSUId << "]'s EmergencyScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[23]Switch";
-		out << "    " << ss.str() << endl;
-		break;
-	case 25:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: RSU[" << RSUId << "]'s EmergencyWaitEventIdList ; To: SwitchList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[25]Switch";
-		out << "    " << ss.str() << endl;
-		break;
-	case 26:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: RSU[" << RSUId << "]'s EmergencyWaitEventIdList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[26]Switch";
-		out << "    " << ss.str() << endl;
-		break;
-	case 27:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: SwitchList ; To: RSU[" << RSUId << "]'s EmergencyAdmitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[27]Switch";
-		out << "    " << ss.str() << endl;
-		break;
-	case 29:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ RSU[" << RSUId << "]'s EmergencyTransimitScheduleInfoList ; To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[29]Conflict";
-		out << "    " << ss.str() << endl;
-		break;
-	case 31:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ RSU[" << RSUId << "]'s EmergencyAdmitEventIdList ; To: RSU[" << RSUId << "]'s EmergencyWaitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[31]Conflict";
 		out << "    " << ss.str() << endl;
 		break;
 	}

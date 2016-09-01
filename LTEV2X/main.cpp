@@ -1,20 +1,18 @@
-#include<iostream>
-#include<fstream>
-#include<iomanip>
-#include"Enumeration.h"
-#include"Numerical.h"
-#include"Schedule.h"
-#include"System.h"
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include "Enumeration.h"
+#include "Schedule.h"
+#include "System.h"
+#include "Exception.h"
 using namespace std;
 
 extern int newCount;
 extern int deleteCount;
 
 int main() {
+	
 	/*
-	Matrix m(1,1);
-	m.hermitian();
-
 	vector<sPFInfo> v;
 	for (int i = 0; i < 100; i++) {
 		v.push_back(sPFInfo(0, 0, (double)i*gc_PI));

@@ -70,7 +70,7 @@ public:
 	/*功能函数*/
 	std::string toString();//输出string类型的事件消息
 	std::string toLogString(int n);
-	void addEventLog(int TTI, int type, int RSUId, int clusterIdx, int patternIdx);//压入新的日志
+	void addEventLog(int TTI, eEventLogType type, int RSUId, int clusterIdx, int patternIdx);//压入新的日志
 };
 
 

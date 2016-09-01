@@ -122,7 +122,7 @@ void cRSU::RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId,
 }
 
 
-void sEvent::addEventLog(int TTI,int type,int RSUId,int clusterIdx,int patternIdx) {
+void sEvent::addEventLog(int TTI, eEventLogType type,int RSUId,int clusterIdx,int patternIdx) {
 	stringstream ss;
 	switch (type) {
 	case 0:
