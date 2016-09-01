@@ -66,7 +66,7 @@ RSUAdapterDRA::RSUAdapterDRA(cRSU& _RSU) :m_HoldObj(_RSU) {
 
 int RSUAdapterDRA::DRAGetClusterIdx(int TTI) {
 	int roundATTI = TTI%gc_DRA_NTTI; //将TTI映射到[0-gc_DRA_NTTI)的范围
-	for (int clusterIdx = 0; clusterIdx < m_HoldObj.m_DRAClusterNum; clusterIdx++)
+	for (int clusterIdx = 0; clusterIdx < m_HoldObj.m_DRAClusterNum; clusterIdx++) 
 		if (roundATTI <= get<1>(m_DRAClusterTDRInfo[clusterIdx])) return clusterIdx;
 	return -1;
 }
@@ -130,9 +130,6 @@ RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, c
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		m_RSUAdapterVec.push_back(RSUAdapterDRA(m_RSUAry[RSUId]));
 	}
-
-	cout << m_Config.VeUENum << " , " << m_Config.RSUNum << endl;
-	cout << m_VeUEAdapterVec.size() << " , " << m_RSUAdapterVec.size() << endl;
 }
 
 
@@ -194,7 +191,7 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 			* 因此直接给每个簇都赋值为整个区间，反正也没有任何作用，免得其他部分讨论
 			*------------------------ATTENTION-----------------------*/
 			_RSUAdapterDRA.m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSUAdapterDRA.m_HoldObj.m_DRAClusterNum, tuple<int, int, int>(0, gc_DRA_NTTI - 1, gc_DRA_NTTI));
-			return;
+			continue;
 		}
 
 		//初始化
@@ -247,8 +244,6 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 			for (int VeUEId : _RSUAdapterDRA.m_HoldObj.m_DRAClusterVeUEIdList[clusterIdx])
 				m_VeUEAdapterVec[VeUEId].m_ScheduleInterval = tuple<int, int>(get<0>(_RSUAdapterDRA.m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSUAdapterDRA.m_DRAClusterTDRInfo[clusterIdx]));
 		}
-
-
 	}
 
 	writeClusterPerformInfo(g_OutClasterPerformInfo);
@@ -258,7 +253,6 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 void RRM_DRA::DRAUpdateAdmitEventIdList(bool clusterFlag) {
 	//首先，处理System级别的事件触发链表
 	DRAProcessEventList();
-	cout << "hehe4" << endl;
 	//其次，如果当前TTI进行了位置更新，需要处理调度表
 	if (clusterFlag) {
 		if (m_DRASwitchEventIdList.size() != 0) throw Exp("cSystem::DRAUpdateAdmitEventIdList");
@@ -281,9 +275,9 @@ void RRM_DRA::DRAUpdateAdmitEventIdList(bool clusterFlag) {
 void RRM_DRA::DRAProcessEventList() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSUAdapterDRA &_RSUAdapterDRA = m_RSUAdapterVec[RSUId];
+
 		int clusterIdx = _RSUAdapterDRA.DRAGetClusterIdx(m_TTI);//当前可传输数据的簇编号
 		for (int eventId : m_EventTTIList[m_TTI]) {
-			
 			sEvent event = m_EventVec[eventId];
 			
 			int VeUEId = event.VeUEId;
