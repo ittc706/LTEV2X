@@ -174,3 +174,26 @@ std::string sDRAScheduleInfo::toScheduleString(int n) {
 	ss << "} }";
 	return ss.str();
 }
+
+//<UNDONE>
+std::string sRRScheduleInfo::toLogString(int n) {
+	ostringstream ss;
+	ss << "[ eventId = ";
+	ss << left << setw(3) << eventId;
+	ss << " , PatternIdx = " << left << setw(3) << patternIdx << " ] ";
+	return ss.str();
+}
+
+//<UNDONE>
+std::string sRRScheduleInfo::toScheduleString(int n) {
+	string indent;
+	for (int i = 0; i < n; i++)
+		indent.append("    ");
+	ostringstream ss;
+	ss << indent << "{ ";
+	ss << "[ eventId = " << left << setw(3) << eventId << " , VeUEId = " << left << setw(3) << VeUEId << " ]";
+	ss << " : occupy Interval = { ";
+	ss << "[ " << get<0>(occupiedInterval) << " , " << get<1>(occupiedInterval) << " ] , ";
+	ss << "} }";
+	return ss.str();
+}

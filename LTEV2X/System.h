@@ -85,8 +85,12 @@ private:
 	void RRInformationClean();//资源分配信息清空
 	void RRUpdateAdmitEventIdList(bool clusterFlag);//更新接入表
 
+	void RRProcessTransimit1();
 	void RRWriteScheduleInfo();//记录调度信息日志
 	void RRDelaystatistics();//时延统计
+	void RRProcessTransimit2();
+
+
 
 
 	/*----------------------------------------------------

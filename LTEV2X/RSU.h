@@ -71,14 +71,6 @@ public:
 
 
 	/*
-	* 当发生位置更新后，处理调度表
-	* 将发生了RSU切换的的事件推送到System级别的RSU切换链表中，因此要优先于RRProcessSystemLevelSwitchList的调用
-	* 将发生了RSU内小簇切换的事件推送到RSU级别的等待链表中，因此要优先于RRProcessRSULevelWaitVeUEIdList的调用
-	*/
-	void RRProcessScheduleInfoWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemRRSwitchEventIdList);
-
-
-	/*
 	* 当发生位置更新后，处理等待链表
 	*/
 	void RRProcessWaitEventIdListWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemRRSwitchEventIdList);
@@ -117,7 +109,7 @@ public:
 	/*
 	* 将以TTI为关键字的日志信息写入文件中，测试用！
 	*/
-	void RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int clusterIdx, int patternIdx);
+	void RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int patternIdx);
 
 
 private:

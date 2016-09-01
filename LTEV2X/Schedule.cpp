@@ -30,8 +30,20 @@ using namespace std;
 
 //<UNDONE>
 void cSystem::RRSchedule() {//RR调度总控
+	bool clusterFlag = m_TTI  % m_Config.locationUpdateNTTI == 0;
+
 	//调度前清理工作
 	RRInformationClean();
+
+	//建立接纳链表
+	RRUpdateAdmitEventIdList(clusterFlag);
+
+	//开始本次调度
+	RRProcessTransimit1();
+	RRWriteScheduleInfo();
+
+	RRDelaystatistics();
+	RRProcessTransimit2();
 }
 
 //<UNDONE>
@@ -53,11 +65,7 @@ void cSystem::RRUpdateAdmitEventIdList(bool clusterFlag) {
 	//其次，如果当前TTI进行了分簇，需要处理调度表
 	if (clusterFlag) {
 		if (m_RRSwitchEventIdList.size() != 0) throw Exp("cSystem::RRUpdateAdmitEventIdList");
-		//处理RSU级别的调度链表
-		for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-			cRSU &_RSU = m_RSUAry[RSUId];
-			_RSU.RRProcessScheduleInfoWhenLocationUpdate(m_TTI, m_VeUEAry, m_EventVec, m_RRSwitchEventIdList);
-		}
+		
 		//处理RSU级别的等待链表
 		for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 			cRSU &_RSU = m_RSUAry[RSUId];
@@ -78,6 +86,17 @@ void cSystem::RRUpdateAdmitEventIdList(bool clusterFlag) {
 	}
 }
 
+
+
+
+//<UNDONE>
+void cSystem::RRProcessTransimit1() {
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		cRSU &_RSU = m_RSUAry[RSUId];
+		_RSU.RRProcessTransimit1(m_TTI,m_VeUEAry,m_EventVec);
+	}
+}
+
 //<UNDONE>
 void cSystem::RRWriteScheduleInfo() {//记录调度信息日志
 	g_OutRRScheduleInfo << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
@@ -90,6 +109,7 @@ void cSystem::RRWriteScheduleInfo() {//记录调度信息日志
 	g_OutRRScheduleInfo << "\n\n" << endl;
 }
 
+
 //<UNDONE>
 void cSystem::RRDelaystatistics() {//时延统计
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
@@ -97,6 +117,15 @@ void cSystem::RRDelaystatistics() {//时延统计
 		_RSU.RRDelaystatistics(m_TTI, m_EventVec);
 	}
 }
+
+//<UNDONE>
+void cSystem::RRProcessTransimit2() {
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		cRSU &_RSU = m_RSUAry[RSUId];
+		_RSU.RRProcessTransimit2(m_TTI, m_VeUEAry,m_EventVec);
+	}
+}
+
 
 
 
@@ -210,7 +239,7 @@ void cSystem::DRASchedule() {
 	DRAGroupSizeBasedTDM(clusterFlag);
 	//  WRONG
 
-	//建立接纳链表，遍历RSU内的m_VecVUE，生成m_CallList
+	//建立接纳链表
 	DRAUpdateAdmitEventIdList(clusterFlag);
 	
 	//当前m_TTI的DRA算法

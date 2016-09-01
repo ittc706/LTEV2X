@@ -50,7 +50,7 @@ void cRSU::initialize(sRSUConfigure &t_RSUConfigure){
 
 //<DONE>
 void cRSU::RRInformationClean() {
-
+	m_RRAdmitEventIdList.clear();
 }
 
 //<UNDONE>
@@ -67,10 +67,10 @@ void cRSU::RRProcessEventList(int TTI, const cVeUE *systemVeUEVec, std::vector<s
 				RRPushToWaitEventIdList(eventId, EMERGENCY);
 
 				//更新该事件的日志
-				systemEventVec[eventId].addEventLog(TTI, 21, m_RSUId, -1, -1);
+				systemEventVec[eventId].addEventLog(TTI, 2, m_RSUId, -1, -1);
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 21, eventId, m_RSUId, -1, -1);
+				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 1, eventId, m_RSUId , -1);
 				/*  EMERGENCY  */
 			}
 			else {//一般性事件，包括周期事件，或者数据业务事件
@@ -81,50 +81,13 @@ void cRSU::RRProcessEventList(int TTI, const cVeUE *systemVeUEVec, std::vector<s
 				systemEventVec[eventId].addEventLog(TTI, 2, m_RSUId, -1, -1);
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 2, eventId, m_RSUId, -1, -1);
+				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 1, eventId, m_RSUId, -1);
 			}
 		}
 	}
 }
 
-//<UNDONE>
-void cRSU::RRProcessScheduleInfoWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemRRSwitchEventIdList) {
-	for (int patternIdx = 0; patternIdx < m_RRPatternNum; patternIdx++) {
-		if (m_RRScheduleInfoTable[patternIdx] == nullptr){
-			continue;
-		}
-		else {
-			int eventId = m_RRScheduleInfoTable[patternIdx]->eventId;
-			if (m_RRScheduleInfoTable[patternIdx]->messageType == EMERGENCY) {
-				RRPushToSwitchEventIdList(eventId, systemRRSwitchEventIdList);
-				//并释放该调度信息的资源
-				delete m_RRScheduleInfoTable[patternIdx];
-				deleteCount++;
-				m_RRScheduleInfoTable[patternIdx] = nullptr;
-				//更新该事件的日志
-				systemEventVec[eventId].addEventLog(TTI, 23, m_RSUId, -1, -1);
 
-				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 23, eventId, m_RSUId, -1, -1);
-			}
-			else {
-				RRPushToSwitchEventIdList(eventId, systemRRSwitchEventIdList);
-
-				//并释放该调度信息的资源
-				delete m_RRScheduleInfoTable[patternIdx];
-				deleteCount++;
-				m_RRScheduleInfoTable[patternIdx] = nullptr;
-
-				//更新该事件的日志
-				systemEventVec[eventId].addEventLog(TTI, 3, m_RSUId, -1, -1);
-
-				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 3, eventId, m_RSUId, -1, -1);
-			}
-
-		}
-	}
-}
 
 //<UNDONE>
 void cRSU::RRProcessWaitEventIdListWhenLocationUpdate(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemRRSwitchEventIdList) {
@@ -140,17 +103,17 @@ void cRSU::RRProcessWaitEventIdListWhenLocationUpdate(int TTI, const cVeUE *syst
 
 			if (messageType == EMERGENCY) {
 				//更新该事件的日志
-				systemEventVec[eventId].addEventLog(TTI, 25, m_RSUId, -1, -1);
+				systemEventVec[eventId].addEventLog(TTI, 5, m_RSUId, -1, -1);
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 25, eventId, m_RSUId, -1, -1);
+				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 4, eventId, m_RSUId, -1);
 			}
 			else if (messageType == PERIOD) {
 				//更新该事件的日志
 				systemEventVec[eventId].addEventLog(TTI, 5, m_RSUId, -1, -1);
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 5, eventId, m_RSUId, -1, -1);
+				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 4, eventId, m_RSUId, -1);
 			}
 		}
 		else {//仍然处于当前RSU范围内
@@ -177,10 +140,10 @@ void cRSU::RRProcessSwitchListWhenLocationUpdate(int TTI, const cVeUE *systemVeU
 				it = systemRRSwitchEventIdList.erase(it);
 
 				//更新该事件的日志
-				systemEventVec[eventId].addEventLog(TTI, 27, m_RSUId, -1, -1);
+				systemEventVec[eventId].addEventLog(TTI, 8, m_RSUId, -1, -1);
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 27, eventId, m_RSUId, -1, -1);
+				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 5, eventId, m_RSUId, -1);
 			}
 			/*  EMERGENCY  */
 
@@ -192,7 +155,7 @@ void cRSU::RRProcessSwitchListWhenLocationUpdate(int TTI, const cVeUE *systemVeU
 				systemEventVec[eventId].addEventLog(TTI, 8, m_RSUId, -1, -1);
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 8, eventId, m_RSUId, -1, -1);		
+				RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 5, eventId, m_RSUId, -1);		
 			}
 		}
 	}
@@ -208,17 +171,17 @@ void cRSU::RRProcessWaitEventIdList(int TTI, const cVeUE *systemVeUEVec, std::ve
 		RRPushToAdmitEventIdList(eventId);
 		if (messageType == EMERGENCY) {
 			//更新该事件的日志
-			systemEventVec[eventId].addEventLog(TTI, 26, m_RSUId, -1, -1);
+			systemEventVec[eventId].addEventLog(TTI, 6, m_RSUId, -1, -1);
 
 			//记录TTI日志
-			RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 26, eventId, m_RSUId, -1, -1);
+			RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 2, eventId, m_RSUId, -1);
 		}
 		else if (messageType == PERIOD) {
 			//更新该事件的日志
 			systemEventVec[eventId].addEventLog(TTI, 6, m_RSUId, -1, -1);
 
 			//记录TTI日志
-			RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 6, eventId, m_RSUId, -1, -1);
+			RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 2, eventId, m_RSUId, -1);
 		}
 		it = m_RRWaitEventIdList.erase(it);
 	}
@@ -229,10 +192,10 @@ void cRSU::RRProcessTransimit1(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent
 	for (int patternIdx = 0; patternIdx < static_cast<int>(m_RRAdmitEventIdList.size()); patternIdx++) {
 		int eventId = m_RRAdmitEventIdList[patternIdx];
 		int VeUEId = systemEventVec[eventId].VeUEId;
-		int occupiedTTI = systemEventVec[eventId].message.bitNum / gc_BitNumPerRB / m_RRNumRBPerPattern;
+		int occupiedTTI = ceil((double)systemEventVec[eventId].message.bitNum / (double)gc_BitNumPerRB / (double)m_RRNumRBPerPattern);
 		eMessageType messageType = systemEventVec[eventId].message.messageType;
 		tuple<int, int> scheduleInterval(TTI, TTI + occupiedTTI - 1);
-		m_RRScheduleInfoTable[patternIdx] = new sRRScheduleInfo(eventId, messageType, VeUEId, m_RSUId, scheduleInterval);
+		m_RRScheduleInfoTable[patternIdx] = new sRRScheduleInfo(eventId, messageType, VeUEId, m_RSUId, patternIdx,scheduleInterval);
 	}
 }
 
@@ -255,7 +218,7 @@ void cRSU::RRProcessTransimit2(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent
 		sRRScheduleInfo* &info = m_RRScheduleInfoTable[patternIdx];
 		if (info == nullptr) continue;
 		//更新该事件的日志
-		systemEventVec[info->eventId].addEventLog(TTI, 30, m_RSUId, -1, patternIdx);
+		systemEventVec[info->eventId].addEventLog(TTI, 10, m_RSUId, -1, patternIdx);
 
 		//WRONG
 		if (TTI == get<1>(info->occupiedInterval)) {
@@ -263,7 +226,7 @@ void cRSU::RRProcessTransimit2(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent
 			systemEventVec[info->eventId].addEventLog(TTI, 0, m_RSUId, -1, patternIdx);
 
 			//记录TTI日志
-			RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 0, info->eventId, m_RSUId, -1, patternIdx);
+			RRWriteTTILogInfo(g_OutTTILogInfo, TTI, 0, info->eventId, m_RSUId, patternIdx);
 
 			//释放调度信息对象的内存资源
 			delete info;

@@ -58,14 +58,16 @@ struct sRRScheduleInfo {
 	eMessageType messageType;//事件类型
 	int VeUEId;//车辆编号
 	int RSUId;//RSU编号
+	int patternIdx;//频域块编号
 	std::tuple<int, int> occupiedInterval;//当前VeUE进行传输的实际TTI区间（闭区间）
 
 	sRRScheduleInfo() {}
-	sRRScheduleInfo(int eventId, eMessageType messageType, int VeUEId, int RSUId, const std::tuple<int, int> &occupiedInterval) {
+	sRRScheduleInfo(int eventId, eMessageType messageType, int VeUEId, int RSUId, int patternIdx,const std::tuple<int, int> &occupiedInterval) {
 		this->eventId = eventId;
 		this->messageType = messageType;
 		this->VeUEId = VeUEId;
 		this->RSUId = RSUId;
+		this->patternIdx = patternIdx;
 		this->occupiedInterval = occupiedInterval;
 	}
 

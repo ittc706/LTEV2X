@@ -26,6 +26,7 @@ void cSystem::process() {
 		case PF:
 			break;
 		case RR:
+			RRSchedule();
 			break;
 		case DRA:
 			DRASchedule();
@@ -107,7 +108,7 @@ void cSystem::configure() {//系统仿真参数配置
 	m_Config.locationUpdateNTTI = 100;
 
 	//选择调度模式
-	m_ScheduleMode = DRA;
+	m_ScheduleMode = RR;
 
 	//选择DRA模式(当调度模式为DRA时，该参数有效)
 	m_DRAMode = P123;
