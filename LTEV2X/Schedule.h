@@ -82,27 +82,3 @@ struct sRRScheduleInfo {
 };
 
 
-struct sDRAScheduleInfo {
-	int eventId;//事件编号
-	int VeUEId;//车辆编号
-	int RSUId;//RSU编号
-	int patternIdx;//频域块编号
-	std::list<std::tuple<int, int>> occupiedIntervalList;//当前VeUE进行传输的实际TTI区间（闭区间）
-
-	sDRAScheduleInfo() {}
-	sDRAScheduleInfo(int eventId,int VeUEId,int RSUId,int patternIdx, const std::list<std::tuple<int, int>> &occupiedIntervalList) {
-		this->eventId = eventId;
-		this->VeUEId = VeUEId;
-		this->RSUId = RSUId;
-		this->patternIdx = patternIdx;
-		this->occupiedIntervalList = occupiedIntervalList;
-	}
-	
-	std::string toLogString(int n);
-
-	/*
-	* 生成表示调度信息的string对象
-	* 包括事件的Id，车辆的Id，以及要传输该事件所占用的TTI区间
-	*/
-	std::string toScheduleString(int n);
-};

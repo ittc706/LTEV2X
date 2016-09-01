@@ -1,8 +1,10 @@
-#include<iomanip>
-#include<fstream>
-#include"System.h"
-#include"Global.h"
-#include"RSU.h"
+#include <iomanip>
+#include <fstream>
+#include "System.h"
+#include "Global.h"
+#include "RSU.h"
+#include "RRMBasic.h"
+#include "RRM_DRA.h"
 
 using namespace std;
 
@@ -13,6 +15,9 @@ void cSystem::process() {
 
 	//仿真初始化
 	initialization();
+
+	//调度模块指针初始化
+	RRMInitialization();
 
 	//打印事件链表
 	writeEventListInfo(g_OutEventListInfo);
@@ -29,7 +34,7 @@ void cSystem::process() {
 			RRSchedule();
 			break;
 		case DRA:
-			DRASchedule();
+			RRMPoint->schedule();
 			break;
 		}
 		m_TTI++;
@@ -108,10 +113,7 @@ void cSystem::configure() {//系统仿真参数配置
 	m_Config.locationUpdateNTTI = 100;
 
 	//选择调度模式
-	m_ScheduleMode = RR;
-
-	//选择DRA模式(当调度模式为DRA时，该参数有效)
-	m_DRAMode = P123;
+	m_ScheduleMode = DRA;
 
 	//事件链表容器
 	m_EventTTIList = vector<list<int>>(m_NTTI);
@@ -182,3 +184,15 @@ void cSystem::initialization() {
 
 
 
+void cSystem::RRMInitialization() {
+	switch (m_ScheduleMode) {
+	case DRA:
+		RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, P123);
+		break;
+	}
+}
+
+
+void cSystem::dispose() {
+	delete RRMPoint;
+}

@@ -33,6 +33,8 @@ public:
 	//cChannelModel *channelModel;
 	cIMTA *imta;
 
+	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
+
 	/*--------------------------------------------------------------
 	*                      无线资源管理单元
 	* -------------------------------------------------------------*/
@@ -47,29 +49,7 @@ public:
 	std::vector<double> m_CQIPredictIdeal;
 	std::vector<double> m_CQIPredictRealistic;
 
-	/*----------------------------------------------------
-	*                   分布式资源管理
-	*          DRA:Distributed Resource Allocation
-	* ---------------------------------------------------*/
-	std::tuple<int, int> m_ScheduleInterval;//该VeUE在当前簇内当前一轮调度区间
-	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
-
-	int RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType);
-	int RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
-
-	std::string toString(int n);//用于打印VeUE信息
 };
 
-inline
-int cVeUE::RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
-	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
-	if (size == 0) return -1;
-	return curAvaliablePatternIdx[messageType][rand() % size];
-}
 
-inline
-int cVeUE::RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
-	int size = static_cast<int>(curAvaliableEmergencyPatternIdx.size());
-	if (size == 0) return -1;
-	return curAvaliableEmergencyPatternIdx[rand() % size];
-}
+

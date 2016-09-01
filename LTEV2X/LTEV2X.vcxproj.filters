@@ -63,6 +63,12 @@
     <ClInclude Include="Traffic.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RRMBasic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RRM_DRA.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blas1_z.cpp">
@@ -114,6 +120,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Traffic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RRM_DRA.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

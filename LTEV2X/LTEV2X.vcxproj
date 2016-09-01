@@ -129,6 +129,8 @@
     <ClInclude Include="linpack_z.h" />
     <ClInclude Include="Numerical.h" />
     <ClInclude Include="Road.h" />
+    <ClInclude Include="RRMBasic.h" />
+    <ClInclude Include="RRM_DRA.h" />
     <ClInclude Include="RSU.h" />
     <ClInclude Include="Schedule.h" />
     <ClInclude Include="System.h" />
@@ -147,6 +149,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Numerical.cpp" />
     <ClCompile Include="Road.cpp" />
+    <ClCompile Include="RRM_DRA.cpp" />
     <ClCompile Include="RSU.cpp" />
     <ClCompile Include="Schedule.cpp" />
     <ClCompile Include="System.cpp" />
