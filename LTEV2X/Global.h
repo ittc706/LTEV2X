@@ -6,6 +6,8 @@
 *            输出日志文件流声明
 * ==========================================*/
 extern std::ofstream g_OutTemp;
+//RR单元
+extern std::ofstream g_OutRRScheduleInfo;
 //DRA单元
 extern std::ofstream g_OutDRAScheduleInfo;
 extern std::ofstream g_OutClasterPerformInfo;

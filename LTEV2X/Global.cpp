@@ -7,6 +7,8 @@ using namespace std;
 *            输出日志文件流声明
 * ==========================================*/
 ofstream g_OutTemp("Output\\Temp.txt");
+//RR单元
+ofstream g_OutRRScheduleInfo("Output\\DRAOutput\\RRScheduleInfo.txt");
 //DRA单元
 ofstream g_OutDRAScheduleInfo("Output\\DRAOutput\\DRAScheduleInfo.txt");
 ofstream g_OutClasterPerformInfo("Output\\DRAOutput\\ClasterPerformInfo.txt");

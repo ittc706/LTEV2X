@@ -43,7 +43,7 @@ void cSystem::RRInformationClean() {//资源分配信息清空
 }
 
 //<UNDONE>
-void cSystem::RRUpdateWaitEventIdList(bool clusterFlag) {
+void cSystem::RRUpdateAdmitEventIdList(bool clusterFlag) {
 	//首先，处理System级别的事件触发链表
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
@@ -77,6 +77,27 @@ void cSystem::RRUpdateWaitEventIdList(bool clusterFlag) {
 		_RSU.RRProcessWaitEventIdList(m_TTI, m_VeUEAry, m_EventVec, m_RRSwitchEventIdList);
 	}
 }
+
+//<UNDONE>
+void cSystem::RRWriteScheduleInfo() {//记录调度信息日志
+	g_OutRRScheduleInfo << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
+	g_OutRRScheduleInfo << "{" << endl;
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		cRSU &_RSU = m_RSUAry[RSUId];
+		_RSU.RRWriteScheduleInfo(g_OutRRScheduleInfo, m_TTI);
+	}
+	g_OutRRScheduleInfo << "}" << endl;
+	g_OutRRScheduleInfo << "\n\n" << endl;
+}
+
+//<UNDONE>
+void cSystem::RRDelaystatistics() {//时延统计
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		cRSU &_RSU = m_RSUAry[RSUId];
+		_RSU.RRDelaystatistics(m_TTI, m_EventVec);
+	}
+}
+
 
 
 

@@ -38,27 +38,26 @@ public:
 	*                      RR调度
 	* ---------------------------------------------------*/
 	/*------------------数据成员------------------*/
+	int m_RRNumRBPerPattern = 5;
+	int m_RRPatternNum = gc_DRATotalBandwidth / gc_BandwidthOfRB / m_RRNumRBPerPattern;
+
+	std::vector<int> m_RRAdmitEventIdList;//当前TTI接入列表，最大长度不超过Pattern数量
 
 	/*
 	* RSU级别的等待列表
 	* 存放的是VeUEId
 	* 其来源有：
 	*		1、分簇后，由System级的切换链表转入该RSU级别的等待链表
-	*		2、事件链表中当前的事件触发，但VeUE未在可发送消息的时段，转入等待链表
-	*		3、VeUE在传输消息后，发生冲突，解决冲突后，转入等待链表
+	*		2、事件链表中当前的事件触发，转入等待链表
 	*/
 	std::list<int> m_RRWaitEventIdList;
 
 	/*
-	* 存放调度调度信息，由于是轮询，因此每个时刻仅有一个用户
+	* 存放调度调度信息
+	* 外层代表Pattern号
 	*/
-	sRRScheduleInfo* m_RRScheduleInfo;
+	std::vector<sRRScheduleInfo*> m_RRScheduleInfoTable;
 
-
-	/*
-	* 当前时刻处于等待接入状态的紧急事件列表
-	*/
-	std::list<int> m_RREmergencyWaitEventIdList;
 
 	/*------------------成员函数------------------*/
 public:
@@ -96,6 +95,20 @@ public:
 	*/
 	void RRProcessWaitEventIdList(int TTI, const cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec, std::list<int> &systemDRASwitchEventIdList);
 
+
+	void RRProcessTransimit1(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec);
+
+	/*
+	* 时延统计
+	* 统计资源占用的累计TTI
+	* 统计等待累计TTI
+	* 在DRASelectBasedOnP..之后对其调用
+	* 此时所有已触发的事件存在于WaitEventIdList中，或者存在于TransimitScheduleInfoList中，或者ScheduleInfoTable中
+	*/
+	void RRDelaystatistics(int TTI, std::vector<sEvent>& systemEventVec);
+
+	void RRProcessTransimit2(int TTI, cVeUE *systemVeUEVec, std::vector<sEvent>& systemEventVec);
+
 	/*
 	* 将调度信息写入文件中，测试用！
 	*/
@@ -110,11 +123,16 @@ public:
 private:
 	/*实现函数*/
 
+
+	/*
+	* 将AdmitEventIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void RRPushToAdmitEventIdList(int eventId);
+
 	/*
 	* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 	*/
-	void RRPushToWaitEventIdList(int eventId);
-	void RRPushToEmergencyWaitEventIdList(int eventId);
+	void RRPushToWaitEventIdList(int eventId, eMessageType messageType);
 
 	/*
 	* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
@@ -391,14 +409,20 @@ private:
 * ---------------------------------------------------*/
 
 inline
-void cRSU::RRPushToWaitEventIdList(int eventId) {
-	m_RRWaitEventIdList.push_back(eventId);
+void cRSU::RRPushToAdmitEventIdList(int eventId) {
+	m_RRAdmitEventIdList.push_back(eventId);
 }
 
 inline
-void cRSU::RRPushToEmergencyWaitEventIdList(int eventId) {
-	m_RREmergencyWaitEventIdList.push_back(eventId);
+void cRSU::RRPushToWaitEventIdList(int eventId, eMessageType messageType) {
+	if (messageType == EMERGENCY) {
+		m_RRWaitEventIdList.insert(m_RRWaitEventIdList.begin(), eventId);
+	}
+	else if(messageType==PERIOD){
+		m_RRWaitEventIdList.push_back(eventId);
+	}
 }
+
 
 inline
 void cRSU::RRPushToSwitchEventIdList(int eventId, std::list<int>& systemRRSwitchVeUEIdList) {

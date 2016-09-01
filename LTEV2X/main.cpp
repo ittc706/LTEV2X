@@ -20,7 +20,7 @@ int main() {
 		v.push_back(sPFInfo(0, 0, (double)i*gc_PI));
 	}
     */
-
+	
 	long double start = clock();
 
 	try {
@@ -48,6 +48,14 @@ int main() {
 	g_OutVeUELocationUpdateLogInfo.close();
 	g_OutDelayStatistics.close();
     g_OutEmergencyPossion.close();
-
+	
+	/*list<int> l{ 6,6,6 };
+	auto it = l.begin();
+	it = l.insert(it, 1);
+	it = l.insert(it, 3);
+	for (auto c : l)
+		cout << c << " ";
+*/
 	system("pause");
+
 }

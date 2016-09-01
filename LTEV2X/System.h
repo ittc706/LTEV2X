@@ -83,7 +83,7 @@ public:
 private:
 	/*实现函数*/
 	void RRInformationClean();//资源分配信息清空
-	void RRUpdateWaitEventIdList(bool clusterFlag);//更新等待链表
+	void RRUpdateAdmitEventIdList(bool clusterFlag);//更新接入表
 
 	void RRWriteScheduleInfo();//记录调度信息日志
 	void RRDelaystatistics();//时延统计
