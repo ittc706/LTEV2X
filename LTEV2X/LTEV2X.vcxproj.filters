@@ -48,16 +48,22 @@
     <ClInclude Include="Road.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Traffic.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="RRMBasic.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="RRM_DRA.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="RRM_RR.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RRM.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BMAD.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BMAD_B.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,13 +98,16 @@
     <ClCompile Include="Road.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Traffic.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="RRM_DRA.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RRM_RR.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BMAD_B.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

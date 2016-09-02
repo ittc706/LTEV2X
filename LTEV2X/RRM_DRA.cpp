@@ -16,13 +16,13 @@
 * =====================================================================================
 */
 
-#include <tuple>
-#include <vector>
-#include <list>
-#include <sstream>
-#include <iomanip>
-#include "RRM_DRA.h"
-#include "Exception.h"
+#include<tuple>
+#include<vector>
+#include<list>
+#include<sstream>
+#include<iomanip>
+#include"RRM_DRA.h"
+#include"Exception.h"
 
 using namespace std;
 string sDRAScheduleInfo::toLogString(int n) {
@@ -798,7 +798,7 @@ void RRM_DRA::DRAConflictListener() {
 				++get<0>(scheduleInterval);
 				if (get<0>(scheduleInterval) > get<1>(scheduleInterval)) {//已经传输完毕，将资源释放
 
-																		  //设置传输成功标记
+					//设置传输成功标记
 					m_EventVec[info->eventId].isSuccessded = true;
 
 					//更新该事件的日志
@@ -871,7 +871,7 @@ void RRM_DRA::DRAConflictListener() {
 
 				if (OIList.size() == 0) {//说明该数据已经传输完毕
 
-										 //设置传输成功标记
+					//设置传输成功标记
 					m_EventVec[info->eventId].isSuccessded = true;
 
 					//更新该事件的日志

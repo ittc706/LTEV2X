@@ -1,3 +1,6 @@
+version_2016_9_2(BMAD模块化初步完成)
+	RR模块仍未纠正
+
 version_2016_9_2(RR模块化初步完成)
 	仍有错误，当前只是排队调度，并没有轮询
 	删除了FileOutput??.cpp文件，以及toString.cpp文件，Schedule.h,Schedule.cpp

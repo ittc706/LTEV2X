@@ -1,10 +1,10 @@
 #pragma once
-#include <vector>
-#include "RRMBasic.h"
-#include "RSU.h"
-#include "VUE.h"
-#include "Enumeration.h"
-#include "Exception.h"
+#include<vector>
+#include"RRM.h"
+#include"RSU.h"
+#include"VUE.h"
+#include"Enumeration.h"
+#include"Exception.h"
 
 /*===========================================
 *              模块常量定义
@@ -245,6 +245,7 @@ public:
 
 
 	/*------------------数据成员------------------*/
+
 	eDRAMode m_DRAMode;//资源快选择的策略
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
@@ -253,6 +254,7 @@ public:
 	int deleteCount = 0;//记录删除动态创建对象的次数
 
 	/*------------------成员函数------------------*/
+
 public:
 	/*接口函数*/
 	void schedule() override;//DRA调度总控，覆盖基类的虚函数

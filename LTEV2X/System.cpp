@@ -1,8 +1,8 @@
-#include <iomanip>
-#include <fstream>
-#include "System.h"
-#include "Global.h"
-#include "RSU.h"
+#include<iomanip>
+#include<fstream>
+#include"System.h"
+#include"Global.h"
+#include"RSU.h"
 
 
 using namespace std;
@@ -16,13 +16,13 @@ void cSystem::process() {
 	initialization();
 
 	//调度模块指针初始化
-	RRMInitialization();
+	moduleControlInitialization();
 
-	//打印事件链表
-	writeEventListInfo(g_OutEventListInfo);
+	//创建事件链表
+	BMADPoint->buildEventList(g_OutEventListInfo);
 
 	//开始仿真
-	for (int count = 0;count < m_NTTI;count++) {
+	for (int count = 0;count < m_Config.m_NTTI;count++) {
 		cout << "Current TTI = " << m_TTI << endl;
 		if (count % m_Config.locationUpdateNTTI == 0)
 			channelGeneration();
@@ -39,18 +39,28 @@ void cSystem::process() {
 		m_TTI++;
 	}
 
-	//打印事件日志信息
-	writeEventLogInfo(g_OutEventLogInfo);
+	//处理各项业务时延数据
+	BMADPoint->processStatistics(g_OutDelayStatistics, g_OutEmergencyPossion, g_OutConflictNum, g_OutEventLogInfo);
 
 	//打印车辆地理位置更新日志信息
 	writeVeUELocationUpdateLogInfo(g_OutVeUELocationUpdateLogInfo);
-
-	//处理各类数据
-	processStatistics();
 }
 
 void cSystem::configure() {//系统仿真参数配置
+	/*--------------------------------------------------------------
+	*                 全局控制单元参数配置
+	* -------------------------------------------------------------*/
 
+	m_Config.m_NTTI = 200;//仿真TTI时间
+	m_Config.periodicEventNTTI = 50;
+	m_Config.emergencyLamda = 0.001;
+	m_Config.locationUpdateNTTI = 100;
+
+	//选择调度模式
+	m_ScheduleMode = RR;
+
+	//事件链表容器
+	m_EventTTIList = vector<list<int>>(m_Config.m_NTTI);
 	/*--------------------------------------------------------------
 	*                 地理拓扑单元参数配置
 	* -------------------------------------------------------------*/
@@ -100,22 +110,6 @@ void cSystem::configure() {//系统仿真参数配置
 		m_Config.pueTopo[temp * 2 + 1] = temp_y;
 	}
 	m_Config.fv = 15;//车速设定,km/h
-
-
-	/*--------------------------------------------------------------
-	*                 无线资源管理单元参数配置
-	* -------------------------------------------------------------*/
-
-	m_NTTI = 200;//仿真TTI时间
-	m_Config.periodicEventNTTI = 50;
-	m_Config.emergencyLamda = 0.001;
-	m_Config.locationUpdateNTTI = 100;
-
-	//选择调度模式
-	m_ScheduleMode = RR;
-
-	//事件链表容器
-	m_EventTTIList = vector<list<int>>(m_NTTI);
 }
 
 
@@ -179,18 +173,13 @@ void cSystem::initialization() {
 
 		}
 	}
-
-
-	/*--------------------------------------------------------------
-	*                  业务模型与控制单元单元初始化
-	* -------------------------------------------------------------*/
-	//创建事件链表
-	buildEventList();
 }
 
 
 
-void cSystem::RRMInitialization() {
+void cSystem::moduleControlInitialization() {
+	BMADPoint = new BMAD_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList);
+
 	switch (m_ScheduleMode) {
 	case RR:
 		RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList);
@@ -198,45 +187,8 @@ void cSystem::RRMInitialization() {
 	case DRA:
 		RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, P123);
 		break;
-	}
-}
-
-
-void cSystem::writeEventListInfo(ofstream &out) {
-	for (int i = 0; i < m_NTTI; i++) {
-		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
-		out << "{" << endl;
-		for (int eventId : m_EventTTIList[i]) {
-			sEvent& e = m_EventVec[eventId];
-			out << "    " << e.toString() << endl;
-		}
-		out << "}\n\n" << endl;
-	}
-}
-
-
-void cSystem::writeEventLogInfo(std::ofstream &out) {
-	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
-		string s;
-		switch (m_EventVec[eventId].message.messageType) {
-		case PERIOD:
-			s = "PERIOD";
-			break;
-		case EMERGENCY:
-			s = "EMERGENCY";
-			break;
-		case DATA:
-			s = "DATA";
-			break;
-		}
-		out << "Event[" << eventId << "]";
-		out << "{" << endl;
-		out << "    " << "VeUEId = " << m_EventVec[eventId].VeUEId << endl;
-		out << "    " << "MessageType = " << s << endl;
-		out << "    " << "sendDelay = " << m_EventVec[eventId].sendDelay << "(TTI)" << endl;
-		out << "    " << "queuingDelay = " << m_EventVec[eventId].queuingDelay << "(TTI)" << endl;
-		out << m_EventVec[eventId].toLogString(1);
-		out << "}" << endl;
+	default:
+		break;
 	}
 }
 
@@ -253,6 +205,7 @@ void cSystem::writeVeUELocationUpdateLogInfo(std::ofstream &out) {
 
 
 void cSystem::dispose() {
+	delete BMADPoint;
 	delete RRMPoint;
 }
 

@@ -1,9 +1,9 @@
 #pragma once
-#include <vector>
-#include <string>
-#include <list>
-#include "Global.h"
-#include "Config.h"
+#include<vector>
+#include<string>
+#include<list>
+#include"Global.h"
+#include"Config.h"
 
 class ceNB{
 public:

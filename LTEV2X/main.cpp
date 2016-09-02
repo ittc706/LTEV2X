@@ -1,9 +1,9 @@
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include "Enumeration.h"
-#include "System.h"
-#include "Exception.h"
+#include<iostream>
+#include<fstream>
+#include<iomanip>
+#include"Enumeration.h"
+#include"System.h"
+#include"Exception.h"
 using namespace std;
 
 

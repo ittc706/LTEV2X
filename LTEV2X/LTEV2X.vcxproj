@@ -118,6 +118,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BMAD.h" />
+    <ClInclude Include="BMAD_B.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
@@ -126,15 +128,16 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="IMTA.h" />
     <ClInclude Include="Road.h" />
-    <ClInclude Include="RRMBasic.h" />
+    <ClInclude Include="RRM.h" />
     <ClInclude Include="RRM_DRA.h" />
     <ClInclude Include="RRM_RR.h" />
     <ClInclude Include="RSU.h" />
     <ClInclude Include="System.h" />
-    <ClInclude Include="Traffic.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="VUE.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BMAD_B.cpp" />
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="eNB.cpp" />
     <ClCompile Include="GeographyAndMobility.cpp" />
@@ -146,7 +149,7 @@
     <ClCompile Include="RRM_RR.cpp" />
     <ClCompile Include="RSU.cpp" />
     <ClCompile Include="System.cpp" />
-    <ClCompile Include="Traffic.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="VUE.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

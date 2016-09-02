@@ -3,6 +3,7 @@
 
 /*系统基本的仿真参数*/
 struct sConfigure {
+	int m_NTTI;//仿真总共的TTI
 
 	int periodicEventNTTI;//周期性事件的周期（单位TTI）
 	double emergencyLamda;//紧急事件泊松过程Lamda,单位次/TTI

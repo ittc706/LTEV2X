@@ -1,10 +1,10 @@
 #pragma once
-#include <math.h>
-#include <string>
-#include <map>
-#include "Config.h"
-#include "Enumeration.h"
-#include "Global.h"
+#include<math.h>
+#include<string>
+#include<map>
+#include"Config.h"
+#include"Enumeration.h"
+#include"Global.h"
 
 /*===========================================
 *               IMTA信道模型

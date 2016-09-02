@@ -17,9 +17,9 @@
 */
 
 
-#include <iomanip>
-#include <sstream>
-#include "RRM_RR.h"
+#include<iomanip>
+#include<sstream>
+#include"RRM_RR.h"
 
 using namespace std;
 
@@ -379,6 +379,9 @@ void RRM_RR::RRTransimitEnd() {
 
 			//WRONG
 			if (m_TTI == get<1>(info->occupiedInterval)) {
+				//设置传输成功标记
+				m_EventVec[info->eventId].isSuccessded = true;
+
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx);
 
