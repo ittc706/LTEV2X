@@ -263,7 +263,7 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 		}
 	}
 
-	writeClusterPerformInfo(g_OutClasterPerformInfo);
+	DRAWriteClusterPerformInfo(g_OutClasterPerformInfo);
 }
 
 
@@ -347,7 +347,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 
 					//并释放该调度信息的资源
 					delete _RSUAdapterDRA.m_DRAEmergencyScheduleInfoTable[patternIdx];
-					deleteCount++;
+					m_DeleteCount++;
 					_RSUAdapterDRA.m_DRAEmergencyScheduleInfoTable[patternIdx] = nullptr;
 
 					//释放Pattern资源
@@ -381,7 +381,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 
 						//并释放该调度信息的资源
 						delete _RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx];
-						deleteCount++;
+						m_DeleteCount++;
 						_RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
 
 						//释放Pattern资源
@@ -399,7 +399,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 
 							//并释放该调度信息的资源
 							delete _RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx];
-							deleteCount++;
+							m_DeleteCount++;
 							_RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
 
 							//释放Pattern资源
@@ -598,7 +598,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			int VeUEId = m_EventVec[eventId].VeUEId;
 
 			//为当前用户在可用的EmergencyPattern块中随机选择一个，每个用户自行随机选择可用EmergencyPattern块
-			int patternIdx = m_VeUEAdapterVec[VeUEId].RBEmergencySelectBasedOnP2(curAvaliableEmergencyPatternIdx);
+			int patternIdx = m_VeUEAdapterVec[VeUEId].DRARBEmergencySelectBasedOnP2(curAvaliableEmergencyPatternIdx);
 
 			if (patternIdx == -1) {//无对应Pattern类型的pattern资源可用
 				_RSUAdapterDRA.DRAPushToEmergencyWaitEventIdList(eventId);
@@ -618,7 +618,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			//将调度信息压入m_DRAEmergencyTransimitEventIdList中
 			list<tuple<int, int>> scheduleIntervalList = DRABuildEmergencyScheduleInterval(m_TTI, m_EventVec[eventId]);
 			_RSUAdapterDRA.DRAPushToEmergencyTransmitScheduleInfoList(new sDRAScheduleInfo(eventId, VeUEId, _RSUAdapterDRA.m_HoldObj.m_RSUId, patternIdx, scheduleIntervalList), patternIdx);
-			newCount++;
+			m_NewCount++;
 		}
 		_RSUAdapterDRA.DRAPullFromEmergencyScheduleInfoTable();
 		/*  EMERGENCY  */
@@ -649,7 +649,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			int VeUEId = m_EventVec[eventId].VeUEId;
 
 			//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
-			int patternIdx = m_VeUEAdapterVec[VeUEId].RBSelectBasedOnP2(curAvaliablePatternIdx, m_EventVec[eventId].message.messageType);
+			int patternIdx = m_VeUEAdapterVec[VeUEId].DRARBSelectBasedOnP2(curAvaliablePatternIdx, m_EventVec[eventId].message.messageType);
 
 			if (patternIdx == -1) {//该用户传输的信息类型没有pattern剩余了
 				_RSUAdapterDRA.DRAPushToWaitEventIdList(eventId);
@@ -668,7 +668,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			//将调度信息压入m_DRATransimitEventIdList中
 			list<tuple<int, int>> scheduleIntervalList = DRABuildScheduleIntervalList(m_TTI, m_EventVec[eventId], _RSUAdapterDRA.m_DRAClusterTDRInfo[clusterIdx]);
 			_RSUAdapterDRA.DRAPushToTransmitScheduleInfoList(new sDRAScheduleInfo(eventId, VeUEId, _RSUAdapterDRA.m_HoldObj.m_RSUId, patternIdx, scheduleIntervalList), patternIdx);
-			newCount++;
+			m_NewCount++;
 		}
 
 		//将调度表中当前可以继续传输的用户压入传输链表中
@@ -780,7 +780,7 @@ void RRM_DRA::DRAConflictListener() {
 					//释放调度信息对象的内存资源
 					delete info;
 					info = nullptr;
-					deleteCount++;
+					m_DeleteCount++;
 				}
 
 				//释放Pattern资源
@@ -809,7 +809,7 @@ void RRM_DRA::DRAConflictListener() {
 
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
-					deleteCount++;
+					m_DeleteCount++;
 
 					//释放Pattern资源
 					_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
@@ -848,7 +848,7 @@ void RRM_DRA::DRAConflictListener() {
 					//释放调度信息对象的内存资源
 					delete info;
 					info = nullptr;
-					deleteCount++;
+					m_DeleteCount++;
 				}
 				//释放Pattern资源
 				_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -882,7 +882,7 @@ void RRM_DRA::DRAConflictListener() {
 
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
-					deleteCount++;
+					m_DeleteCount++;
 
 					//释放Pattern资源
 					_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -978,7 +978,7 @@ void RRM_DRA::DRAWriteTTILogInfo(std::ofstream& out, int TTI, eEventLogType type
 }
 
 
-void RRM_DRA::writeClusterPerformInfo(std::ofstream &out) {
+void RRM_DRA::DRAWriteClusterPerformInfo(std::ofstream &out) {
 	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	out << "{" << endl;
 

@@ -21,6 +21,7 @@ sMessage::sMessage(eMessageType messageType) {
 		bitNum = gc_DataMessageBitNum;
 		break;
 	}
+	remainBitNum = bitNum;
 }
 
 string sMessage::toString() {
@@ -43,10 +44,16 @@ string sMessage::toString() {
 }
 
 
-sEvent::sEvent(int VeUEId, int TTI, eMessageType messageType) :isSuccessded(false), propagationDelay(0), sendDelay(0), processingDelay(0), queuingDelay(0), conflictNum(0) {
+sEvent::sEvent(int VeUEId, int TTI, eMessageType messageType) :
+	isSuccessded(false), 
+	propagationDelay(0), 
+	sendDelay(0), 
+	processingDelay(0), 
+	queuingDelay(0), 
+	conflictNum(0),
+	message(sMessage(messageType)) {
 	this->VeUEId = VeUEId;
 	this->TTI = TTI;
-	message = sMessage(messageType);
 }
 
 

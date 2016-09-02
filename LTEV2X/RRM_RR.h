@@ -3,11 +3,14 @@
 #include<list>
 #include"RRM.h"
 #include"Exception.h"
+#include"Global.h"
 
 /*===========================================
 *              模块常量定义
 * ==========================================*/
-
+const int gc_RRNumRBPerPattern = 5;//每个Pattern的RB数量
+const int gc_RRPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
+const int gc_RRBitNumPerPattern = gc_RRNumRBPerPattern*gc_BitNumPerRB;//每个Pattern单位TTI传输的bit数量
 
 /*===========================================
 *            调度信息数据结构
@@ -18,16 +21,16 @@ struct sRRScheduleInfo {
 	int VeUEId;//车辆编号
 	int RSUId;//RSU编号
 	int patternIdx;//频域块编号
-	std::tuple<int, int> occupiedInterval;//当前VeUE进行传输的实际TTI区间（闭区间）
+	int occupiedNumTTI;//当前VeUE进行传输的实际TTI区间（闭区间）
 
 	sRRScheduleInfo() {}
-	sRRScheduleInfo(int eventId, eMessageType messageType, int VeUEId, int RSUId, int patternIdx, const std::tuple<int, int> &occupiedInterval) {
+	sRRScheduleInfo(int eventId, eMessageType messageType, int VeUEId, int RSUId, int patternIdx, const int &occupiedNumTTI) {
 		this->eventId = eventId;
 		this->messageType = messageType;
 		this->VeUEId = VeUEId;
 		this->RSUId = RSUId;
 		this->patternIdx = patternIdx;
-		this->occupiedInterval = occupiedInterval;
+		this->occupiedNumTTI = occupiedNumTTI;
 	}
 
 	std::string toLogString(int n);
@@ -51,8 +54,7 @@ public:
 	RSUAdapterRR(cRSU& _RSU);
 
 	/*------------------数据成员------------------*/
-	int m_RRNumRBPerPattern = 5;
-	int m_RRPatternNum = gc_DRATotalBandwidth / gc_BandwidthOfRB / m_RRNumRBPerPattern;
+	
 
 	std::vector<int> m_RRAdmitEventIdList;//当前TTI接入列表，最大长度不超过Pattern数量
 
@@ -99,8 +101,6 @@ public:
 	cVeUE& m_HoldObj;//该适配器持有的原VeUE对象
 	VeUEAdapterRR() = delete;
 	VeUEAdapterRR(cVeUE& _VeUE) :m_HoldObj(_VeUE) {}
-
-	int m_RemainBitNum = 0;
 };
 
 
@@ -116,9 +116,9 @@ public:
 	/*------------------数据成员------------------*/
 	std::list<int> m_RRSwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
-	int newCount = 0;//记录动态创建的对象的次数
+	int m_NewCount = 0;//记录动态创建的对象的次数
 
-	int deleteCount = 0;//记录删除动态创建对象的次数
+	int m_DeleteCount = 0;//记录删除动态创建对象的次数
 
 	/*------------------成员函数------------------*/
 	void schedule() override;//DRA调度总控，覆盖基类的虚函数
@@ -134,7 +134,7 @@ public:
 	void RRTransimitBegin();//开始传输(就是更新ScheduleTable)
 
 	void RRWriteScheduleInfo(std::ofstream& out);//记录调度信息日志
-	void RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int patternIdx);
+	void RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int patternIdx);//以时间为单位记录日志
 	void RRDelaystatistics();//时延统计
 
 	void RRTransimitEnd();//传输结束(就是更新ScheduleTable)

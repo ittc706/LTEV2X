@@ -5,16 +5,18 @@
 #include"Enumeration.h"
 
 struct sMessage {//消息类
-				 /*数据成员*/
+	/*数据成员*/
 	eMessageType messageType;//该消息的类型
 	int bitNum; //该消息的比特数量
+	int remainBitNum;//剩余待传输的bit数
 
-				/*构造函数*/
-	sMessage() {}
+	/*构造函数*/
+	sMessage() = delete;
 	sMessage(eMessageType messageType);
 
 	/*功能函数*/
 	std::string toString();
+	void resetRemainBitNum() { remainBitNum = bitNum; }
 };
 
 struct sEvent {//事件类
@@ -64,7 +66,7 @@ public:
 	sMessage message;
 
 	/*构造函数*/
-	sEvent() :isSuccessded(false), propagationDelay(0), sendDelay(0), processingDelay(0), queuingDelay(0), conflictNum(0) {}
+	sEvent() = delete;
 	sEvent(int VeUEId, int TTI, eMessageType messageType);
 
 	/*功能函数*/

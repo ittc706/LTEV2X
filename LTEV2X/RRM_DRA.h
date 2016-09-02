@@ -223,8 +223,8 @@ public:
 
 	/*------------------成员函数------------------*/
 
-	int RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType);
-	int RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
+	int DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType);
+	int DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
 
 	std::string toString(int n);//用于打印VeUE信息
 };
@@ -249,9 +249,9 @@ public:
 	eDRAMode m_DRAMode;//资源快选择的策略
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
-	int newCount = 0;//记录动态创建的对象的次数
+	int m_NewCount = 0;//记录动态创建的对象的次数
 
-	int deleteCount = 0;//记录删除动态创建对象的次数
+	int m_DeleteCount = 0;//记录删除动态创建对象的次数
 
 	/*------------------成员函数------------------*/
 
@@ -283,7 +283,7 @@ private:
 	//日志记录函数
 	void DRAWriteScheduleInfo(std::ofstream& out);//记录调度信息日志
 	void DRAWriteTTILogInfo(std::ofstream& out, int TTI, eEventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx);
-	void writeClusterPerformInfo(std::ofstream &out);//写入分簇信息的日志
+	void DRAWriteClusterPerformInfo(std::ofstream &out);//写入分簇信息的日志
 
 
 	//工具函数
@@ -296,14 +296,14 @@ private:
 
 
 inline
-int VeUEAdapterDRA::RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
+int VeUEAdapterDRA::DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
 	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
 	if (size == 0) return -1;
 	return curAvaliablePatternIdx[messageType][rand() % size];
 }
 
 inline
-int VeUEAdapterDRA::RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
+int VeUEAdapterDRA::DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
 	int size = static_cast<int>(curAvaliableEmergencyPatternIdx.size());
 	if (size == 0) return -1;
 	return curAvaliableEmergencyPatternIdx[rand() % size];

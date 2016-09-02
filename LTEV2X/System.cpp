@@ -52,7 +52,7 @@ void cSystem::configure() {//系统仿真参数配置
 	* -------------------------------------------------------------*/
 
 	m_Config.m_NTTI = 200;//仿真TTI时间
-	m_Config.periodicEventNTTI = 50;
+	m_Config.periodicEventNTTI = 10;
 	m_Config.emergencyLamda = 0.001;
 	m_Config.locationUpdateNTTI = 100;
 

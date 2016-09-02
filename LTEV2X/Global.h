@@ -211,9 +211,9 @@ const float c_FC = 2e9f;
 /*===========================================
 *          无线资源管理单元常量
 * ==========================================*/
-const int gc_DRATotalBandwidth =10 * 1000 * 1000;//10MHz
+const int gc_TotalBandwidth =10 * 1000 * 1000;//10MHz
 const int gc_BandwidthOfRB = 12 * 1000 * 15;//180kHZ
-const int gc_RBNum = gc_DRATotalBandwidth/ gc_BandwidthOfRB;   //RB数量(111)
+const int gc_RBNum = gc_TotalBandwidth/ gc_BandwidthOfRB;   //RB数量(111)
 const int gc_BitNumPerRB=1800;  //单位(个),由于RB带宽为180kHz，TTI为10ms，因此单位TTI单位RB传输的比特数为180k*10ms=1800
 
 
@@ -222,8 +222,8 @@ const int gc_BitNumPerRB=1800;  //单位(个),由于RB带宽为180kHz，TTI为10ms，因此单
 /*===========================================
 *          无线资源管理单元常量
 * ==========================================*/
-const int gc_PeriodMessageBitNum = 7200;
-const int gc_EmergencyMessageBitNum = 5400;
+const int gc_PeriodMessageBitNum = 7200*5;
+const int gc_EmergencyMessageBitNum = 5400*2;
 const int gc_DataMessageBitNum = 180000;
 
 
