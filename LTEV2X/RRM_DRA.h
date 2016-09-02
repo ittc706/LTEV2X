@@ -218,7 +218,7 @@ public:
 
 	/*------数据成员(新增用于模块数据成员)--------*/
 
-	std::tuple<int, int> m_ScheduleInterval;//该VeUE在当前簇内当前一轮调度区间
+	std::tuple<int, int> m_ScheduleInterval;//该VeUE所在簇的前一轮调度区间
 
 
 	/*------------------成员函数------------------*/

@@ -1,5 +1,7 @@
 version_2016_9_2(RR模块化初步完成)
 	仍有错误，当前只是排队调度，并没有轮询
+	删除了FileOutput??.cpp文件，以及toString.cpp文件，Schedule.h,Schedule.cpp
+	删除了未完成的PF调度模块
 
 version_2016_9_1(减少了DRA模块不必要的链表之间的转换)
 	例如从事件表到接纳表，以及切换表到接纳表

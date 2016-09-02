@@ -13,9 +13,6 @@
 
 using namespace std;
 
-int newCount = 0;//记录动态创建的对象的次数
-
-int deleteCount = 0;//记录删除动态创建对象的次数
 
 void cRSU::initialize(sRSUConfigure &t_RSUConfigure){
 	m_RSUId = t_RSUConfigure.wRSUID;

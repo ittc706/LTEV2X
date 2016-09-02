@@ -72,11 +72,11 @@ void RRM_RR::schedule() {
 	RRUpdateAdmitEventIdList(clusterFlag);
 
 	//开始本次调度
-	RRProcessTransimit1();
+	RRTransimitBegin();
 	RRWriteScheduleInfo(g_OutRRScheduleInfo);
 
 	RRDelaystatistics();
-	RRProcessTransimit2();
+	RRTransimitEnd();
 }
 
 
@@ -259,7 +259,7 @@ void RRM_RR::RRProcessWaitEventIdList() {
 }
 
 
-void RRM_RR::RRProcessTransimit1() {
+void RRM_RR::RRTransimitBegin() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSUAdapterRR &_RSUAdapterRR = m_RSUAdapterVec[RSUId];
 
@@ -367,7 +367,7 @@ void RRM_RR::RRDelaystatistics() {
 }
 
 
-void RRM_RR::RRProcessTransimit2() {
+void RRM_RR::RRTransimitEnd() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSUAdapterRR &_RSUAdapterRR = m_RSUAdapterVec[RSUId];
 

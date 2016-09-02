@@ -40,6 +40,7 @@ struct sRRScheduleInfo {
 };
 
 
+
 /*===========================================
 *                RSU适配器
 * ==========================================*/
@@ -98,6 +99,8 @@ public:
 	cVeUE& m_HoldObj;//该适配器持有的原VeUE对象
 	VeUEAdapterRR() = delete;
 	VeUEAdapterRR(cVeUE& _VeUE) :m_HoldObj(_VeUE) {}
+
+	int m_RemainBitNum = 0;
 };
 
 
@@ -128,13 +131,13 @@ public:
 	void RRProcessSwitchListWhenLocationUpdate();
 	void RRProcessWaitEventIdList();
 
-	void RRProcessTransimit1();
+	void RRTransimitBegin();//开始传输(就是更新ScheduleTable)
 
 	void RRWriteScheduleInfo(std::ofstream& out);//记录调度信息日志
 	void RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int patternIdx);
-
 	void RRDelaystatistics();//时延统计
-	void RRProcessTransimit2();
+
+	void RRTransimitEnd();//传输结束(就是更新ScheduleTable)
 };
 
 
