@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <fstream>
-#include "Schedule.h"
 #include "Config.h"
 #include "eNB.h"
 #include "RSU.h"
@@ -9,6 +8,8 @@
 #include "Traffic.h"
 #include "Road.h"
 #include "RRMBasic.h"
+#include "RRM_DRA.h"
+#include "RRM_RR.h"
 
 class cSystem{
 public:
@@ -26,7 +27,8 @@ public:
 	cRSU* m_RSUAry;//RSU容器
 	cVeUE* m_VeUEAry;//VeUE容器
 
-
+	/*调度模块总控参数*/
+	eScheduleMode m_ScheduleMode;//调度模式选择
 	RRM_Basic* RRMPoint;
 
 	/*------------------成员函数------------------*/
@@ -67,60 +69,11 @@ public:
 	/*------------------数据成员------------------*/
 	int m_AllUsers;
 	int m_FreshNum;
-
 	/*------------------成员函数------------------*/
 
 	void channelGeneration();//信道产生与刷新
 	void freshLoc(void);
 	
-
-	/*--------------------------------------------------------------
-	*                      无线资源管理单元
-	* -------------------------------------------------------------*/
-	eScheduleMode m_ScheduleMode;
-
-	/*----------------------------------------------------
-	*                      RR调度
-	* ---------------------------------------------------*/
-	/*------------------数据成员------------------*/
-	std::list<int> m_RRSwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
-
-	/*------------------成员函数------------------*/
-public:
-	/*接口函数*/
-	void RRSchedule();//RR调度总控
-private:
-	/*实现函数*/
-	void RRInformationClean();//资源分配信息清空
-	void RRUpdateAdmitEventIdList(bool clusterFlag);//更新接入表
-
-	void RRProcessTransimit1();
-	void RRWriteScheduleInfo();//记录调度信息日志
-	void RRDelaystatistics();//时延统计
-	void RRProcessTransimit2();
-
-
-
-
-	/*----------------------------------------------------
-	*                      PF调度
-	* ---------------------------------------------------*/
-
-	/*------------------成员函数------------------*/
-public:
-	/*接口函数*/
-	void PFSchedule();//调度总控制
-
-private:
-	/*实现函数*/
-	void PFInformationClean();//清除当前扇区所有用户的调度信息
-	void schedulePF_RP_CSI_UL();//上行PF-RP调度
-
-	//线性时间选取算法
-	sPFInfo selectKthPF(std::vector<sPFInfo>& vecF, int k, int p, int r);
-	int partition(std::vector<sPFInfo>& vecF, int p, int r);
-	void exchange(std::vector<sPFInfo>& vecF, int i, int j);
-
 };
 
 

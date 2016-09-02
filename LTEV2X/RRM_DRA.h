@@ -210,11 +210,11 @@ public:
 /*===========================================
 *                VeUE适配器
 * ==========================================*/
-class VeUEAdapter {
+class VeUEAdapterDRA {
 public:
 	cVeUE& m_HoldObj;//该适配器持有的原VeUE对象
-	VeUEAdapter() = delete;
-	VeUEAdapter(cVeUE& _VeUE) :m_HoldObj(_VeUE) {}
+	VeUEAdapterDRA() = delete;
+	VeUEAdapterDRA(cVeUE& _VeUE) :m_HoldObj(_VeUE) {}
 
 	/*------数据成员(新增用于模块数据成员)--------*/
 
@@ -241,7 +241,7 @@ public:
 	RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList,eDRAMode m_DRAMode);
 
 	std::vector<RSUAdapterDRA> m_RSUAdapterVec;
-	std::vector<VeUEAdapter> m_VeUEAdapterVec;
+	std::vector<VeUEAdapterDRA> m_VeUEAdapterVec;
 
 
 	/*------------------数据成员------------------*/
@@ -255,7 +255,7 @@ public:
 	/*------------------成员函数------------------*/
 public:
 	/*接口函数*/
-	void schedule() override;//DRA调度总控，覆盖基累的虚函数
+	void schedule() override;//DRA调度总控，覆盖基类的虚函数
 
 private:
 	/*实现函数*/
@@ -294,14 +294,14 @@ private:
 
 
 inline
-int VeUEAdapter::RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
+int VeUEAdapterDRA::RBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
 	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
 	if (size == 0) return -1;
 	return curAvaliablePatternIdx[messageType][rand() % size];
 }
 
 inline
-int VeUEAdapter::RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
+int VeUEAdapterDRA::RBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
 	int size = static_cast<int>(curAvaliableEmergencyPatternIdx.size());
 	if (size == 0) return -1;
 	return curAvaliableEmergencyPatternIdx[rand() % size];

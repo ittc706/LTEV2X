@@ -24,9 +24,6 @@
     <ClInclude Include="Global.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Schedule.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="System.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -60,12 +57,12 @@
     <ClInclude Include="RRM_DRA.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RRM_RR.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Schedule.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="VUE.cpp">
@@ -80,13 +77,7 @@
     <ClCompile Include="System.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ToString.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="eNB.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FileOutput.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Channel.cpp">
@@ -105,6 +96,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RRM_DRA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RRM_RR.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

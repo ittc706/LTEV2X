@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iomanip>
 #include "Enumeration.h"
-#include "Schedule.h"
 #include "System.h"
 #include "Exception.h"
 using namespace std;
@@ -38,6 +37,7 @@ int main() {
 	cout.unsetf(ios::fixed);
 
 	g_OutTemp.close();
+	g_OutRRScheduleInfo.close();
 	g_OutDRAScheduleInfo.close();
 	g_OutClasterPerformInfo.close();
 	g_OutEventListInfo.close();

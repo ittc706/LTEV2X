@@ -1,3 +1,21 @@
+/*
+* =====================================================================================
+*
+*       Filename:  RRM_DRA.cpp
+*
+*    Description:  DRAÄ£¿é
+*
+*        Version:  1.0
+*        Created:
+*       Revision:
+*       Compiler:  VS_2015
+*
+*         Author:  HCF
+*            LIB:  ITTC
+*
+* =====================================================================================
+*/
+
 #include <tuple>
 #include <vector>
 #include <list>
@@ -32,7 +50,7 @@ std::string sDRAScheduleInfo::toScheduleString(int n) {
 }
 
 
-string VeUEAdapter::toString(int n) {
+string VeUEAdapterDRA::toString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
@@ -124,7 +142,7 @@ string RSUAdapterDRA::toString(int n) {
 RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, eDRAMode m_DRAMode) :
 	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList), m_DRAMode(m_DRAMode) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		m_VeUEAdapterVec.push_back(VeUEAdapter(m_VeUEAry[VeUEId]));
+		m_VeUEAdapterVec.push_back(VeUEAdapterDRA(m_VeUEAry[VeUEId]));
 	}
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		m_RSUAdapterVec.push_back(RSUAdapterDRA(m_RSUAry[RSUId]));
@@ -968,7 +986,7 @@ void RRM_DRA::writeClusterPerformInfo(std::ofstream &out) {
 	out << "    VUE Info: " << endl;
 	out << "    {" << endl;
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		VeUEAdapter &_VeUE = m_VeUEAdapterVec[VeUEId];
+		VeUEAdapterDRA &_VeUE = m_VeUEAdapterVec[VeUEId];
 		out << _VeUE.toString(2) << endl;
 	}
 	out << "    }\n" << endl;

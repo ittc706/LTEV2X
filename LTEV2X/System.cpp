@@ -3,8 +3,7 @@
 #include "System.h"
 #include "Global.h"
 #include "RSU.h"
-#include "RRMBasic.h"
-#include "RRM_DRA.h"
+
 
 using namespace std;
 
@@ -31,7 +30,7 @@ void cSystem::process() {
 		case PF:
 			break;
 		case RR:
-			RRSchedule();
+			RRMPoint->schedule();
 			break;
 		case DRA:
 			RRMPoint->schedule();
@@ -113,7 +112,7 @@ void cSystem::configure() {//系统仿真参数配置
 	m_Config.locationUpdateNTTI = 100;
 
 	//选择调度模式
-	m_ScheduleMode = DRA;
+	m_ScheduleMode = RR;
 
 	//事件链表容器
 	m_EventTTIList = vector<list<int>>(m_NTTI);
@@ -121,6 +120,9 @@ void cSystem::configure() {//系统仿真参数配置
 
 
 void cSystem::initialization() {
+	/*--------------------------------------------------------------
+	*                      全局控制单元初始化
+	* -------------------------------------------------------------*/
 	srand((unsigned)time(NULL));//iomanip
 	m_TTI = 0;
 
@@ -178,6 +180,10 @@ void cSystem::initialization() {
 		}
 	}
 
+
+	/*--------------------------------------------------------------
+	*                  业务模型与控制单元单元初始化
+	* -------------------------------------------------------------*/
 	//创建事件链表
 	buildEventList();
 }
@@ -186,6 +192,9 @@ void cSystem::initialization() {
 
 void cSystem::RRMInitialization() {
 	switch (m_ScheduleMode) {
+	case RR:
+		RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList);
+		break;
 	case DRA:
 		RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, P123);
 		break;
@@ -193,6 +202,57 @@ void cSystem::RRMInitialization() {
 }
 
 
+void cSystem::writeEventListInfo(ofstream &out) {
+	for (int i = 0; i < m_NTTI; i++) {
+		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
+		out << "{" << endl;
+		for (int eventId : m_EventTTIList[i]) {
+			sEvent& e = m_EventVec[eventId];
+			out << "    " << e.toString() << endl;
+		}
+		out << "}\n\n" << endl;
+	}
+}
+
+
+void cSystem::writeEventLogInfo(std::ofstream &out) {
+	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
+		string s;
+		switch (m_EventVec[eventId].message.messageType) {
+		case PERIOD:
+			s = "PERIOD";
+			break;
+		case EMERGENCY:
+			s = "EMERGENCY";
+			break;
+		case DATA:
+			s = "DATA";
+			break;
+		}
+		out << "Event[" << eventId << "]";
+		out << "{" << endl;
+		out << "    " << "VeUEId = " << m_EventVec[eventId].VeUEId << endl;
+		out << "    " << "MessageType = " << s << endl;
+		out << "    " << "sendDelay = " << m_EventVec[eventId].sendDelay << "(TTI)" << endl;
+		out << "    " << "queuingDelay = " << m_EventVec[eventId].queuingDelay << "(TTI)" << endl;
+		out << m_EventVec[eventId].toLogString(1);
+		out << "}" << endl;
+	}
+}
+
+
+void cSystem::writeVeUELocationUpdateLogInfo(std::ofstream &out) {
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		out << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
+		out << "{" << endl;
+		for (const tuple<int, int> &t : m_VeUEAry[VeUEId].m_LocationUpdateLogInfoList)
+			out << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
+		out << "}" << endl;
+	}
+}
+
+
 void cSystem::dispose() {
 	delete RRMPoint;
 }
+

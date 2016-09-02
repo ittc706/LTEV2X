@@ -128,8 +128,8 @@
     <ClInclude Include="Road.h" />
     <ClInclude Include="RRMBasic.h" />
     <ClInclude Include="RRM_DRA.h" />
+    <ClInclude Include="RRM_RR.h" />
     <ClInclude Include="RSU.h" />
-    <ClInclude Include="Schedule.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Traffic.h" />
     <ClInclude Include="VUE.h" />
@@ -137,17 +137,15 @@
   <ItemGroup>
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="eNB.cpp" />
-    <ClCompile Include="FileOutput.cpp" />
     <ClCompile Include="GeographyAndMobility.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="IMTA.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="RRM_DRA.cpp" />
+    <ClCompile Include="RRM_RR.cpp" />
     <ClCompile Include="RSU.cpp" />
-    <ClCompile Include="Schedule.cpp" />
     <ClCompile Include="System.cpp" />
-    <ClCompile Include="ToString.cpp" />
     <ClCompile Include="Traffic.cpp" />
     <ClCompile Include="VUE.cpp" />
   </ItemGroup>
