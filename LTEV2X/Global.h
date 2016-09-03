@@ -5,20 +5,21 @@
 /*===========================================
 *            输出日志文件流声明
 * ==========================================*/
-extern std::ofstream g_OutTemp;
-//RR单元
-extern std::ofstream g_OutRRScheduleInfo;
-//DRA单元
-extern std::ofstream g_OutDRAScheduleInfo;
-extern std::ofstream g_OutClasterPerformInfo;
-extern std::ofstream g_OutEventListInfo;
-extern std::ofstream g_OutTTILogInfo;
-extern std::ofstream g_OutEventLogInfo;
-extern std::ofstream g_OutVeUELocationUpdateLogInfo;
-//Traffic单元
-extern std::ofstream g_OutDelayStatistics;
-extern std::ofstream g_OutEmergencyPossion;
-extern std::ofstream g_OutConflictNum;
+extern std::ofstream g_FileTemp;
+//RRM_RR模块
+extern std::ofstream g_FileRRScheduleInfo;
+//RRM_DRA模块
+extern std::ofstream g_FileDRAScheduleInfo;
+extern std::ofstream g_FileClasterPerformInfo;
+extern std::ofstream g_FileEventListInfo;
+extern std::ofstream g_FileTTILogInfo;
+extern std::ofstream g_FileEventLogInfo;
+extern std::ofstream g_FileVeUELocationUpdateLogInfo;
+//TMAC_B模块
+extern std::ofstream g_FileDelayStatistics;
+extern std::ofstream g_FileEmergencyPossion;
+extern std::ofstream g_FileDataPossion;
+extern std::ofstream g_FileConflictNum;
 
 /*===========================================
 *               全域函数声明
@@ -222,8 +223,8 @@ const int gc_BitNumPerRB=1800;  //单位(个),由于RB带宽为180kHz，TTI为10ms，因此单
 /*===========================================
 *          无线资源管理单元常量
 * ==========================================*/
-const int gc_PeriodMessageBitNum = 7200*5;
-const int gc_EmergencyMessageBitNum = 5400*2;
+const int gc_PeriodMessageBitNum = 7200;
+const int gc_EmergencyMessageBitNum = 5400;
 const int gc_DataMessageBitNum = 180000;
 
 

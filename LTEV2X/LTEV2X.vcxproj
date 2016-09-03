@@ -118,8 +118,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BMAD.h" />
-    <ClInclude Include="BMAD_B.h" />
+    <ClInclude Include="TMAC.h" />
+    <ClInclude Include="TMAC_B.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
@@ -137,7 +137,7 @@
     <ClInclude Include="VUE.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BMAD_B.cpp" />
+    <ClCompile Include="TMAC_B.cpp" />
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="eNB.cpp" />
     <ClCompile Include="GeographyAndMobility.cpp" />

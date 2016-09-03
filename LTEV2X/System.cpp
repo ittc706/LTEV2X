@@ -19,7 +19,7 @@ void cSystem::process() {
 	moduleControlInitialization();
 
 	//创建事件链表
-	BMADPoint->buildEventList(g_OutEventListInfo);
+	TMACPoint->buildEventList(g_FileEventListInfo);
 
 	//开始仿真
 	for (int count = 0;count < m_Config.m_NTTI;count++) {
@@ -40,10 +40,10 @@ void cSystem::process() {
 	}
 
 	//处理各项业务时延数据
-	BMADPoint->processStatistics(g_OutDelayStatistics, g_OutEmergencyPossion, g_OutConflictNum, g_OutEventLogInfo);
+	TMACPoint->processStatistics(g_FileDelayStatistics, g_FileEmergencyPossion, g_FileDataPossion, g_FileConflictNum, g_FileEventLogInfo);
 
 	//打印车辆地理位置更新日志信息
-	writeVeUELocationUpdateLogInfo(g_OutVeUELocationUpdateLogInfo);
+	writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo);
 }
 
 void cSystem::configure() {//系统仿真参数配置
@@ -52,12 +52,13 @@ void cSystem::configure() {//系统仿真参数配置
 	* -------------------------------------------------------------*/
 
 	m_Config.m_NTTI = 200;//仿真TTI时间
-	m_Config.periodicEventNTTI = 10;
+	m_Config.periodicEventNTTI = 50;
 	m_Config.emergencyLamda = 0.001;
+	m_Config.dataLamda = 0.01;
 	m_Config.locationUpdateNTTI = 100;
 
 	//选择调度模式
-	m_ScheduleMode = RR;
+	m_ScheduleMode = DRA;
 
 	//事件链表容器
 	m_EventTTIList = vector<list<int>>(m_Config.m_NTTI);
@@ -178,7 +179,7 @@ void cSystem::initialization() {
 
 
 void cSystem::moduleControlInitialization() {
-	BMADPoint = new BMAD_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList);
+	TMACPoint = new TMAC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList);
 
 	switch (m_ScheduleMode) {
 	case RR:
@@ -205,7 +206,7 @@ void cSystem::writeVeUELocationUpdateLogInfo(std::ofstream &out) {
 
 
 void cSystem::dispose() {
-	delete BMADPoint;
+	delete TMACPoint;
 	delete RRMPoint;
 }
 

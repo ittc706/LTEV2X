@@ -6,20 +6,21 @@ using namespace std;
 /*===========================================
 *            输出日志文件流声明
 * ==========================================*/
-ofstream g_OutTemp("Output\\Temp.txt");
-//RR单元
-ofstream g_OutRRScheduleInfo("Output\\DRAOutput\\RRScheduleInfo.txt");
-//DRA单元
-ofstream g_OutDRAScheduleInfo("Output\\DRAOutput\\DRAScheduleInfo.txt");
-ofstream g_OutClasterPerformInfo("Output\\DRAOutput\\ClasterPerformInfo.txt");
-ofstream g_OutEventListInfo("Output\\DRAOutput\\EventListInfo.txt");
-ofstream g_OutTTILogInfo("Output\\DRAOutput\\TTILogInfo.txt");
-ofstream g_OutEventLogInfo("Output\\DRAOutput\\EventLogInfo.txt");
-ofstream g_OutVeUELocationUpdateLogInfo("Output\\DRAOutput\\VeUELocationUpdateLogInfo.txt");
-//Traffic单元
-ofstream g_OutDelayStatistics("Output\\TrafficOutput\\DelayStatistics.txt");
-ofstream g_OutEmergencyPossion("Output\\TrafficOutput\\EmergencyPossion.txt");
-ofstream g_OutConflictNum("Output\\TrafficOutput\\ConflictNum.txt");
+ofstream g_FileTemp("Log\\Temp.txt");
+//RRM_RR模块
+ofstream g_FileRRScheduleInfo("Log\\RRMLog\\RRScheduleInfo.txt");
+//RRM_DRA模块
+ofstream g_FileDRAScheduleInfo("Log\\RRMLog\\DRAScheduleInfo.txt");
+ofstream g_FileClasterPerformInfo("Log\\RRMLog\\ClasterPerformInfo.txt");
+ofstream g_FileEventListInfo("Log\\RRMLog\\EventListInfo.txt");
+ofstream g_FileTTILogInfo("Log\\RRMLog\\TTILogInfo.txt");
+ofstream g_FileEventLogInfo("Log\\RRMLog\\EventLogInfo.txt");
+ofstream g_FileVeUELocationUpdateLogInfo("Log\\RRMLog\\VeUELocationUpdateLogInfo.txt");
+//TMAC_B模块
+ofstream g_FileDelayStatistics("Log\\TMACLog\\DelayStatistics.txt");
+ofstream g_FileEmergencyPossion("Log\\TMACLog\\EmergencyPossion.txt");
+ofstream g_FileDataPossion("Log\\TMACLog\\DataPossion.txt");
+ofstream g_FileConflictNum("Log\\TMACLog\\ConflictNum.txt");
 
 
 /*===========================================

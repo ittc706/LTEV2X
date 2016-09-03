@@ -73,7 +73,7 @@ void RRM_RR::schedule() {
 
 	//开始本次调度
 	RRTransimitBegin();
-	RRWriteScheduleInfo(g_OutRRScheduleInfo);
+	RRWriteScheduleInfo(g_FileRRScheduleInfo);
 
 	RRDelaystatistics();
 	RRTransimitEnd();
@@ -126,10 +126,10 @@ void RRM_RR::RRProcessEventList() {
 				_RSUAdapterRR.RRPushToWaitEventIdList(eventId, m_EventVec[eventId].message.messageType);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, -1, "Trigger");
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, -1);
+				RRWriteTTILogInfo(g_FileTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, -1);
 			}
 		}
 	}
@@ -157,10 +157,10 @@ void RRM_RR::RRProcessWaitEventIdListWhenLocationUpdate() {
 				it = _RSUAdapterRR.m_RRWaitEventIdList.erase(it);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, -1, "LocationUpdate");
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, -1);	
+				RRWriteTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, -1);	
 			}
 			else {//仍然处于当前RSU范围内
 				it++;
@@ -191,10 +191,10 @@ void RRM_RR::RRProcessSwitchListWhenLocationUpdate() {
 				it = m_RRSwitchEventIdList.erase(it);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, -1, "LocationUpdate");
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, -1);
+				RRWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, -1);
 			}
 		}
 	}
@@ -214,10 +214,10 @@ void RRM_RR::RRProcessWaitEventIdList() {
 			_RSUAdapterRR.RRPushToAdmitEventIdList(eventId);
 			
 			//更新该事件的日志
-			m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, -1);
+			m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, -1, "Accept");
 
 			//记录TTI日志
-			RRWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, -1);
+			RRWriteTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, -1);
 
 			it = _RSUAdapterRR.m_RRWaitEventIdList.erase(it);
 		}
@@ -342,7 +342,7 @@ void RRM_RR::RRTransimitEnd() {
 			sRRScheduleInfo* &info = _RSUAdapterRR.m_RRScheduleInfoTable[patternIdx];
 			if (info == nullptr) continue;
 			//更新该事件的日志
-			m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx);
+			m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx, "Transimit");
 
 			//更新剩余待传输bit数量
 			m_EventVec[info->eventId].message.remainBitNum -= gc_RRBitNumPerPattern;
@@ -352,10 +352,10 @@ void RRM_RR::RRTransimitEnd() {
 				m_EventVec[info->eventId].isSuccessded = true;
 
 				//更新该事件的日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx);
+				m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx, "Succeed");
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, m_TTI, 0, info->eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, patternIdx);
+				RRWriteTTILogInfo(g_FileTTILogInfo, m_TTI, 0, info->eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, patternIdx);
 
 				//释放调度信息对象的内存资源
 				delete info;
@@ -366,10 +366,10 @@ void RRM_RR::RRTransimitEnd() {
 				_RSUAdapterRR.RRPushToWaitEventIdList(info->eventId, m_EventVec[info->eventId].message.messageType);
 
 				//更新该事件的日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx);
+				m_EventVec[info->eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx, "WaitNextTurn");
 
 				//记录TTI日志
-				RRWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, info->eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, patternIdx);
+				RRWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, info->eventId, _RSUAdapterRR.m_HoldObj.m_RSUId, patternIdx);
 
 				//释放调度信息对象的内存资源
 				delete info;

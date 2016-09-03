@@ -10,8 +10,8 @@
 #include"RRM.h"
 #include"RRM_DRA.h"
 #include"RRM_RR.h"
-#include"BMAD.h"
-#include"BMAD_B.h"
+#include"TMAC.h"
+#include"TMAC_B.h"
 
 class cSystem{
 public:
@@ -33,7 +33,7 @@ public:
 
 	/*-----------------模块控制器-----------------*/
 	//业务模型与控制单元
-	BMAD_Basic* BMADPoint;
+	TMAC_Basic* TMACPoint;
 
 	//无限资源管理单元
 	eScheduleMode m_ScheduleMode;//调度模式选择

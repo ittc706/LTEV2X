@@ -57,13 +57,13 @@
     <ClInclude Include="RRM.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BMAD.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="BMAD_B.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TMAC.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TMAC_B.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,10 +104,10 @@
     <ClCompile Include="RRM_RR.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="BMAD_B.cpp">
+    <ClCompile Include="Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
+    <ClCompile Include="TMAC_B.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

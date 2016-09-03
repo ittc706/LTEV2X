@@ -177,7 +177,7 @@ void RRM_DRA::schedule() {
 		break;
 	}
 	//写入调度信息
-	DRAWriteScheduleInfo(g_OutDRAScheduleInfo);
+	DRAWriteScheduleInfo(g_FileDRAScheduleInfo);
 
 	//统计时延信息
 	DRADelaystatistics();
@@ -263,7 +263,7 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 		}
 	}
 
-	DRAWriteClusterPerformInfo(g_OutClasterPerformInfo);
+	DRAWriteClusterPerformInfo(g_FileClasterPerformInfo);
 }
 
 
@@ -308,10 +308,10 @@ void RRM_DRA::DRAProcessEventList() {
 					_RSUAdapterDRA.DRAPushToEmergencyWaitEventIdList(eventId);
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "Trigger");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 					/*  EMERGENCY  */
 				}
 				else {//非紧急性事件
@@ -319,10 +319,10 @@ void RRM_DRA::DRAProcessEventList() {
 					_RSUAdapterDRA.DRAPushToWaitEventIdList(eventId);
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "Trigger");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 				}
 			}
 		}
@@ -354,10 +354,10 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 					_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx, "LocationUpdate");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
 				}
 				else {//该车辆仍在当前RSU内
 					  //doing nothing 
@@ -388,10 +388,10 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 						_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
 						//更新该事件的日志
-						m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+						m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "LocationUpdate");
 
 						//记录TTI日志
-						DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+						DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 					}
 					else {
 						if (_RSUAdapterDRA.DRAGetClusterIdxOfVeUE(VeUEId) != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
@@ -406,10 +406,10 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 							_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
 							//更新该事件的日志
-							m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+							m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "LocationUpdate");
 
 							//记录TTI日志
-							DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+							DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 						}
 						else {//既没有发生RSU切换，也没有发生RSU内簇切换，什么也不做
 							  //doing nothing
@@ -438,10 +438,10 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 				it = _RSUAdapterDRA.m_DRAEmergencyWaitEventIdList.erase(it);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "LocationUpdate");
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 			}
 			else {//仍然处于当前RSU范围内
 				it++;
@@ -461,10 +461,10 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 				it = _RSUAdapterDRA.m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "LocationUpdate");
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 			}
 			else {//仍然处于当前RSU范围内
 				it++;
@@ -498,10 +498,10 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 					it = m_DRASwitchEventIdList.erase(it);
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "LocationUpdate");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 				}
 				/*  EMERGENCY  */
 
@@ -513,10 +513,10 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 					it = m_DRASwitchEventIdList.erase(it);
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "LocationUpdate");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 				}
 			}
 		}
@@ -533,10 +533,10 @@ void RRM_DRA::DRAProcessWaitEventIdList() {
 			_RSUAdapterDRA.DRAPushToEmergencyAdmitEventIdList(eventId);//将事件压入接入链表
 
 		    //更新该事件的日志
-			m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+			m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "TryAccept");
 
 			//记录TTI日志
-			DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+			DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 		}
 
 		//由于会全部压入Emergency接入链表，因此直接清空就行了，不需要一个个删除
@@ -555,10 +555,10 @@ void RRM_DRA::DRAProcessWaitEventIdList() {
 				it = _RSUAdapterDRA.m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "TryAccept");
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 			}
 			else {//该事件当前不可以进行调度
 				it++;
@@ -604,10 +604,10 @@ void RRM_DRA::DRASelectBasedOnP123() {
 				_RSUAdapterDRA.DRAPushToEmergencyWaitEventIdList(eventId);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "AllBusy");
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, ADMIT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, ADMIT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 				continue;
 			}
@@ -655,10 +655,10 @@ void RRM_DRA::DRASelectBasedOnP123() {
 				_RSUAdapterDRA.DRAPushToWaitEventIdList(eventId);
 
 				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "AllBusy");
 
 				//记录TTI日志
-				DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, ADMIT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+				DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, ADMIT_TO_WAIT, eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 				continue;
 			}
 
@@ -766,16 +766,16 @@ void RRM_DRA::DRAConflictListener() {
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
 				for (sDRAScheduleInfo* &info : lst) {
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx, "Transimit");
 
 					//首先将事件压入等待列表
 					_RSUAdapterDRA.DRAPushToEmergencyWaitEventIdList(info->eventId);
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "Conflict");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 					//释放调度信息对象的内存资源
 					delete info;
@@ -790,7 +790,7 @@ void RRM_DRA::DRAConflictListener() {
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//更新该事件的日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx, "Transimit");
 
 				//维护占用区间
 				tuple<int, int> &scheduleInterval = *(info->occupiedIntervalList.begin());
@@ -802,10 +802,10 @@ void RRM_DRA::DRAConflictListener() {
 					m_EventVec[info->eventId].isSuccessded = true;
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx, "Succeed");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx);
 
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
@@ -834,16 +834,16 @@ void RRM_DRA::DRAConflictListener() {
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
 				for (sDRAScheduleInfo* &info : lst) {
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Transimit");
 
 					//首先将事件压入等待列表
 					_RSUAdapterDRA.DRAPushToWaitEventIdList(info->eventId);
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "Conflict");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
 
 					//释放调度信息对象的内存资源
 					delete info;
@@ -859,7 +859,7 @@ void RRM_DRA::DRAConflictListener() {
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//更新该事件的日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Transimit");
 
 				//维护占用区间
 				list<tuple<int, int>> &OIList = info->occupiedIntervalList;
@@ -875,10 +875,10 @@ void RRM_DRA::DRAConflictListener() {
 					m_EventVec[info->eventId].isSuccessded = true;
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Succeed");
 
 					//记录TTI日志
-					DRAWriteTTILogInfo(g_OutTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx);
 
 					//释放调度信息对象的内存资源
 					delete *lst.begin();

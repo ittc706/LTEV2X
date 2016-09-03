@@ -1,3 +1,9 @@
+version_2016_9_3(新增Data数据业务)
+	新增DATA数据业务
+	将BMAD改为TMAC
+	修改EventLog:日志添加一项简单说明的字段
+
+
 version_2016_9_2(纠正RR模块)
 
 

@@ -24,16 +24,16 @@ int main() {
 	cout << "\nRunning Time :" << setprecision(1) << (end - start) / 1000.0L << " s\n" << endl;
 	cout.unsetf(ios::fixed);
 
-	g_OutTemp.close();
-	g_OutRRScheduleInfo.close();
-	g_OutDRAScheduleInfo.close();
-	g_OutClasterPerformInfo.close();
-	g_OutEventListInfo.close();
-	g_OutTTILogInfo.close();
-	g_OutEventLogInfo.close();
-	g_OutVeUELocationUpdateLogInfo.close();
-	g_OutDelayStatistics.close();
-    g_OutEmergencyPossion.close();
+	g_FileTemp.close();
+	g_FileRRScheduleInfo.close();
+	g_FileDRAScheduleInfo.close();
+	g_FileClasterPerformInfo.close();
+	g_FileEventListInfo.close();
+	g_FileTTILogInfo.close();
+	g_FileEventLogInfo.close();
+	g_FileVeUELocationUpdateLogInfo.close();
+	g_FileDelayStatistics.close();
+    g_FileEmergencyPossion.close();
 
 	system("pause");
 }

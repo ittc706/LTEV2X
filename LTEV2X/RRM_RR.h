@@ -152,7 +152,7 @@ void RSUAdapterRR::RRPushToWaitEventIdList(int eventId, eMessageType messageType
 	if (messageType == EMERGENCY) {
 		m_RRWaitEventIdList.insert(m_RRWaitEventIdList.begin(), eventId);
 	}
-	else if (messageType == PERIOD) {
+	else {
 		m_RRWaitEventIdList.push_back(eventId);
 	}
 }
