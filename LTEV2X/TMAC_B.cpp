@@ -28,15 +28,16 @@ using namespace std;
 void TMAC_B::buildEventList(std::ofstream& out) {
 	/*按时间顺序（事件的Id与时间相关，Id越小，事件发生的时间越小生成事件链表*/
 
-	default_random_engine eventEngine;//随机数引擎
-	eventEngine.seed((unsigned)time(NULL));//iomanip
-	uniform_real_distribution<double> uniformDistribution(0, 1);//随机数分布
+	default_random_engine dre;//随机数引擎
+	dre.seed((unsigned)time(NULL));//iomanip
+	uniform_real_distribution<double> urd(0, 1);//随机数分布
 
 
 	//首先生成各个车辆的周期性事件的起始时刻(相对时刻，即[0 , m_Config.periodicEventNTTI)
 	vector<list<int>> startTTIVec(m_Config.periodicEventNTTI, list<int>());
+	uniform_int_distribution<int> uid(0, m_Config.periodicEventNTTI - 1);
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		int startTTI = rand() % m_Config.periodicEventNTTI;
+		int startTTI = uid(dre);
 		startTTIVec[startTTI].push_back(VeUEId);
 	}
 
@@ -48,7 +49,7 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 		//依次生成每个车辆的紧急事件到达时刻
 		double T = 0;
 		while (T < m_Config.m_NTTI) {
-			double u = uniformDistribution(eventEngine);
+			double u = urd(dre);
 			if (u == 0) throw Exp("uniform_real_distribution生成范围包含边界");
 			T = T - (1 / m_Config.emergencyLamda)*log(u);
 			int IntegerT = static_cast<int>(T);
@@ -70,7 +71,7 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 		//依次生成每个车辆的紧急事件到达时刻
 		double T = 0;
 		while (T < m_Config.m_NTTI) {
-			double u = uniformDistribution(eventEngine);
+			double u = urd(dre);
 			if (u == 0) throw Exp("uniform_real_distribution生成范围包含边界");
 			T = T - (1 / m_Config.dataLamda)*log(u);
 			int IntegerT = static_cast<int>(T);

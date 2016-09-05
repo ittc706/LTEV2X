@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#include<random>
 #include"RRM.h"
 #include"RSU.h"
 #include"VUE.h"
@@ -212,6 +213,8 @@ public:
 * ==========================================*/
 class VeUEAdapterDRA {
 public:
+	static std::default_random_engine s_Engine;
+
 	cVeUE& m_HoldObj;//该适配器持有的原VeUE对象
 	VeUEAdapterDRA() = delete;
 	VeUEAdapterDRA(cVeUE& _VeUE) :m_HoldObj(_VeUE) {}
@@ -299,14 +302,16 @@ inline
 int VeUEAdapterDRA::DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
 	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
 	if (size == 0) return -1;
-	return curAvaliablePatternIdx[messageType][rand() % size];
+	std::uniform_int_distribution<int> u(0, size - 1);
+	return curAvaliablePatternIdx[messageType][u(s_Engine)];
 }
 
 inline
 int VeUEAdapterDRA::DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
 	int size = static_cast<int>(curAvaliableEmergencyPatternIdx.size());
 	if (size == 0) return -1;
-	return curAvaliableEmergencyPatternIdx[rand() % size];
+	std::uniform_int_distribution<int> u(0, size - 1);
+	return curAvaliableEmergencyPatternIdx[u(s_Engine)];
 }
 
 

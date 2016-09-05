@@ -25,6 +25,8 @@
 #include"Exception.h"
 
 using namespace std;
+
+
 string sDRAScheduleInfo::toLogString(int n) {
 	ostringstream ss;
 	ss << "[ eventId = ";
@@ -49,6 +51,8 @@ std::string sDRAScheduleInfo::toScheduleString(int n) {
 	return ss.str();
 }
 
+
+default_random_engine VeUEAdapterDRA::s_Engine((unsigned)time(NULL));
 
 string VeUEAdapterDRA::toString(int n) {
 	string indent;
