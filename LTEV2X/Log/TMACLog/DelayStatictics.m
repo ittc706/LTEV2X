@@ -95,7 +95,7 @@ load ./RSUThroughput.txt
 
 RSUThroughput=RSUThroughput/1000;
 
-figure(6)
+figure(7)
 bar(RSUThroughput);
 xlabel('RSUId(10ms)','LineWidth',2);
 ylabel('K bit','LineWidth',2);
