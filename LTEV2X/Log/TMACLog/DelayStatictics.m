@@ -20,6 +20,7 @@ end
 %% 等待时延
 figure(1)
 bar(center1,number1);
+title('等待时延统计','LineWidth',2);
 xlabel('等待时延','LineWidth',2);
 ylabel('事件数量','LineWidth',2);
 grid on;
@@ -28,6 +29,7 @@ grid on;
 %% 传输时延
 figure(2)
 bar(center2,number2);
+title('传输时延统计','LineWidth',2);
 xlabel('传输时延(TTI)','LineWidth',2);
 ylabel('事件数量','LineWidth',2);
 grid on;
@@ -46,6 +48,7 @@ end
 
 figure(3)
 bar(center3,number3);
+title('紧急事件泊松分布图','LineWidth',2);
 xlabel('在仿真时间内紧急事件生成次数','LineWidth',2);
 ylabel('车辆数目','LineWidth',2);
 grid on;
@@ -58,6 +61,7 @@ end
 
 figure(4)
 bar(center4,number4);
+title('数据业务事件泊松分布图','LineWidth',2);
 xlabel('在仿真时间内数据业务事件生成次数','LineWidth',2);
 ylabel('车辆数目','LineWidth',2);
 grid on;
@@ -75,6 +79,7 @@ end
 
 figure(5)
 bar(center5,number5);
+title('冲突统计','LineWidth',2);
 xlabel('冲突次数','LineWidth',2);
 ylabel('事件数目','LineWidth',2);
 grid on;
@@ -88,6 +93,7 @@ TTIThroughput=TTIThroughput/1000;
 
 figure(6)
 plot(TTIThroughput);
+title('吞吐率统计','LineWidth',2);
 xlabel('TTI(10ms)','LineWidth',2);
 ylabel('K bit','LineWidth',2);
 
@@ -97,6 +103,7 @@ RSUThroughput=RSUThroughput/1000;
 
 figure(7)
 bar(RSUThroughput);
+title('吞吐率统计','LineWidth',2);
 xlabel('RSUId(10ms)','LineWidth',2);
 ylabel('K bit','LineWidth',2);
 

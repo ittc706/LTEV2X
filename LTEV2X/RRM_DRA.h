@@ -7,6 +7,8 @@
 #include"Enumeration.h"
 #include"Exception.h"
 
+//RRM_DRA:Radio Resource Management Distributed Resource Allocation
+
 /*===========================================
 *              模块常量定义
 * ==========================================*/

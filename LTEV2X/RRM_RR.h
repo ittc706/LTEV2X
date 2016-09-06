@@ -4,7 +4,7 @@
 #include"RRM.h"
 #include"Exception.h"
 #include"Global.h"
-
+//RRM_DRA:Radio Resource Management Round-Robin
 /*===========================================
 *              模块常量定义
 * ==========================================*/

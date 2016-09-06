@@ -45,7 +45,7 @@ public:
 
 	void configure();//系统仿真参数配置
 	void initialization();//系统参数配置，完成系统初始化
-	void moduleControlInitialization();
+	void moduleControlInitialization();//模块对象初始化
 	void process();//系统仿真流程
 	void dispose();//内存清理
 
