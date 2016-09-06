@@ -22,7 +22,7 @@ void cSystem::process() {
 	TMACPoint->buildEventList(g_FileEventListInfo);
 
 	//开始仿真
-	for (int count = 0;count < m_Config.m_NTTI;count++) {
+	for (int count = 0;count < m_Config.NTTI;count++) {
 		cout << "Current TTI = " << m_TTI << endl;
 		if (count % m_Config.locationUpdateNTTI == 0)
 			channelGeneration();
@@ -51,17 +51,16 @@ void cSystem::configure() {//系统仿真参数配置
 	*                 全局控制单元参数配置
 	* -------------------------------------------------------------*/
 
-	m_Config.m_NTTI = 200;//仿真TTI时间
+	m_Config.NTTI = 50;//仿真TTI时间
 	m_Config.periodicEventNTTI = 50;
-	m_Config.emergencyLamda = 0.001;
-	m_Config.dataLamda = 0.01;
+	m_Config.emergencyLambda = 0.001;// 0.001;
+	m_Config.dataLambda = 0;
 	m_Config.locationUpdateNTTI = 100;
 
 	//选择调度模式
 	m_ScheduleMode = DRA;
 
-	//事件链表容器
-	m_EventTTIList = vector<list<int>>(m_Config.m_NTTI);
+
 	/*--------------------------------------------------------------
 	*                 地理拓扑单元参数配置
 	* -------------------------------------------------------------*/
@@ -179,14 +178,14 @@ void cSystem::initialization() {
 
 
 void cSystem::moduleControlInitialization() {
-	TMACPoint = new TMAC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList);
+	TMACPoint = new TMAC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
 
 	switch (m_ScheduleMode) {
 	case RR:
-		RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList);
+		RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
 		break;
 	case DRA:
-		RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, P123);
+		RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, P123);
 		break;
 	default:
 		break;

@@ -24,6 +24,23 @@
 
 using namespace std;
 
+TMAC_B::TMAC_B(int &systemTTI, 
+	sConfigure& systemConfig, 
+	cRSU* systemRSUAry, 
+	cVeUE* systemVeUEAry, 
+	std::vector<sEvent>& systemEventVec, 
+	std::vector<std::list<int>>& systemEventTTIList, 
+	std::vector<std::vector<int>>& systemTTIRSUThroughput) :
+	TMAC_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput) {
+	
+	//事件链表容器初始化
+	m_EventTTIList = std::vector<list<int>>(m_Config.NTTI);
+
+	//吞吐率容器初始化
+	m_TTIRSUThroughput = std::vector<std::vector<int>>(m_Config.NTTI, std::vector<int>(m_Config.RSUNum));
+}
+
+
 
 void TMAC_B::buildEventList(std::ofstream& out) {
 	/*按时间顺序（事件的Id与时间相关，Id越小，事件发生的时间越小生成事件链表*/
@@ -44,19 +61,21 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 	//生成紧急事件的发生时刻，每个时间槽存放该时刻发生紧急事件的车辆
 	m_VeUEEmergencyNum = vector<int>(m_Config.VeUENum, 0);//初始化统计量
 	int countEmergency = 0;
-	vector<list<int>> emergencyEventTriggerTTI(m_Config.m_NTTI);
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		//依次生成每个车辆的紧急事件到达时刻
-		double T = 0;
-		while (T < m_Config.m_NTTI) {
-			double u = urd(dre);
-			if (u == 0) throw Exp("uniform_real_distribution生成范围包含边界");
-			T = T - (1 / m_Config.emergencyLamda)*log(u);
-			int IntegerT = static_cast<int>(T);
-			if (IntegerT < m_Config.m_NTTI) {
-				emergencyEventTriggerTTI[IntegerT].push_back(VeUEId);
-				++m_VeUEEmergencyNum[VeUEId];
-				++countEmergency;
+	vector<list<int>> emergencyEventTriggerTTI(m_Config.NTTI);
+	if (m_Config.emergencyLambda != 0) {
+		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+			//依次生成每个车辆的紧急事件到达时刻
+			double T = 0;
+			while (T < m_Config.NTTI) {
+				double u = urd(dre);
+				if (u == 0) throw Exp("uniform_real_distribution生成范围包含边界");
+				T = T - (1 / m_Config.emergencyLambda)*log(u);
+				int IntegerT = static_cast<int>(T);
+				if (IntegerT < m_Config.NTTI) {
+					emergencyEventTriggerTTI[IntegerT].push_back(VeUEId);
+					++m_VeUEEmergencyNum[VeUEId];
+					++countEmergency;
+				}
 			}
 		}
 	}
@@ -66,19 +85,21 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 	//生成数据业务事件的发生时刻，每个时间槽存放该时刻发生数据业务事件的车辆
 	m_VeUEDataNum = vector<int>(m_Config.VeUENum, 0);//初始化统计量
 	int countData = 0;
-	vector<list<int>> dataEventTriggerTTI(m_Config.m_NTTI);
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		//依次生成每个车辆的紧急事件到达时刻
-		double T = 0;
-		while (T < m_Config.m_NTTI) {
-			double u = urd(dre);
-			if (u == 0) throw Exp("uniform_real_distribution生成范围包含边界");
-			T = T - (1 / m_Config.dataLamda)*log(u);
-			int IntegerT = static_cast<int>(T);
-			if (IntegerT < m_Config.m_NTTI) {
-				dataEventTriggerTTI[IntegerT].push_back(VeUEId);
-				++m_VeUEDataNum[VeUEId];
-				++countData;
+	vector<list<int>> dataEventTriggerTTI(m_Config.NTTI);
+	if (m_Config.dataLambda != 0) {
+		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+			//依次生成每个车辆的紧急事件到达时刻
+			double T = 0;
+			while (T < m_Config.NTTI) {
+				double u = urd(dre);
+				if (u == 0) throw Exp("uniform_real_distribution生成范围包含边界");
+				T = T - (1 / m_Config.dataLambda)*log(u);
+				int IntegerT = static_cast<int>(T);
+				if (IntegerT < m_Config.NTTI) {
+					dataEventTriggerTTI[IntegerT].push_back(VeUEId);
+					++m_VeUEDataNum[VeUEId];
+					++countData;
+				}
 			}
 		}
 	}
@@ -88,11 +109,11 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 	//根据startTTIVec依次填充PERIOD事件并在其中插入服从泊松分布的紧急事件
 
 	int startTTIOfEachPeriod = 0;//每个周期的起始时刻
-	while (startTTIOfEachPeriod < m_Config.m_NTTI) {
+	while (startTTIOfEachPeriod < m_Config.NTTI) {
 		//TTIOffset为相对于startTTIOfEachPeriod的偏移量
 		for (int TTIOffset = 0; TTIOffset < m_Config.periodicEventNTTI; TTIOffset++) {
 			//压入紧急事件
-			if (startTTIOfEachPeriod + TTIOffset < m_Config.m_NTTI) {
+			if (startTTIOfEachPeriod + TTIOffset < m_Config.NTTI) {
 				list<int> &emergencyList = emergencyEventTriggerTTI[startTTIOfEachPeriod + TTIOffset];
 				for (int VeUEId : emergencyList) {
 					/*-----------------------ATTENTION-----------------------
@@ -110,7 +131,7 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 
 
 			//压入数据业务事件
-			if (startTTIOfEachPeriod + TTIOffset < m_Config.m_NTTI) {
+			if (startTTIOfEachPeriod + TTIOffset < m_Config.NTTI) {
 				list<int> &dataList = dataEventTriggerTTI[startTTIOfEachPeriod + TTIOffset];
 				for (int VeUEId : dataList) {
 					/*-----------------------ATTENTION-----------------------
@@ -128,7 +149,7 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 
 
 			//产生周期性事件
-			if (startTTIOfEachPeriod + TTIOffset < m_Config.m_NTTI) {
+			if (startTTIOfEachPeriod + TTIOffset < m_Config.NTTI) {
 				list<int> &periodList = startTTIVec[TTIOffset];
 				for (int VeUEId : periodList) {
 					sEvent evt = sEvent(VeUEId, startTTIOfEachPeriod + TTIOffset, PERIOD);
@@ -172,10 +193,28 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 		outConflict << event.conflictNum << " ";
 	outConflict << endl;
 	writeEventLogInfo(outEventLog);
+
+	//统计吞吐率
+	vector<int> tmpTTIThroughput(m_Config.NTTI);
+	vector<int> tmpRSUThroughput(m_Config.RSUNum);
+	for (int tmpTTI = 0; tmpTTI < m_Config.NTTI; tmpTTI++) {
+		for (int tmpRSUId = 0; tmpRSUId < m_Config.RSUNum; tmpRSUId++) {
+			tmpTTIThroughput[tmpTTI] += m_TTIRSUThroughput[tmpTTI][tmpRSUId];
+			tmpRSUThroughput[tmpRSUId]+= m_TTIRSUThroughput[tmpTTI][tmpRSUId];
+		}
+	}
+
+	for (int throughput : tmpTTIThroughput) 
+		g_FileTTIThroughput << throughput << " ";
+	g_FileTTIThroughput << endl;//这里很关键，将缓存区的数据刷新到流中
+
+	for (int throughput : tmpRSUThroughput) 
+		g_FileRSUThroughput<< throughput << " ";
+	g_FileRSUThroughput << endl;
 }
 
 void TMAC_B::writeEventListInfo(std::ofstream &out) {
-	for (int i = 0; i < m_Config.m_NTTI; i++) {
+	for (int i = 0; i < m_Config.NTTI; i++) {
 		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
 		out << "{" << endl;
 		for (int eventId : m_EventTTIList[i]) {

@@ -5,8 +5,13 @@
 class TMAC_B :public TMAC_Basic {
 public:
 	TMAC_B() = delete;
-	TMAC_B(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList) :
-		TMAC_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList) {}
+	TMAC_B(int &systemTTI, 
+		sConfigure& systemConfig, 
+		cRSU* systemRSUAry, 
+		cVeUE* systemVeUEAry, 
+		std::vector<sEvent>& systemEventVec, 
+		std::vector<std::list<int>>& systemEventTTIList, 
+		std::vector<std::vector<int>>& systemTTIRSUThroughput);
 
 	/*------------------数据成员------------------*/
 

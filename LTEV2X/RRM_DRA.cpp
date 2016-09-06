@@ -143,8 +143,8 @@ string RSUAdapterDRA::toString(int n) {
 
 
 
-RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, eDRAMode m_DRAMode) :
-	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList), m_DRAMode(m_DRAMode) {
+RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, eDRAMode m_DRAMode) :
+	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(m_DRAMode) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAdapterVec.push_back(VeUEAdapterDRA(m_VeUEAry[VeUEId]));
 	}
@@ -793,6 +793,9 @@ void RRM_DRA::DRAConflictListener() {
 			else if (lst.size() == 1) {
 				sDRAScheduleInfo *info = *lst.begin();
 
+				//累计吞吐率
+				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB;
+
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx, "Transimit");
 
@@ -859,8 +862,11 @@ void RRM_DRA::DRAConflictListener() {
 
 			}
 			else if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-
 				sDRAScheduleInfo *info = *lst.begin();
+
+				//累计吞吐率
+				int patternType = getPatternType(patternIdx);
+				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB;
 
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Transimit");
@@ -1073,5 +1079,14 @@ std::list<std::tuple<int, int>> RRM_DRA::DRABuildEmergencyScheduleInterval(int T
 	return scheduleIntervalList;
 }
 
+
+
+int RRM_DRA::getPatternType(int patternIdx) {
+	for (int patternType = 0; patternType < gc_DRAPatternTypeNum; patternType++) {
+		if (patternIdx >= gc_DRAPatternIdxIntervalOfPatternType[patternType][0] && patternIdx <= gc_DRAPatternIdxIntervalOfPatternType[patternType][1])
+			return patternType;
+	}
+	throw Exp("getPatternType");
+}
 
 

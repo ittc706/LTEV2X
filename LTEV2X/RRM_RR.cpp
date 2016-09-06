@@ -50,8 +50,8 @@ RSUAdapterRR::RSUAdapterRR(cRSU& _RSU):m_HoldObj(_RSU){
 }
 
 
-RRM_RR::RRM_RR(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList) :
-	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList) {
+RRM_RR::RRM_RR(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput) :
+	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAdapterVec.push_back(VeUEAdapterRR(m_VeUEAry[VeUEId]));
 	}
@@ -341,6 +341,9 @@ void RRM_RR::RRTransimitEnd() {
 		for (int patternIdx = 0; patternIdx < gc_RRPatternNum; patternIdx++) {
 			sRRScheduleInfo* &info = _RSUAdapterRR.m_RRScheduleInfoTable[patternIdx];
 			if (info == nullptr) continue;
+			//累计吞吐率
+			m_TTIRSUThroughput[m_TTI][_RSUAdapterRR.m_HoldObj.m_RSUId] += gc_RRNumRBPerPattern*gc_BitNumPerRB;
+
 			//更新该事件的日志
 			m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx, "Transimit");
 

@@ -108,7 +108,7 @@ public:
 class RRM_RR :public RRM_Basic {
 public:
 	RRM_RR() = delete;
-	RRM_RR(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList);
+	RRM_RR(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput);
 
 	std::vector<RSUAdapterRR> m_RSUAdapterVec;
 	std::vector<VeUEAdapterRR> m_VeUEAdapterVec;

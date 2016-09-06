@@ -15,12 +15,12 @@ const int gc_DRAEmergencyTotalPatternNum = 5;//传输紧急事件的Pattern数量
 const int gc_DRAEmergencyFBNumPerPattern = 1;//每个紧急事件的Pattern占用的FB数量
 const int gc_DRAPatternTypeNum = 2;//非紧急事件的Pattern的类型种类
 const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 25,5 };//在全频段每个Pattern种类对应的Pattern数量
+const int gc_DRAPatternIdxIntervalOfPatternType[gc_DRAPatternTypeNum][2] = { {0,24},{25,29} };
 const int gc_DRA_FBNumPerPatternType[gc_DRAPatternTypeNum] = { 1,5 };//每个Pattern种类所占的FB数量
 const std::vector<int> gc_DRAPatternIdxTable[gc_DRAPatternTypeNum] = { //每个Pattern种类对应的Pattern Idx的列表
 	makeContinuousSequence(0,gc_DRAPatternNumPerPatternType[0] - 1),
 	makeContinuousSequence(gc_DRAPatternNumPerPatternType[0],gc_DRAPatternNumPerPatternType[0] + gc_DRAPatternNumPerPatternType[1] - 1)
 };
-
 const int gc_DRATotalPatternNum = [&]() {
 	int res = 0;
 	for (int num : gc_DRAPatternNumPerPatternType)
@@ -241,7 +241,7 @@ public:
 class RRM_DRA :public RRM_Basic {
 public:
 	RRM_DRA() = delete;
-	RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList,eDRAMode m_DRAMode);
+	RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput,eDRAMode m_DRAMode);
 
 	std::vector<RSUAdapterDRA> m_RSUAdapterVec;
 	std::vector<VeUEAdapterDRA> m_VeUEAdapterVec;
@@ -293,6 +293,7 @@ private:
 	int DRAGetMaxIndex(const std::vector<double>&clusterSize);
 	std::list<std::tuple<int, int>> DRABuildScheduleIntervalList(int TTI, const sEvent& event, std::tuple<int, int, int>ClasterTTI);
 	std::list<std::tuple<int, int>> DRABuildEmergencyScheduleInterval(int TTI, const sEvent& event);
+	int getPatternType(int patternIdx);
 
 };
 

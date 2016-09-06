@@ -27,8 +27,10 @@ public:
 	cRoad *m_RoadAry;//道路容器
 	cRSU* m_RSUAry;//RSU容器
 	cVeUE* m_VeUEAry;//VeUE容器
+
 	std::vector<sEvent> m_EventVec;//事件容器，下标代表事件ID
 	std::vector<std::list<int>> m_EventTTIList;//事件触发链表，m_EventList[i]代表第i个TTI的事件表
+	std::vector<std::vector<int>> m_TTIRSUThroughput;//吞吐率，外层下标为TTI，内层下标为RSUId
 
 
 	/*-----------------模块控制器-----------------*/

@@ -21,6 +21,8 @@ ofstream g_FileDelayStatistics("Log\\TMACLog\\DelayStatistics.txt");
 ofstream g_FileEmergencyPossion("Log\\TMACLog\\EmergencyPossion.txt");
 ofstream g_FileDataPossion("Log\\TMACLog\\DataPossion.txt");
 ofstream g_FileConflictNum("Log\\TMACLog\\ConflictNum.txt");
+ofstream g_FileTTIThroughput("Log\\TMACLog\\TTIThroughput.txt");
+ofstream g_FileRSUThroughput("Log\\TMACLog\\RSUThroughput.txt");
 
 
 /*===========================================

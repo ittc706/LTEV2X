@@ -20,6 +20,9 @@ extern std::ofstream g_FileDelayStatistics;
 extern std::ofstream g_FileEmergencyPossion;
 extern std::ofstream g_FileDataPossion;
 extern std::ofstream g_FileConflictNum;
+extern std::ofstream g_FileTTIThroughput;
+extern std::ofstream g_FileRSUThroughput;
+
 
 /*===========================================
 *               È«Óòº¯ÊıÉùÃ÷
