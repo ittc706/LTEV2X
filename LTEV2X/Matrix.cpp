@@ -305,11 +305,11 @@ Matrix Matrix::inverse() {
 }
 
 
-RowVector Matrix::diag() {
+Matrix Matrix::diag() {
 	if (row != col) throw Exp("该函数只支持方阵");
-	RowVector res(row);
+	Matrix res(1,row);
 	for (int r = 0; r < row; r++) {
-		res[r] = this->operator[](r)[r];
+		res[0][r] = this->operator[](r)[r];
 	}
 	return res;
 }
