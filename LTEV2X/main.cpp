@@ -4,6 +4,7 @@
 #include"Enumeration.h"
 #include"System.h"
 #include"Exception.h"
+#include"Matrix.h"
 using namespace std;
 
 
@@ -36,4 +37,26 @@ int main() {
     g_FileEmergencyPossion.close();
 
 	system("pause");
+	return 1;
 }
+
+
+//int main() {
+//	try {
+//		Matrix m{
+//			{{1,0}},
+//			{{0,0},{3,0}},
+//			{{1,0} ,{0,0}, {2,0}},
+//		};
+//		m.inverse().print();
+//		(m.inverse()*m).print();
+//	}
+//	catch (Exp e) {
+//		cout << e.what() << endl;
+//	}
+//	
+//
+//
+//	system("pause");
+//	return 1;
+//}

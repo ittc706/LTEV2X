@@ -118,6 +118,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Complex.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="TMAC.h" />
     <ClInclude Include="TMAC_B.h" />
     <ClInclude Include="Config.h" />
@@ -139,6 +141,8 @@
     <ClInclude Include="WT_B.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="TMAC_B.cpp" />
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="eNB.cpp" />
