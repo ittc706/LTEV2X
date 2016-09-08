@@ -53,7 +53,12 @@ int main() {
 			{{4,4},{5,3},{6,6}},
 			{{7,9},{8,8},{9,3}},
 		};
+		double a = 5.6;
+		(1/n).print();
+		cout << endl;
 		elementDivide(m, n).print();
+		cout << endl;
+		n.diag().print();
 	}
 	catch (Exp e) {
 		cout << e.what() << endl;

@@ -305,6 +305,16 @@ Matrix Matrix::inverse() {
 }
 
 
+RowVector Matrix::diag() {
+	if (row != col) throw Exp("该函数只支持方阵");
+	RowVector res(row);
+	for (int r = 0; r < row; r++) {
+		res[r] = this->operator[](r)[r];
+	}
+	return res;
+}
+
+
 Matrix& Matrix::operator=(const Matrix& t_Matrix) {
 	row = t_Matrix.row;
 	col = t_Matrix.col;

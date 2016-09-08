@@ -36,6 +36,10 @@ Complex::Complex() :
 	real(0), imag(0) {}
 
 
+Complex::Complex(double t_Real) :
+	real(t_Real), imag(0) {}
+
+
 Complex::Complex(double t_Real, double t_Imag) :
 	real(t_Real), imag(t_Imag) {}
 
@@ -45,10 +49,21 @@ Complex::Complex(const Complex& c) :
 
 
 Complex::Complex(const std::initializer_list<double> il) {
-	if (il.size() != 2) throw Exp("Complex初始化列表元素数目错误：应该为两个double类型的元素");
+	if (il.size() > 2) throw Exp("Complex初始化列表元素数目错误：应该为两个double类型的元素");
 	initializer_list<double>::iterator it = il.begin();
-	real = *it++;
-	imag = *it;
+	switch (il.size()) {
+	case 0:
+		real = 0;
+		imag = 0;
+		break;
+	case 1:
+		real = *it;
+		imag = 0;
+		break;
+	case 2:
+		real = *it++;
+		imag = *it;
+	}
 }
 
 

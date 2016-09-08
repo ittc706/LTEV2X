@@ -12,6 +12,7 @@ public:
 
 	/*¹¹Ôìº¯Êý*/
 	Complex();
+	Complex(double t_Real);
 	Complex(double t_Real, double t_Imag);
 	Complex(const Complex& c);
 	Complex(const std::initializer_list<double> il);
