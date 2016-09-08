@@ -69,6 +69,14 @@ Complex& Complex::operator -=(const Complex& c) {
 }
 
 
+Complex Complex::conjugate() {
+	Complex res;
+	res.real = real;
+	res.imag = -imag;
+	return res;
+}
+
+
 string Complex::toString() {
 	ostringstream ss;
 	ss.precision(2);

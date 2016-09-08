@@ -154,7 +154,31 @@ RowVector operator/(const RowVector& t_RowVector, const Complex&t_Complex) {
 	return res;
 }
 RowVector operator/(const Complex&t_Complex, const RowVector& t_RowVector) {
-	throw Exp("尚未实现");
+	RowVector res(t_RowVector.col);
+	for (int c = 0; c < t_RowVector.col; c++) {
+		if (Complex::abs(t_RowVector[c]) == 0) throw Exp("向量中含有模值为0的元素，不能作为分母");
+		res[c] = t_Complex / t_RowVector[c];
+	}
+	return res;
+}
+
+
+RowVector elementProduct(const RowVector& t_RowVector1, const RowVector& t_RowVector2) {
+	if (t_RowVector1.col != t_RowVector2.col) throw Exp("向量维度不匹配");
+	RowVector res(t_RowVector1.col);
+	for (int c = 0; c < t_RowVector1.col; c++) {
+		res[c] = t_RowVector1[c] * t_RowVector2[c];
+	}
+	return res;
+}
+RowVector elementDivide(const RowVector& t_RowVector1, const RowVector& t_RowVector2) {
+	if (t_RowVector1.col != t_RowVector2.col) throw Exp("向量维度不匹配");
+	RowVector res(t_RowVector1.col);
+	for (int c = 0; c < t_RowVector1.col; c++) {
+		if (Complex::abs(t_RowVector2[c]) == 0) throw Exp("元素模值为0，不可作为除数");
+		res[c] = t_RowVector1[c] / t_RowVector2[c];
+	}
+	return res;
 }
 
 
@@ -209,6 +233,17 @@ void Matrix::randomFill(double realLeft, double readRight, double imagLeft, doub
 }
 
 
+Matrix Matrix::conjugate() {
+	Matrix res(row, col);
+	for (int r = 0; r < row; r++) {
+		for (int c = 0; c < col; c++) {
+			res[r][c] = matrix[r][c].conjugate();
+		}
+	}
+	return res;
+}
+
+
 Matrix Matrix::transpose() {
 	Matrix res(col, row);
 	for (int r = 0; r < col; r++) {
@@ -216,6 +251,13 @@ Matrix Matrix::transpose() {
 			res[r][c] = matrix[c][r];
 		}
 	}
+	return res;
+}
+
+
+Matrix Matrix::hermitian() {
+	Matrix res = conjugate();
+	res = res.transpose();
 	return res;
 }
 
@@ -429,5 +471,29 @@ Matrix operator/(const Matrix t_Matrix, const Complex t_Complex) {
 	return res;
 }
 Matrix operator/(const Complex t_Complex, const Matrix t_Matrix) {
-	throw Exp("尚未实现");
+	Matrix res(t_Matrix.row, t_Matrix.col);
+	for (int r = 0; r < t_Matrix.row; r++) {
+		res[r] = t_Complex / t_Matrix[r];
+	}
+	return res;
+}
+
+
+Matrix elementProduct(const Matrix t_Matrix1, const Matrix t_Matrix2) {
+	if (t_Matrix1.row != t_Matrix2.row ||
+		t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不匹配");
+	Matrix res(t_Matrix1.row, t_Matrix1.col);
+	for (int r = 0; r < t_Matrix1.row; r++) {
+		res[r] = elementProduct(t_Matrix1[r], t_Matrix2[r]);
+	}
+	return res;
+}
+Matrix elementDivide(const Matrix t_Matrix1, const Matrix t_Matrix2) {
+	if (t_Matrix1.row != t_Matrix2.row ||
+		t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不匹配");
+	Matrix res(t_Matrix1.row, t_Matrix1.col);
+	for (int r = 0; r < t_Matrix1.row; r++) {
+		res[r] = elementDivide(t_Matrix1[r], t_Matrix2[r]);
+	}
+	return res;
 }

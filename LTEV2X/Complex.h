@@ -24,6 +24,7 @@ public:
 
 
 	/*功能函数*/
+	Complex conjugate();//求共轭
 	std::string toString();
 	void print(std::ostream&out = std::cout);
 };

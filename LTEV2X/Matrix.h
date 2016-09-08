@@ -52,6 +52,9 @@ RowVector operator*(const Complex&t_Complex, const RowVector& t_RowVector);
 RowVector operator/(const RowVector& t_RowVector, const Complex&t_Complex);
 RowVector operator/(const Complex&t_Complex, const RowVector& t_RowVector);
 
+RowVector elementProduct(const RowVector& t_RowVector1, const RowVector& t_RowVector2);
+RowVector elementDivide(const RowVector& t_RowVector1, const RowVector& t_RowVector2);
+
 
 class Matrix {
 	/*数据成员*/
@@ -74,8 +77,10 @@ public:
 
 	/*矩阵功能函数*/
 	void randomFill(double realLeft, double readRight, double imagLeft, double imagRight);
-	Matrix transpose();
-	Matrix inverse();
+	Matrix conjugate();//求共轭
+	Matrix transpose();//求转置
+	Matrix hermitian();//共轭转置
+	Matrix inverse();//求逆矩阵
 
 
 	/*成员运算符重载*/
@@ -119,3 +124,6 @@ Matrix operator/(const Matrix t_Matrix, const Complex t_Complex);
 Matrix operator/(const Complex t_Complex, const Matrix t_Matrix);
 
 
+//对应位置元素计算
+Matrix elementProduct(const Matrix t_Matrix1, const Matrix t_Matrix2);
+Matrix elementDivide(const Matrix t_Matrix1, const Matrix t_Matrix2);
