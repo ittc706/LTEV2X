@@ -19,6 +19,7 @@
 #include<iomanip>
 #include<iostream>
 #include<random>
+#include<sstream>
 #include"Exception.h"
 #include"TMAC_B.h"
 
@@ -166,17 +167,61 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 }
 
 void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmergencyPossion, std::ofstream& outDataPossion, std::ofstream& outConflict, std::ofstream& outEventLog) {
-	//统计等待时延
-	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++)
-		if (m_EventVec[eventId].isSuccessded)
-			outDelay << m_EventVec[eventId].queuingDelay << " ";
-	outDelay << endl;//这里很关键，将缓存区的数据刷新到流中
+	stringstream ssPeriod;
+	stringstream ssEmergency;
+	stringstream ssData;
 
+	/*-----------------------ATTENTION-----------------------
+	* endl操纵符很重要，将缓存中的数据刷新到流中
+	* 否则当数据量不大时，可能写完数据，文件还是空的
+	*-----------------------ATTENTION-----------------------*/
+
+	
+	//统计等待时延
+	for (sEvent &event : m_EventVec)
+		if (event.isSuccessded) {
+			switch (event.message.messageType) {
+			case PERIOD:
+				ssPeriod << event.queuingDelay << " ";
+				break;
+			case EMERGENCY:
+				ssEmergency << event.queuingDelay << " ";
+				break;
+			case DATA:
+				ssData << event.queuingDelay << " ";
+				break;
+			default:
+				throw Exp("非法消息类型");
+			}
+		}
+	outDelay << ssPeriod.str() << endl;
+	outDelay << ssEmergency.str() << endl;
+	outDelay << ssData.str() << endl;
+
+	
 	//统计传输时延
-	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++)
-		if (m_EventVec[eventId].isSuccessded)
-			outDelay << m_EventVec[eventId].sendDelay << " ";
-	outDelay << endl;//这里很关键，将缓存区的数据刷新到流中
+	ssPeriod.str("");
+	ssEmergency.str("");
+	ssData.str("");
+	for (sEvent &event : m_EventVec)
+		if (event.isSuccessded) {
+			switch (event.message.messageType) {
+			case PERIOD:
+				ssPeriod << event.sendDelay << " ";
+				break;
+			case EMERGENCY:
+				ssEmergency << event.sendDelay << " ";
+				break;
+			case DATA:
+				ssData << event.sendDelay << " ";
+				break;
+			default:
+				throw Exp("非法消息类型");
+			}
+		}
+	outDelay << ssPeriod.str() << endl;
+	outDelay << ssEmergency.str() << endl;
+	outDelay << ssData.str() << endl;
 
 	//统计紧急事件分布情况
 	for (int num : m_VeUEEmergencyNum)
@@ -189,9 +234,27 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 	outDataPossion << endl;//这里很关键，将缓存区的数据刷新到流中
 
 	//统计冲突情况
-	for (sEvent &event : m_EventVec)
-		outConflict << event.conflictNum << " ";
-	outConflict << endl;
+	ssPeriod.str("");
+	ssEmergency.str("");
+	ssData.str("");
+	for (sEvent &event : m_EventVec) {
+		switch (event.message.messageType) {
+		case PERIOD:
+			ssPeriod << event.conflictNum << " ";
+			break;
+		case EMERGENCY:
+			ssEmergency << event.conflictNum << " ";
+			break;
+		case DATA:
+			ssData << event.conflictNum << " ";
+			break;
+		default:
+			throw Exp("非法消息类型");
+		}
+	}
+	outConflict << ssPeriod.str() << endl;
+	outConflict << ssEmergency.str() << endl;
+	outConflict << ssData.str() << endl;
 	writeEventLogInfo(outEventLog);
 
 	//统计吞吐率
@@ -204,10 +267,12 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 		}
 	}
 
+	//以TTI为单位统计吞吐率
 	for (int throughput : tmpTTIThroughput) 
 		g_FileTTIThroughput << throughput << " ";
-	g_FileTTIThroughput << endl;//这里很关键，将缓存区的数据刷新到流中
+	g_FileTTIThroughput << endl;
 
+	//以RSU为单位统计吞吐率
 	for (int throughput : tmpRSUThroughput) 
 		g_FileRSUThroughput<< throughput << " ";
 	g_FileRSUThroughput << endl;

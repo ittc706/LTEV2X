@@ -24,18 +24,11 @@ void cSystem::process() {
 	//开始仿真
 	for (int count = 0;count < m_Config.NTTI;count++) {
 		cout << "Current TTI = " << m_TTI << endl;
+		//地理位置更新
 		if (count % m_Config.locationUpdateNTTI == 0)
 			channelGeneration();
-		switch (m_ScheduleMode) {
-		case PF:
-			break;
-		case RR:
-			RRMPoint->schedule();
-			break;
-		case DRA:
-			RRMPoint->schedule();
-			break;
-		}
+		//开始资源分配
+		RRMPoint->schedule();
 		m_TTI++;
 	}
 
@@ -58,7 +51,7 @@ void cSystem::configure() {//系统仿真参数配置
 	m_Config.locationUpdateNTTI = 100;
 
 	//选择调度模式
-	m_ScheduleMode = RR;
+	m_ScheduleMode = DRA;
 
 
 	/*--------------------------------------------------------------
