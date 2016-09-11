@@ -38,21 +38,21 @@ end
 
 
 
-if(sum(unique(periodQueuingDelay))<3)
+if(length(unique(periodQueuingDelay))<10)
     [numberPeriod,centerPeriod]=hist(periodQueuingDelay,10);
 else
     [numberPeriod,centerPeriod]=hist(periodQueuingDelay,unique(periodQueuingDelay));
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(sum(unique(emergencyQueuingDelay))<3)
+if(length(unique(emergencyQueuingDelay))<10)
     [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,10);
 else
     [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,unique(emergencyQueuingDelay));
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(sum(unique(dataQueuingDelay))<3)
+if(length(unique(dataQueuingDelay))<10)
     [numberData,centerData]=hist(dataQueuingDelay,10);
 else
     [numberData,centerData]=hist(dataQueuingDelay,unique(dataQueuingDelay));
@@ -84,21 +84,21 @@ ylabel('概率','LineWidth',2);
 grid on;
 
 %% 传输时延
-if(sum(unique(periodSendDelay))<3)
+if(length(unique(periodSendDelay))<10)
     [numberPeriod,centerPeriod]=hist(periodSendDelay,10);
 else
     [numberPeriod,centerPeriod]=hist(periodSendDelay,unique(periodSendDelay));
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(sum(unique(emergencySendDelay))<3)
+if(length(unique(emergencySendDelay))<10)
     [numberEmergency,centerEmergency]=hist(emergencySendDelay,10);
 else
     [numberEmergency,centerEmergency]=hist(emergencySendDelay,unique(emergencySendDelay));
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(sum(unique(dataSendDelay))<3)
+if(length(unique(dataSendDelay))<10)
     [numberData,centerData]=hist(dataSendDelay,10);
 else
     [numberData,centerData]=hist(dataSendDelay,unique(dataSendDelay));
@@ -190,21 +190,21 @@ end
 
 
 
-if(sum(unique(periodConflictNum))<3)
+if(length(unique(periodConflictNum))<10)
     [numberPeriod,centerPeriod]=hist(periodConflictNum,10);
 else
     [numberPeriod,centerPeriod]=hist(periodConflictNum,unique(periodConflictNum));
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(sum(unique(emergencyConflictNum))<3)
+if(length(unique(emergencyConflictNum))<10)
     [numberEmergency,centerEmergency]=hist(emergencyConflictNum,10);
 else
     [numberEmergency,centerEmergency]=hist(emergencyConflictNum,unique(emergencyConflictNum));
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(sum(unique(dataConflictNum))<3)
+if(length(unique(dataConflictNum))<10)
     [numberData,centerData]=hist(dataConflictNum,10);
 else
     [numberData,centerData]=hist(dataConflictNum,unique(dataConflictNum));
@@ -268,7 +268,7 @@ RSUThroughput=RSUThroughput/1000;
 
 figure(8)
 bar(RSUThroughput);
-title('吞吐率统计','LineWidth',2);
+title('吞吐量统计','LineWidth',2);
 xlabel('RSUId(10ms)','LineWidth',2);
 ylabel('K bit','LineWidth',2);
 grid on;

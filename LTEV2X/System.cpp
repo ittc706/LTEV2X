@@ -47,11 +47,11 @@ void cSystem::configure() {//系统仿真参数配置
 	m_Config.NTTI = 2000;//仿真TTI时间
 	m_Config.periodicEventNTTI = 50;
 	m_Config.emergencyLambda = 0.001;// 0.001;
-	m_Config.dataLambda = 0.001;
+	m_Config.dataLambda = 0.01;
 	m_Config.locationUpdateNTTI = 100;
 
 	//选择调度模式
-	m_ScheduleMode = DRA;
+	m_ScheduleMode = RR;
 
 
 	/*--------------------------------------------------------------
