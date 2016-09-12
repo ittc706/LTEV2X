@@ -119,6 +119,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Complex.h" />
+    <ClInclude Include="GTAT.h" />
+    <ClInclude Include="GTAT_Urban.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="TMAC.h" />
     <ClInclude Include="TMAC_B.h" />
@@ -126,7 +128,6 @@
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="Exception.h" />
-    <ClInclude Include="GeographyAndMobility.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="IMTA.h" />
     <ClInclude Include="Road.h" />
@@ -142,11 +143,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="GTAT_Urban.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="TMAC_B.cpp" />
-    <ClCompile Include="Channel.cpp" />
     <ClCompile Include="eNB.cpp" />
-    <ClCompile Include="GeographyAndMobility.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="IMTA.cpp" />
     <ClCompile Include="main.cpp" />

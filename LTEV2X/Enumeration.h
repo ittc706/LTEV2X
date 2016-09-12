@@ -7,8 +7,12 @@ enum eLocationType { //位置类型
 	None 
 }; 
 
+enum eGTATMode {
+	URBAN,      //城市
+	HIGHSPEED   //高速
+};
 
-enum eScheduleMode {
+enum eRRMMode {
 	PF=1,       //基于比例公平的调度
 	RR=2,       //Round-Robin,轮询
 	DRA         //Distributed Resource Allocation,分布式

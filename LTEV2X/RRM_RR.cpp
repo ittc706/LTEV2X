@@ -19,6 +19,7 @@
 
 #include<iomanip>
 #include<sstream>
+#include<iostream>
 #include"RRM_RR.h"
 
 using namespace std;
@@ -84,7 +85,6 @@ void RRM_RR::schedule() {
 void RRM_RR::RRInformationClean() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSUAdapterRR &_RSUAdapterRR = m_RSUAdapterVec[RSUId];
-
 		_RSUAdapterRR.m_RRAdmitEventIdList.clear();
 	}
 }

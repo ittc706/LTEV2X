@@ -39,9 +39,6 @@
     <ClInclude Include="RSU.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GeographyAndMobility.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="IMTA.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -78,6 +75,12 @@
     <ClInclude Include="Matrix.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GTAT.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GTAT_Urban.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -96,12 +99,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="eNB.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Channel.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GeographyAndMobility.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="IMTA.cpp">
@@ -129,6 +126,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Matrix.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GTAT_Urban.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
