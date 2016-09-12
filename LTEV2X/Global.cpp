@@ -172,12 +172,3 @@ void SelectMax(float *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyF
 	return;
 }
 
-
-
-
-vector<int> makeContinuousSequence(int begin, int end) {
-	vector<int> res;
-	for (int i = begin; i <= end; i++)
-		res.push_back(i);
-	return res;
-}

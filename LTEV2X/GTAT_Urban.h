@@ -11,7 +11,7 @@ struct sGeography {
 
 class GTAT_Urban :public GTAT_Basic {
 public:
-	static default_random_engine s_Engine;
+	static std::default_random_engine s_Engine;
 	GTAT_Urban() = delete;
 	GTAT_Urban(int &systemTTI, sConfigure& systemConfig, ceNB* &systemeNBAry, cRoad* &systemRoadAry, cRSU* &systemRSUAry, cVeUE* &systemVeUEAry);
 

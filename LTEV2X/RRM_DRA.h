@@ -12,23 +12,23 @@
 /*===========================================
 *              模块常量定义
 * ==========================================*/
-const int gc_DRA_NTTI = 25; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
-const int gc_DRAEmergencyTotalPatternNum = 5;//传输紧急事件的Pattern数量
-const int gc_DRAEmergencyFBNumPerPattern = 1;//每个紧急事件的Pattern占用的FB数量
+const int gc_DRA_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
+
+const int gc_DRAEmergencyTotalPatternNum = 3;//传输紧急事件的Pattern数量
+const int gc_DRAEmergencyFBNumPerPattern = 2;//每个紧急事件的Pattern占用的FB数量
+
 const int gc_DRAPatternTypeNum = 2;//非紧急事件的Pattern的类型种类
-const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 25,5 };//在全频段每个Pattern种类对应的Pattern数量
-const int gc_DRAPatternIdxIntervalOfPatternType[gc_DRAPatternTypeNum][2] = { {0,24},{25,29} };
-const int gc_DRA_FBNumPerPatternType[gc_DRAPatternTypeNum] = { 1,5 };//每个Pattern种类所占的FB数量
-const std::vector<int> gc_DRAPatternIdxTable[gc_DRAPatternTypeNum] = { //每个Pattern种类对应的Pattern Idx的列表
-	makeContinuousSequence(0,gc_DRAPatternNumPerPatternType[0] - 1),
-	makeContinuousSequence(gc_DRAPatternNumPerPatternType[0],gc_DRAPatternNumPerPatternType[0] + gc_DRAPatternNumPerPatternType[1] - 1)
-};
+const int gc_DRA_FBNumPerPatternType[gc_DRAPatternTypeNum] = { 5,10 };//每个Pattern种类所占的FB数量
+const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 6,2 };//在全频段每个Pattern种类对应的Pattern数量
+const int gc_DRAPatternTypePatternIdxInterval[gc_DRAPatternTypeNum][2] = { {0,5},{6,7} };
+
 const int gc_DRATotalPatternNum = [&]() {
 	int res = 0;
 	for (int num : gc_DRAPatternNumPerPatternType)
 		res += num;
 	return res;
 }();//所有非EmergencyPattern类型的Pattern数量总和
+
 
 
 /*===========================================

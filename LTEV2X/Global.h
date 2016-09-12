@@ -33,9 +33,6 @@ void RandomGaussian(float *t_pfArray, unsigned long t_ulNumber, float t_fMean, f
 void SortBubble(float *t_pfArray, unsigned short t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
 void SelectMax(float *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyFirst, unsigned char *t_pbySecond);
 
-//辅助函数
-std::vector<int> makeContinuousSequence(int begin, int end);
-
 
 
 /*===========================================
@@ -218,7 +215,7 @@ const float c_FC = 2e9f;
 const int gc_TotalBandwidth =10 * 1000 * 1000;//10MHz
 const int gc_BandwidthOfRB = 12 * 1000 * 15;//180kHZ
 const int gc_RBNum = gc_TotalBandwidth/ gc_BandwidthOfRB;   //RB数量(111)
-const int gc_BitNumPerRB=1800;  //单位(个),由于RB带宽为180kHz，TTI为10ms，因此单位TTI单位RB传输的比特数为180k*10ms=1800
+const int gc_BitNumPerRB=180;  //单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
 
 
 
@@ -228,7 +225,7 @@ const int gc_BitNumPerRB=1800;  //单位(个),由于RB带宽为180kHz，TTI为10ms，因此单
 * ==========================================*/
 const int gc_PeriodMessageBitNum = 7200;
 const int gc_EmergencyMessageBitNum = 5400;
-const int gc_DataMessageBitNum = 180000;
+const int gc_DataMessageBitNum = 18000;
 
 
 

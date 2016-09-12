@@ -26,7 +26,6 @@
 
 using namespace std;
 
-
 string sDRAScheduleInfo::toLogString(int n) {
 	ostringstream ss;
 	ss << "[ eventId = ";
@@ -641,7 +640,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 		vector<vector<int>> curAvaliablePatternIdx(gc_DRAPatternTypeNum);
 
 		for (int patternTypeIdx = 0; patternTypeIdx < gc_DRAPatternTypeNum; patternTypeIdx++) {
-			for (int patternIdx : gc_DRAPatternIdxTable[patternTypeIdx]) {
+			for (int patternIdx = gc_DRAPatternTypePatternIdxInterval[patternTypeIdx][0]; patternIdx <= gc_DRAPatternTypePatternIdxInterval[patternTypeIdx][1]; patternIdx++) {
 				if (_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx]) {
 					curAvaliablePatternIdx[patternTypeIdx].push_back(patternIdx);
 				}
@@ -1083,7 +1082,7 @@ std::list<std::tuple<int, int>> RRM_DRA::DRABuildEmergencyScheduleInterval(int T
 
 int RRM_DRA::getPatternType(int patternIdx) {
 	for (int patternType = 0; patternType < gc_DRAPatternTypeNum; patternType++) {
-		if (patternIdx >= gc_DRAPatternIdxIntervalOfPatternType[patternType][0] && patternIdx <= gc_DRAPatternIdxIntervalOfPatternType[patternType][1])
+		if (patternIdx >= gc_DRAPatternTypePatternIdxInterval[patternType][0] && patternIdx <= gc_DRAPatternTypePatternIdxInterval[patternType][1])
 			return patternType;
 	}
 	throw Exp("getPatternType");
