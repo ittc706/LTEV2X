@@ -17,7 +17,6 @@ void GTAT_Urban::configure() {
 	m_Config.pupr = new int[m_Config.RoadNum];
 	m_Config.VeUENum = 0;
 	int Lambda = static_cast<int>((c_length + c_wide) * 2 * 3.6 / (2.5 * 15));
-	//srand((unsigned)time(NULL));
 	for (unsigned short temp = 0; temp != m_Config.RoadNum; ++temp)
 	{
 		int k = 0;

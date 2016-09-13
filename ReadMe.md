@@ -1,3 +1,8 @@
+version_2016_9_13(Debug)
+	srand导致了车辆集中在某几个RSU中
+	因此不要在初始化车辆位置的函数中使用srand((unsigned)time(NULL))
+
+
 version_2016_9_12(修正了TTI含义)
 
 

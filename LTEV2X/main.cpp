@@ -10,7 +10,7 @@ using namespace std;
 
 int main() {
 	long double start = clock();
-
+	srand((unsigned)time(NULL));
 	try {
 		cSystem _system;
 		_system.process();
