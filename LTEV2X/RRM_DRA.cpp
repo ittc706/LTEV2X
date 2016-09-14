@@ -1038,7 +1038,7 @@ int RRM_DRA::DRAGetMaxIndex(const std::vector<double>&clusterSize) {
 list<tuple<int, int>> RRM_DRA::DRABuildScheduleIntervalList(int TTI, const sEvent& event, std::tuple<int, int, int>ClasterTTI) {
 	list<tuple<int, int>> scheduleIntervalList;
 	int eventId = event.eventId;
-	int occupiedTTI = event.message.bitNum / gc_BitNumPerRB / gc_DRA_FBNumPerPatternType[event.message.messageType];
+	int occupiedTTI = (int)ceil((double)event.message.bitNum / (double)gc_BitNumPerRB / (double)gc_DRA_FBNumPerPatternType[event.message.messageType]);
 	int begin = std::get<0>(ClasterTTI),
 		end = std::get<1>(ClasterTTI),
 		len = std::get<2>(ClasterTTI);
@@ -1071,7 +1071,7 @@ std::list<std::tuple<int, int>> RRM_DRA::DRABuildEmergencyScheduleInterval(int T
 	std::list<std::tuple<int, int>> scheduleIntervalList;
 	std::tuple<int, int> scheduleInterval;
 	int eventId = event.eventId;
-	int occupiedTTI = event.message.bitNum / gc_BitNumPerRB / gc_DRAEmergencyFBNumPerPattern;
+	int occupiedTTI = (int)ceil((double)event.message.bitNum / (double)gc_BitNumPerRB / (double)gc_DRAEmergencyFBNumPerPattern);
 	get<0>(scheduleInterval) = TTI;
 	get<1>(scheduleInterval) = TTI + occupiedTTI - 1;
 	scheduleIntervalList.push_back(scheduleInterval);

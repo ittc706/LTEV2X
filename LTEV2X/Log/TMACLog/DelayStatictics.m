@@ -38,24 +38,24 @@ end
 
 
 
-if(length(unique(periodQueuingDelay))<10)
-    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,10);
+if(max(periodQueuingDelay)<5)
+    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,0:5);
 else
-    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,unique(periodQueuingDelay));
+    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,0:max(periodQueuingDelay));
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(length(unique(emergencyQueuingDelay))<10)
-    [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,10);
+if(max(emergencyQueuingDelay)<5)
+    [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,0:5);
 else
-    [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,unique(emergencyQueuingDelay));
+    [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,0:max(emergencyQueuingDelay));
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(length(unique(dataQueuingDelay))<10)
-    [numberData,centerData]=hist(dataQueuingDelay,10);
+if(max(dataQueuingDelay)<5)
+    [numberData,centerData]=hist(dataQueuingDelay,0:5);
 else
-    [numberData,centerData]=hist(dataQueuingDelay,unique(dataQueuingDelay));
+    [numberData,centerData]=hist(dataQueuingDelay,0:max(dataQueuingDelay));
 end
 numberData=numberData./sum(numberData);
 
@@ -84,24 +84,24 @@ ylabel('¸ÅÂÊ','LineWidth',2);
 grid on;
 
 %% ´«ÊäÊ±ÑÓ
-if(length(unique(periodSendDelay))<10)
-    [numberPeriod,centerPeriod]=hist(periodSendDelay,10);
+if(max(periodSendDelay)<5)
+    [numberPeriod,centerPeriod]=hist(periodSendDelay,0:5);
 else
-    [numberPeriod,centerPeriod]=hist(periodSendDelay,unique(periodSendDelay));
+    [numberPeriod,centerPeriod]=hist(periodSendDelay,0:max(periodSendDelay));
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(length(unique(emergencySendDelay))<10)
-    [numberEmergency,centerEmergency]=hist(emergencySendDelay,10);
+if(max(emergencySendDelay)<5)
+    [numberEmergency,centerEmergency]=hist(emergencySendDelay,0:5);
 else
-    [numberEmergency,centerEmergency]=hist(emergencySendDelay,unique(emergencySendDelay));
+    [numberEmergency,centerEmergency]=hist(emergencySendDelay,0:max(emergencySendDelay));
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(length(unique(dataSendDelay))<10)
-    [numberData,centerData]=hist(dataSendDelay,10);
+if(max(dataSendDelay)<5)
+    [numberData,centerData]=hist(dataSendDelay,0:5);
 else
-    [numberData,centerData]=hist(dataSendDelay,unique(dataSendDelay));
+    [numberData,centerData]=hist(dataSendDelay,0:max(dataSendDelay));
 end
 numberData=numberData./sum(numberData);
 
@@ -190,24 +190,24 @@ end
 
 
 
-if(length(unique(periodConflictNum))<10)
-    [numberPeriod,centerPeriod]=hist(periodConflictNum,10);
+if(max(periodConflictNum)<5)
+    [numberPeriod,centerPeriod]=hist(periodConflictNum,0:5);
 else
-    [numberPeriod,centerPeriod]=hist(periodConflictNum,unique(periodConflictNum));
+    [numberPeriod,centerPeriod]=hist(periodConflictNum,0:max(periodConflictNum));
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(length(unique(emergencyConflictNum))<10)
-    [numberEmergency,centerEmergency]=hist(emergencyConflictNum,10);
+if(max(emergencyConflictNum)<5)
+    [numberEmergency,centerEmergency]=hist(emergencyConflictNum,0:5);
 else
-    [numberEmergency,centerEmergency]=hist(emergencyConflictNum,unique(emergencyConflictNum));
+    [numberEmergency,centerEmergency]=hist(emergencyConflictNum,0:max(emergencyConflictNum));
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(length(unique(dataConflictNum))<10)
-    [numberData,centerData]=hist(dataConflictNum,10);
+if(max(dataConflictNum)<5)
+    [numberData,centerData]=hist(dataConflictNum,0:5);
 else
-    [numberData,centerData]=hist(dataConflictNum,unique(dataConflictNum));
+    [numberData,centerData]=hist(dataConflictNum,0:max(dataConflictNum));
 end
 numberData=numberData./sum(numberData);
 

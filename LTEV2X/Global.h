@@ -223,8 +223,8 @@ const int gc_BitNumPerRB=180;  //单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位
 /*===========================================
 *          无线资源管理单元常量
 * ==========================================*/
-const int gc_PeriodMessageBitNum = 7200;
-const int gc_EmergencyMessageBitNum = 5400;
+const int gc_PeriodMessageBitNum = 2400;
+const int gc_EmergencyMessageBitNum = 2400;
 const int gc_DataMessageBitNum = 18000;
 
 
