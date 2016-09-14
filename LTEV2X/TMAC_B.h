@@ -17,6 +17,7 @@ public:
 
 	std::vector<int> m_VeUEEmergencyNum;//每辆车紧急事件触发的次数，用于验证泊松分布，仿真中并无用处
 	std::vector<int> m_VeUEDataNum;//每辆车数据业务事件触发的次数，用于验证泊松分布，仿真中并无用处
+	std::vector<int> m_TransimitSucceedEventNumPerEventType;//每类事件成功传输的数目，外层下标为事件种类
 
 	/*------------------成员函数------------------*/
 

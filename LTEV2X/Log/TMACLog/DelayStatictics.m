@@ -2,6 +2,12 @@ clear all;
 close all;
 clc;
 
+
+separate=0;
+
+
+
+
 %% 读取时延统计信息
 
 DelayStatistics=importdata('DelayStatistics.txt');
@@ -38,127 +44,143 @@ end
 
 
 
-if(max(periodQueuingDelay)<5)
-    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,0:5);
+if(max(periodQueuingDelay)-min(periodQueuingDelay)<5)
+    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,min(periodQueuingDelay)-1:min(periodQueuingDelay)+5);
 else
-    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,0:max(periodQueuingDelay));
+    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,min(periodQueuingDelay)-1:max(periodQueuingDelay)+1);
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(max(emergencyQueuingDelay)<5)
-    [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,0:5);
+if(max(emergencyQueuingDelay)-min(emergencyQueuingDelay)<5)
+    [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,min(emergencyQueuingDelay)-1:min(emergencyQueuingDelay)+5);
 else
-    [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,0:max(emergencyQueuingDelay));
+    [numberEmergency,centerEmergency]=hist(emergencyQueuingDelay,min(emergencyQueuingDelay)-1:max(emergencyQueuingDelay)+1);
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(max(dataQueuingDelay)<5)
-    [numberData,centerData]=hist(dataQueuingDelay,0:5);
+if(max(dataQueuingDelay)-min(dataQueuingDelay)<5)
+    [numberData,centerData]=hist(dataQueuingDelay,min(dataQueuingDelay)-1:min(dataQueuingDelay)+5);
 else
-    [numberData,centerData]=hist(dataQueuingDelay,0:max(dataQueuingDelay));
+    [numberData,centerData]=hist(dataQueuingDelay,min(dataQueuingDelay)-1:max(dataQueuingDelay)+1);
 end
 numberData=numberData./sum(numberData);
 
 %% 等待时延
-figure(1)
-set(1,'position',[0,0,1800,600]);
-subplot(1,3,1);
-bar(centerPeriod,numberPeriod);
-title('周期事件等待时延统计','LineWidth',2);
-xlabel('等待时延(TTI)','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
+if(separate==1)
+    figure(1)
+    bar(centerPeriod,numberPeriod);
+    title('周期事件等待时延统计','LineWidth',2);
+    xlabel('等待时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 
-subplot(1,3,2);
-bar(centerEmergency,numberEmergency);
-title('紧急事件等待时延统计','LineWidth',2);
-xlabel('等待时延(TTI)','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
+    figure(2)
+    bar(centerEmergency,numberEmergency);
+    title('紧急事件等待时延统计','LineWidth',2);
+    xlabel('等待时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 
-subplot(1,3,3);
-bar(centerData,numberData);
-title('数据业务事件等待时延统计','LineWidth',2);
-xlabel('等待时延(TTI)','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
+    figure(3)
+    bar(centerData,numberData);
+    title('数据业务事件等待时延统计','LineWidth',2);
+    xlabel('等待时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+else
+    figure(1)
+    set(1,'position',[0,0,1800,600]);
+    subplot(1,3,1);
+    bar(centerPeriod,numberPeriod);
+    title('周期事件等待时延统计','LineWidth',2);
+    xlabel('等待时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+
+    subplot(1,3,2);
+    bar(centerEmergency,numberEmergency);
+    title('紧急事件等待时延统计','LineWidth',2);
+    xlabel('等待时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+
+    subplot(1,3,3);
+    bar(centerData,numberData);
+    title('数据业务事件等待时延统计','LineWidth',2);
+    xlabel('等待时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+end
+
 
 %% 传输时延
-if(max(periodSendDelay)<5)
-    [numberPeriod,centerPeriod]=hist(periodSendDelay,0:5);
+if(max(periodSendDelay)-min(periodSendDelay)<5)
+    [numberPeriod,centerPeriod]=hist(periodSendDelay,min(periodSendDelay)-1:min(periodSendDelay)+5);
 else
-    [numberPeriod,centerPeriod]=hist(periodSendDelay,0:max(periodSendDelay));
+    [numberPeriod,centerPeriod]=hist(periodSendDelay,min(periodSendDelay)-1:max(periodSendDelay)+1);
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(max(emergencySendDelay)<5)
-    [numberEmergency,centerEmergency]=hist(emergencySendDelay,0:5);
+if(max(emergencySendDelay)-min(emergencySendDelay)<5)
+    [numberEmergency,centerEmergency]=hist(emergencySendDelay,min(emergencySendDelay)-1:min(emergencySendDelay)+5);
 else
-    [numberEmergency,centerEmergency]=hist(emergencySendDelay,0:max(emergencySendDelay));
+    [numberEmergency,centerEmergency]=hist(emergencySendDelay,min(emergencySendDelay)-1:max(emergencySendDelay)+1);
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(max(dataSendDelay)<5)
-    [numberData,centerData]=hist(dataSendDelay,0:5);
+if(max(dataSendDelay)-min(dataSendDelay)<5)
+    [numberData,centerData]=hist(dataSendDelay,min(dataSendDelay)-1:min(dataSendDelay)+5);
 else
-    [numberData,centerData]=hist(dataSendDelay,0:max(dataSendDelay));
+    [numberData,centerData]=hist(dataSendDelay,min(dataSendDelay)-1:max(dataSendDelay)+1);
 end
 numberData=numberData./sum(numberData);
 
-figure(2)
-set(2,'position',[0,0,1800,600]);
-subplot(1,3,1);
-bar(centerPeriod,numberPeriod);
-title('周期事件传输时延统计','LineWidth',2);
-xlabel('传输时延(TTI)','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
 
-subplot(1,3,2);
-bar(centerEmergency,numberEmergency);
-title('紧急事件传输时延统计','LineWidth',2);
-xlabel('传输时延(TTI)','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
+if(separate==1)
+    figure(4)
+    bar(centerPeriod,numberPeriod);
+    title('周期事件传输时延统计','LineWidth',2);
+    xlabel('传输时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 
-subplot(1,3,3);
-bar(centerData,numberData);
-title('数据业务事件传输时延统计','LineWidth',2);
-xlabel('传输时延(TTI)','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
+    figure(5)
+    bar(centerEmergency,numberEmergency);
+    title('紧急事件传输时延统计','LineWidth',2);
+    xlabel('传输时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 
-
-%% 紧急事件以及数据业务事件泊松分布验证
-load ./EmergencyPossion.txt;
-load ./DataPossion.txt;
-
-if(unique(EmergencyPossion)==0)
-    [numberEmergency,centerEmergency]=hist(EmergencyPossion,10);
+    figure(6)
+    bar(centerData,numberData);
+    title('数据业务事件传输时延统计','LineWidth',2);
+    xlabel('传输时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 else
-    [numberEmergency,centerEmergency]=hist(EmergencyPossion,unique(EmergencyPossion));
+    figure(2)
+    set(2,'position',[0,0,1800,600]);
+    subplot(1,3,1);
+    bar(centerPeriod,numberPeriod);
+    title('周期事件传输时延统计','LineWidth',2);
+    xlabel('传输时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+
+    subplot(1,3,2);
+    bar(centerEmergency,numberEmergency);
+    title('紧急事件传输时延统计','LineWidth',2);
+    xlabel('传输时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+
+    subplot(1,3,3);
+    bar(centerData,numberData);
+    title('数据业务事件传输时延统计','LineWidth',2);
+    xlabel('传输时延(TTI)','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 end
-
-
-figure(3)
-bar(centerEmergency,numberEmergency);
-title('紧急事件泊松分布图','LineWidth',2);
-xlabel('在仿真时间内紧急事件生成次数','LineWidth',2);
-ylabel('车辆数目','LineWidth',2);
-grid on;
-
-if(unique(DataPossion)==0)
-    [numberData,centerData]=hist(DataPossion,10);
-else
-    [numberData,centerData]=hist(DataPossion,unique(DataPossion));
-end
-
-figure(4)
-bar(centerData,numberData);
-title('数据业务事件泊松分布图','LineWidth',2);
-xlabel('在仿真时间内数据业务事件生成次数','LineWidth',2);
-ylabel('车辆数目','LineWidth',2);
-grid on;
 
 
 
@@ -190,55 +212,80 @@ end
 
 
 
-if(max(periodConflictNum)<5)
-    [numberPeriod,centerPeriod]=hist(periodConflictNum,0:5);
+if(max(periodConflictNum)-min(periodConflictNum)<5)
+    [numberPeriod,centerPeriod]=hist(periodConflictNum,min(periodConflictNum)-1:min(periodConflictNum)+5);
 else
-    [numberPeriod,centerPeriod]=hist(periodConflictNum,0:max(periodConflictNum));
+    [numberPeriod,centerPeriod]=hist(periodConflictNum,min(periodConflictNum)-1:max(periodConflictNum)+1);
 end
 numberPeriod=numberPeriod./sum(numberPeriod);
 
-if(max(emergencyConflictNum)<5)
-    [numberEmergency,centerEmergency]=hist(emergencyConflictNum,0:5);
+if(max(emergencyConflictNum)-min(emergencyConflictNum)<5)
+    [numberEmergency,centerEmergency]=hist(emergencyConflictNum,min(emergencyConflictNum)-1:min(emergencyConflictNum)+5);
 else
-    [numberEmergency,centerEmergency]=hist(emergencyConflictNum,0:max(emergencyConflictNum));
+    [numberEmergency,centerEmergency]=hist(emergencyConflictNum,min(emergencyConflictNum)-1:max(emergencyConflictNum)+1);
 end
 numberEmergency=numberEmergency./sum(numberEmergency);
 
-if(max(dataConflictNum)<5)
-    [numberData,centerData]=hist(dataConflictNum,0:5);
+if(max(dataConflictNum)-min(dataConflictNum)<5)
+    [numberData,centerData]=hist(dataConflictNum,min(dataConflictNum)-1:min(dataConflictNum)+5);
 else
-    [numberData,centerData]=hist(dataConflictNum,0:max(dataConflictNum));
+    [numberData,centerData]=hist(dataConflictNum,min(dataConflictNum)-1:max(dataConflictNum)+1);
 end
 numberData=numberData./sum(numberData);
 
+if(separate==1)
+    figure(7)
+    bar(centerPeriod,numberPeriod);
+    title('周期事件冲突统计','LineWidth',2);
+    xlabel('冲突次数','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 
-figure(5)
-set(5,'position',[0,0,1800,600]);
-subplot(1,3,1);
-bar(centerPeriod,numberPeriod);
-title('周期事件冲突统计','LineWidth',2);
-xlabel('冲突次数','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
+    figure(8)
+    bar(centerEmergency,numberEmergency);
+    title('紧急事件冲突统计','LineWidth',2);
+    xlabel('冲突次数','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 
-subplot(1,3,2);
-bar(centerEmergency,numberEmergency);
-title('紧急事件冲突统计','LineWidth',2);
-xlabel('冲突次数','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
+    figure(9)
+    bar(centerData,numberData);
+    title('数据业务事件冲突统计','LineWidth',2);
+    xlabel('冲突次数','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+else
+    figure(3)
+    set(3,'position',[0,0,1800,600]);
+    subplot(1,3,1);
+    bar(centerPeriod,numberPeriod);
+    title('周期事件冲突统计','LineWidth',2);
+    xlabel('冲突次数','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
 
-subplot(1,3,3);
-bar(centerData,numberData);
-title('数据业务事件冲突统计','LineWidth',2);
-xlabel('冲突次数','LineWidth',2);
-ylabel('概率','LineWidth',2);
-grid on;
+    subplot(1,3,2);
+    bar(centerEmergency,numberEmergency);
+    title('紧急事件冲突统计','LineWidth',2);
+    xlabel('冲突次数','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+
+    subplot(1,3,3);
+    bar(centerData,numberData);
+    title('数据业务事件冲突统计','LineWidth',2);
+    xlabel('冲突次数','LineWidth',2);
+    ylabel('概率','LineWidth',2);
+    grid on;
+end
+
 
 
 
 %% 吞吐率
 load ./TTIThroughput.txt
+load ./RSUThroughput.txt
+load ./VeUENumPerRSULogInfo.txt
 
 TTIThroughput=TTIThroughput/1000;
 accumulatedTTIThroughput=zeros(1,length(TTIThroughput));
@@ -247,14 +294,14 @@ for iter=2:length(TTIThroughput)
     accumulatedTTIThroughput(1,iter)=accumulatedTTIThroughput(1,iter-1)+TTIThroughput(1,iter);
 end
 
-figure(6)
+figure(10)
 plot(TTIThroughput);
 title('TTI吞吐量','LineWidth',2);
-xlabel('TTI(10ms)','LineWidth',2);
+xlabel('TTI','LineWidth',2);
 ylabel('K bit','LineWidth',2);
 grid on;
 
-figure(7)
+figure(11)
 plot(accumulatedTTIThroughput);
 title('累计吞吐量','LineWidth',2);
 xlabel('TTI','LineWidth',2);
@@ -262,15 +309,54 @@ ylabel('K bit','LineWidth',2);
 grid on;
 
 
-load ./RSUThroughput.txt
-
 RSUThroughput=RSUThroughput/1000;
-
-figure(8)
+figure(12)
 bar(RSUThroughput);
 title('吞吐量统计','LineWidth',2);
-xlabel('RSUId(10ms)','LineWidth',2);
+xlabel('RSUId','LineWidth',2);
 ylabel('K bit','LineWidth',2);
+grid on;
+
+
+VeUENumPerRSULogInfo=mean(VeUENumPerRSULogInfo,1);
+figure(13)
+bar(VeUENumPerRSULogInfo)
+title('车辆分布统计图','LineWidth',2);
+xlabel('车辆数目','LineWidth',2);
+ylabel('RSUId','LineWidth',2);
+grid on;
+
+
+
+%% 紧急事件以及数据业务事件泊松分布验证
+load ./EmergencyPossion.txt;
+load ./DataPossion.txt;
+
+if(unique(EmergencyPossion)==0)
+    [numberEmergency,centerEmergency]=hist(EmergencyPossion,10);
+else
+    [numberEmergency,centerEmergency]=hist(EmergencyPossion,unique(EmergencyPossion));
+end
+
+
+figure(14)
+bar(centerEmergency,numberEmergency);
+title('紧急事件泊松分布图','LineWidth',2);
+xlabel('在仿真时间内紧急事件生成次数','LineWidth',2);
+ylabel('车辆数目','LineWidth',2);
+grid on;
+
+if(unique(DataPossion)==0)
+    [numberData,centerData]=hist(DataPossion,10);
+else
+    [numberData,centerData]=hist(DataPossion,unique(DataPossion));
+end
+
+figure(15)
+bar(centerData,numberData);
+title('数据业务事件泊松分布图','LineWidth',2);
+xlabel('在仿真时间内数据业务事件生成次数','LineWidth',2);
+ylabel('车辆数目','LineWidth',2);
 grid on;
 
 

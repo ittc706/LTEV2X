@@ -176,6 +176,29 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 	* 否则当数据量不大时，可能写完数据，文件还是空的
 	*-----------------------ATTENTION-----------------------*/
 
+
+	//统计成功传输的事件数目
+	m_TransimitSucceedEventNumPerEventType = vector<int>(3);
+	for (sEvent &event : m_EventVec) {
+		if (event.isSuccessded) {
+			switch (event.message.messageType) {
+			case PERIOD:
+				m_TransimitSucceedEventNumPerEventType[0]++;
+				break;
+			case EMERGENCY:
+				m_TransimitSucceedEventNumPerEventType[1]++;
+				break;
+			case DATA:
+				m_TransimitSucceedEventNumPerEventType[2]++;
+				break;
+			}
+		}
+			
+	}
+	cout << "成功传输统计" << endl;
+	for (int num : m_TransimitSucceedEventNumPerEventType)
+		cout << num << endl;
+
 	
 	//统计等待时延
 	for (sEvent &event : m_EventVec)

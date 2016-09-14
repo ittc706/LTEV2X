@@ -32,7 +32,7 @@ void cSystem::process() {
 	TMACPoint->processStatistics(g_FileDelayStatistics, g_FileEmergencyPossion, g_FileDataPossion, g_FileConflictNum, g_FileEventLogInfo);
 
 	//打印车辆地理位置更新日志信息
-	GTATPoint->writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo);
+	GTATPoint->writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo, g_FileVeUENumPerRSULogInfo);
 }
 
 void cSystem::configure() {//系统仿真参数配置

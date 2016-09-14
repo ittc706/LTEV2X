@@ -27,5 +27,5 @@ public:
 
 	virtual void channelGeneration() = 0;//信道产生
 	virtual void freshLoc() = 0;//信道刷新
-	virtual void writeVeUELocationUpdateLogInfo(std::ofstream &out) = 0; //写入地理位置更新日志
+	virtual void writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &ou2) = 0; //写入地理位置更新日志
 };

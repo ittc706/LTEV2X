@@ -346,7 +346,11 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 				int eventId = _RSUAdapterDRA.m_DRAEmergencyScheduleInfoTable[patternIdx]->eventId;
 				int VeUEId = m_EventVec[eventId].VeUEId;
 				if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
+					//压入Switch链表
 					_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
+
+					//将剩余待传bit重置
+					m_EventVec[eventId].message.resetRemainBitNum();
 
 					//并释放该调度信息的资源
 					delete _RSUAdapterDRA.m_DRAEmergencyScheduleInfoTable[patternIdx];
@@ -380,7 +384,11 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 					int eventId = _RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx]->eventId;
 					int VeUEId = m_EventVec[eventId].VeUEId;
 					if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
+						//压入Switch链表
 						_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
+
+						//将剩余待传bit重置
+						m_EventVec[eventId].message.resetRemainBitNum();
 
 						//并释放该调度信息的资源
 						delete _RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx];
@@ -398,7 +406,11 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 					}
 					else {
 						if (_RSUAdapterDRA.DRAGetClusterIdxOfVeUE(VeUEId) != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
+							//压入该RSU的等待链表
 							_RSUAdapterDRA.DRAPushToWaitEventIdList(eventId);
+
+							//将剩余待传bit重置
+							m_EventVec[eventId].message.resetRemainBitNum();
 
 							//并释放该调度信息的资源
 							delete _RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx];
@@ -437,8 +449,14 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
 			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE已经不在该RSU范围内
-				_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);//将其添加到System级别的RSU切换链表中
+                //将其添加到System级别的RSU切换链表中
+				_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
+				
+                //从等待链表将其删除
 				it = _RSUAdapterDRA.m_DRAEmergencyWaitEventIdList.erase(it);
+
+				//将剩余待传bit重置
+				m_EventVec[eventId].message.resetRemainBitNum();
 
 				//更新该事件的日志
 				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "LocationUpdate");
@@ -460,8 +478,14 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
 			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE已经不在该RSU范围内
-				_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);//将其添加到System级别的RSU切换链表中
-				it = _RSUAdapterDRA.m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
+				//将其添加到System级别的RSU切换链表中
+				_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
+				
+			    //将其从等待链表中删除
+				it = _RSUAdapterDRA.m_DRAWaitEventIdList.erase(it);
+
+				//将剩余待传bit重置
+				m_EventVec[eventId].message.resetRemainBitNum();
 
 				//更新该事件的日志
 				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "LocationUpdate");
@@ -793,10 +817,13 @@ void RRM_DRA::DRAConflictListener() {
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//累计吞吐率
-				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB;
+				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += m_EventVec[info->eventId].message.remainBitNum > gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB ? gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB : m_EventVec[info->eventId].message.remainBitNum;
 
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx, "Transimit");
+
+				//更新剩余待传输bit数量
+				m_EventVec[info->eventId].message.remainBitNum -= gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB;
 
 				//维护占用区间
 				tuple<int, int> &scheduleInterval = *(info->occupiedIntervalList.begin());
@@ -865,10 +892,13 @@ void RRM_DRA::DRAConflictListener() {
 
 				//累计吞吐率
 				int patternType = getPatternType(patternIdx);
-				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB;
+				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += m_EventVec[info->eventId].message.remainBitNum>gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB? gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB: m_EventVec[info->eventId].message.remainBitNum;
 
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Transimit");
+
+				//更新剩余待传输bit数量
+				m_EventVec[info->eventId].message.remainBitNum -= gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB;
 
 				//维护占用区间
 				list<tuple<int, int>> &OIList = info->occupiedIntervalList;

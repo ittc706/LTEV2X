@@ -1,4 +1,8 @@
 version_2016_9_14(Debug)
+	纠正了无线资源管理吞吐量的统计Bug
+	修改了Matlab作图部分
+
+version_2016_9_14(Debug)
 	纠正了DRA模块下，计算occupiedTTI的错误
 	RR模块还未纠正
 	修改了Matlab作图部分

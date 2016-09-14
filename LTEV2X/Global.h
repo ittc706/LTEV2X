@@ -6,6 +6,9 @@
 *            输出日志文件流声明
 * ==========================================*/
 extern std::ofstream g_FileTemp;
+//GTAT_Urban模块
+extern std::ofstream g_FileVeUELocationUpdateLogInfo;
+extern std::ofstream g_FileVeUENumPerRSULogInfo;
 //RRM_RR模块
 extern std::ofstream g_FileRRScheduleInfo;
 //RRM_DRA模块
@@ -14,7 +17,6 @@ extern std::ofstream g_FileClasterPerformInfo;
 extern std::ofstream g_FileEventListInfo;
 extern std::ofstream g_FileTTILogInfo;
 extern std::ofstream g_FileEventLogInfo;
-extern std::ofstream g_FileVeUELocationUpdateLogInfo;
 //TMAC_B模块
 extern std::ofstream g_FileDelayStatistics;
 extern std::ofstream g_FileEmergencyPossion;

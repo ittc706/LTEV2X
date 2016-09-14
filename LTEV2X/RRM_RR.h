@@ -8,9 +8,8 @@
 /*===========================================
 *              模块常量定义
 * ==========================================*/
-const int gc_RRNumRBPerPattern = 5;//每个Pattern的RB数量
+const int gc_RRNumRBPerPattern = 11;//每个Pattern的RB数量
 const int gc_RRPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
-const int gc_RRBitNumPerPattern = gc_RRNumRBPerPattern*gc_BitNumPerRB;//每个Pattern单位TTI传输的bit数量
 
 /*===========================================
 *            调度信息数据结构

@@ -342,13 +342,13 @@ void RRM_RR::RRTransimitEnd() {
 			sRRScheduleInfo* &info = _RSUAdapterRR.m_RRScheduleInfoTable[patternIdx];
 			if (info == nullptr) continue;
 			//累计吞吐率
-			m_TTIRSUThroughput[m_TTI][_RSUAdapterRR.m_HoldObj.m_RSUId] += gc_RRNumRBPerPattern*gc_BitNumPerRB;
+			m_TTIRSUThroughput[m_TTI][_RSUAdapterRR.m_HoldObj.m_RSUId] += m_EventVec[info->eventId].message.remainBitNum>gc_RRNumRBPerPattern*gc_BitNumPerRB? gc_RRNumRBPerPattern*gc_BitNumPerRB: m_EventVec[info->eventId].message.remainBitNum;
 
 			//更新该事件的日志
 			m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterRR.m_HoldObj.m_RSUId, -1, patternIdx, "Transimit");
 
 			//更新剩余待传输bit数量
-			m_EventVec[info->eventId].message.remainBitNum -= gc_RRBitNumPerPattern;
+			m_EventVec[info->eventId].message.remainBitNum -= gc_RRNumRBPerPattern*gc_BitNumPerRB;
 
 			if (m_EventVec[info->eventId].message.remainBitNum <= 0) {//说明已经传输完毕
 				//设置传输成功标记
