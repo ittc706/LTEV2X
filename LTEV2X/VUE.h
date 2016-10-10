@@ -16,6 +16,7 @@ public:
 	/*--------------------------------------------------------------
 	*                      地理拓扑单元
 	* -------------------------------------------------------------*/
+	~cVeUE();
 	void initialize(sUEConfigure &t_UEConfigure);
 	unsigned short m_wRoadID;
 	int m_locationID;
@@ -31,6 +32,8 @@ public:
 	float m_fantennaAngle;
 	//cChannelModel *channelModel;
 	cIMTA *imta;
+
+	float *m_H;
 
 	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
 };

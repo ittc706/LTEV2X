@@ -1,6 +1,8 @@
 #include<tuple>
 #include<iomanip>
+#include<iostream>
 #include"GTAT_Urban.h"
+#include"Exception.h"
 
 using namespace std;
 
@@ -146,7 +148,7 @@ void GTAT_Urban::channelGeneration() {
 	vector<int> curVeUENum;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
-		curVeUENum.push_back(_RSU.m_VeUEIdList.size());
+		curVeUENum.push_back(static_cast<int>(_RSU.m_VeUEIdList.size()));
 	}
 	m_VeUENumPerRSU.push_back(curVeUENum);
 
@@ -451,8 +453,8 @@ void GTAT_Urban::freshLoc() {
 		antenna.pfRxAntSpacing[0] = 0.0f;
 		antenna.pfRxAntSpacing[1] = 0.5f;
 
-
-		m_VeUEAry[UserIdx1].imta[RSUIdx].Build(c_FC, location, antenna, m_VeUEAry[UserIdx1].m_fv, m_VeUEAry[UserIdx1].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
+		float t_Pl = 0;
+		m_VeUEAry[UserIdx1].imta[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[UserIdx1].m_fv, m_VeUEAry[UserIdx1].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
 		bool *flag = new bool();
 		*flag = true;
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag);
@@ -461,7 +463,10 @@ void GTAT_Urban::freshLoc() {
 		float *ch_buffer = new float[1 * 2 * 12 * 20];
 		float *ch_sin = new float[1 * 2 * 12 * 20];
 		float *ch_cos = new float[1 * 2 * 12 * 20];
-		m_VeUEAry[UserIdx1].imta[RSUIdx].Calculate(0.01f, ch_buffer, ch_sin, ch_cos, H,FFT);
+
+		float *t_HAfterFFT = new float[2 * 1024 * 2];
+		m_VeUEAry[UserIdx1].imta[RSUIdx].Calculate(t_HAfterFFT,0.01f, ch_buffer, ch_sin, ch_cos, H,FFT);
+		memcpy(m_VeUEAry[UserIdx1].m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
 		//		for (unsigned char byTempTxAnt = 0; byTempTxAnt != 1; ++ byTempTxAnt)
 		//{
 		//	for (unsigned char byTempRxAnt = 0; byTempRxAnt !=2; ++ byTempRxAnt)

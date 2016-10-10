@@ -150,7 +150,7 @@ cIMTA::~cIMTA(void)
 	}
 }
 
-bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/)
+bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/)
 {
 	m_bBuilt = false;
 	m_fAntGain = t_eAntenna.fAntGain * 0.1f;
@@ -351,6 +351,7 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 	m_fAoA *= c_Degree2PI;
 	//m_fPLSF *= pow(10.0f, fSFSTD * afTemp[3] * 0.1f);
 	m_fPLSF+=fSFSTD * afTemp[3];
+	*t_Pl = m_fPLSF;
 	m_fKDB = fKSTD * afTemp[4] + fKMean;
 	m_fK = pow(10.0f, m_fKDB * 0.1f);
 	m_fDS *= -m_fDSRatio;	
@@ -611,7 +612,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	return true;
 }
 
-void cIMTA::Calculate( float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float *t_pfCos,float *t_pfH,float *t_pfHFFT)
+void cIMTA::Calculate(float* t_HAfterFFT, float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float *t_pfCos,float *t_pfH,float *t_pfHFFT)
 {
 	float fCos;
 	float fSin;
@@ -707,6 +708,18 @@ void cIMTA::Calculate( float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float 
 		ptemp2 = fftw_plan_dft_1d(1024, in2, out2, FFTW_FORWARD, FFTW_ESTIMATE);
 		fftw_execute(ptemp1);
 		fftw_execute(ptemp2);
+
+
+		int HAfterFFT_Iter = 0;
+		for (int row = 0; row < 1024; row++) {
+			t_HAfterFFT[HAfterFFT_Iter++] = out1[row][0];
+			t_HAfterFFT[HAfterFFT_Iter++] = out1[row][1];
+		}
+		for (int row = 0; row < 1024; row++) {
+			t_HAfterFFT[HAfterFFT_Iter++] = out2[row][0];
+			t_HAfterFFT[HAfterFFT_Iter++] = out2[row][1];
+		}
+		
 
 		FILE *fpp;
 		errno_t err;

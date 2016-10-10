@@ -34,4 +34,9 @@ void cVeUE::initialize(sUEConfigure &t_UEConfigure)
 		m_fvAngle = -180;
 	RandomUniform(&m_fantennaAngle, 1, 180.0f, -180.0f, false);
 
+	m_H = new float[2 * 1024 * 2];
+}
+
+cVeUE::~cVeUE() {
+	delete m_H;
 }
