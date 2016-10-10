@@ -81,6 +81,9 @@
     <ClInclude Include="GTAT_Urban.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="fftw64\fftw3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

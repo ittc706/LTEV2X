@@ -121,6 +121,8 @@ cIMTA::cIMTA(void)
 	m_pfTxSlantAngle = 0;
 	m_pfRxAntSpacing = 0;
 	m_pfRxSlantAngle = 0;
+	//FFT参数初始化
+	m_pwFFTIndex = 0;
 }
 
 cIMTA::~cIMTA(void)
@@ -151,8 +153,8 @@ cIMTA::~cIMTA(void)
 bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/)
 {
 	m_bBuilt = false;
-	m_fAntGain = t_eAntenna.fAntGain;
-	m_fMaxAttenu=t_eAntenna.fMaxAttenu * -0.1f;
+	m_fAntGain = t_eAntenna.fAntGain * 0.1f;
+	//m_fMaxAttenu=t_eAntenna.fMaxAttenu * -0.1f;
 	m_byTxAntNum=t_eAntenna.byTxAntNum;
 	m_byRxAntNum=t_eAntenna.byRxAntNum;
 	
@@ -194,6 +196,23 @@ bool cIMTA::Build(float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_e
 	m_fRxAngle = t_eAntenna.fRxAngle * c_Degree2PI;
 	m_fVelocity = t_fVelocity / 3.6f * t_fFrequency * c_PI2 / c_C;
 	m_fvAngle = t_fVAngle * c_Degree2PI;
+	//FFT相关
+	m_wFFTNum = 1;
+	m_byFFTOrder = 0;
+	m_wHNum = 666;
+	while (true)
+	{
+		if (m_wHNum > m_wFFTNum)
+		{
+			m_wFFTNum <<= 1;
+			++m_byFFTOrder;
+		}
+		else
+		{
+			m_fFFTTime = 1.0f / 15000 / m_wFFTNum;
+			break;
+		}
+	}
 
 	float fTemp;
 	float fSFSTD;
@@ -372,7 +391,8 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	m_pfPhase = new float[m_byTxAntNum * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2];	
 	m_pfSinAoA = new float[m_byPathNum * m_scbySubPathNum];
 	m_pfCosAoA = new float[m_byPathNum * m_scbySubPathNum];
-	
+	m_pwFFTIndex = new unsigned short[m_byPathNum];
+
 	float *pfPathDelay = new float[m_byPathNum];
 	float *pfPathPower = new float[m_byPathNum];
 	float fPowerTotal = 0.0f;
@@ -461,6 +481,17 @@ bool cIMTA::Enable(bool *t_pbEnable)
 		}
 	}
 
+
+	for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++byTempPath)
+	{
+		pfPathPower[byTempPath] /= m_scbySubPathNum;
+		m_pwFFTIndex[byStoreIndex] = (unsigned short)floor(pfPathDelay[byTempPath] / m_fFFTTime + 0.5f);
+		if (m_pwFFTIndex[byStoreIndex] >= m_wFFTNum)
+		{
+			m_pwFFTIndex[byStoreIndex] = m_wFFTNum - 1;
+		}
+		++byStoreIndex;
+	}
 	//for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 	//{
 	//        while (pfAoA[byTempPath] > 2*c_PI)
@@ -479,7 +510,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
  		{
       		for (unsigned char byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
 		    {
-				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = m_fMaxAttenu;
+				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = 0.6;
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = pow(10.0f, m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath]);
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] *= pfPathPower[byTempPath];
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = sqrt(m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath]);
@@ -497,7 +528,8 @@ bool cIMTA::Enable(bool *t_pbEnable)
 				
 			}
 	}
-	
+
+
 		if (m_bLoS)
 	{
 	     	m_fGainLoS= m_fMaxAttenu;
@@ -544,6 +576,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 				}
 			}
 		}
+
 	if (m_bLoS)
 		{
 			RandomUniform(pfPhasePol, 1, c_PI, c_PINeg, false);
@@ -564,7 +597,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 		}
 
 
-	delete[]pfPhasePol;
+	delete []pfPhasePol;
 	delete []pfSlantVV;
 	delete []pfSlantVH;
 	delete []pfSlantHV;
@@ -578,11 +611,12 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	return true;
 }
 
-void cIMTA::Calculate( float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float *t_pfCos,float *t_pfH)
+void cIMTA::Calculate( float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float *t_pfCos,float *t_pfH,float *t_pfHFFT)
 {
 	float fCos;
 	float fSin;
 
+	memset(t_pfH, 0, m_byTxAntNum * m_byRxAntNum * m_byPathNum * 2 * sizeof(float));
 
 		for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 		{
@@ -603,19 +637,21 @@ void cIMTA::Calculate( float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float 
 							t_pfSin[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum + byTempRxAnt * m_byPathNum * m_scbySubPathNum + byTempPath * m_scbySubPathNum + byTempSubPath] =
 							       sin(t_pfTemp[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum + byTempRxAnt * m_byPathNum * m_scbySubPathNum + byTempPath * m_scbySubPathNum + byTempSubPath]*2*c_PI*c_C/c_FC);
 
-							t_pfH[byTempTxAnt * m_byRxAntNum * m_byPathNum  * 2 + byTempRxAnt * m_byPathNum  * 2 + byTempPath * 2 ] =
+							t_pfH[byTempTxAnt * m_byRxAntNum * m_byPathNum  * 2 + byTempRxAnt * m_byPathNum  * 2 + byTempPath * 2 ] +=
 								m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] *
 								(t_pfCos[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum + byTempRxAnt * m_byPathNum * m_scbySubPathNum + byTempPath * m_scbySubPathNum + byTempSubPath] *
 								m_pfPhase[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2 + byTempRxAnt * m_byPathNum * m_scbySubPathNum * 2 + byTempPath * m_scbySubPathNum * 2 + byTempSubPath * 2] -
 								t_pfSin[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum + byTempRxAnt * m_byPathNum * m_scbySubPathNum + byTempPath * m_scbySubPathNum + byTempSubPath] *
 								m_pfPhase[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2 + byTempRxAnt * m_byPathNum * m_scbySubPathNum * 2 + byTempPath * m_scbySubPathNum * 2 + byTempSubPath * 2+ 1]);
-							t_pfH[byTempTxAnt * m_byRxAntNum * m_byPathNum  * 2 + byTempRxAnt * m_byPathNum  * 2 + byTempPath * 2 + 1] =
+							t_pfH[byTempTxAnt * m_byRxAntNum * m_byPathNum  * 2 + byTempRxAnt * m_byPathNum  * 2 + byTempPath * 2 + 1] +=
 								m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] *
 								(t_pfSin[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum + byTempRxAnt * m_byPathNum * m_scbySubPathNum + byTempPath * m_scbySubPathNum + byTempSubPath] *
 								m_pfPhase[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2 + byTempRxAnt * m_byPathNum * m_scbySubPathNum * 2 + byTempPath * m_scbySubPathNum * 2 + byTempSubPath * 2] +
 								t_pfCos[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum + byTempRxAnt * m_byPathNum * m_scbySubPathNum + byTempPath * m_scbySubPathNum + byTempSubPath] *
 								m_pfPhase[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2 + byTempRxAnt * m_byPathNum * m_scbySubPathNum * 2 + byTempPath * m_scbySubPathNum * 2 + byTempSubPath * 2+ 1]);
 				    }
+
+
                     if (m_bLoS && byTempPath == 0)
 				   {
 					fSin = m_pfRxAntSpacing[byTempRxAnt] * m_fSinAoDLoS + m_pfTxAntSpacing[byTempTxAnt] * m_fSinAoALoS + m_fCosAoALoS * t_fT;
@@ -633,6 +669,62 @@ void cIMTA::Calculate( float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float 
 				}
 			}
 		}
+
+
+		memset(t_pfHFFT, 0, m_byTxAntNum * m_byRxAntNum * 1024 * 2 * sizeof(float));
+
+		for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++byTempTxAnt)
+		{
+			for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++byTempRxAnt)
+			{
+				for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++byTempPath)
+				{
+					t_pfHFFT[byTempTxAnt * m_byRxAntNum * m_wFFTNum * 2 + byTempRxAnt * m_wFFTNum * 2 + m_pwFFTIndex[byTempPath] * 2] +=
+						t_pfH[byTempTxAnt * m_byRxAntNum * m_byPathNum * 2 + byTempRxAnt * m_byPathNum * 2 + byTempPath * 2];
+					t_pfHFFT[byTempTxAnt * m_byRxAntNum * m_wFFTNum * 2 + byTempRxAnt * m_wFFTNum * 2 + m_pwFFTIndex[byTempPath] * 2 + 1] +=
+						t_pfH[byTempTxAnt * m_byRxAntNum * m_byPathNum * 2 + byTempRxAnt * m_byPathNum * 2 + byTempPath * 2 + 1];
+				}
+				
+			}
+		}
+
+
+		//利用fftw提供的函数进行fft变换
+		fftw_complex *in1, *out1, *in2, *out2;
+		fftw_plan ptemp1, ptemp2;
+		in1 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * m_wFFTNum);
+		out1 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * m_wFFTNum);
+		in2 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * m_wFFTNum);
+		out2 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * m_wFFTNum);
+		for (int tempnum = 0; tempnum<1024; tempnum++)
+		{
+			in1[tempnum][0] = t_pfHFFT[tempnum * 2];
+			in1[tempnum][1] = t_pfHFFT[tempnum * 2 + 1];
+			in2[tempnum][0] = t_pfHFFT[tempnum * 2 + 2048];
+			in2[tempnum][1] = t_pfHFFT[tempnum * 2 + 2049];
+		}
+		ptemp1 = fftw_plan_dft_1d(1024, in1, out1, FFTW_FORWARD, FFTW_ESTIMATE);
+		ptemp2 = fftw_plan_dft_1d(1024, in2, out2, FFTW_FORWARD, FFTW_ESTIMATE);
+		fftw_execute(ptemp1);
+		fftw_execute(ptemp2);
+
+		FILE *fpp;
+		errno_t err;
+		err = fopen_s(&fpp, "HF.txt", "w+");
+		for (int pp = 0; pp<1024; pp++)
+		{
+			fprintf(fpp, "%f\n", out1[pp][0]);
+			fprintf(fpp, "%f\n", out1[pp][1]);
+		}
+		fclose(fpp);
+
+		fftw_destroy_plan(ptemp1);
+		fftw_destroy_plan(ptemp2);
+		fftw_free(in1);
+		fftw_free(in2);
+		fftw_free(out1);
+		fftw_free(out2);
+		//int checkpoint = 1;
 	return;
 }
 
@@ -674,5 +766,9 @@ void cIMTA::Refresh(void)
 		delete[]m_pfPhaseLoS ;
 		m_pfPhaseLoS = 0;
 	}
-
+	if (m_pwFFTIndex)
+	{
+		delete[]m_pwFFTIndex;
+		m_pwFFTIndex = 0;
+	}
 }

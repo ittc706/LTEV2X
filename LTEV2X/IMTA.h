@@ -2,6 +2,7 @@
 #include<math.h>
 #include<string>
 #include<map>
+#include"fftw3.h"
 #include"Config.h"
 #include"Enumeration.h"
 #include"Global.h"
@@ -82,12 +83,18 @@ public:
 	float m_fCosAoALoS;
 	float *m_pfPhaseLoS;
 
+	//FFT所用变量
+	unsigned short m_wFFTNum;
+	unsigned char m_byFFTOrder;
+	float m_fFFTTime;
+	unsigned short m_wHNum;
+	unsigned short *m_pwFFTIndex;
 public:
 	cIMTA(void);
 	~cIMTA(void);
 	bool Build(float t_fFrequency/*Hz*/, sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/);
 	bool Enable(bool *t_pbEnable);
-	void Calculate( float t_fT/*s*/, float *t_pfTemp, float *t_pfSin, float *t_pfCos, float *t_pfH);
+	void Calculate( float t_fT/*s*/, float *t_pfTemp, float *t_pfSin, float *t_pfCos, float *t_pfH, float *t_pfHFFT);
 	float GetPLSF(void)
 	{
 		return m_fPLSF;

@@ -436,8 +436,8 @@ void GTAT_Urban::freshLoc() {
 
 		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_fantennaAngle;
 		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
-		antenna.fAntGain = 3;
-		antenna.fMaxAttenu = 23;
+		antenna.fAntGain = 6;
+		//antenna.fMaxAttenu = 23;
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
 		antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
@@ -456,11 +456,12 @@ void GTAT_Urban::freshLoc() {
 		bool *flag = new bool();
 		*flag = true;
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag);
-		float *H = new float[1 * 2 * 12 * 20 * 2];
+		float *H = new float[1 * 2 * 12 * 2];
+		float *FFT = new float[1 * 2 * 1024 * 2];
 		float *ch_buffer = new float[1 * 2 * 12 * 20];
 		float *ch_sin = new float[1 * 2 * 12 * 20];
 		float *ch_cos = new float[1 * 2 * 12 * 20];
-		m_VeUEAry[UserIdx1].imta[RSUIdx].Calculate(0.01f, ch_buffer, ch_sin, ch_cos, H);
+		m_VeUEAry[UserIdx1].imta[RSUIdx].Calculate(0.01f, ch_buffer, ch_sin, ch_cos, H,FFT);
 		//		for (unsigned char byTempTxAnt = 0; byTempTxAnt != 1; ++ byTempTxAnt)
 		//{
 		//	for (unsigned char byTempRxAnt = 0; byTempRxAnt !=2; ++ byTempRxAnt)
@@ -482,6 +483,7 @@ void GTAT_Urban::freshLoc() {
 		delete[]antenna.pfRxSlantAngle;
 		delete[]antenna.pfRxAntSpacing;
 		delete[]m_VeUEAry[UserIdx1].imta;
+		delete[] FFT;
 	}
 }
 
