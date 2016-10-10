@@ -3,6 +3,7 @@
 #include<random>
 #include<string>
 #include<utility>
+#include<iostream>
 #include"Complex.h"
 #include"Exception.h"
 
@@ -19,7 +20,7 @@ public:
 
 	/*¹¹Ôìº¯Êý*/
 	RowVector();
-	RowVector(int t_Col);
+	explicit RowVector(int t_Col);
 	RowVector(const RowVector& t_RowVector);
 	RowVector(const std::initializer_list<Complex> il);
 
