@@ -39,4 +39,5 @@ void cVeUE::initialize(sUEConfigure &t_UEConfigure)
 
 cVeUE::~cVeUE() {
 	delete m_H;
+	delete m_interH;
 }
