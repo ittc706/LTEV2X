@@ -40,13 +40,12 @@ std::string sDRAScheduleInfo::toScheduleString(int n) {
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
 	ostringstream ss;
-	ss << indent << "{ ";
-	ss << "[ eventId = " << left << setw(3) << eventId << " , VeUEId = " << left << setw(3) << VeUEId << " ]";
-	ss << " : occupy Interval = { ";
-	for (tuple<int, int> t : occupiedIntervalList) {
-		ss << "[ " << get<0>(t) << " , " << get<1>(t) << " ] , ";
-	}
-	ss << "} }";
+	ss << indent << "{ " << endl;
+	ss << indent << " eventId = " << eventId << endl;
+	ss << indent << " VeUEId = " << VeUEId << endl;
+	ss << indent << " remainBitNum = " << remainBitNum << endl;
+	ss << indent << " transimitBitNum = " << transimitBitNum << endl;
+	ss << indent << "}";
 	return ss.str();
 }
 
@@ -177,9 +176,6 @@ void RRM_DRA::schedule() {
 		DRASelectBasedOnP123();
 		break;
 	}
-	//写入调度信息
-	DRAWriteScheduleInfo(g_FileDRAScheduleInfo);
-
 	//统计时延信息
 	DRADelaystatistics();
 
@@ -188,6 +184,9 @@ void RRM_DRA::schedule() {
 
 	//模拟传输，即统计吞吐量
 	DRATransimit();
+
+	//写入调度信息
+	DRAWriteScheduleInfo(g_FileDRAScheduleInfo);
 }
 
 
@@ -640,8 +639,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] = false;
 
 			//将调度信息压入m_DRAEmergencyTransimitEventIdList中
-			list<tuple<int, int>> scheduleIntervalList = DRABuildEmergencyScheduleInterval(m_TTI, m_EventVec[eventId]);
-			_RSUAdapterDRA.DRAPushToEmergencyTransmitScheduleInfoList(new sDRAScheduleInfo(eventId, VeUEId, _RSUAdapterDRA.m_HoldObj.m_RSUId, patternIdx, scheduleIntervalList), patternIdx);
+			_RSUAdapterDRA.DRAPushToEmergencyTransmitScheduleInfoList(new sDRAScheduleInfo(eventId, VeUEId, _RSUAdapterDRA.m_HoldObj.m_RSUId, patternIdx), patternIdx);
 			m_NewCount++;
 		}
 		_RSUAdapterDRA.DRAPullFromEmergencyScheduleInfoTable();
@@ -690,8 +688,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = false;
 
 			//将调度信息压入m_DRATransimitEventIdList中
-			list<tuple<int, int>> scheduleIntervalList = DRABuildScheduleIntervalList(m_TTI, m_EventVec[eventId], _RSUAdapterDRA.m_DRAClusterTDRInfo[clusterIdx]);
-			_RSUAdapterDRA.DRAPushToTransmitScheduleInfoList(new sDRAScheduleInfo(eventId, VeUEId, _RSUAdapterDRA.m_HoldObj.m_RSUId, patternIdx, scheduleIntervalList), patternIdx);
+			_RSUAdapterDRA.DRAPushToTransmitScheduleInfoList(new sDRAScheduleInfo(eventId, VeUEId, _RSUAdapterDRA.m_HoldObj.m_RSUId, patternIdx), patternIdx);
 			m_NewCount++;
 		}
 
@@ -712,23 +709,26 @@ void RRM_DRA::DRAWriteScheduleInfo(std::ofstream& out) {
 		out << "    {" << endl;
 		out << "    EMERGENCY:" << endl;
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] ? "Available" : "Unavailable") << endl;
-			for (sDRAScheduleInfo* info : _RSUAdapterDRA.m_DRAEmergencyTransimitScheduleInfoList[patternIdx]) {
-				out << info->toScheduleString(3) << endl;
+			bool isAvaliable = _RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx];
+			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
+			if (!isAvaliable) {
+				out << _RSUAdapterDRA.m_DRAEmergencyScheduleInfoTable[patternIdx]->toScheduleString(3) << endl;
 			}
 		}
 		out << "    PERIOD:" << endl;
 		for (int patternIdx = 0; patternIdx < gc_DRAPatternNumPerPatternType[PERIOD]; patternIdx++) {
-			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
-			for (sDRAScheduleInfo* info : _RSUAdapterDRA.m_DRATransimitScheduleInfoList[patternIdx]) {
-				out << info->toScheduleString(3) << endl;
+			bool isAvaliable = _RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx];
+			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
+			if (!isAvaliable) {
+				out << _RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx]->toScheduleString(3) << endl;
 			}
 		}
 		out << "    DATA:" << endl;
 		for (int patternIdx = gc_DRAPatternNumPerPatternType[PERIOD]; patternIdx < gc_DRAPatternNumPerPatternType[PERIOD] + gc_DRAPatternNumPerPatternType[DATA]; patternIdx++) {
-			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] ? "Available" : "Unavailable") << endl;
-			for (sDRAScheduleInfo* info : _RSUAdapterDRA.m_DRATransimitScheduleInfoList[patternIdx]) {
-				out << info->toScheduleString(3) << endl;
+			bool isAvaliable = _RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx];
+			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
+			if (!isAvaliable) {
+				out << _RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx]->toScheduleString(3) << endl;
 			}
 		}
 		out << "    }" << endl;
@@ -860,20 +860,27 @@ void RRM_DRA::DRATransimit() {
 			else if (lst.size() == 1) {
 				sDRAScheduleInfo *info = *lst.begin();
 
+				//计算SINR，获取调制编码方式
+				double SINR = 0;
+
+				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
+				int maxEquivalentBitNum = gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB;
+				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
+				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
+
+				info->transimitBitNum = realEquivalentBitNum;
+
 				//累计吞吐率
-				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += m_EventVec[info->eventId].message.remainBitNum > gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB ? gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB : m_EventVec[info->eventId].message.remainBitNum;
+				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += realEquivalentBitNum;
 
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, patternIdx, "Transimit");
 
 				//更新剩余待传输bit数量
-				m_EventVec[info->eventId].message.remainBitNum -= gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB;
-
-				//维护占用区间
-				tuple<int, int> &scheduleInterval = *(info->occupiedIntervalList.begin());
-
-				++get<0>(scheduleInterval);
-				if (get<0>(scheduleInterval) > get<1>(scheduleInterval)) {//已经传输完毕，将资源释放
+				m_EventVec[info->eventId].message.remainBitNum -= realEquivalentBitNum;
+				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;
+				
+				if (m_EventVec[info->eventId].message.remainBitNum==0) {//已经传输完毕，将资源释放
 
 					//设置传输成功标记
 					m_EventVec[info->eventId].isSuccessded = true;
@@ -897,7 +904,6 @@ void RRM_DRA::DRATransimit() {
 				}
 			}
 			else {//没有紧急事件在该pattern上传输
-				  //doting nothing
 				continue;
 			}
 			lst.clear();
@@ -914,25 +920,30 @@ void RRM_DRA::DRATransimit() {
 			else if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				sDRAScheduleInfo *info = *lst.begin();
 
-				//累计吞吐率
 				int patternType = getPatternType(patternIdx);
-				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += m_EventVec[info->eventId].message.remainBitNum>gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB ? gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB : m_EventVec[info->eventId].message.remainBitNum;
+
+				//计算SINR，获取调制编码方式
+				double SINR = 0;
+
+				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
+				int maxEquivalentBitNum = gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB;
+				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
+				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
+
+				info->transimitBitNum = realEquivalentBitNum;
+
+				//累计吞吐率
+				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += realEquivalentBitNum;
 
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Transimit");
 
 				//更新剩余待传输bit数量
-				m_EventVec[info->eventId].message.remainBitNum -= gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB;
+				m_EventVec[info->eventId].message.remainBitNum -= realEquivalentBitNum;
+				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;
 
-				//维护占用区间
-				list<tuple<int, int>> &OIList = info->occupiedIntervalList;
-
-				tuple<int, int> &firstInterval = *OIList.begin();
-				get<0>(firstInterval)++;
-				if (get<0>(firstInterval) > get<1>(firstInterval))
-					OIList.erase(OIList.begin());//删除第一个区间
-
-				if (OIList.size() == 0) {//说明该数据已经传输完毕
+				
+				if (m_EventVec[info->eventId].message.remainBitNum == 0) {//说明该数据已经传输完毕
 
 					//设置传输成功标记
 					m_EventVec[info->eventId].isSuccessded = true;
@@ -1087,51 +1098,6 @@ int RRM_DRA::DRAGetMaxIndex(const std::vector<double>&clusterSize) {
 	}
 	return dex;
 }
-
-
-list<tuple<int, int>> RRM_DRA::DRABuildScheduleIntervalList(int TTI, const sEvent& event, std::tuple<int, int, int>ClasterTTI) {
-	list<tuple<int, int>> scheduleIntervalList;
-	int eventId = event.eventId;
-	int occupiedTTI = (int)ceil((double)event.message.bitNum / (double)gc_BitNumPerRB / (double)gc_DRA_FBNumPerPatternType[event.message.messageType]);
-	int begin = std::get<0>(ClasterTTI),
-		end = std::get<1>(ClasterTTI),
-		len = std::get<2>(ClasterTTI);
-
-	//当前时刻的相对TTI
-	int roundTTI = TTI%gc_DRA_NTTI;
-
-	//该RSU下一轮调度的起始TTI（第一个簇的开始时刻）
-	int nextTurnBeginTTI = TTI - roundTTI + gc_DRA_NTTI;
-
-	//当前一轮调度中剩余可用的时隙数量
-	int remainTTI = end - roundTTI + 1;
-
-	//超出当前一轮调度可用时隙数量的部分
-	int overTTI = occupiedTTI - remainTTI;
-
-
-	if (overTTI <= 0) scheduleIntervalList.push_back(std::tuple<int, int>(TTI, TTI + occupiedTTI - 1));
-	else {
-		scheduleIntervalList.push_back(std::tuple<int, int>(TTI, TTI + remainTTI - 1));
-		int n = overTTI / len;
-		for (int i = 0; i < n; i++) scheduleIntervalList.push_back(std::tuple<int, int>(nextTurnBeginTTI + i*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + len - 1 + i*gc_DRA_NTTI));
-		if (overTTI%len != 0) scheduleIntervalList.push_back(std::tuple<int, int>(nextTurnBeginTTI + n*gc_DRA_NTTI + begin, nextTurnBeginTTI + begin + n*gc_DRA_NTTI + overTTI%len - 1));
-	}
-	return scheduleIntervalList;
-}
-
-
-std::list<std::tuple<int, int>> RRM_DRA::DRABuildEmergencyScheduleInterval(int TTI, const sEvent& event) {
-	std::list<std::tuple<int, int>> scheduleIntervalList;
-	std::tuple<int, int> scheduleInterval;
-	int eventId = event.eventId;
-	int occupiedTTI = (int)ceil((double)event.message.bitNum / (double)gc_BitNumPerRB / (double)gc_DRAEmergencyFBNumPerPattern);
-	get<0>(scheduleInterval) = TTI;
-	get<1>(scheduleInterval) = TTI + occupiedTTI - 1;
-	scheduleIntervalList.push_back(scheduleInterval);
-	return scheduleIntervalList;
-}
-
 
 
 int RRM_DRA::getPatternType(int patternIdx) {

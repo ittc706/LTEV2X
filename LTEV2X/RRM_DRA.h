@@ -53,15 +53,15 @@ struct sDRAScheduleInfo {
 	int VeUEId;//车辆编号
 	int RSUId;//RSU编号
 	int patternIdx;//频域块编号
-	std::list<std::tuple<int, int>> occupiedIntervalList;//当前VeUE进行传输的实际TTI区间（闭区间）
+	int remainBitNum=-1;//剩余待传bit数量(并非实际传输的bit数量，而是等效的真实数据的传输数量，需要除去信道编码的冗余bit)
+	int transimitBitNum=-1;
 
 	sDRAScheduleInfo() {}
-	sDRAScheduleInfo(int eventId, int VeUEId, int RSUId, int patternIdx, const std::list<std::tuple<int, int>> &occupiedIntervalList) {
+	sDRAScheduleInfo(int eventId, int VeUEId, int RSUId, int patternIdx) {
 		this->eventId = eventId;
 		this->VeUEId = VeUEId;
 		this->RSUId = RSUId;
 		this->patternIdx = patternIdx;
-		this->occupiedIntervalList = occupiedIntervalList;
 	}
 
 	std::string toLogString(int n);
@@ -295,8 +295,6 @@ private:
 
 	//工具函数
 	int DRAGetMaxIndex(const std::vector<double>&clusterSize);
-	std::list<std::tuple<int, int>> DRABuildScheduleIntervalList(int TTI, const sEvent& event, std::tuple<int, int, int>ClasterTTI);
-	std::list<std::tuple<int, int>> DRABuildEmergencyScheduleInterval(int TTI, const sEvent& event);
 	int getPatternType(int patternIdx);
 
 };
