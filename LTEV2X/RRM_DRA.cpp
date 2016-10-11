@@ -159,10 +159,8 @@ void RRM_DRA::schedule() {
 	//资源分配信息清空:包括每个RSU内的接入链表等
 	DRAInformationClean();
 
-	//  WRONG
 	//根据簇大小进行时域资源的划分
 	DRAGroupSizeBasedTDM(clusterFlag);
-	//  WRONG
 
 	//建立接纳链表
 	DRAUpdateAdmitEventIdList(clusterFlag);
@@ -187,6 +185,9 @@ void RRM_DRA::schedule() {
 
 	//帧听冲突
 	DRAConflictListener();
+
+	//模拟传输，即统计吞吐量
+	DRATransimit();
 }
 
 
@@ -265,7 +266,6 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 				m_VeUEAdapterVec[VeUEId].m_ScheduleInterval = tuple<int, int>(get<0>(_RSUAdapterDRA.m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSUAdapterDRA.m_DRAClusterTDRInfo[clusterIdx]));
 		}
 	}
-
 	DRAWriteClusterPerformInfo(g_FileClasterPerformInfo);
 }
 
@@ -286,7 +286,6 @@ void RRM_DRA::DRAUpdateAdmitEventIdList(bool clusterFlag) {
 		DRAProcessSwitchListWhenLocationUpdate();
 		if (m_DRASwitchEventIdList.size() != 0) throw Exp("cSystem::DRAUpdateAdmitEventIdList");
 	}
-
 	//然后，处理RSU级别的等待链表
 	DRAProcessWaitEventIdList();
 }
@@ -611,8 +610,6 @@ void RRM_DRA::DRASelectBasedOnP123() {
 		RSUAdapterDRA &_RSUAdapterDRA = m_RSUAdapterVec[RSUId];
 
 		/*  EMERGENCY  */
-		//WRONG
-		//vector<int> curAvaliableEmergencyPatternIdx(gc_DRAPatternTypeNum);//当前可用的EmergencyPattern编号
 		vector<int> curAvaliableEmergencyPatternIdx;//当前可用的EmergencyPattern编号
 
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
@@ -700,7 +697,6 @@ void RRM_DRA::DRASelectBasedOnP123() {
 
 		//将调度表中当前可以继续传输的用户压入传输链表中
 		_RSUAdapterDRA.DRAPullFromScheduleInfoTable(m_TTI);
-
 	}
 }
 
@@ -813,6 +809,55 @@ void RRM_DRA::DRAConflictListener() {
 				//释放Pattern资源
 				_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
 			}
+			//处理完后，将该pattern上的数据清空（此时要不本身就是空，要不就是nullptr指针）
+			lst.clear();
+		}
+		/*  EMERGENCY  */
+
+
+		int clusterIdx = _RSUAdapterDRA.DRAGetClusterIdx(m_TTI);
+		for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
+			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRATransimitScheduleInfoList[patternIdx];
+			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
+				for (sDRAScheduleInfo* &info : lst) {
+					//更新该事件的日志
+					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Transimit");
+
+					//首先将事件压入等待列表
+					_RSUAdapterDRA.DRAPushToWaitEventIdList(info->eventId);
+
+					//更新该事件的日志
+					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "Conflict");
+
+					//记录TTI日志
+					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
+
+					//释放调度信息对象的内存资源
+					delete info;
+					info = nullptr;
+					m_DeleteCount++;
+				}
+				//释放Pattern资源
+				_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
+
+			}
+			//处理完后，将该pattern上的数据清空（此时要不本身就是空，要不就是nullptr指针）
+			lst.clear();
+		}
+	}
+}
+
+
+void RRM_DRA::DRATransimit() {
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		RSUAdapterDRA &_RSUAdapterDRA = m_RSUAdapterVec[RSUId];
+
+		/*  EMERGENCY  */
+		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
+			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
+			if (lst.size() > 1) {//说明DRAConflictListener没有处理妥当
+				throw Exp("在调用DRAConflictListener()过后传输链表中仍然有冲突存在，程序有误");
+			}
 			else if (lst.size() == 1) {
 				sDRAScheduleInfo *info = *lst.begin();
 
@@ -864,35 +909,15 @@ void RRM_DRA::DRAConflictListener() {
 		int clusterIdx = _RSUAdapterDRA.DRAGetClusterIdx(m_TTI);
 		for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
 			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRATransimitScheduleInfoList[patternIdx];
-			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
-				for (sDRAScheduleInfo* &info : lst) {
-					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Transimit");
-
-					//首先将事件压入等待列表
-					_RSUAdapterDRA.DRAPushToWaitEventIdList(info->eventId);
-
-					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1, "Conflict");
-
-					//记录TTI日志
-					DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSUAdapterDRA.m_HoldObj.m_RSUId, -1, -1);
-
-					//释放调度信息对象的内存资源
-					delete info;
-					info = nullptr;
-					m_DeleteCount++;
-				}
-				//释放Pattern资源
-				_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
-
+			if (lst.size() > 1) {//说明DRAConflictListener没有处理妥当
+				throw Exp("在调用DRAConflictListener()过后传输链表中仍然有冲突存在，程序有误");
 			}
 			else if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//累计吞吐率
 				int patternType = getPatternType(patternIdx);
-				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += m_EventVec[info->eventId].message.remainBitNum>gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB? gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB: m_EventVec[info->eventId].message.remainBitNum;
+				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += m_EventVec[info->eventId].message.remainBitNum>gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB ? gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB : m_EventVec[info->eventId].message.remainBitNum;
 
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSUAdapterDRA.m_HoldObj.m_RSUId, clusterIdx, patternIdx, "Transimit");
