@@ -808,9 +808,9 @@ void RRM_DRA::DRAConflictListener() {
 
 				//释放Pattern资源
 				_RSUAdapterDRA.m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
+
+				lst.clear();
 			}
-			//处理完后，将该pattern上的数据清空（此时要不本身就是空，要不就是nullptr指针）
-			lst.clear();
 		}
 		/*  EMERGENCY  */
 
@@ -840,9 +840,8 @@ void RRM_DRA::DRAConflictListener() {
 				//释放Pattern资源
 				_RSUAdapterDRA.m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
+				lst.clear();
 			}
-			//处理完后，将该pattern上的数据清空（此时要不本身就是空，要不就是nullptr指针）
-			lst.clear();
 		}
 	}
 }
