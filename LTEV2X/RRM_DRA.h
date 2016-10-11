@@ -54,7 +54,8 @@ struct sDRAScheduleInfo {
 	int RSUId;//RSU编号
 	int patternIdx;//频域块编号
 	int remainBitNum=-1;//剩余待传bit数量(并非实际传输的bit数量，而是等效的真实数据的传输数量，需要除去信道编码的冗余bit)
-	int transimitBitNum=-1;
+	int transimitBitNum=-1;//当前传输的bit数量(并非实际传输的bit数量，而是等效的真实数据的传输数量，需要除去信道编码的冗余bit)
+	int occupiedTTINum = -1;//传输完还需占用的TTI数量
 
 	sDRAScheduleInfo() {}
 	sDRAScheduleInfo(int eventId, int VeUEId, int RSUId, int patternIdx) {

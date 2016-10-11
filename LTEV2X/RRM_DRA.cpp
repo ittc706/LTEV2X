@@ -45,6 +45,7 @@ std::string sDRAScheduleInfo::toScheduleString(int n) {
 	ss << indent << " VeUEId = " << VeUEId << endl;
 	ss << indent << " remainBitNum = " << remainBitNum << endl;
 	ss << indent << " transimitBitNum = " << transimitBitNum << endl;
+	ss << indent << " occupiedTTINum(exclude current TTI) = " << occupiedTTINum << endl;
 	ss << indent << "}";
 	return ss.str();
 }
@@ -865,11 +866,10 @@ void RRM_DRA::DRATransimit() {
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB;
+
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
-
-				info->transimitBitNum = realEquivalentBitNum;
-
+				
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += realEquivalentBitNum;
 
@@ -878,7 +878,11 @@ void RRM_DRA::DRATransimit() {
 
 				//更新剩余待传输bit数量
 				m_EventVec[info->eventId].message.remainBitNum -= realEquivalentBitNum;
+
+				//更新调度信息
+				info->transimitBitNum = realEquivalentBitNum;
 				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;
+				info->occupiedTTINum = (int)ceil((double)info->remainBitNum / (double)info->transimitBitNum);
 				
 				if (m_EventVec[info->eventId].message.remainBitNum==0) {//已经传输完毕，将资源释放
 
@@ -927,10 +931,9 @@ void RRM_DRA::DRATransimit() {
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB;
+
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
-
-				info->transimitBitNum = realEquivalentBitNum;
 
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSUAdapterDRA.m_HoldObj.m_RSUId] += realEquivalentBitNum;
@@ -940,9 +943,12 @@ void RRM_DRA::DRATransimit() {
 
 				//更新剩余待传输bit数量
 				m_EventVec[info->eventId].message.remainBitNum -= realEquivalentBitNum;
+	
+				//更新调度信息
+				info->transimitBitNum = realEquivalentBitNum;
 				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;
+				info->occupiedTTINum = (int)ceil((double)info->remainBitNum / (double)info->transimitBitNum);
 
-				
 				if (m_EventVec[info->eventId].message.remainBitNum == 0) {//说明该数据已经传输完毕
 
 					//设置传输成功标记
