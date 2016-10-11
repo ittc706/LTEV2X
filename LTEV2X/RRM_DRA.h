@@ -286,7 +286,8 @@ private:
 	void DRADelaystatistics();//时延统计
 	void DRAConflictListener();//帧听冲突
 
-	void DRATransimit();//模拟传输，即统计吞吐量
+	void DRATransimitStart();//模拟传输开始，更新调度信息
+	void DRATransimitEnd();//模拟传输结束，即统计吞吐量
 
 	//日志记录函数
 	void DRAWriteScheduleInfo(std::ofstream& out);//记录调度信息日志

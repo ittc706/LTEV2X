@@ -1,3 +1,7 @@
+version_2016_10_11(RRM_DRA模块DRATransimit函数修改)
+	分解成两个函数DRATransimitStart 和 DRATransimitEnd
+	目的是为了插入一个调度信息的日志
+
 version_2016_10_11(更新干扰信道响应部分)
 
 version_2016_10_11(更新调度信息日志部分)
