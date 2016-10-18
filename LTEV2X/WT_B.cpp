@@ -48,12 +48,13 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 		int relativeSubCarrierIdx = subCarrierIdx - subCarrierIdxStart;
 
 		m_H=readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
+		m_H.print(cout,1);
+
 		Matrix H_her(m_Nt, m_Nr);
 		H_her = m_H.hermitian();//求信道矩阵的hermitian
 		Matrix Temp1 = m_H * H_her;//Temp中存放运算的临时矩阵，temp中存放运算的临时数值
 		double temp1 = m_Pt*m_Ploss;
 		Matrix Temp2 = Temp1*temp1;
-		Temp2.print();
 		Matrix Inter1(m_Nr, m_Nr);
 
 		//for (int i = 0; i < (int)m_HInter.size(); i++)
@@ -71,7 +72,7 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 
 		Matrix Temp3 = Temp2 + sigma_p;
 		
-		Matrix Temp4 = Temp3.inverse();
+		Matrix Temp4 = Temp3.inverse(true);
 		double temp2 = sqrt(m_Pt*m_Ploss);
 		Matrix Temp5 = Temp4*temp2;
 		Matrix W(m_Nr, m_Nt); //权重矩阵，大小与信道矩阵相同

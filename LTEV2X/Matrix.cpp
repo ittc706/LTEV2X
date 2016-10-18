@@ -262,7 +262,7 @@ Matrix Matrix::hermitian() {
 }
 
 
-Matrix Matrix::inverse() {
+Matrix Matrix::inverse(bool tryPseudoInverse) {
 	if (row <= 0 || col <= 0 || row != col) throw Exp("该矩阵无法求逆");
 	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::buildDdentityMatrix(row));
 
@@ -275,7 +275,14 @@ Matrix Matrix::inverse() {
 			tmpRow = r + 1;
 			while (tmpRow < row&&mergeMatrix[tmpRow][r] == zero)
 				tmpRow++;
-			if (tmpRow == row) throw Exp("该矩阵不满秩");
+			if (tmpRow == row) {
+				if (tryPseudoInverse) {
+					return this->pseudoInverse();
+				}
+				else {
+					throw Exp("该矩阵不满秩，无法求逆矩阵");
+				}
+			}
 
 			//互换r与tmp两行
 			tmpRV = mergeMatrix[r];

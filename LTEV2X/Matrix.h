@@ -81,7 +81,7 @@ public:
 	Matrix conjugate();//求共轭
 	Matrix transpose();//求转置
 	Matrix hermitian();//共轭转置
-	Matrix inverse();//求逆矩阵
+	Matrix inverse(bool tryPseudoInverse = false);//求逆矩阵
 	Matrix diag();//求对角线构成的矩阵(行向量)
 	std::pair<Matrix, Matrix> fullRankDecomposition();//求满秩分解
 	Matrix pseudoInverse();//求广义逆矩阵

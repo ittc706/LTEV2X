@@ -824,6 +824,7 @@ void RRM_DRA::DRATransimitStart() {
 
 				//计算SINR，获取调制编码方式
 				pair<int, int> subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
+				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
 				m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
