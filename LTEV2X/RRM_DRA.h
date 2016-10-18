@@ -16,10 +16,10 @@
 const int gc_DRA_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
 
 const int gc_DRAEmergencyTotalPatternNum = 3;//传输紧急事件的Pattern数量
-const int gc_DRAEmergencyFBNumPerPattern = 2;//每个紧急事件的Pattern占用的FB数量
+const int gc_DRAEmergencyRBNumPerPattern = 2;//每个紧急事件的Pattern占用的RB数量
 
 const int gc_DRAPatternTypeNum = 2;//非紧急事件的Pattern的类型种类
-const int gc_DRA_FBNumPerPatternType[gc_DRAPatternTypeNum] = { 5,10 };//每个Pattern种类所占的FB数量
+const int gc_DRA_RBNumPerPatternType[gc_DRAPatternTypeNum] = { 5,10 };//每个Pattern种类所占的RB数量
 const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 6,2 };//在全频段每个Pattern种类对应的Pattern数量
 const int gc_DRAPatternTypePatternIdxInterval[gc_DRAPatternTypeNum][2] = { {0,5},{6,7} };
 
@@ -252,7 +252,7 @@ public:
 		std::vector<sEvent>& systemEventVec, 
 		std::vector<std::list<int>>& systemEventTTIList,
 		std::vector<std::vector<int>>& systemTTIRSUThroughput,
-		eDRAMode m_DRAMode,
+		eDRAMode systemDRAMode,
 		WT_Basic* systemWTPoint);
 
 	std::vector<RSUAdapterDRA> m_RSUAdapterVec;

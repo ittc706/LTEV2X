@@ -1,3 +1,6 @@
+version_2016_10_18(载干比计算又改了一部分)
+
+
 version_2016_10_18(载干比计算改了一部分)
 
 version_2016_10_11(RRM_DRA模块DRATransimit函数修改)

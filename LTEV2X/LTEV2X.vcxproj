@@ -125,7 +125,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Complex.h" />
-    <ClInclude Include="fftw64\fftw3.h" />
     <ClInclude Include="GTAT.h" />
     <ClInclude Include="GTAT_Urban.h" />
     <ClInclude Include="Matrix.h" />

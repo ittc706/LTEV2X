@@ -83,7 +83,7 @@ void cSystem::GTATModuleInitialize() {
 }
 
 void cSystem::WTModuleInitialize() {
-	WTPoint = new WT_B();
+	WTPoint = new WT_B(m_VeUEAry);
 }
 
 

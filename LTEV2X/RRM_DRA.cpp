@@ -142,8 +142,8 @@ string RSUAdapterDRA::toString(int n) {
 
 
 
-RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, eDRAMode m_DRAMode, WT_Basic* systemWTPoint) :
-	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(m_DRAMode), m_WTPoint(systemWTPoint) {
+RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, eDRAMode systemDRAMode, WT_Basic* systemWTPoint) :
+	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAdapterVec.push_back(VeUEAdapterDRA(m_VeUEAry[VeUEId]));
 	}
@@ -826,7 +826,7 @@ void RRM_DRA::DRATransimitStart() {
 				//m_WTPoint->SINRCalculate();
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
-				int maxEquivalentBitNum = gc_DRAEmergencyFBNumPerPattern*gc_BitNumPerRB;
+				int maxEquivalentBitNum = gc_DRAEmergencyRBNumPerPattern*gc_BitNumPerRB;
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
@@ -867,7 +867,7 @@ void RRM_DRA::DRATransimitStart() {
 				double SINR = 0;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
-				int maxEquivalentBitNum = gc_DRA_FBNumPerPatternType[patternType] * gc_BitNumPerRB;
+				int maxEquivalentBitNum = gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB;
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
@@ -1156,17 +1156,17 @@ int RRM_DRA::getPatternType(int patternIdx) {
 pair<int, int> DRAGetOccupiedRBRange(eMessageType messageType, int patternIdx) {
 	pair<int, int> res;
 	if (messageType == EMERGENCY) {
-		res.first = gc_DRAEmergencyFBNumPerPattern*patternIdx;
-		res.second = gc_DRAEmergencyFBNumPerPattern*(patternIdx + 1) - 1;
+		res.first = gc_DRAEmergencyRBNumPerPattern*patternIdx;
+		res.second = gc_DRAEmergencyRBNumPerPattern*(patternIdx + 1) - 1;
 	}
 	else{
-		int offset = gc_DRAEmergencyFBNumPerPattern + gc_DRAEmergencyTotalPatternNum;
+		int offset = gc_DRAEmergencyRBNumPerPattern + gc_DRAEmergencyTotalPatternNum;
 		for (int i = 0; i < messageType; i++) {
-			offset += gc_DRA_FBNumPerPatternType[i] * gc_DRAPatternNumPerPatternType[i];
+			offset += gc_DRA_RBNumPerPatternType[i] * gc_DRAPatternNumPerPatternType[i];
 			patternIdx -= gc_DRAPatternNumPerPatternType[i];
 		}
-		res.first = offset + gc_DRA_FBNumPerPatternType[messageType] * patternIdx;
-		res.second = offset + gc_DRA_FBNumPerPatternType[messageType] * (patternIdx + 1) - 1;
+		res.first = offset + gc_DRA_RBNumPerPatternType[messageType] * patternIdx;
+		res.second = offset + gc_DRA_RBNumPerPatternType[messageType] * (patternIdx + 1) - 1;
 	}
 	return res;
 }

@@ -27,16 +27,15 @@ public:
 	std::vector<double> m_QAM_MI16;
 	std::vector<double> m_QAM_MI64;
 
-	WT_B(){}
-	void reset(int t_Nt, int t_Nr, int t_SubCarrierNum, double t_Pt, double t_Ploss, double t_Sigma, int t_Mol);
-	void loadMCSLevelTable();
-	void config();
-
-	void SINRCalculate() override;
-
+	WT_B(cVeUE* systemVeUEAry);
+	void SINRCalculate(int VeUEId) override;
 	void test();
 
 private:
+	void initialize();//模块初始化调用的初始化函数
+	void configuration();//每次调用SINRCalculate前需要进行参数配置
+	void loadH();//加载信道响应矩阵
+
 	int searchMCSLevelTable(double SINR);
 	int closest(std::vector<double> v, int target);
 	int closest2(std::vector<double> v, int target);

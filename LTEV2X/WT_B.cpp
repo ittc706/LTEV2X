@@ -40,28 +40,52 @@ void WT_B::buildTestFile(int t_Nt, int t_Nr, int subNum) {
 	outTestH << endl;
 }
 
+WT_B::WT_B(cVeUE* systemVeUEAry):WT_Basic(systemVeUEAry){
+	initialize();
+}
 
-void WT_B::reset(int t_Nt, int t_Nr, int t_SubCarrierNum, double t_Pt, double t_Ploss, double t_Sigma, int t_Mol){
-	m_Nt = t_Nt;
-	m_Nr = t_Nr;
-	m_SubCarrierNum = t_SubCarrierNum;
+void WT_B::configuration(){
+	/*m_SubCarrierNum = t_SubCarrierNum;
 	m_Pt = t_Pt;
 	m_Ploss = t_Ploss;
 	m_Sigma = t_Sigma;
-	m_Mol = t_Mol;
+	m_Mol = t_Mol;*/
 
-	config();
-	loadMCSLevelTable();
+	loadH();
 	m_PlossInter = vector<double>(2, 1);
 }
 
 
-void WT_B::loadMCSLevelTable() {
-	
+
+
+void WT_B::initialize() {
+	//读取m_MCSLevelTable
+	std::ifstream in("WT\\MCSLevelTable.txt");
+	istream_iterator<int> inIter(in), eof;
+	m_MCSLevelTable.assign(inIter, eof);
+	in.close();
+
+
+	//读入信噪比和互信息的对应表，m_mol=2是QPSK，m_mol=4是16QAM，m_mol=6=64QAM
+	//维度是1*95
+
+	in.open("WT\\QPSK_MI.txt");
+	istream_iterator<double> inIter2(in), eof2;
+	m_QPSK_MI.assign(inIter2, eof2);
+	in.close();
+
+	in.open("WT\\QAM_MI16.txt");
+	inIter2 = istream_iterator<double>(in);
+	m_QAM_MI16.assign(inIter2, eof2);
+	in.close();
+
+	in.open("WT\\QAM_MI64.txt");
+	inIter2 = istream_iterator<double>(in);
+	m_QAM_MI64.assign(inIter2, eof2);
+	in.close();
 }
 
-
-void WT_B::config() {
+void WT_B::loadH() {
 	//读取信道响应矩阵
 	std::ifstream in("WT\\H.txt");
 	m_H = Matrix(m_Nr, m_Nt);
@@ -90,36 +114,13 @@ void WT_B::config() {
 	}
 	in.close();
 
-	//读取m_MCSLevelTable
-	in.open("WT\\MCSLevelTable.txt");
-	istream_iterator<int> inIter(in), eof;
-	m_MCSLevelTable.assign(inIter, eof);
-	in.close();
-
-
-	//读入信噪比和互信息的对应表，m_mol=2是QPSK，m_mol=4是16QAM，m_mol=6=64QAM
-	//维度是1*95
-
-	in.open("WT\\QPSK_MI.txt");
-	istream_iterator<double> inIter2(in), eof2;
-	m_QPSK_MI.assign(inIter2, eof2);
-	in.close();
-
-	in.open("WT\\QAM_MI16.txt");
-	inIter2 = istream_iterator<double>(in);
-	m_QAM_MI16.assign(inIter2, eof2);
-	in.close();
-
-	in.open("WT\\QAM_MI64.txt");
-	inIter2 = istream_iterator<double>(in);
-	m_QAM_MI64.assign(inIter2, eof2);
-	in.close();
+	
 }
 
 
 
 
-void WT_B::SINRCalculate() {
+void WT_B::SINRCalculate(int VeUEId) {
 	/*****求每个RB上的信噪比****/
 	RowVector Sinr(m_SubCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
 	for (int subCarrierIdx = 0; subCarrierIdx < m_SubCarrierNum; subCarrierIdx++) {

@@ -34,6 +34,8 @@ public:
 	//cChannelModel *channelModel;
 	cIMTA *imta;
 
+	int m_Nt;
+	int m_Nr;
 	float *m_H;
 	int   *m_interUEArray;
 	float *m_interH;
