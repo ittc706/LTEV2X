@@ -511,7 +511,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
  		{
       		for (unsigned char byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
 		    {
-				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = 0.6;
+				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = 0.6f;
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = pow(10.0f, m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath]);
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] *= pfPathPower[byTempPath];
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = sqrt(m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath]);
@@ -712,12 +712,12 @@ void cIMTA::Calculate(float* t_HAfterFFT, float t_fT/*s */, float *t_pfTemp, flo
 
 		int HAfterFFT_Iter = 0;
 		for (int row = 0; row < 1024; row++) {
-			t_HAfterFFT[HAfterFFT_Iter++] = out1[row][0];
-			t_HAfterFFT[HAfterFFT_Iter++] = out1[row][1];
+			t_HAfterFFT[HAfterFFT_Iter++] = (float)out1[row][0];
+			t_HAfterFFT[HAfterFFT_Iter++] = (float)out1[row][1];
 		}
 		for (int row = 0; row < 1024; row++) {
-			t_HAfterFFT[HAfterFFT_Iter++] = out2[row][0];
-			t_HAfterFFT[HAfterFFT_Iter++] = out2[row][1];
+			t_HAfterFFT[HAfterFFT_Iter++] = (float)out2[row][0];
+			t_HAfterFFT[HAfterFFT_Iter++] = (float)out2[row][1];
 		}
 		
 

@@ -823,7 +823,8 @@ void RRM_DRA::DRATransimitStart() {
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//计算SINR，获取调制编码方式
-				//m_WTPoint->SINRCalculate();
+				pair<int, int> subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
+				m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = gc_DRAEmergencyRBNumPerPattern*gc_BitNumPerRB;
@@ -861,7 +862,7 @@ void RRM_DRA::DRATransimitStart() {
 			else if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				sDRAScheduleInfo *info = *lst.begin();
 
-				int patternType = getPatternType(patternIdx);
+				int patternType = DRAGetPatternType(patternIdx);
 
 				//计算SINR，获取调制编码方式
 				double SINR = 0;
@@ -1144,7 +1145,7 @@ int RRM_DRA::DRAGetMaxIndex(const std::vector<double>&clusterSize) {
 }
 
 
-int RRM_DRA::getPatternType(int patternIdx) {
+int RRM_DRA::DRAGetPatternType(int patternIdx) {
 	for (int patternType = 0; patternType < gc_DRAPatternTypeNum; patternType++) {
 		if (patternIdx >= gc_DRAPatternTypePatternIdxInterval[patternType][0] && patternIdx <= gc_DRAPatternTypePatternIdxInterval[patternType][1])
 			return patternType;
@@ -1153,7 +1154,7 @@ int RRM_DRA::getPatternType(int patternIdx) {
 }
 
 
-pair<int, int> DRAGetOccupiedRBRange(eMessageType messageType, int patternIdx) {
+pair<int, int> RRM_DRA::DRAGetOccupiedSubCarrierRange(eMessageType messageType, int patternIdx) {
 	pair<int, int> res;
 	if (messageType == EMERGENCY) {
 		res.first = gc_DRAEmergencyRBNumPerPattern*patternIdx;
@@ -1168,5 +1169,7 @@ pair<int, int> DRAGetOccupiedRBRange(eMessageType messageType, int patternIdx) {
 		res.first = offset + gc_DRA_RBNumPerPatternType[messageType] * patternIdx;
 		res.second = offset + gc_DRA_RBNumPerPatternType[messageType] * (patternIdx + 1) - 1;
 	}
+	res.first *= 12;
+	res.second = (res.second + 1) * 12 - 1;
 	return res;
 }

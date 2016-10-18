@@ -12,8 +12,8 @@ public:
 		m_VeUEAry(systemVeUEAry) {}
 
 	//数据成员
-	cVeUE* &m_VeUEAry;//VeUE容器
+	cVeUE* m_VeUEAry;//VeUE容器
 
 	//接口
-	virtual void SINRCalculate(int VeUEId) = 0;
+	virtual void SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd) = 0;
 };

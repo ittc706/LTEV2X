@@ -42,6 +42,8 @@ public:
 
 	float m_Pl;
 	float *m_interPl;
+	int  m_Mol;//上一次的调制方式
+
 
 	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
 };

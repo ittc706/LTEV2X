@@ -83,6 +83,8 @@ public:
 	Matrix hermitian();//共轭转置
 	Matrix inverse();//求逆矩阵
 	Matrix diag();//求对角线构成的矩阵(行向量)
+	std::pair<Matrix, Matrix> fullRankDecomposition();//求满秩分解
+	Matrix pseudoInverse();//求广义逆矩阵
 
 
 	/*成员运算符重载*/
@@ -93,15 +95,16 @@ public:
 
 	/*其他功能函数*/
 	std::string toString();
-	void print(std::ostream&out = std::cout);
+	void print(std::ostream&out = std::cout, int numEnter = 0);
 
 
 	/*用于构造对象的静态函数*/
 	static Matrix buildDdentityMatrix(int t_Row);
 
 	/*实现函数*/
-	static Matrix merge(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
-	static std::pair<Matrix, Matrix> split(const Matrix& t_Matrix);
+	static Matrix verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
+	static std::pair<Matrix, Matrix> verticalSplit(const Matrix& t_Matrix, int leftCol, int rightCol);
+	static std::pair<Matrix, Matrix> horizonSplit(const Matrix& t_Matrix, int upRow, int downRow);
 };
 
 //单目取反运算符

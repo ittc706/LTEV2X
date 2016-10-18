@@ -36,7 +36,7 @@ void cVeUE::initialize(sUEConfigure &t_UEConfigure)
 
 	m_Nt = 1;
 	m_Nr = 2;
-
+	m_Mol = 4;
 	m_H = new float[2 * 1024 * 2];
 
 }

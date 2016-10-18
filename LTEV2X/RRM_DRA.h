@@ -307,8 +307,8 @@ private:
 
 	//¹¤¾ßº¯Êý
 	int DRAGetMaxIndex(const std::vector<double>&clusterSize);
-	int getPatternType(int patternIdx);
-	std::pair<int, int> DRAGetOccupiedRBRange(eMessageType messageType, int patternIdx);
+	int DRAGetPatternType(int patternIdx);
+	std::pair<int, int> DRAGetOccupiedSubCarrierRange(eMessageType messageType, int patternIdx);
 };
 
 

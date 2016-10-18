@@ -264,7 +264,7 @@ Matrix Matrix::hermitian() {
 
 Matrix Matrix::inverse() {
 	if (row <= 0 || col <= 0 || row != col) throw Exp("该矩阵无法求逆");
-	Matrix mergeMatrix = Matrix::merge(*this, Matrix::buildDdentityMatrix(row));
+	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::buildDdentityMatrix(row));
 
 	//先变换成下三角矩阵
 	Complex zero(0, 0);
@@ -301,7 +301,7 @@ Matrix Matrix::inverse() {
 			mergeMatrix[tmpRow] = mergeMatrix[r] * factor + mergeMatrix[tmpRow];
 		}
 	}
-	return Matrix::split(mergeMatrix).second;
+	return Matrix::verticalSplit(mergeMatrix, col, col).second;
 }
 
 
@@ -313,6 +313,68 @@ Matrix Matrix::diag() {
 	}
 	return res;
 }
+
+
+std::pair<Matrix, Matrix>  Matrix::fullRankDecomposition() {
+	//设矩阵的维度为m*n，秩为r，r至少为1
+	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::buildDdentityMatrix(row));
+
+	//首先将矩阵转化为标准型，即上面是r*n的行满秩矩阵，下面是(m-r)*n的零矩阵
+	Complex zero(0, 0);
+	int tmpRow = 0;
+	RowVector tmpRV;
+	int iterCol = 0;
+	int rank = 0;
+	for (int r = 0; r < row; r++) {
+		if (iterCol == col) break;
+		if (mergeMatrix[r][iterCol] == zero) {//若当前行的对角线部分为0，则与不为0的那行互换
+			tmpRow = r + 1;
+			while (tmpRow < row&&mergeMatrix[tmpRow][iterCol] == zero)
+				tmpRow++;
+			if (tmpRow == row) { //当该列没有非零元素，跳过即可
+				iterCol++;
+				r--;
+				continue;//继续在当前行的下一列寻找非零元素
+			}
+			else {
+				//互换r与tmp两行
+				tmpRV = mergeMatrix[r];
+				mergeMatrix[r] = mergeMatrix[tmpRow];
+				mergeMatrix[tmpRow] = tmpRV;
+			}	
+		}
+		mergeMatrix[r] = mergeMatrix[r] / mergeMatrix[r][iterCol];//将对角线部分置1
+
+		//将该列的下半部分置0
+		for (tmpRow = r + 1; tmpRow < row; tmpRow++) {
+			if (mergeMatrix[tmpRow][iterCol] == zero)continue;
+			Complex factor = -mergeMatrix[tmpRow][iterCol];
+			mergeMatrix[tmpRow] = mergeMatrix[iterCol] * factor + mergeMatrix[tmpRow];
+		}
+		iterCol++;
+		rank++;
+	}
+    
+	if (rank == 0) throw Exp("该矩阵秩为0，不满足满秩分解的条件");
+
+	pair<Matrix, Matrix> splitRes = verticalSplit(mergeMatrix, mergeMatrix.col - row, row);
+	Matrix B = splitRes.first;
+	Matrix P = splitRes.second;
+
+	Matrix F = verticalSplit(P.inverse(),rank, P.col - rank).first;
+	Matrix G = horizonSplit(B, rank, B.row - rank).first;
+
+	return pair<Matrix, Matrix>(F, G);
+}
+
+
+Matrix Matrix::pseudoInverse() {
+	pair<Matrix, Matrix> fullRankDecompositionRes = fullRankDecomposition();
+	Matrix F = fullRankDecompositionRes.first;
+	Matrix G = fullRankDecompositionRes.second;
+	return G.hermitian()*(G*G.hermitian()).inverse()*(F.hermitian()*F).inverse()*F.hermitian();
+}
+
 
 
 Matrix& Matrix::operator=(const Matrix& t_Matrix) {
@@ -342,8 +404,10 @@ std::string Matrix::toString() {
 }
 
 
-void Matrix::print(std::ostream&out) {
+void Matrix::print(std::ostream&out, int numEnter) {
 	out << toString();
+	for (int i = 0; i < numEnter; i++)
+		cout << endl;
 }
 
 
@@ -355,12 +419,16 @@ Matrix Matrix::buildDdentityMatrix(int t_Row) {
 }
 
 
-Matrix Matrix::merge(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
-	if (t_Matrix1.row != t_Matrix2.row || t_Matrix1.col != t_Matrix2.col) throw Exp("这两个矩阵无法合并");
-	Matrix res(t_Matrix1.row, t_Matrix1.col * 2);
+Matrix Matrix::verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
+	if (t_Matrix1.row != t_Matrix2.row) throw Exp("这两个矩阵无法合并");
+	Matrix res(t_Matrix1.row, t_Matrix1.col + t_Matrix2.col);
 	for (int r = 0; r < t_Matrix1.row; r++) {
 		for (int c = 0; c < t_Matrix1.col; c++) {
 			res[r][c] = t_Matrix1[r][c];
+		}
+	}
+	for (int r = 0; r < t_Matrix2.row; r++) {
+		for (int c = 0; c < t_Matrix2.col; c++) {
 			res[r][c + t_Matrix1.col] = t_Matrix2[r][c];
 		}
 	}
@@ -368,16 +436,39 @@ Matrix Matrix::merge(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 }
 
 
-std::pair<Matrix, Matrix> Matrix::split(const Matrix& t_Matrix) {
-	if (t_Matrix.col % 2 != 0) throw Exp("该矩阵无法分裂");
-	Matrix left(t_Matrix.row, t_Matrix.col / 2), right(t_Matrix.row, t_Matrix.col / 2);
+std::pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix,int leftCol,int rightCol) {
+	if (t_Matrix.col != leftCol+ rightCol) throw Exp("该矩阵无法分裂成指定维度");
+	Matrix left(t_Matrix.row, leftCol), right(t_Matrix.row, rightCol);
 	for (int r = 0; r < left.row; r++) {
 		for (int c = 0; c < left.col; c++) {
 			left[r][c] = t_Matrix[r][c];
+		}
+	}
+
+	for (int r = 0; r < right.row; r++) {
+		for (int c = 0; c < right.col; c++) {
 			right[r][c] = t_Matrix[r][c + left.col];
 		}
 	}
 	return pair<Matrix, Matrix>(left, right);
+}
+
+
+std::pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int upRow, int downRow) {
+	if (t_Matrix.row != upRow + downRow) throw Exp("该矩阵无法分裂成指定维度");
+	Matrix up(upRow, t_Matrix.col), down(downRow, t_Matrix.col);
+	for (int r = 0; r < up.row; r++) {
+		for (int c = 0; c < up.col; c++) {
+			up[r][c] = t_Matrix[r][c];
+		}
+	}
+
+	for (int r = 0; r < down.row; r++) {
+		for (int c = 0; c < down.col; c++) {
+			down[r][c] = t_Matrix[r + up.row][c];
+		}
+	}
+	return pair<Matrix, Matrix>(up, down);
 }
 
 
