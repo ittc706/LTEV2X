@@ -6,6 +6,7 @@
 #include"VUE.h"
 #include"Enumeration.h"
 #include"Exception.h"
+#include"WT.h"
 
 //RRM_DRA:Radio Resource Management Distributed Resource Allocation
 
@@ -244,7 +245,15 @@ public:
 class RRM_DRA :public RRM_Basic {
 public:
 	RRM_DRA() = delete;
-	RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput,eDRAMode m_DRAMode);
+	RRM_DRA(int &systemTTI, 
+		sConfigure& systemConfig, 
+		cRSU* systemRSUAry, 
+		cVeUE* systemVeUEAry, 
+		std::vector<sEvent>& systemEventVec, 
+		std::vector<std::list<int>>& systemEventTTIList,
+		std::vector<std::vector<int>>& systemTTIRSUThroughput,
+		eDRAMode m_DRAMode,
+		WT_Basic* systemWTPoint);
 
 	std::vector<RSUAdapterDRA> m_RSUAdapterVec;
 	std::vector<VeUEAdapterDRA> m_VeUEAdapterVec;
@@ -253,6 +262,7 @@ public:
 	/*------------------数据成员------------------*/
 
 	eDRAMode m_DRAMode;//资源快选择的策略
+	WT_Basic* m_WTPoint;
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
 	int m_NewCount = 0;//记录动态创建的对象的次数
@@ -298,7 +308,7 @@ private:
 	//工具函数
 	int DRAGetMaxIndex(const std::vector<double>&clusterSize);
 	int getPatternType(int patternIdx);
-
+	std::pair<int, int> DRAGetOccupiedRBRange(eMessageType messageType, int patternIdx);
 };
 
 

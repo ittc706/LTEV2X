@@ -41,8 +41,15 @@ void WT_B::buildTestFile(int t_Nt, int t_Nr, int subNum) {
 }
 
 
-WT_B::WT_B(int t_Nt, int t_Nr, int t_SubCarrierNum, double t_Pt, double t_Ploss, double t_Sigma, int t_Mol) :
-	m_Nt(t_Nt), m_Nr(t_Nr), m_SubCarrierNum(t_SubCarrierNum), m_Pt(t_Pt), m_Ploss(t_Ploss), m_Sigma(t_Sigma), m_Mol(t_Mol) {
+void WT_B::reset(int t_Nt, int t_Nr, int t_SubCarrierNum, double t_Pt, double t_Ploss, double t_Sigma, int t_Mol){
+	m_Nt = t_Nt;
+	m_Nr = t_Nr;
+	m_SubCarrierNum = t_SubCarrierNum;
+	m_Pt = t_Pt;
+	m_Ploss = t_Ploss;
+	m_Sigma = t_Sigma;
+	m_Mol = t_Mol;
+
 	config();
 	loadMCSLevelTable();
 	m_PlossInter = vector<double>(2, 1);

@@ -27,18 +27,17 @@ public:
 	std::vector<double> m_QAM_MI16;
 	std::vector<double> m_QAM_MI64;
 
-	WT_B(int t_Nt, int t_Nr, int t_SubCarrierNum, double t_Pt, double t_Ploss, double t_Sigma,int t_Mol);
+	WT_B(){}
+	void reset(int t_Nt, int t_Nr, int t_SubCarrierNum, double t_Pt, double t_Ploss, double t_Sigma, int t_Mol);
 	void loadMCSLevelTable();
 	void config();
 
 	void SINRCalculate() override;
 
-	
 	void test();
 
 private:
 	int searchMCSLevelTable(double SINR);
 	int closest(std::vector<double> v, int target);
 	int closest2(std::vector<double> v, int target);
-
 };

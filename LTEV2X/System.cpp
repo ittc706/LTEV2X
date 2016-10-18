@@ -63,6 +63,9 @@ void cSystem::initialization() {
 	//初始化eNB、Rode、RSU、VUE等容器
 	GTATPoint->initialize();
 
+	//WT模块初始化
+	WTModuleInitialize();
+
 	//RRM模块初始化
 	RRMModuleInitialize();
 
@@ -79,6 +82,10 @@ void cSystem::GTATModuleInitialize() {
 	}
 }
 
+void cSystem::WTModuleInitialize() {
+	WTPoint = new WT_B();
+}
+
 
 void cSystem::RRMModuleInitialize() {
 	switch (m_RRMMode) {
@@ -86,7 +93,7 @@ void cSystem::RRMModuleInitialize() {
 		RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
 		break;
 	case DRA:
-		RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, P123);
+		RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, P123, WTPoint);
 		break;
 	default:
 		break;

@@ -1,3 +1,5 @@
+version_2016_10_18(载干比计算改了一部分)
+
 version_2016_10_11(RRM_DRA模块DRATransimit函数修改)
 	分解成两个函数DRATransimitStart 和 DRATransimitEnd
 	目的是为了插入一个调度信息的日志

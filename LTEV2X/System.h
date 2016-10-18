@@ -9,6 +9,8 @@
 #include"Road.h"
 #include"GTAT.h"
 #include"GTAT_Urban.h"
+#include"WT.h"
+#include"WT_B.h"
 #include"RRM.h"
 #include"RRM_DRA.h"
 #include"RRM_RR.h"
@@ -35,6 +37,8 @@ public:
 	eGTATMode m_GTATMode;
 	GTAT_Basic* GTATPoint;
 
+    //无线传输单元
+	WT_Basic* WTPoint;
 
 	//业务模型与控制单元
 	TMAC_Basic* TMACPoint;
@@ -48,6 +52,7 @@ public:
 	void configure();//系统仿真参数配置
 	void initialization();//系统参数配置，完成系统初始化
 	void GTATModuleInitialize();//GTAT模块对象初始化
+	void WTModuleInitialize();//WT模块对象初始化
 	void RRMModuleInitialize();//RRM模块对象初始化
 	void TMACmODULEInitialize();//TMAC模块对象初始化
 	void process();//系统仿真流程
