@@ -23,5 +23,5 @@ public:
 	void channelGeneration()override;//信道产生
 	void freshLoc() override;//信道刷新
 	void writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &out2) override; //写入地理位置更新日志
-	void CalculateInter() override;//计算干扰矩阵
+	void calculateInter() override;//计算干扰矩阵
 };

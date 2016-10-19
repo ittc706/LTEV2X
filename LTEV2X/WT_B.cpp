@@ -49,7 +49,7 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 		int relativeSubCarrierIdx = subCarrierIdx - subCarrierIdxStart;//相对的子载波下标
 
 		m_H=readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
-		m_HInter = readInterH(VeUEId, subCarrierIdx);//读入当前子载波干扰相应矩阵数组
+		//m_HInter = readInterH(VeUEId, subCarrierIdx);//读入当前子载波干扰相应矩阵数组
 
 
 		/* 下面开始计算W */
@@ -106,9 +106,6 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 	for (int i = 0; i < Sinr.col; i++) {
 		Sinr[i] = 10 * log10(Complex::abs(Sinr[i]));
 	}
-	Sinr.print();
-	cout << endl;
-	cout << 10 * log10(m_Ploss);
 
 	if (m_Mol == 2) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
@@ -172,7 +169,7 @@ void WT_B::testCloest() {
 
 void WT_B::initialize() {
 	//读取m_MCSLevelTable
-	std::ifstream in("WT\\MCSLevelTable.txt");
+	std::ifstream in("WT\\MCSLevelTable.md");
 	istream_iterator<int> inIter(in), eof;
 	m_MCSLevelTable.assign(inIter, eof);
 	in.close();
@@ -181,17 +178,17 @@ void WT_B::initialize() {
 	//读入信噪比和互信息的对应表，m_mol=2是QPSK，m_mol=4是16QAM，m_mol=6=64QAM
 	//维度是1*95
 
-	in.open("WT\\QPSK_MI.txt");
+	in.open("WT\\QPSK_MI.md");
 	istream_iterator<double> inIter2(in), eof2;
 	m_QPSK_MI.assign(inIter2, eof2);
 	in.close();
 
-	in.open("WT\\QAM_MI16.txt");
+	in.open("WT\\QAM_MI16.md");
 	inIter2 = istream_iterator<double>(in);
 	m_QAM_MI16.assign(inIter2, eof2);
 	in.close();
 
-	in.open("WT\\QAM_MI64.txt");
+	in.open("WT\\QAM_MI64.md");
 	inIter2 = istream_iterator<double>(in);
 	m_QAM_MI64.assign(inIter2, eof2);
 	in.close();
@@ -201,12 +198,12 @@ void WT_B::initialize() {
 void WT_B::configuration(int VeUEId){
 	m_Nr = m_VeUEAry[VeUEId].m_Nr;
 	m_Nt = m_VeUEAry[VeUEId].m_Nt;
-	m_Mol = m_VeUEAry[VeUEId].m_Mol;
-	m_Ploss = m_VeUEAry[VeUEId].m_Pl;
+	m_Mol = m_VeUEAry[VeUEId].m_PreModulation;
+	m_Ploss = m_VeUEAry[VeUEId].m_Ploss;
 	m_Pt = pow(10,-4.7);//23dbm-70dbm
 	m_Sigma = pow(10,-17.4);
 
-	m_PlossInter = m_VeUEAry[VeUEId].m_interPl;
+	m_PlossInter = m_VeUEAry[VeUEId].m_InterferencePloss;
 }
 
 
@@ -225,11 +222,11 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 
 std::vector<Matrix> WT_B::readInterH(int VeUEIdx, int subCarrierIdx) {
 	vector<Matrix> res;
-	for (int interVeUEIdx : m_VeUEAry[VeUEIdx].m_interUEArray) {
+	for (int interVeUEIdx : m_VeUEAry[VeUEIdx].m_InterVeUEVec) {
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {
-				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_interH[interVeUEIdx*row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_interH[interVeUEIdx*row*subCarrierIdx + 1]);
+				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_InterferenceH[interVeUEIdx*row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_InterferenceH[interVeUEIdx*row*subCarrierIdx + 1]);
 			}
 		}
 		res.push_back(m);
@@ -272,7 +269,7 @@ int WT_B::closest(std::vector<double> v, double target) {
 			if (abs(midDiff) < abs(rightDiff)) return midIndex;
 		}
 	}
-	return abs(v[leftDiff] - target) < abs(v[leftDiff - 1] - target) ? leftIndex : leftIndex - 1;//???
+	return abs(v[leftIndex] - target) < abs(v[leftIndex - 1] - target) ? leftIndex : leftIndex - 1;//???
 }
 
 

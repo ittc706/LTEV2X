@@ -21,6 +21,7 @@
 #include<list>
 #include<sstream>
 #include<iomanip>
+#include<set>
 #include"RRM_DRA.h"
 #include"Exception.h"
 
@@ -142,14 +143,15 @@ string RSUAdapterDRA::toString(int n) {
 
 
 
-RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, eDRAMode systemDRAMode, WT_Basic* systemWTPoint) :
-	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint) {
+RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, eDRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint) :
+	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAdapterVec.push_back(VeUEAdapterDRA(m_VeUEAry[VeUEId]));
 	}
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		m_RSUAdapterVec.push_back(RSUAdapterDRA(m_RSUAry[RSUId]));
 	}
+	m_DRAInterferenceVec = vector<list<int>>(gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum);
 }
 
 
@@ -182,6 +184,9 @@ void RRM_DRA::schedule() {
 
 	//帧听冲突
 	DRAConflictListener();
+
+	//请求地理拓扑单元计算干扰响应矩阵
+	DRATransimitPreparation();
 
 	//模拟传输开始，更新调度信息
 	DRATransimitStart();
@@ -809,6 +814,56 @@ void RRM_DRA::DRAConflictListener() {
 }
 
 
+void RRM_DRA::DRATransimitPreparation() {
+	//首先清空上一次干扰信息
+	for (list<int>&lst : m_DRAInterferenceVec) {
+		lst.clear();
+	}
+
+	//统计本次的干扰信息
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		RSUAdapterDRA &_RSUAdapterDRA = m_RSUAdapterVec[RSUId];
+
+		/*  EMERGENCY  */
+		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
+			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
+			if (lst.size() == 1) {
+				sDRAScheduleInfo *info = *lst.begin();
+
+				m_VeUEAry[info->VeUEId].m_SubCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
+
+				m_DRAInterferenceVec[patternIdx].push_back(info->VeUEId);
+			}
+		}
+		/*  EMERGENCY  */
+
+		int clusterIdx = _RSUAdapterDRA.DRAGetClusterIdx(m_TTI);
+		for (int relativePatternIdx = 0; relativePatternIdx < gc_DRATotalPatternNum; relativePatternIdx++) {
+			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRATransimitScheduleInfoList[relativePatternIdx];
+			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
+				sDRAScheduleInfo *info = *lst.begin();
+
+				m_VeUEAry[info->VeUEId].m_SubCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, relativePatternIdx);
+
+				m_DRAInterferenceVec[relativePatternIdx + gc_DRAEmergencyTotalPatternNum].push_back(info->VeUEId);
+			}
+		}
+	}
+    
+	//请求地理拓扑单元计算干扰响应矩阵
+	for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum; patternIdx++) {
+		list<int> &lst = m_DRAInterferenceVec[patternIdx];
+		for (int VeUEId : lst) {
+			m_VeUEAry[VeUEId].m_InterVeUENum = (int)lst.size() - 1;//写入干扰数目
+			set<int> s(lst.begin(), lst.end());
+			s.erase(VeUEId);
+			m_VeUEAry[VeUEId].m_InterVeUEVec.assign(s.begin(), s.end());//写入干扰车辆ID
+		}
+	}
+	//m_GTATPoint->calculateInter();
+}
+
+
 void RRM_DRA::DRATransimitStart() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSUAdapterDRA &_RSUAdapterDRA = m_RSUAdapterVec[RSUId];
@@ -816,14 +871,11 @@ void RRM_DRA::DRATransimitStart() {
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
 			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
-			if (lst.size() > 1) {//说明DRAConflictListener没有处理妥当
-				throw Exp("在调用DRAConflictListener()过后传输链表中仍然有冲突存在，程序有误");
-			}
-			else if (lst.size() == 1) {
+			if (lst.size() == 1) {
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//计算SINR，获取调制编码方式
-				pair<int, int> subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
+				pair<int, int> &subCarrierIdxRange = m_VeUEAry[info->VeUEId].m_SubCarrierIdxRange;
 				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
 				m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
 
@@ -847,9 +899,6 @@ void RRM_DRA::DRATransimitStart() {
 				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;
 				info->occupiedTTINum = (int)ceil((double)info->remainBitNum / (double)info->transimitBitNum);
 			}
-			else {//没有紧急事件在该pattern上传输
-				continue;
-			}
 		}
 		/*  EMERGENCY  */
 
@@ -857,16 +906,15 @@ void RRM_DRA::DRATransimitStart() {
 		int clusterIdx = _RSUAdapterDRA.DRAGetClusterIdx(m_TTI);
 		for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
 			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRATransimitScheduleInfoList[patternIdx];
-			if (lst.size() > 1) {//说明DRAConflictListener没有处理妥当
-				throw Exp("在调用DRAConflictListener()过后传输链表中仍然有冲突存在，程序有误");
-			}
-			else if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
+			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				sDRAScheduleInfo *info = *lst.begin();
 
 				int patternType = DRAGetPatternType(patternIdx);
 
 				//计算SINR，获取调制编码方式
-				double SINR = 0;
+				pair<int, int> &subCarrierIdxRange = m_VeUEAry[info->VeUEId].m_SubCarrierIdxRange;
+				g_FileTemp << "NoEmergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
+				m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB;
@@ -887,9 +935,6 @@ void RRM_DRA::DRATransimitStart() {
 				info->transimitBitNum = realEquivalentBitNum;
 				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;
 				info->occupiedTTINum = (int)ceil((double)info->remainBitNum / (double)info->transimitBitNum);
-			}
-			else {//没有事件在该pattern上传输
-				  //do nothing
 			}
 		}
 	}
@@ -945,10 +990,7 @@ void RRM_DRA::DRATransimitEnd() {
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
 			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
-			if (lst.size() > 1) {//说明DRAConflictListener没有处理妥当
-				throw Exp("在调用DRAConflictListener()过后传输链表中仍然有冲突存在，程序有误");
-			}
-			else if (lst.size() == 1) {
+			if (lst.size() == 1) {
 				sDRAScheduleInfo *info = *lst.begin();
 				if (m_EventVec[info->eventId].message.remainBitNum == 0) {//已经传输完毕，将资源释放
 
@@ -973,9 +1015,6 @@ void RRM_DRA::DRATransimitEnd() {
 					*lst.begin() = nullptr;
 				}
 			}
-			else {//没有紧急事件在该pattern上传输
-				continue;
-			}
 			lst.clear();
 		}
 		/*  EMERGENCY  */
@@ -984,10 +1023,7 @@ void RRM_DRA::DRATransimitEnd() {
 		int clusterIdx = _RSUAdapterDRA.DRAGetClusterIdx(m_TTI);
 		for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
 			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRATransimitScheduleInfoList[patternIdx];
-			if (lst.size() > 1) {//说明DRAConflictListener没有处理妥当
-				throw Exp("在调用DRAConflictListener()过后传输链表中仍然有冲突存在，程序有误");
-			}
-			else if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
+			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				sDRAScheduleInfo *info = *lst.begin();
 				if (m_EventVec[info->eventId].message.remainBitNum == 0) {//说明该数据已经传输完毕
 
@@ -1011,9 +1047,6 @@ void RRM_DRA::DRATransimitEnd() {
 					_RSUAdapterDRA.DRAPushToScheduleInfoTable(clusterIdx, patternIdx, *lst.begin());
 					*lst.begin() = nullptr;
 				}
-			}
-			else {//没有事件在该pattern上传输
-				continue;
 			}
 			//处理完后，将该pattern上的数据清空（此时要不本身就是空，要不就是nullptr指针）
 			lst.clear();
@@ -1162,7 +1195,7 @@ pair<int, int> RRM_DRA::DRAGetOccupiedSubCarrierRange(eMessageType messageType, 
 		res.second = gc_DRAEmergencyRBNumPerPattern*(patternIdx + 1) - 1;
 	}
 	else{
-		int offset = gc_DRAEmergencyRBNumPerPattern + gc_DRAEmergencyTotalPatternNum;
+		int offset = gc_DRAEmergencyRBNumPerPattern * gc_DRAEmergencyTotalPatternNum;
 		for (int i = 0; i < messageType; i++) {
 			offset += gc_DRA_RBNumPerPatternType[i] * gc_DRAPatternNumPerPatternType[i];
 			patternIdx -= gc_DRAPatternNumPerPatternType[i];

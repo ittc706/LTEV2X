@@ -35,17 +35,17 @@ public:
 	/*-----------------模块控制器-----------------*/
 	//地理拓扑与传输单元
 	eGTATMode m_GTATMode;
-	GTAT_Basic* GTATPoint;
+	GTAT_Basic* m_GTATPoint;
 
     //无线传输单元
-	WT_Basic* WTPoint;
+	WT_Basic* m_WTPoint;
 
 	//业务模型与控制单元
-	TMAC_Basic* TMACPoint;
+	TMAC_Basic* m_TMACPoint;
 
 	//无限资源管理单元
 	eRRMMode m_RRMMode;//调度模式选择
-	RRM_Basic* RRMPoint;
+	RRM_Basic* m_RRMPoint;
 
 	/*------------------成员函数------------------*/
 

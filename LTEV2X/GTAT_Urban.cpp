@@ -458,7 +458,7 @@ void GTAT_Urban::freshLoc() {
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[UserIdx1].m_fv, m_VeUEAry[UserIdx1].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
 		bool *flag = new bool();
 
-		m_VeUEAry[UserIdx1].m_Pl = t_Pl;
+		m_VeUEAry[UserIdx1].m_Ploss = t_Pl;
 
 		*flag = true;
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag);
@@ -515,21 +515,21 @@ void GTAT_Urban::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstre
 	}
 }
 
-void GTAT_Urban::CalculateInter() {
+void GTAT_Urban::calculateInter() {
 	for (int UserIdx = 0; UserIdx != m_Config.VeUENum; UserIdx++) 
 	{
 		m_VeUEAry[UserIdx].imta = new cIMTA[m_Config.RSUNum];
 	}
 	for (int UserIdx = 0; UserIdx != m_Config.VeUENum; UserIdx++)
 	{
-		m_VeUEAry[UserIdx].m_interPl.assign(m_VeUEAry[UserIdx].m_interUEnum, 0);
+		m_VeUEAry[UserIdx].m_InterferencePloss.assign(m_VeUEAry[UserIdx].m_InterVeUENum, 0);
 
-		delete[]m_VeUEAry[UserIdx].m_interH;
-		m_VeUEAry[UserIdx].m_interH = new float[m_VeUEAry[UserIdx].m_interUEnum * 2 * 1024 * 2];
+		delete[]m_VeUEAry[UserIdx].m_InterferenceH;
+		m_VeUEAry[UserIdx].m_InterferenceH = new float[m_VeUEAry[UserIdx].m_InterVeUENum * 2 * 1024 * 2];
 
-		for (int count = 0; count != m_VeUEAry[UserIdx].m_interUEnum; count++)
+		for (int count = 0; count != m_VeUEAry[UserIdx].m_InterVeUENum; count++)
 		{
-			int interUserIdx = m_VeUEAry[UserIdx].m_interUEArray[count];
+			int interUserIdx = m_VeUEAry[UserIdx].m_InterVeUEVec[count];
 			sLocation location;
 			sAntenna antenna;
 			location.bManhattan = true;
@@ -585,7 +585,7 @@ void GTAT_Urban::CalculateInter() {
 			bool *flag = new bool();
 
 
-			m_VeUEAry[UserIdx].m_interPl[count] = t_Pl;
+			m_VeUEAry[UserIdx].m_InterferencePloss[count] = t_Pl;
 
 
 			*flag = true;
@@ -601,7 +601,7 @@ void GTAT_Urban::CalculateInter() {
 			m_VeUEAry[interUserIdx].imta[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 
 
-			memcpy(&m_VeUEAry[UserIdx].m_interH[count*2*1024*2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
+			memcpy(&m_VeUEAry[UserIdx].m_InterferenceH[count*2*1024*2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
 			//		for (unsigned char byTempTxAnt = 0; byTempTxAnt != 1; ++ byTempTxAnt)
 			//{
 			//	for (unsigned char byTempRxAnt = 0; byTempRxAnt !=2; ++ byTempRxAnt)

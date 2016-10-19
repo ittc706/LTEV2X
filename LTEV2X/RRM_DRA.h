@@ -7,6 +7,7 @@
 #include"Enumeration.h"
 #include"Exception.h"
 #include"WT.h"
+#include"GTAT.h"
 
 //RRM_DRA:Radio Resource Management Distributed Resource Allocation
 
@@ -253,7 +254,9 @@ public:
 		std::vector<std::list<int>>& systemEventTTIList,
 		std::vector<std::vector<int>>& systemTTIRSUThroughput,
 		eDRAMode systemDRAMode,
-		WT_Basic* systemWTPoint);
+		WT_Basic* systemWTPoint,
+		GTAT_Basic* systemGTATPoint
+	);
 
 	std::vector<RSUAdapterDRA> m_RSUAdapterVec;
 	std::vector<VeUEAdapterDRA> m_VeUEAdapterVec;
@@ -262,8 +265,14 @@ public:
 	/*------------------数据成员------------------*/
 
 	eDRAMode m_DRAMode;//资源快选择的策略
-	WT_Basic* m_WTPoint;
+	GTAT_Basic* m_GTATPoint;//地理拓扑单元模块指针
+	WT_Basic* m_WTPoint;//无线传输单元模块指针
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
+	/*
+	* 用于存放指定Pattern的车辆的编号列表，外层代表Pattern编号
+	* 外层下标存放Pattern，注意非紧急事件要加上偏移量，因为非紧急事件的Pattern也是从0开始编号，但是这里要存入的是Pattern编号的绝对值
+	*/
+	std::vector<std::list<int>> m_DRAInterferenceVec;
 
 	int m_NewCount = 0;//记录动态创建的对象的次数
 
@@ -296,6 +305,7 @@ private:
 	void DRADelaystatistics();//时延统计
 	void DRAConflictListener();//帧听冲突
 
+	void DRATransimitPreparation();//统计干扰信息
 	void DRATransimitStart();//模拟传输开始，更新调度信息
 	void DRATransimitEnd();//模拟传输结束，即统计吞吐量
 
