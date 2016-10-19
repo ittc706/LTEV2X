@@ -48,13 +48,18 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 		int relativeSubCarrierIdx = subCarrierIdx - subCarrierIdxStart;
 
 		m_H=readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
-		m_H.print(cout,1);
 
+		/*cout << "m_H" << endl;
+		m_H.print(cout, 1);*/
 		Matrix H_her(m_Nt, m_Nr);
 		H_her = m_H.hermitian();//求信道矩阵的hermitian
 		Matrix Temp1 = m_H * H_her;//Temp中存放运算的临时矩阵，temp中存放运算的临时数值
 		double temp1 = m_Pt*m_Ploss;
+
+
 		Matrix Temp2 = Temp1*temp1;
+		/*cout << "Temp2" << endl;
+		Temp2.print(cout, 1);*/
 		Matrix Inter1(m_Nr, m_Nr);
 
 		//for (int i = 0; i < (int)m_HInter.size(); i++)
@@ -67,12 +72,18 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 
 		//	Inter1 = Inter1 + tep3;
 		//}
-		//Matrix sigma_p = Inter1 + m_Sigma;//sigma上带曲线
-		Matrix sigma_p = Inter1;//暂时不考虑干扰
+		Matrix sigma_p = Inter1 + m_Sigma;//sigma上带曲线
+		
 
 		Matrix Temp3 = Temp2 + sigma_p;
 		
 		Matrix Temp4 = Temp3.inverse(true);
+		/*cout << "origin: " << endl;
+		Temp3.print(cout,1);
+		cout << "pinv: " << endl;
+		Temp4.print(cout, 1);
+		cout << "reOriginal " << endl;
+		(Temp3*Temp4*Temp3).print(cout,2);*/
 		double temp2 = sqrt(m_Pt*m_Ploss);
 		Matrix Temp5 = Temp4*temp2;
 		Matrix W(m_Nr, m_Nt); //权重矩阵，大小与信道矩阵相同
@@ -140,30 +151,36 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 	double sum_MI = 0, ave_MI = 0;
 	double Sinreff = 0;
 
+	for (int i = 0; i < Sinr.col; i++) {
+		Sinr[i] = 10 * log10(Complex::abs(Sinr[i]));
+	}
+
 	if (m_Mol == 2) {
-		for (int k = 0; k < 95; k++) {
+		for (int k = 0; k < m_SubCarrierNum; k++) {
+			g_FileTemp << "k: " << k << " , index: " << (int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5) << endl;
 			sum_MI = sum_MI + m_QPSK_MI[(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5)];
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
 
 
-		int SNRIndex = closest(m_QPSK_MI, ave_MI);
+		int SNRIndex = closest2(m_QPSK_MI, ave_MI);
 		Sinreff = 0.5*(SNRIndex - 40);
 	}
 
 	if (m_Mol == 4) {
-		for (int k = 0; k < 95; k++) {
+		for (int k = 0; k < m_SubCarrierNum; k++) {
+			g_FileTemp << "k: " << k << " , index: " << (int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5) << endl;
 			sum_MI = sum_MI + m_QAM_MI16[(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5)];
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
 
-
-		int SNRIndex = closest(m_QAM_MI16, ave_MI);
+		int SNRIndex = closest2(m_QAM_MI16, ave_MI);
 		Sinreff = 0.5*(SNRIndex - 40);
 	}
 
 	if (m_Mol == 6) {
-		for (int k = 0; k < 95; k++) {
+		for (int k = 0; k < m_SubCarrierNum; k++) {
+			g_FileTemp << "k: "<<k<<" , index: " << (int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5) << endl;
 			sum_MI = sum_MI + m_QAM_MI64[(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5)];
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
@@ -175,21 +192,30 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 
 	int MCS = 0;
 	MCS = searchMCSLevelTable(Sinreff);
+	g_FileTemp << "MCS: " << MCS << endl;
 }
 
 
 void WT_B::testCloest() {
 	default_random_engine e;
 	uniform_real_distribution<double> u(0, 1);
+	cout << "Inside testCloest()" << endl;
+
 	for (int i = 0; i < 100000; i++) {
 		double d = u(e);
-		int index1 = closest(m_QPSK_MI, d);
-		int index2 = closest2(m_QPSK_MI, d);
+		int index1 = closest(m_QAM_MI16, d);
+		int index2 = closest2(m_QAM_MI16, d);
 		if (index1 != index2) {
 
 			cout << "index1: " << index1 << endl;
 			cout << "index2: " << index2 << endl;
-			throw Exp("hehe");
+			if (m_QAM_MI16[index1] != m_QAM_MI16[index2]) {
+				cout << "d: " << d << endl;
+				cout << m_QAM_MI16[index1] << " , " << m_QAM_MI16[index2] << endl;
+				cout << abs(d - m_QAM_MI16[index1]) << " , " << abs(d - m_QAM_MI16[index2]) << endl;
+				throw Exp("hehe");
+			}
+			    
 		}
 	}
 }
@@ -252,46 +278,48 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 
 /*****查找MCS等级曲线*****/
 int WT_B::searchMCSLevelTable(double SINR) {
-	double SINR_dB = 10 * log10(SINR);
-	if (SINR_dB > -10 && SINR_dB < 30) {
-		return m_MCSLevelTable[static_cast<int>(ceil((SINR_dB+10)*1000))];
+	//double SINR_dB = 10 * log10(SINR);
+	if (SINR > -10 && SINR < 30) {
+		return m_MCSLevelTable[static_cast<int>(ceil((SINR +10)*1000))];
 	}
 	throw Exp("SINR越界");
 }
 
 
-int WT_B::closest(std::vector<double> v, int target) {
+int WT_B::closest(std::vector<double> v, double target) {
 	int leftIndex = 0;
 	int rightIndex = static_cast<int>(v.size() - 1);
 	double leftDiff = v[leftIndex] - target;
 	double rightDiff = v[rightIndex] - target;
 	
 	while (leftIndex <= rightIndex) {
-		if (rightDiff <= 0) return v[rightIndex];
-		if (leftDiff >= 0) return v[leftIndex];
+		if (rightDiff <= 0) return rightIndex;//???
+		if (leftDiff >= 0) return leftIndex;//???
 
-		int midIndex = rightIndex + (rightIndex - leftIndex >> 1);
+		int midIndex = leftIndex + ((rightIndex - leftIndex) >> 1);
 		double midDiff = v[midIndex] - target;
 		if (midDiff == 0) return midIndex;
 		else if (midDiff < 0) {
 			leftIndex = midIndex + 1;
 			leftDiff = v[leftIndex] - target;
+			if (abs(midDiff) < abs(leftDiff)) return midIndex;
 		}
 		else {
 			rightIndex = midIndex - 1;
 			rightDiff = v[rightIndex] - target;
+			if (abs(midDiff) < abs(rightDiff)) return midIndex;
 		}
 	}
-	return abs(v[leftDiff] - target) < abs(v[leftDiff - 1] - target) ? leftDiff : leftDiff - 1;
+	return abs(v[leftDiff] - target) < abs(v[leftDiff - 1] - target) ? leftIndex : leftIndex - 1;//???
 }
 
 
-int WT_B::closest2(std::vector<double> v, int target) {
+int WT_B::closest2(std::vector<double> v, double target) {
 	int res = -1;
 	double minimum = (numeric_limits<double>::max)();
 	for (int i = 0; i < static_cast<int>(v.size()); i++) {
 		if (abs(v[i] - target) < minimum) {
-			minimum = v[i] - target;
+			minimum = abs(v[i] - target);
 			res = i;
 		}
 	}

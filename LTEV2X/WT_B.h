@@ -34,6 +34,6 @@ private:
 	Matrix readH(int VeUEIdx, int subCarrierIdx);//读取对应子载波的信道响应矩阵
 
 	int searchMCSLevelTable(double SINR);
-	int closest(std::vector<double> v, int target);
-	int closest2(std::vector<double> v, int target);
+	int closest(std::vector<double> v, double target);
+	int closest2(std::vector<double> v, double target);
 };
