@@ -478,6 +478,15 @@ std::pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int upRow
 	return pair<Matrix, Matrix>(up, down);
 }
 
+Matrix Matrix::eye(const int dim) {
+	if (dim < 1) throw Exp("单位阵维度至少为1");
+	Matrix res(dim, dim);
+	for (int i = 0; i < dim; i++) {
+		res[i][i] = 1;
+	}
+	return res;
+}
+
 
 //单目取反运算符
 Matrix operator-(const Matrix t_Matrix) {

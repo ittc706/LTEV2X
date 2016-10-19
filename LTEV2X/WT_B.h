@@ -32,8 +32,11 @@ private:
 	void initialize();//模块初始化调用的初始化函数
 	void configuration(int VeUEId);//每次调用SINRCalculate前需要进行参数配置
 	Matrix readH(int VeUEIdx, int subCarrierIdx);//读取对应子载波的信道响应矩阵
+	std::vector<Matrix> readInterH(int VeUEIdx, int subCarrierIdx);//读取对应车辆在对应子载波上的干扰矩阵数组
 
 	int searchMCSLevelTable(double SINR);
-	int closest(std::vector<double> v, double target);
-	int closest2(std::vector<double> v, double target);
+	int closest(std::vector<double> v, double target);//二分法查找算法
+	int closest2(std::vector<double> v, double target);//线性查找
+
+	double getMutualInformation(std::vector<double> v, int dex);
 };

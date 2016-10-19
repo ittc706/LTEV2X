@@ -522,8 +522,7 @@ void GTAT_Urban::CalculateInter() {
 	}
 	for (int UserIdx = 0; UserIdx != m_Config.VeUENum; UserIdx++)
 	{
-		delete[]m_VeUEAry[UserIdx].m_interPl;
-		m_VeUEAry[UserIdx].m_interPl = new float[m_VeUEAry[UserIdx].m_interUEnum];
+		m_VeUEAry[UserIdx].m_interPl.assign(m_VeUEAry[UserIdx].m_interUEnum, 0);
 
 		delete[]m_VeUEAry[UserIdx].m_interH;
 		m_VeUEAry[UserIdx].m_interH = new float[m_VeUEAry[UserIdx].m_interUEnum * 2 * 1024 * 2];

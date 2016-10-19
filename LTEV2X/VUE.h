@@ -23,7 +23,6 @@ public:
 	const int m_VeUEId = m_VeUECount++;
 	unsigned short m_RSUId;
 	unsigned short m_ClusterIdx;
-	unsigned short m_interUEnum;
 	float m_fX;
 	float m_fY;
 	float m_fAbsX;
@@ -37,11 +36,12 @@ public:
 	int m_Nt;
 	int m_Nr;
 	float *m_H;
-	int   *m_interUEArray;
+	unsigned short m_interUEnum;
+	std::vector<int> m_interUEArray;
 	float *m_interH;
 
 	float m_Pl;
-	float *m_interPl;
+	std::vector<double> m_interPl;
 	int  m_Mol;//上一次的调制方式
 
 

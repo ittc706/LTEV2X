@@ -105,6 +105,7 @@ public:
 	static Matrix verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
 	static std::pair<Matrix, Matrix> verticalSplit(const Matrix& t_Matrix, int leftCol, int rightCol);
 	static std::pair<Matrix, Matrix> horizonSplit(const Matrix& t_Matrix, int upRow, int downRow);
+	static Matrix eye(const int dim);//生成单位阵
 };
 
 //单目取反运算符

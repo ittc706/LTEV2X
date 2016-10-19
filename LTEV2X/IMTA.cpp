@@ -351,7 +351,7 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 	m_fAoA *= c_Degree2PI;
 	//m_fPLSF *= pow(10.0f, fSFSTD * afTemp[3] * 0.1f);
 	m_fPLSF+=fSFSTD * afTemp[3];
-	*t_Pl = m_fPLSF;
+	*t_Pl = pow(10, -m_fPLSF / 10);
 	m_fKDB = fKSTD * afTemp[4] + fKMean;
 	m_fK = pow(10.0f, m_fKDB * 0.1f);
 	m_fDS *= -m_fDSRatio;	

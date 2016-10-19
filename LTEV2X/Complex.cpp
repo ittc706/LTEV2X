@@ -95,7 +95,7 @@ Complex Complex::conjugate() {
 string Complex::toString() {
 	ostringstream ss;
 	ss.precision(2);
-	ss << fixed;//避免用科学计数法，因为可能会存在极小的数值
+	//ss << fixed;//避免用科学计数法，因为可能会存在极小的数值
 	ss << "[" << left << setw(2) << real <<"+ j"<< left << setw(2) << imag << "]";
 	return ss.str();
 }
