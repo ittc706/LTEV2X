@@ -51,80 +51,52 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 		m_H=readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
 		m_HInter = readInterH(VeUEId, subCarrierIdx);//读入当前子载波干扰相应矩阵数组
 
-		/*cout << "m_H" << endl;
-		m_H.print(cout, 1);*/
-		Matrix H_her(m_Nt, m_Nr);
-		H_her = m_H.hermitian();//求信道矩阵的hermitian
-		Matrix Temp1 = m_H * H_her;//Temp中存放运算的临时矩阵，temp中存放运算的临时数值
-		double temp1 = m_Pt*m_Ploss;
 
+		/* 下面开始计算W */
 
-		Matrix Temp2 = temp1*Temp1;
-		/*cout << "Temp2" << endl;
-		Temp2.print(cout, 1);*/
+		Matrix HHermit(m_Nt, m_Nr);
+		HHermit = m_H.hermitian();//求信道矩阵的hermitian
+
+		Matrix inverseExpLeft = m_Pt*m_Ploss*m_H * HHermit;//求逆表达式左边那项
+
+		//计算干扰项
 		Matrix Inter1(m_Nr, m_Nr);
 
-		for (int i = 0; i < (int)m_HInter.size(); i++){
+		/*for (int i = 0; i < (int)m_HInter.size(); i++) {
+			Inter1 = Inter1 + m_Pt*m_PlossInter[i] * m_HInter[i] * m_HInter[i].hermitian();
+		}*/
 
-			double tep1 = m_Pt*m_PlossInter[i];
-			Matrix tep2 = m_HInter[i] * tep1;
-			Matrix H_inter_her = m_HInter[i].hermitian();
-			Matrix tep3 = tep2*H_inter_her;
+		//求逆表达式右边那项
+		Matrix inverseExpRight = m_Sigma*Matrix::eye(m_Nr) + Inter1;//sigma上带曲线
+		
+		Matrix W = (inverseExpLeft + inverseExpRight).inverse(true)*sqrt(m_Pt*m_Ploss)*m_H;//权重矩阵
 
-			Inter1 = Inter1 + tep3;
-		}
-		Matrix sigma_p = m_Sigma*Matrix::eye(m_Nr) + Inter1;//sigma上带曲线
+
+		/* 下面开始计算D */
+		//先计算分子
+		Matrix WHer = W.hermitian();
+		Matrix D = sqrt(m_Ploss*m_Pt)*WHer*m_H;
+		Matrix DHer = D.hermitian();
+		Matrix molecular = D*DHer;//SINR运算的分子，1*1的矩阵
 		
 
-		Matrix Temp3 = Temp2 + sigma_p;
+		//然后计算分母
+		Matrix denominatorLeft = WHer*W*m_Sigma;//SINR运算的分母中的第一项
+		Matrix Iself = WHer*m_H*sqrt(m_Pt*m_Ploss) - D;
+		Matrix IselfHer = Iself.hermitian();
+		Matrix denominatorMiddle = Iself*IselfHer; //SINR运算的分母中的第二项
 
-		/*Temp2.print(cout, 1);*/
-		
-		Matrix Temp4 = Temp3.inverse(true);
+		///*以下计算公式中的干扰项,即公式中的第三项*/
+		//Matrix denominatorRight(m_Nr, m_Nr);
+		//for (int i = 0; i < (int)m_HInter.size(); i++) {
+		//	denominatorRight = denominatorRight + m_Pt*WHer*m_HInter[i] * m_HInter[i].hermitian()*W;
+		//}
 
-		/*cout << "origin: " << endl;
-		Temp3.print(cout,1);
-		cout << "pinv: " << endl;
-		Temp4.print(cout, 1);
-		cout << "reOriginal " << endl;
-		(Temp3*Temp4*Temp3).print(cout,2);*/
+		//Matrix denominator = denominatorLeft + denominatorMiddle + denominatorRight;//SINR运算的分母
+		Matrix denominator = denominatorLeft + denominatorMiddle;//SINR运算的分母
 
-		double temp2 = sqrt(m_Pt*m_Ploss);
-		Matrix Temp5 = Temp4*temp2;
-		Matrix W = Temp5*m_H;//权重矩阵
-		Matrix W_her = W.hermitian();
-		double temp3 = sqrt(m_Ploss*m_Pt);
-		Matrix Temp6 = W_her*temp3;
-		Matrix D = Temp6*m_H;
-		Matrix D_her = D.hermitian();
-		Matrix Temp11 = D*D_her;
-		Matrix Temp12 = Temp11;
-		Matrix Temp13 = Temp12;//SINR运算的分子，1*1的矩阵
-		Matrix Temp8 = W_her*W;
-		Matrix Temp9 = Temp8*m_Sigma;//SINR运算的分母中的第一项
 
-		Matrix Temp14 = W_her*m_H;
-		Matrix Temp15 = Temp14*sqrt(m_Pt*m_Ploss);
-		Matrix Iself = Temp15 - D;
-		Matrix Iself_her = Iself.hermitian();
-		Matrix Temp16 = Iself*Iself_her;
-		Matrix Temp17 = Temp16; //SINR运算的分母中的第二项
-
-		/*以下计算公式中的干扰项,即公式中的第三项*/
-		Matrix Inter2(m_Nr, m_Nr);
-		for (int i = 0; i < (int)m_HInter.size(); i++) {
-			double tmp1 = m_Pt;
-			Matrix tmp2 = W_her*tmp1;
-			Matrix H_inter_her = m_HInter[i].hermitian();
-			Matrix tmp3 = tmp2*m_HInter[i];
-			Matrix tmp4 = tmp3*H_inter_her;
-			Matrix tmp5 = tmp4*W;
-			Inter2 = Inter2 + tmp5;
-		}
-
-		Matrix Temp18 = Temp9 + Temp17 + Inter2;//SINR运算的分母
-
-		Sinr[relativeSubCarrierIdx] = Temp13[0][0] / Temp18[0][0];
+		Sinr[relativeSubCarrierIdx] = molecular[0][0] / denominator[0][0];
 	}
 
 	/******互信息方法求有效信噪比Sinreff*****/
@@ -134,6 +106,9 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 	for (int i = 0; i < Sinr.col; i++) {
 		Sinr[i] = 10 * log10(Complex::abs(Sinr[i]));
 	}
+	Sinr.print();
+	cout << endl;
+	cout << 10 * log10(m_Ploss);
 
 	if (m_Mol == 2) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
