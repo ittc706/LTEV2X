@@ -7,6 +7,15 @@
 #include"Road.h"
 #include"Config.h"
 
+
+struct sMobility {
+	int tmp;
+};
+struct sGeography {
+	int tmp;
+};
+
+
 class GTAT_Basic {
 public:
 	GTAT_Basic() = delete;

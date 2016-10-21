@@ -83,7 +83,7 @@ void GTAT_Urban::initialize() {
 			roadConfigure.weNBNum = 0;
 		}
 
-		m_RoadAry[temp].initialize(roadConfigure);
+		m_RoadAry[temp].initializeUrban(roadConfigure);
 	}
 
 	sRSUConfigure RSUConfigure;
@@ -91,7 +91,7 @@ void GTAT_Urban::initialize() {
 	{
 
 		RSUConfigure.wRSUID = RSUIdx;
-		m_RSUAry[RSUIdx].initialize(RSUConfigure);
+		m_RSUAry[RSUIdx].initializeUrban(RSUConfigure);
 	}
 
 	sUEConfigure ueConfigure;
@@ -109,7 +109,7 @@ void GTAT_Urban::initialize() {
 			ueConfigure.fAbsX = m_RoadAry[RoadIdx].m_fAbsX + ueConfigure.fX;
 			ueConfigure.fAbsY = m_RoadAry[RoadIdx].m_fAbsY + ueConfigure.fY;
 			ueConfigure.fv = m_Config.fv;
-			m_VeUEAry[ueidx++].initialize(ueConfigure);
+			m_VeUEAry[ueidx++].initializeUrban(ueConfigure);
 
 		}
 	}
@@ -544,20 +544,20 @@ void GTAT_Urban::calculateInter() {
 			float angle = 0;
 			if (location.bManhattan == true)  //º∆À„location distance
 			{
-				//if (abs(veUE[UserIdx1].m_fAbsX - RSU[RSUIdx].m_fAbsX) <= 10.5 || abs(veUE[UserIdx1].m_fAbsY - RSU[RSUIdx].m_fAbsY) <= 10.5)
-				//{
-				location.eType = Los;
-				location.fDistance = abs(m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) + abs(m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY);
-				angle = atan2(m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
-				//}
-				//else
-				//{
-				//	location.eType = Nlos;
-				//	location.fDistance1 = abs(veUE[UserIdx1].m_fAbsX - RSU[RSUIdx].m_fAbsX);
-				//	location.fDistance2 = abs(veUE[UserIdx1].m_fAbsY - RSU[RSUIdx].m_fAbsY);
-				//	location.fDistance = sqrt(pow(location.fDistance1,2.0f)+pow(location.fDistance2,2.0f)); 
+				if (abs(m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY) <= 10.5)
+				{
+					location.eType = Los;
+					location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
+					angle = atan2(m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
+				}
+				else
+				{
+					location.eType = Nlos;
+					location.fDistance1 = abs(m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX);
+					location.fDistance2 = abs(m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY);
+					location.fDistance = sqrt(pow(location.fDistance1,2.0f)+pow(location.fDistance2,2.0f)); 
 
-				//}
+				}
 			}
 			//	fprintf(fp, "%f\n", location.fDistance);
 			location.feNBAntH = 5;

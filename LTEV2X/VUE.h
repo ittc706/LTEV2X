@@ -18,12 +18,13 @@ public:
 	*                      地理拓扑单元
 	* -------------------------------------------------------------*/
 	~cVeUE();
-	void initialize(sUEConfigure &t_UEConfigure);
+	void initializeUrban(sUEConfigure &t_UEConfigure);
+	void initializeHigh(sUEConfigure &t_UEConfigure);
 	unsigned short m_wRoadID;
 	int m_locationID;
 	const int m_VeUEId = m_VeUECount++;
-	unsigned short m_RSUId;
-	unsigned short m_ClusterIdx;
+	unsigned short m_RSUId;//RRM_DRA模块需要
+	unsigned short m_ClusterIdx;//RRM_DRA模块需要
 	float m_fX;
 	float m_fY;
 	float m_fAbsX;
@@ -46,6 +47,9 @@ public:
 	int  m_PreModulation;//上一次的调制方式
 
 
+
+	/* HighSpeed */
+	unsigned short m_wLaneID;
 
 
 	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息

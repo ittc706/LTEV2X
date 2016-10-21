@@ -1,12 +1,6 @@
 #pragma once
 #include"GTAT.h"
 
-struct sMobility {
-	int tmp;
-};
-struct sGeography {
-	int tmp;
-};
 
 
 class GTAT_Urban :public GTAT_Basic {

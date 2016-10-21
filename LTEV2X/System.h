@@ -7,6 +7,7 @@
 #include"VUE.h"
 #include"Event.h"
 #include"Road.h"
+#include"Lane.h"
 #include"GTAT.h"
 #include"GTAT_Urban.h"
 #include"WT.h"
@@ -23,7 +24,8 @@ public:
 	int m_TTI;//当前的TTI时刻
 	sConfigure m_Config;//系统参数配置
 	ceNB* m_eNBAry;//基站容器
-	cRoad* m_RoadAry;//道路容器
+	cRoad* m_RoadAry;//城镇道路容器
+	cLane *m_LaneAry;//高速道路容器
 	cRSU* m_RSUAry;//RSU容器
 	cVeUE* m_VeUEAry;//VeUE容器
 

@@ -238,7 +238,7 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 		     m_fPLSF = 22.7f * log10(t_eLocation.fDistance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 			}
 		}
-		fSFSTD = 3.0f;
+		
 
 		break;
 	case Nlos:
@@ -281,7 +281,7 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 		break;
 	}
 
-
+	fSFSTD = 3.0f;
 	float fDSMean;
 	float fDSSTD;
 	float fASDMean;
@@ -292,7 +292,7 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 	float fKSTD;
 	const float *cpfConstant;
 
-			if (m_bLoS)
+			if (t_eLocation.bManhattan)
 			{
 				fDSMean = -7.19f;
 				fDSSTD = 0.40f;

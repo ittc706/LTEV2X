@@ -17,6 +17,7 @@ struct sConfigure {
 
 	int eNBNum;//基站总数
 	int RoadNum;//Road总数
+	int LaneNum;//Lane总数
 	int RSUNum;//RSU总数
 	int* pupr;//user per road array
 	unsigned short wxNum;//ueTopo x轴 格数
@@ -52,10 +53,18 @@ struct sRoadConfigure
 	unsigned short wLaneOffset;
 };
 
+struct sLaneConfigure
+{
+	sConfigure* sys_config;
+	unsigned short wLaneID;
+};
+
+
 /*UE配置参数*/
 struct sUEConfigure
 {
 	unsigned short wRoadID;
+	unsigned short wLaneID;
 	int locationID;
 	float fX;
 	float fY;

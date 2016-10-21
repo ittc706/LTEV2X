@@ -127,6 +127,7 @@
     <ClInclude Include="Complex.h" />
     <ClInclude Include="GTAT.h" />
     <ClInclude Include="GTAT_Urban.h" />
+    <ClInclude Include="Lane.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="TMAC.h" />
     <ClInclude Include="TMAC_B.h" />
@@ -146,10 +147,13 @@
     <ClInclude Include="VUE.h" />
     <ClInclude Include="WT.h" />
     <ClInclude Include="WT_B.h" />
+    <ClInclude Include="GTAT_High.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="GTAT_High.cpp" />
     <ClCompile Include="GTAT_Urban.cpp" />
+    <ClCompile Include="Lane.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="TMAC_B.cpp" />
     <ClCompile Include="eNB.cpp" />

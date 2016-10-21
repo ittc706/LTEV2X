@@ -5,13 +5,26 @@
 using namespace std;
 
 
-void ceNB::initialize(seNBConfigure &t_eNBConfigure){
+void ceNB::initializeUrban(seNBConfigure &t_eNBConfigure){
 	m_wRoadID = t_eNBConfigure.wRoadID;
 	m_eNBId = t_eNBConfigure.weNBID;
 	m_fX = t_eNBConfigure.fX;
 	m_fY = t_eNBConfigure.fY;
 	m_fAbsX = t_eNBConfigure.fAbsX;
 	m_fAbsY = t_eNBConfigure.fAbsY;
+	printf("»ùÕ¾£º");
+	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_fAbsX, m_fAbsY);
+}
+
+
+void ceNB::initializeHigh(seNBConfigure &t_eNBConfigure)
+{
+	//m_wLaneID = t_eNBConfigure.wLaneID;
+	m_eNBId = t_eNBConfigure.weNBID;
+	//m_fX = t_eNBConfigure.fX;
+	//m_fY = t_eNBConfigure.fY;
+	m_fAbsX = ns_GTAT_High::c_eNBTopo[m_eNBId * 2 + 0];
+	m_fAbsY = ns_GTAT_High::c_eNBTopo[m_eNBId * 2 + 1];
 	printf("»ùÕ¾£º");
 	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_fAbsX, m_fAbsY);
 }

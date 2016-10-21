@@ -14,7 +14,7 @@
 using namespace std;
 
 
-void cRSU::initialize(sRSUConfigure &t_RSUConfigure){
+void cRSU::initializeUrban(sRSUConfigure &t_RSUConfigure){
 	m_RSUId = t_RSUConfigure.wRSUID;
 	m_fAbsX = ns_GTAT_Urban::c_RSUTopoRatio[m_RSUId * 2 + 0] * ns_GTAT_Urban::c_wide;
 	m_fAbsY = ns_GTAT_Urban::c_RSUTopoRatio[m_RSUId * 2 + 1] * ns_GTAT_Urban::c_length;
@@ -23,5 +23,18 @@ void cRSU::initialize(sRSUConfigure &t_RSUConfigure){
 	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_RSUId, m_fAbsX, m_fAbsY);
 
 	m_DRAClusterNum = ns_GTAT_Urban::c_RSUClusterNum[m_RSUId];
+	m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
+}
+
+
+void cRSU::initializeHigh(sRSUConfigure &t_RSUConfigure) {
+	m_RSUId = t_RSUConfigure.wRSUID;
+	m_fAbsX = ns_GTAT_High::c_RSUTopoRatio[m_RSUId * 2 + 0] * 100;
+	m_fAbsY = ns_GTAT_High::c_RSUTopoRatio[m_RSUId * 2 + 1];
+	RandomUniform(&m_fantennaAngle, 1, 180.0f, -180.0f, false);
+	printf("RSU£º");
+	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_RSUId, m_fAbsX, m_fAbsY);
+
+	m_DRAClusterNum = ns_GTAT_High::c_RSUClusterNum;
 	m_DRAClusterVeUEIdList = vector<list<int>>(m_DRAClusterNum);
 }

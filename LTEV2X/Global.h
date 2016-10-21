@@ -49,6 +49,7 @@ const float c_Degree2PI = 0.01745329251994329576923690768489f;
 const float c_SqrtHalf = 0.70710678118654752440084436210485f;
 const float c_SqrtThree = 1.73205080756887729f;
 const float c_C = 299792458.0f;
+const float c_FC = 2e9f;
 
 namespace ns_GTAT_Urban {//城镇模块常量设置
 	const unsigned short c_eNBNumber = 7;
@@ -57,9 +58,6 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 	const int c_wide = 250;
 	const int c_length = 433;
 	const float c_lane_wide = 3.5;
-
-
-
 
 	const float c_roadTopoRatio[c_roadNumber * 2] =
 	{
@@ -211,7 +209,74 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 	};
 }
 
-const float c_FC = 2e9f;
+
+namespace ns_GTAT_High {
+	const unsigned short c_eNBNumber = 2;
+	const unsigned short c_laneNumber = 6;
+	const unsigned short c_RSUNumber = 35;
+	//const int c_wide=24;
+	const int c_length = 3464;
+	const float c_lane_wide = 4.0f;
+	const float Fresh_time = 0.1f;
+	const float c_ISD = 1732.0f;
+	const int c_v = 140;
+
+	const float c_laneTopoRatio[c_laneNumber * 2] =
+	{
+		0.0f, -2.5f,
+		0.0f, -1.5f,
+		0.0f, -0.5f,
+		0.0f, 0.5f,
+		0.0f, 1.5f,
+		0.0f, 2.5f,
+	};
+
+	const unsigned short c_RSUClusterNum = 2;//每个RSU都只有2个簇
+
+	const float c_RSUTopoRatio[c_RSUNumber * 2] =
+	{
+		17.0f, 0.0f,
+		16.0f, 0.0f,
+		15.0f, 0.0f,
+		14.0f, 0.0f,
+		13.0f, 0.0f,
+		12.0f, 0.0f,
+		11.0f, 0.0f,
+		10.0f, 0.0f,
+		9.0f, 0.0f,
+		8.0f, 0.0f,
+		7.0f, 0.0f,
+		6.0f, 0.0f,
+		5.0f, 0.0f,
+		4.0f, 0.0f,
+		3.0f, 0.0f,
+		2.0f, 0.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+		-1.0f, 0.0f,
+		-2.0f, 0.0f,
+		-3.0f, 0.0f,
+		-4.0f, 0.0f,
+		-5.0f, 0.0f,
+		-6.0f, 0.0f,
+		-7.0f, 0.0f,
+		-8.0f, 0.0f,
+		-9.0f, 0.0f,
+		-10.0f, 0.0f,
+		-11.0f, 0.0f,
+		-12.0f, 0.0f,
+		-13.0f, 0.0f,
+		-14.0f, 0.0f,
+		-15.0f, 0.0f,
+		-16.0f, 0.0f,
+		-17.0f, 0.0f,
+	};
+	const float c_eNBTopo[c_eNBNumber * 2] =
+	{
+		-0.5f*c_ISD,35,
+		0.5f*c_ISD,35,
+	};
+}
 
 
 

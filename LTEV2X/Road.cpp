@@ -1,7 +1,7 @@
 #include"Road.h"
 
 
-void cRoad::initialize(sRoadConfigure &t_RoadConfigure) {
+void cRoad::initializeUrban(sRoadConfigure &t_RoadConfigure) {
 	m_wRoadID = t_RoadConfigure.wRoadID;
 	m_fAbsX = ns_GTAT_Urban::c_roadTopoRatio[m_wRoadID * 2 + 0] * ns_GTAT_Urban::c_wide;
 	m_fAbsY = ns_GTAT_Urban::c_roadTopoRatio[m_wRoadID * 2 + 1] * ns_GTAT_Urban::c_length;
@@ -19,7 +19,7 @@ void cRoad::initialize(sRoadConfigure &t_RoadConfigure) {
 		eNBConfigure.fAbsX = m_fAbsX + eNBConfigure.fX;
 		eNBConfigure.fAbsY = m_fAbsY + eNBConfigure.fY;
 		eNBConfigure.weNBID = t_RoadConfigure.weNBOffset;
-		m_peNB->initialize(eNBConfigure);
+		m_peNB->initializeUrban(eNBConfigure);
 	}
 }
 

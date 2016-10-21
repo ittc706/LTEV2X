@@ -16,8 +16,8 @@ public:
 	float m_fY;
 	float m_fAbsX;
 	float m_fAbsY;
-	void initialize(seNBConfigure &t_eNBConfigure);
-
+	void initializeUrban(seNBConfigure &t_eNBConfigure);
+	void initializeHigh(seNBConfigure &t_eNBConfigure);
 
     //UNDONE
 	std::list<int> m_RSUIdList;//该基站中的RSU容器（存储RSU的Id）

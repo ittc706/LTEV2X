@@ -14,7 +14,7 @@
 class cRoad{
 public:
 
-	void initialize(sRoadConfigure &t_RoadConfigure);
+	void initializeUrban(sRoadConfigure &t_RoadConfigure);
 
 	unsigned short m_wRoadID;
     unsigned short m_weNBNum;
