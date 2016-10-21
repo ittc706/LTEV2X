@@ -34,7 +34,7 @@ public:
 
 	/*-----------------模块控制器-----------------*/
 	//地理拓扑与传输单元
-	eGTATMode m_GTATMode;
+	eGTATMode m_GTATMode;//地理拓扑模式选择
 	GTAT_Basic* m_GTATPoint;
 
     //无线传输单元
@@ -47,8 +47,8 @@ public:
 	eRRMMode m_RRMMode;//调度模式选择
 	RRM_Basic* m_RRMPoint;
 
-	/*------------------成员函数------------------*/
 
+	/*------------------成员函数------------------*/
 	void configure();//系统仿真参数配置
 	void initialization();//系统参数配置，完成系统初始化
 	void GTATModuleInitialize();//GTAT模块对象初始化

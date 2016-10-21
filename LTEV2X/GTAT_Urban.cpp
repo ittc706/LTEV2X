@@ -5,6 +5,7 @@
 #include"Exception.h"
 
 using namespace std;
+using namespace ns_GTAT_Urban;
 
 default_random_engine GTAT_Urban::s_Engine((unsigned)time(NULL));
 

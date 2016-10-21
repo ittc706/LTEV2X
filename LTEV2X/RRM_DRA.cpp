@@ -150,6 +150,7 @@ RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, c
 	}
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		m_RSUAdapterVec.push_back(RSUAdapterDRA(m_RSUAry[RSUId]));
+		
 	}
 	m_DRAInterferenceVec = vector<list<int>>(gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum);
 }
@@ -850,7 +851,7 @@ void RRM_DRA::DRATransimitPreparation() {
 		}
 	}
     
-	//请求地理拓扑单元计算干扰响应矩阵
+	//更新每辆车的干扰车辆列表
 	for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum; patternIdx++) {
 		list<int> &lst = m_DRAInterferenceVec[patternIdx];
 		for (int VeUEId : lst) {
@@ -858,8 +859,15 @@ void RRM_DRA::DRATransimitPreparation() {
 			set<int> s(lst.begin(), lst.end());
 			s.erase(VeUEId);
 			m_VeUEAry[VeUEId].m_InterVeUEVec.assign(s.begin(), s.end());//写入干扰车辆ID
+
+			g_FileTemp << "VeUEId: " << VeUEId << " [";
+			for (auto c : m_VeUEAry[VeUEId].m_InterVeUEVec)
+				g_FileTemp << c << ", ";
+			g_FileTemp << " ]" << endl;
 		}
 	}
+
+	//请求地理拓扑单元计算干扰响应矩阵
 	//m_GTATPoint->calculateInter();
 }
 

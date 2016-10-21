@@ -16,7 +16,7 @@ public:
 
 	int& m_TTI;//当前的TTI时刻
 	sConfigure& m_Config;//系统参数配置
-	ceNB* &m_eNBAry;//基站容器
+	ceNB* &m_eNBAry;//基站容器，这里为什么必须是引用类型，因为系统的这些数组指针必须靠该模块来初始化，因此不能传入拷贝
 	cRoad* &m_RoadAry;//道路容器
 	cRSU* &m_RSUAry;//RSU容器
 	cVeUE* &m_VeUEAry;//VeUE容器

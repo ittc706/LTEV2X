@@ -45,6 +45,9 @@ public:
 	float *m_InterferenceH;//干扰信道响应矩阵
 	int  m_PreModulation;//上一次的调制方式
 
+
+
+
 	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
 };
 
