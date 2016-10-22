@@ -168,3 +168,34 @@ string cRSU::RRMDRA::toString(int n) {
 	ss << indent << "}" << endl;
 	return ss.str();
 }
+
+
+
+std::string cRSU::RRMRR::sRRScheduleInfo::toLogString(int n) {
+	ostringstream ss;
+	ss << "[ eventId = ";
+	ss << left << setw(3) << eventId;
+	ss << " , PatternIdx = " << left << setw(3) << patternIdx << " ] ";
+	return ss.str();
+}
+
+
+std::string cRSU::RRMRR::sRRScheduleInfo::toScheduleString(int n) {
+	string indent;
+	for (int i = 0; i < n; i++)
+		indent.append("    ");
+	ostringstream ss;
+	ss << indent << "{ ";
+	ss << "[ eventId = " << left << setw(3) << eventId << " , VeUEId = " << left << setw(3) << VeUEId << " ]";
+	ss << " : occupy Number Of TTI = [";
+	ss << occupiedNumTTI;
+	ss << "] }";
+	return ss.str();
+}
+
+
+
+
+cRSU::RRMRR::RRMRR() {
+	m_RRScheduleInfoTable = vector<sRRScheduleInfo*>(gc_RRPatternNum);
+}

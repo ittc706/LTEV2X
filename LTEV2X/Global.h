@@ -289,7 +289,7 @@ const int gc_RBNum = gc_TotalBandwidth/ gc_BandwidthOfRB;   //RB数量(111)
 const int gc_BitNumPerRB=180;  //单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
 
 /*===========================================
-*              模块常量定义
+*          RRM_DRA模块常量定义
 * ==========================================*/
 const int gc_DRA_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
 
@@ -310,7 +310,15 @@ const int gc_DRATotalPatternNum = [&]() {
 
 
 /*===========================================
-*          无线资源管理单元常量
+*          RRM_RR模块常量定义
+* ==========================================*/
+const int gc_RRNumRBPerPattern = 11;//每个Pattern的RB数量
+const int gc_RRPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
+
+
+
+/*===========================================
+*          数据业务与统计单元常量
 * ==========================================*/
 const int gc_PeriodMessageBitNum = 2400;
 const int gc_EmergencyMessageBitNum = 2400;

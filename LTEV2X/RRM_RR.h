@@ -5,91 +5,7 @@
 #include"Exception.h"
 #include"Global.h"
 //RRM_DRA:Radio Resource Management Round-Robin
-/*===========================================
-*              模块常量定义
-* ==========================================*/
-const int gc_RRNumRBPerPattern = 11;//每个Pattern的RB数量
-const int gc_RRPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
 
-/*===========================================
-*            调度信息数据结构
-* ==========================================*/
-struct sRRScheduleInfo {
-	int eventId;//事件编号
-	eMessageType messageType;//事件类型
-	int VeUEId;//车辆编号
-	int RSUId;//RSU编号
-	int patternIdx;//频域块编号
-	int occupiedNumTTI;//当前VeUE进行传输的实际TTI区间（闭区间）
-
-	sRRScheduleInfo() {}
-	sRRScheduleInfo(int eventId, eMessageType messageType, int VeUEId, int RSUId, int patternIdx, const int &occupiedNumTTI) {
-		this->eventId = eventId;
-		this->messageType = messageType;
-		this->VeUEId = VeUEId;
-		this->RSUId = RSUId;
-		this->patternIdx = patternIdx;
-		this->occupiedNumTTI = occupiedNumTTI;
-	}
-
-	std::string toLogString(int n);
-
-	/*
-	* 生成表示调度信息的string对象
-	* 包括事件的Id，车辆的Id，以及要传输该事件所占用的TTI区间
-	*/
-	std::string toScheduleString(int n);
-};
-
-
-
-/*===========================================
-*                RSU适配器
-* ==========================================*/
-class RSUAdapterRR {
-public:
-	cRSU& m_HoldObj;//该适配器持有的原RSU对象
-	RSUAdapterRR() = delete;
-	RSUAdapterRR(cRSU& _RSU);
-
-	/*------------------数据成员------------------*/
-	
-
-	std::vector<int> m_RRAdmitEventIdList;//当前TTI接入列表，最大长度不超过Pattern数量
-
-	/*
-	* RSU级别的等待列表
-	* 存放的是VeUEId
-	* 其来源有：
-	*		1、分簇后，由System级的切换链表转入该RSU级别的等待链表
-	*		2、事件链表中当前的事件触发，转入等待链表
-	*/
-	std::list<int> m_RRWaitEventIdList;
-
-	/*
-	* 存放调度调度信息
-	* 外层代表Pattern号
-	*/
-	std::vector<sRRScheduleInfo*> m_RRScheduleInfoTable;
-
-
-	/*------------------成员函数------------------*/
-
-	/*
-	* 将AdmitEventIdList的添加封装起来，便于查看哪里调用，利于调试
-	*/
-	void RRPushToAdmitEventIdList(int eventId);
-
-	/*
-	* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
-	*/
-	void RRPushToWaitEventIdList(int eventId, eMessageType messageType);
-
-	/*
-	* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
-	*/
-	void RRPushToSwitchEventIdList(int eventId, std::list<int>& systemRRSwitchVeUEIdList);
-};
 
 
 /*===========================================
@@ -109,7 +25,6 @@ public:
 	RRM_RR() = delete;
 	RRM_RR(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput);
 
-	std::vector<RSUAdapterRR> m_RSUAdapterVec;
 	std::vector<VeUEAdapterRR> m_VeUEAdapterVec;
 
 	/*------------------数据成员------------------*/
@@ -141,22 +56,3 @@ public:
 
 
 
-inline
-void RSUAdapterRR::RRPushToAdmitEventIdList(int eventId) {
-	m_RRAdmitEventIdList.push_back(eventId);
-}
-
-inline
-void RSUAdapterRR::RRPushToWaitEventIdList(int eventId, eMessageType messageType) {
-	if (messageType == EMERGENCY) {
-		m_RRWaitEventIdList.insert(m_RRWaitEventIdList.begin(), eventId);
-	}
-	else {
-		m_RRWaitEventIdList.push_back(eventId);
-	}
-}
-
-inline
-void RSUAdapterRR::RRPushToSwitchEventIdList(int eventId, std::list<int>& systemRRSwitchVeUEIdList) {
-	systemRRSwitchVeUEIdList.push_back(eventId);
-}
