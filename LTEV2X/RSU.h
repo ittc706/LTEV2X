@@ -11,12 +11,12 @@
 #include"IMTA.h"
 #include"Exception.h"
 
-class cRSU {
+class RSU {
 public:
 	//类内嵌套结构体前置声明
 	struct GTAT;
 	struct GTATUrban;
-	struct GTATHigh;
+	struct GTATHighSpeed;
 	struct RRM;
 	struct RRMDRA;
 	struct RRMRR;
@@ -27,7 +27,7 @@ public:
 	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
 	GTAT* m_GTAT = nullptr;//用于存储供其他模块使用的参数
 	GTATUrban* m_GTATUrban = nullptr;//用于存储城镇场景的特定参数
-	GTATHigh* m_GTATHigh = nullptr;//用于存储高速场景的特定参数
+	GTATHighSpeed* m_GTATHighSpeed = nullptr;//用于存储高速场景的特定参数
 	RRM* m_RRM = nullptr;
 	RRMDRA* m_RRMDRA = nullptr;//用于存储DRA模式的特定参数
 	RRMRR* m_RRMRR = nullptr;//用于存储RR模式的特定参数
@@ -35,11 +35,11 @@ public:
 	TMAC* m_TMAC = nullptr;
 
 
-	cRSU();
+	RSU();
 	void initializeUrban(sRSUConfigure &t_RSUConfigure);
-	void initializeHigh(sRSUConfigure &t_RSUConfigure);
+	void initializeHighSpeed(sRSUConfigure &t_RSUConfigure);
 	void initializeElse();//由于其他模块的成员初始化可能依赖于GTAT模块，因此初始化GTAT完毕后，再调用该函数
-	~cRSU();
+	~RSU();
 
 	//类内数据结构定义
 	struct GTAT {
@@ -50,17 +50,17 @@ public:
 	};
 
 	struct GTATUrban {
-		double m_fAbsX;
-		double m_fAbsY;
-		cIMTA *imta;
-		double m_fantennaAngle;
+		double m_AbsX;
+		double m_AbsY;
+		cIMTA *m_IMTA;
+		double m_FantennaAngle;
 	};
 
-	struct GTATHigh {
-		double m_fAbsX;
-		double m_fAbsY;
-		cIMTA *imta;
-		double m_fantennaAngle;
+	struct GTATHighSpeed {
+		double m_AbsX;
+		double m_AbsY;
+		cIMTA *m_IMTA;
+		double m_FantennaAngle;
 	};
 
 	struct RRM {
@@ -98,7 +98,7 @@ public:
 		};
 
 
-		cRSU* m_this;//RRMDRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+		RSU* m_this;//RRMDRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 
 		/*
@@ -175,7 +175,7 @@ public:
 		*/
 		std::vector<sDRAScheduleInfo*> m_DRAEmergencyScheduleInfoTable;
 
-		RRMDRA(cRSU* t_this);//构造函数
+		RRMDRA(RSU* t_this);//构造函数
 
 		/*------------------成员函数------------------*/
 
@@ -232,14 +232,14 @@ public:
 		* ==========================================*/
 		struct sRRScheduleInfo {
 			int eventId;//事件编号
-			eMessageType messageType;//事件类型
+			MessageType messageType;//事件类型
 			int VeUEId;//车辆编号
 			int RSUId;//RSU编号
 			int patternIdx;//频域块编号
 			int occupiedNumTTI;//当前VeUE进行传输的实际TTI区间（闭区间）
 
 			sRRScheduleInfo() {}
-			sRRScheduleInfo(int eventId, eMessageType messageType, int VeUEId, int RSUId, int patternIdx, const int &occupiedNumTTI) {
+			sRRScheduleInfo(int eventId, MessageType messageType, int VeUEId, int RSUId, int patternIdx, const int &occupiedNumTTI) {
 				this->eventId = eventId;
 				this->messageType = messageType;
 				this->VeUEId = VeUEId;
@@ -285,7 +285,7 @@ public:
 		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void RRPushToWaitEventIdList(int eventId, eMessageType messageType);
+		void RRPushToWaitEventIdList(int eventId, MessageType messageType);
 
 		/*
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
@@ -308,7 +308,7 @@ public:
 
 
 inline
-int cRSU::RRMDRA::DRAGetClusterIdxOfVeUE(int VeUEId) {
+int RSU::RRMDRA::DRAGetClusterIdxOfVeUE(int VeUEId) {
 	int dex = -1;
 	for (int clusterIdx = 0; clusterIdx < m_this->m_GTAT->m_DRAClusterNum; clusterIdx++) {
 		for (int Id : m_this->m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
@@ -319,52 +319,52 @@ int cRSU::RRMDRA::DRAGetClusterIdxOfVeUE(int VeUEId) {
 
 
 inline
-void cRSU::RRMDRA::DRAPushToAdmitEventIdList(int eventId) {
+void RSU::RRMDRA::DRAPushToAdmitEventIdList(int eventId) {
 	m_DRAAdmitEventIdList.push_back(eventId);
 }
 
 inline
-void cRSU::RRMDRA::DRAPushToEmergencyAdmitEventIdList(int eventId) {
+void RSU::RRMDRA::DRAPushToEmergencyAdmitEventIdList(int eventId) {
 	m_DRAEmergencyAdmitEventIdList.push_back(eventId);
 }
 
 inline
-void cRSU::RRMDRA::DRAPushToWaitEventIdList(int eventId) {
+void RSU::RRMDRA::DRAPushToWaitEventIdList(int eventId) {
 	m_DRAWaitEventIdList.push_back(eventId);
 }
 
 inline
-void cRSU::RRMDRA::DRAPushToEmergencyWaitEventIdList(int eventId) {
+void RSU::RRMDRA::DRAPushToEmergencyWaitEventIdList(int eventId) {
 	m_DRAEmergencyWaitEventIdList.push_back(eventId);
 }
 
 inline
-void cRSU::RRMDRA::DRAPushToSwitchEventIdList(int VeUEId, std::list<int>& systemDRASwitchVeUEIdList) {
+void RSU::RRMDRA::DRAPushToSwitchEventIdList(int VeUEId, std::list<int>& systemDRASwitchVeUEIdList) {
 	systemDRASwitchVeUEIdList.push_back(VeUEId);
 }
 
 inline
-void cRSU::RRMDRA::DRAPushToTransmitScheduleInfoList(RRMDRA::sDRAScheduleInfo* p, int patternIdx) {
+void RSU::RRMDRA::DRAPushToTransmitScheduleInfoList(RRMDRA::sDRAScheduleInfo* p, int patternIdx) {
 	m_DRATransimitScheduleInfoList[patternIdx].push_back(p);
 }
 
 inline
-void cRSU::RRMDRA::DRAPushToEmergencyTransmitScheduleInfoList(RRMDRA::sDRAScheduleInfo* p, int patternIdx) {
+void RSU::RRMDRA::DRAPushToEmergencyTransmitScheduleInfoList(RRMDRA::sDRAScheduleInfo* p, int patternIdx) {
 	m_DRAEmergencyTransimitScheduleInfoList[patternIdx].push_back(p);
 }
 
 inline
-void cRSU::RRMDRA::DRAPushToScheduleInfoTable(int clusterIdx, int patternIdx, RRMDRA::sDRAScheduleInfo*p) {
+void RSU::RRMDRA::DRAPushToScheduleInfoTable(int clusterIdx, int patternIdx, RRMDRA::sDRAScheduleInfo*p) {
 	m_DRAScheduleInfoTable[clusterIdx][patternIdx] = p;
 }
 
 inline
-void cRSU::RRMDRA::DRAPushToEmergencyScheduleInfoTable(int patternIdx, RRMDRA::sDRAScheduleInfo*p) {
+void RSU::RRMDRA::DRAPushToEmergencyScheduleInfoTable(int patternIdx, RRMDRA::sDRAScheduleInfo*p) {
 	m_DRAEmergencyScheduleInfoTable[patternIdx] = p;
 }
 
 inline
-void cRSU::RRMDRA::DRAPullFromScheduleInfoTable(int TTI) {
+void RSU::RRMDRA::DRAPullFromScheduleInfoTable(int TTI) {
 	int clusterIdx = DRAGetClusterIdx(TTI);
 	/*将处于调度表中当前可以传输的信息压入m_DRATransimitEventIdList*/
 	for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
@@ -376,7 +376,7 @@ void cRSU::RRMDRA::DRAPullFromScheduleInfoTable(int TTI) {
 }
 
 inline
-void cRSU::RRMDRA::DRAPullFromEmergencyScheduleInfoTable() {
+void RSU::RRMDRA::DRAPullFromEmergencyScheduleInfoTable() {
 	for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
 		if (m_DRAEmergencyScheduleInfoTable[patternIdx] != nullptr) {
 			m_DRAEmergencyTransimitScheduleInfoList[patternIdx].push_back(m_DRAEmergencyScheduleInfoTable[patternIdx]);
@@ -396,12 +396,12 @@ void cRSU::RRMDRA::DRAPullFromEmergencyScheduleInfoTable() {
 
 
 inline
-void cRSU::RRMRR::RRPushToAdmitEventIdList(int eventId) {
+void RSU::RRMRR::RRPushToAdmitEventIdList(int eventId) {
 	m_RRAdmitEventIdList.push_back(eventId);
 }
 
 inline
-void cRSU::RRMRR::RRPushToWaitEventIdList(int eventId, eMessageType messageType) {
+void RSU::RRMRR::RRPushToWaitEventIdList(int eventId, MessageType messageType) {
 	if (messageType == EMERGENCY) {
 		m_RRWaitEventIdList.insert(m_RRWaitEventIdList.begin(), eventId);
 	}
@@ -411,6 +411,6 @@ void cRSU::RRMRR::RRPushToWaitEventIdList(int eventId, eMessageType messageType)
 }
 
 inline
-void cRSU::RRMRR::RRPushToSwitchEventIdList(int eventId, std::list<int>& systemRRSwitchVeUEIdList) {
+void RSU::RRMRR::RRPushToSwitchEventIdList(int eventId, std::list<int>& systemRRSwitchVeUEIdList) {
 	systemRRSwitchVeUEIdList.push_back(eventId);
 }

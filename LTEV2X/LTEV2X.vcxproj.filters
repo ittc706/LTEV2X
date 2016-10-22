@@ -81,10 +81,7 @@
     <ClInclude Include="GTAT_Urban.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GTAT_High.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Lane.h">
+    <ClInclude Include="GTAT_HighSpeed.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -138,9 +135,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GTAT_High.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Lane.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

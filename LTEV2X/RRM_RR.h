@@ -9,7 +9,7 @@
 class RRM_RR :public RRM_Basic {
 public:
 	RRM_RR() = delete;
-	RRM_RR(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput);
+	RRM_RR(int &systemTTI, sConfigure& systemConfig, RSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput);
 
 	/*------------------数据成员------------------*/
 	std::list<int> m_RRSwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用

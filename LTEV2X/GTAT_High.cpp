@@ -1,27 +1,27 @@
 #include<tuple>
 #include<iomanip>
 #include<iostream>
-#include"GTAT_High.h"
+#include"GTAT_HighSpeed.h"
 #include"Exception.h"
 
 using namespace std;
-using namespace ns_GTAT_High;
+using namespace ns_GTAT_HighSpeed;
 
-default_random_engine GTAT_High::s_Engine((unsigned)time(NULL));
+default_random_engine GTAT_HighSpeed::s_Engine((unsigned)time(NULL));
 
-GTAT_High::GTAT_High(int &systemTTI, sConfigure& systemConfig, ceNB* &systemeNBAry, cRoad* &systemRoadAry, cRSU* &systemRSUAry, cVeUE* &systemVeUEAry, cLane* &systemLaneAry) :
-	GTAT_Basic(systemTTI, systemConfig, systemeNBAry, systemRoadAry, systemRSUAry, systemVeUEAry), m_LaneAry(systemLaneAry){}
+GTAT_HighSpeed::GTAT_HighSpeed(int &systemTTI, sConfigure& systemConfig, eNB* &systemeNBAry, cRoad* &systemRoadAry, RSU* &systemRSUAry, cVeUE* &systemVeUEAry) :
+	GTAT_Basic(systemTTI, systemConfig, systemeNBAry, systemRoadAry, systemRSUAry, systemVeUEAry) {}
 
 
-void GTAT_High::configure() {
+void GTAT_HighSpeed::configure() {
 	m_Config.eNBNum = c_eNBNumber;
-	m_Config.LaneNum = c_laneNumber;
+	m_Config.HighSpeedRodeNum = c_laneNumber;
 	m_Config.RSUNum = c_RSUNumber;//目前只表示UE RSU数
-	m_Config.pupr = new int[m_Config.LaneNum];
+	m_Config.pupr = new int[m_Config.HighSpeedRodeNum];
 	m_Config.VeUENum = 0;
 	double Lambda = c_length*3.6 / (2.5 * 140);
 	srand((unsigned)time(NULL));
-	for (int temp = 0; temp != m_Config.LaneNum; ++temp)
+	for (int temp = 0; temp != m_Config.HighSpeedRodeNum; ++temp)
 	{
 		int k = 0;
 		long double p = 1.0;
@@ -40,55 +40,55 @@ void GTAT_High::configure() {
 }
 
 
-void GTAT_High::initialize() {
-	m_eNBAry = new ceNB[m_Config.eNBNum];
-	m_LaneAry = new cLane[m_Config.LaneNum];
+void GTAT_HighSpeed::initialize() {
+	m_eNBAry = new eNB[m_Config.eNBNum];
+	m_RoadAry = new cRoad[m_Config.HighSpeedRodeNum];
 	m_VeUEAry = new cVeUE[m_Config.VeUENum];
-	m_RSUAry = new cRSU[m_Config.RSUNum];
+	m_RSUAry = new RSU[m_Config.RSUNum];
 
 	seNBConfigure eNBConfigure;
 	for (int temp = 0; temp != m_Config.eNBNum; ++temp)
 	{
 		eNBConfigure.weNBID = temp;
-		m_eNBAry[temp].initializeHigh(eNBConfigure);
+		m_eNBAry[temp].initializeHighSpeed(eNBConfigure);
 	}
 
 
 	sLaneConfigure laneConfigure;
-	for (int temp = 0; temp != m_Config.LaneNum; ++temp) {
+	for (int temp = 0; temp != m_Config.HighSpeedRodeNum; ++temp) {
 		laneConfigure.wLaneID = temp;
-		m_LaneAry[temp].initializeHigh(laneConfigure);
+		m_RoadAry[temp].initializeHighSpeed(laneConfigure);
 	}
 
 	sRSUConfigure RSUConfigure;
 	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++) {
 
 		RSUConfigure.wRSUID = RSUIdx;
-		m_RSUAry[RSUIdx].initializeHigh(RSUConfigure);
+		m_RSUAry[RSUIdx].initializeHighSpeed(RSUConfigure);
 	}
 
 	sUEConfigure ueConfigure;
 	int ueidx = 0;
 
-	for (int LaneIdx = 0; LaneIdx != m_Config.LaneNum; LaneIdx++) {
+	for (int LaneIdx = 0; LaneIdx != m_Config.HighSpeedRodeNum; LaneIdx++) {
 		for (int uprIdx = 0; uprIdx != m_Config.pupr[LaneIdx]; uprIdx++) {
 			ueConfigure.wLaneID = LaneIdx;
 			//ueConfigure.locationID=rand()%conf.ueTopoNum;
 			ueConfigure.fX = -1732 + rand() % 3465;
 			ueConfigure.fY = 0.0f;
-			ueConfigure.fAbsX = m_LaneAry[LaneIdx].m_fAbsX + ueConfigure.fX;
-			ueConfigure.fAbsY = m_LaneAry[LaneIdx].m_fAbsY + ueConfigure.fY;
+			ueConfigure.fAbsX = m_RoadAry[LaneIdx].m_GTATHighSpeed->m_AbsX + ueConfigure.fX;
+			ueConfigure.fAbsY = m_RoadAry[LaneIdx].m_GTATHighSpeed->m_AbsY + ueConfigure.fY;
 			ueConfigure.fv = m_Config.fv;
-			m_VeUEAry[ueidx++].initializeHigh(ueConfigure);
+			m_VeUEAry[ueidx++].initializeHighSpeed(ueConfigure);
 		}
 	}
 }
 
 
-void GTAT_High::channelGeneration() {
+void GTAT_HighSpeed::channelGeneration() {
 	//RSU.m_VeUEIdList是在freshLoc函数内生成的，因此需要在更新位置前清空这个列表
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 		_RSU.m_GTAT->m_VeUEIdList.clear();
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
 			_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].clear();
@@ -103,7 +103,7 @@ void GTAT_High::channelGeneration() {
 
 	//将更新后的RSU.m_VeUEIdList压入对应的簇中
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 		for (int VeUEId : _RSU.m_GTAT->m_VeUEIdList) {
 			int clusterIdx = m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx;
 			_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
@@ -117,7 +117,7 @@ void GTAT_High::channelGeneration() {
 	//记录RSU内车辆的数目
 	vector<int> curVeUENum;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 		curVeUENum.push_back(static_cast<int>(_RSU.m_GTAT->m_VeUEIdList.size()));
 	}
 	m_VeUENumPerRSU.push_back(curVeUENum);
@@ -126,7 +126,7 @@ void GTAT_High::channelGeneration() {
 	//UNDONE
 	//更新基站的VeUE容器
 	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
-		ceNB &_eNB = m_eNBAry[eNBId];
+		eNB &_eNB = m_eNBAry[eNBId];
 		for (int RSUId : _eNB.m_RSUIdList) {
 			for (int VeUEId : m_RSUAry[RSUId].m_GTAT->m_VeUEIdList) {
 				_eNB.m_VeUEIdList.push_back(VeUEId);
@@ -137,38 +137,38 @@ void GTAT_High::channelGeneration() {
 }
 
 
-void GTAT_High::freshLoc() {
+void GTAT_HighSpeed::freshLoc() {
 	for (int UserIdx = 0; UserIdx != m_Config.VeUENum; UserIdx++)
 	{
 
-		if (m_VeUEAry[UserIdx].m_GTATHigh->m_fvAngle == 0)
+		if (m_VeUEAry[UserIdx].m_GTATHighSpeed->m_VAngle == 0)
 		{
 			m_VeUEAry[UserIdx].m_GTAT->m_ClusterIdx = 0;//由西向东车辆簇编号为0
 
-			if ((m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX + Fresh_time*m_VeUEAry[UserIdx].m_GTATHigh->m_fv)>(c_length / 2))
+			if ((m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX + Fresh_time*m_VeUEAry[UserIdx].m_GTATHighSpeed->m_V)>(c_length / 2))
 			{
-				m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX = (m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX + Fresh_time*m_VeUEAry[UserIdx].m_GTATHigh->m_fv) - c_length;
-				m_VeUEAry[UserIdx].m_GTATHigh->m_fX = m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX;
+				m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX = (m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX + Fresh_time*m_VeUEAry[UserIdx].m_GTATHighSpeed->m_V) - c_length;
+				m_VeUEAry[UserIdx].m_GTATHighSpeed->m_X = m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX;
 			}
 			else
 			{
-				m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX = m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX + Fresh_time*m_VeUEAry[UserIdx].m_GTATHigh->m_fv;
-				m_VeUEAry[UserIdx].m_GTATHigh->m_fX = m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX;
+				m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX = m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX + Fresh_time*m_VeUEAry[UserIdx].m_GTATHighSpeed->m_V;
+				m_VeUEAry[UserIdx].m_GTATHighSpeed->m_X = m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX;
 			}
 		}
 		else
 		{
 			m_VeUEAry[UserIdx].m_GTAT->m_ClusterIdx = 1;//由东向西车辆簇编号为1
 
-			if ((m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX - Fresh_time*m_VeUEAry[UserIdx].m_GTATHigh->m_fv)<(-c_length / 2))
+			if ((m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX - Fresh_time*m_VeUEAry[UserIdx].m_GTATHighSpeed->m_V)<(-c_length / 2))
 			{
-				m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX = (m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX - Fresh_time*m_VeUEAry[UserIdx].m_GTATHigh->m_fv) + c_length;
-				m_VeUEAry[UserIdx].m_GTATHigh->m_fX = m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX;
+				m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX = (m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX - Fresh_time*m_VeUEAry[UserIdx].m_GTATHighSpeed->m_V) + c_length;
+				m_VeUEAry[UserIdx].m_GTATHighSpeed->m_X = m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX;
 			}
 			else
 			{
-				m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX = m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX - Fresh_time*m_VeUEAry[UserIdx].m_GTATHigh->m_fv;
-				m_VeUEAry[UserIdx].m_GTATHigh->m_fX = m_VeUEAry[UserIdx].m_GTATHigh->m_fAbsX;
+				m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX = m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX - Fresh_time*m_VeUEAry[UserIdx].m_GTATHighSpeed->m_V;
+				m_VeUEAry[UserIdx].m_GTATHighSpeed->m_X = m_VeUEAry[UserIdx].m_GTATHighSpeed->m_AbsX;
 			}
 		}
 
@@ -185,8 +185,8 @@ void GTAT_High::freshLoc() {
 	int ClusterID = 0;
 	for (int UserIdx1 = 0; UserIdx1 != m_Config.VeUENum; UserIdx1++)
 	{
-		m_VeUEAry[UserIdx1].m_GTATHigh->imta = new cIMTA[m_Config.RSUNum];
-		RSUIdx = 17 - int(m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsX / 100 + 0.5);
+		m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_IMTA = new cIMTA[m_Config.RSUNum];
+		RSUIdx = 17 - int(m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_AbsX / 100 + 0.5);
 		m_VeUEAry[UserIdx1].m_GTAT->m_RSUId = RSUIdx;
 		m_RSUAry[RSUIdx].m_GTAT->m_VeUEIdList.push_back(UserIdx1);
 		location.eType = None;
@@ -198,15 +198,15 @@ void GTAT_High::freshLoc() {
 		location.bManhattan = false;
 
 		location.eType = Los;
-		location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsY), 2.0f));
-		angle = atan2(m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsY, m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsX) / c_Degree2PI;
+		location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_AbsY), 2.0f));
+		angle = atan2(m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_AbsY, m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_AbsX) / c_Degree2PI;
 
 		location.feNBAntH = 5;
 		location.fUEAntH = 1.5;
 		RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
-		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTATHigh->m_fantennaAngle;
-		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATHigh->m_fantennaAngle;
+		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_FantennaAngle;
+		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_FantennaAngle;
 		antenna.fAntGain = 3;
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
@@ -223,13 +223,13 @@ void GTAT_High::freshLoc() {
 
 		double t_Pl = 0;
 
-		m_VeUEAry[UserIdx1].m_GTATHigh->imta[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[UserIdx1].m_GTATHigh->m_fv, m_VeUEAry[UserIdx1].m_GTATHigh->m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
+		m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_IMTA[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_V, m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
 		bool *flag = new bool();
 
 		m_VeUEAry[UserIdx1].m_GTAT->m_Ploss = t_Pl;
 
 		*flag = true;
-		m_VeUEAry[UserIdx1].m_GTATHigh->imta[RSUIdx].Enable(flag);
+		m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_IMTA[RSUIdx].Enable(flag);
 
 		double *H = new double[1 * 2 * 19 * 2];
 		double *FFT = new double[1 * 2 * 1024 * 2];
@@ -239,7 +239,7 @@ void GTAT_High::freshLoc() {
 
 		double *t_HAfterFFT = new double[2 * 1024 * 2];
 
-		m_VeUEAry[UserIdx1].m_GTATHigh->imta[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
+		m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_IMTA[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 		memcpy(m_VeUEAry[UserIdx1].m_GTAT->m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
 	
 
@@ -252,14 +252,14 @@ void GTAT_High::freshLoc() {
 		delete[]antenna.pfTxAntSpacing;
 		delete[]antenna.pfRxSlantAngle;
 		delete[]antenna.pfRxAntSpacing;
-		delete[]m_VeUEAry[UserIdx1].m_GTATHigh->imta;
+		delete[]m_VeUEAry[UserIdx1].m_GTATHighSpeed->m_IMTA;
 		delete[] FFT;
 		delete[]t_HAfterFFT;
 	}
 }
 
 
-void GTAT_High::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &out2) {
+void GTAT_HighSpeed::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &out2) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		out1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
 		out1 << "{" << endl;
@@ -276,19 +276,19 @@ void GTAT_High::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstrea
 }
 
 
-void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
+void GTAT_HighSpeed::calculateInterference(std::vector<int> transimitingVeUEId) {
 	for (int VeUEId : transimitingVeUEId) {
-		m_VeUEAry[VeUEId].m_GTATHigh->imta = new cIMTA[m_Config.RSUNum];
+		m_VeUEAry[VeUEId].m_GTATHighSpeed->m_IMTA = new cIMTA[m_Config.RSUNum];
 	}
 	for (int VeUEId : transimitingVeUEId) {
-		m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss.assign(m_VeUEAry[VeUEId].m_RRM->m_InterVeUENum, 0);
+		m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss.assign(m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum, 0);
 
 		delete[]m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH;
-		m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH = new double[m_VeUEAry[VeUEId].m_RRM->m_InterVeUENum * 2 * 1024 * 2];
+		m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH = new double[m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum * 2 * 1024 * 2];
 
-		for (int count = 0; count != m_VeUEAry[VeUEId].m_RRM->m_InterVeUENum; count++)
+		for (int count = 0; count != m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum; count++)
 		{
-			int interUserIdx = m_VeUEAry[VeUEId].m_RRM->m_InterVeUEVec[count];
+			int interUserIdx = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[count];
 			sLocation location;
 			sAntenna antenna;
 
@@ -303,15 +303,15 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 			location.bManhattan = false;
 
 			location.eType = Los;
-			location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsY), 2.0f));
-			angle = atan2(m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsY, m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsX) / c_Degree2PI;
+			location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_AbsY), 2.0f));
+			angle = atan2(m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_AbsY, m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_AbsX) / c_Degree2PI;
 
 			location.feNBAntH = 5;
 			location.fUEAntH = 1.5;
 			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
-			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTATHigh->m_fantennaAngle;
-			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATHigh->m_fantennaAngle;
+			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_FantennaAngle;
+			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATHighSpeed->m_FantennaAngle;
 			antenna.fAntGain = 6;
 			antenna.byTxAntNum = 1;
 			antenna.byRxAntNum = 2;
@@ -327,7 +327,7 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 			antenna.pfRxAntSpacing[1] = 0.5f;
 
 			double t_Pl = 0;
-			m_VeUEAry[interUserIdx].m_GTATHigh->imta[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_GTATHigh->m_fv, m_VeUEAry[interUserIdx].m_GTATHigh->m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
+			m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_IMTA[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_V, m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
 			bool *flag = new bool();
 
 
@@ -335,7 +335,7 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 
 
 			*flag = true;
-			m_VeUEAry[interUserIdx].m_GTATHigh->imta[RSUIdx].Enable(flag);
+			m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_IMTA[RSUIdx].Enable(flag);
 			double *H = new double[1 * 2 * 19 * 2];
 			double *FFT = new double[1 * 2 * 1024 * 2];
 			double *ch_buffer = new double[1 * 2 * 19 * 20];
@@ -344,7 +344,7 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 
 			double *t_HAfterFFT = new double[2 * 1024 * 2];
 
-			m_VeUEAry[interUserIdx].m_GTATHigh->imta[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
+			m_VeUEAry[interUserIdx].m_GTATHighSpeed->m_IMTA[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 
 
 			memcpy(&m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[count * 2 * 1024 * 2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
@@ -363,6 +363,6 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 		}
 	}
 	for (int VeUEId : transimitingVeUEId) {
-		delete[]m_VeUEAry[VeUEId].m_GTATHigh->imta;
+		delete[]m_VeUEAry[VeUEId].m_GTATHighSpeed->m_IMTA;
 	}
 }

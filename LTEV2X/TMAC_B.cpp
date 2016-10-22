@@ -27,9 +27,9 @@ using namespace std;
 
 TMAC_B::TMAC_B(int &systemTTI, 
 	sConfigure& systemConfig, 
-	cRSU* systemRSUAry, 
+	RSU* systemRSUAry, 
 	cVeUE* systemVeUEAry, 
-	std::vector<sEvent>& systemEventVec, 
+	std::vector<Event>& systemEventVec, 
 	std::vector<std::list<int>>& systemEventTTIList, 
 	std::vector<std::vector<int>>& systemTTIRSUThroughput) :
 	TMAC_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput) {
@@ -123,7 +123,7 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 					* sEvent默认的拷贝构造函数会赋值id成员（因此是安全的）
 					*sEvent如果自定义拷贝构造函数，必须在构造函数的初始化部分拷贝id成员
 					*-----------------------ATTENTION-----------------------*/
-					sEvent evt = sEvent(VeUEId, startTTIOfEachPeriod + TTIOffset, EMERGENCY);
+					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, EMERGENCY);
 					m_EventVec.push_back(evt);
 					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.eventId);
 					--countEmergency;
@@ -141,7 +141,7 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 					* sEvent默认的拷贝构造函数会赋值id成员（因此是安全的）
 					*sEvent如果自定义拷贝构造函数，必须在构造函数的初始化部分拷贝id成员
 					*-----------------------ATTENTION-----------------------*/
-					sEvent evt = sEvent(VeUEId, startTTIOfEachPeriod + TTIOffset, DATA);
+					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, DATA);
 					m_EventVec.push_back(evt);
 					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.eventId);
 					--countData;
@@ -153,7 +153,7 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 			if (startTTIOfEachPeriod + TTIOffset < m_Config.NTTI) {
 				list<int> &periodList = startTTIVec[TTIOffset];
 				for (int VeUEId : periodList) {
-					sEvent evt = sEvent(VeUEId, startTTIOfEachPeriod + TTIOffset, PERIOD);
+					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, PERIOD);
 					m_EventVec.push_back(evt);
 					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.eventId);
 				}
@@ -179,7 +179,7 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 
 	//统计成功传输的事件数目
 	m_TransimitSucceedEventNumPerEventType = vector<int>(3);
-	for (sEvent &event : m_EventVec) {
+	for (Event &event : m_EventVec) {
 		if (event.isSuccessded) {
 			switch (event.message.messageType) {
 			case PERIOD:
@@ -201,7 +201,7 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 
 	
 	//统计等待时延
-	for (sEvent &event : m_EventVec)
+	for (Event &event : m_EventVec)
 		if (event.isSuccessded) {
 			switch (event.message.messageType) {
 			case PERIOD:
@@ -226,7 +226,7 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 	ssPeriod.str("");
 	ssEmergency.str("");
 	ssData.str("");
-	for (sEvent &event : m_EventVec)
+	for (Event &event : m_EventVec)
 		if (event.isSuccessded) {
 			switch (event.message.messageType) {
 			case PERIOD:
@@ -260,7 +260,7 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 	ssPeriod.str("");
 	ssEmergency.str("");
 	ssData.str("");
-	for (sEvent &event : m_EventVec) {
+	for (Event &event : m_EventVec) {
 		switch (event.message.messageType) {
 		case PERIOD:
 			ssPeriod << event.conflictNum << " ";
@@ -306,7 +306,7 @@ void TMAC_B::writeEventListInfo(std::ofstream &out) {
 		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
 		out << "{" << endl;
 		for (int eventId : m_EventTTIList[i]) {
-			sEvent& e = m_EventVec[eventId];
+			Event& e = m_EventVec[eventId];
 			out << "    " << e.toString() << endl;
 		}
 		out << "}\n\n" << endl;

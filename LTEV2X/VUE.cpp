@@ -13,30 +13,30 @@ int cVeUE::m_VeUECount = 0;
 cVeUE::cVeUE() {
 	m_GTAT = new GTAT();
 	m_GTATUrban = new GTATUrban();
-    m_GTATHigh = new GTATHigh();
+    m_GTATHighSpeed = new GTATHighSpeed();
 }
 
 
 void cVeUE::initializeUrban(sUEConfigure &t_UEConfigure) {
 
-	m_GTATUrban->m_wRoadID = t_UEConfigure.wRoadID;
-	m_GTATUrban->m_locationID = t_UEConfigure.locationID;
-	m_GTATUrban->m_fX = t_UEConfigure.fX;
-	m_GTATUrban->m_fY = t_UEConfigure.fY;
-	m_GTATUrban->m_fAbsX = t_UEConfigure.fAbsX;
-	m_GTATUrban->m_fAbsY = t_UEConfigure.fAbsY;
-	m_GTATUrban->m_fv = t_UEConfigure.fv;
+	m_GTATUrban->m_RoadId = t_UEConfigure.wRoadID;
+	m_GTATUrban->m_LocationId = t_UEConfigure.locationID;
+	m_GTATUrban->m_X = t_UEConfigure.fX;
+	m_GTATUrban->m_Y = t_UEConfigure.fY;
+	m_GTATUrban->m_AbsX = t_UEConfigure.fAbsX;
+	m_GTATUrban->m_AbsY = t_UEConfigure.fAbsY;
+	m_GTATUrban->m_V = t_UEConfigure.fv;
 
-	if ((0 < m_GTATUrban->m_locationID) && (m_GTATUrban->m_locationID <= 61))
-		m_GTATUrban->m_fvAngle = 90;
-	else if ((61 < m_GTATUrban->m_locationID) && (m_GTATUrban->m_locationID <= 96))
-		m_GTATUrban->m_fvAngle = 0;
-	else if ((96 < m_GTATUrban->m_locationID) && (m_GTATUrban->m_locationID <= 157))
-		m_GTATUrban->m_fvAngle = -90;
+	if ((0 < m_GTATUrban->m_LocationId) && (m_GTATUrban->m_LocationId <= 61))
+		m_GTATUrban->m_VAngle = 90;
+	else if ((61 < m_GTATUrban->m_LocationId) && (m_GTATUrban->m_LocationId <= 96))
+		m_GTATUrban->m_VAngle = 0;
+	else if ((96 < m_GTATUrban->m_LocationId) && (m_GTATUrban->m_LocationId <= 157))
+		m_GTATUrban->m_VAngle = -90;
 	else
-		m_GTATUrban->m_fvAngle = -180;
+		m_GTATUrban->m_VAngle = -180;
 
-	RandomUniform(&m_GTATUrban->m_fantennaAngle, 1, 180.0f, -180.0f, false);
+	RandomUniform(&m_GTATUrban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 
 	m_GTAT->m_Nt = 1;
 	m_GTAT->m_Nr = 2;
@@ -46,24 +46,23 @@ void cVeUE::initializeUrban(sUEConfigure &t_UEConfigure) {
 }
 
 
-void cVeUE::initializeHigh(sUEConfigure &t_UEConfigure) {
-	m_GTATHigh->m_wLaneID = t_UEConfigure.wLaneID;
-	m_GTATHigh->m_fX = t_UEConfigure.fX;
-	m_GTATHigh->m_fY = t_UEConfigure.fY;
-	m_GTATHigh->m_fAbsX = t_UEConfigure.fAbsX;
-	m_GTATHigh->m_fAbsY = t_UEConfigure.fAbsY;
-	m_GTATHigh->m_fv = t_UEConfigure.fv / 3.6f;
+void cVeUE::initializeHighSpeed(sUEConfigure &t_UEConfigure) {
+	m_GTATHighSpeed->m_RoadId = t_UEConfigure.wLaneID;
+	m_GTATHighSpeed->m_X = t_UEConfigure.fX;
+	m_GTATHighSpeed->m_Y = t_UEConfigure.fY;
+	m_GTATHighSpeed->m_AbsX = t_UEConfigure.fAbsX;
+	m_GTATHighSpeed->m_AbsY = t_UEConfigure.fAbsY;
+	m_GTATHighSpeed->m_V = t_UEConfigure.fv / 3.6f;
 
-	if (m_GTATHigh->m_wLaneID <= 2)
-		m_GTATHigh->m_fvAngle = 0;
+	if (m_GTATHighSpeed->m_RoadId <= 2)
+		m_GTATHighSpeed->m_VAngle = 0;
 	else
-		m_GTATHigh->m_fvAngle = 180;
+		m_GTATHighSpeed->m_VAngle = 180;
 
-	RandomUniform(&m_GTATHigh->m_fantennaAngle, 1, 180.0f, -180.0f, false);
+	RandomUniform(&m_GTATHighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 
 	m_GTAT->m_Nt = 1;
 	m_GTAT->m_Nr = 2;
-	m_RRM->m_PreModulation = 4;
 	m_GTAT->m_H = new double[2 * 1024 * 2];
 
 	initializeElse();
@@ -82,7 +81,7 @@ void cVeUE::initializeElse() {
 cVeUE::~cVeUE() {
 	delete m_GTAT;
 	delete m_GTATUrban;
-	delete m_GTATHigh;
+	delete m_GTATHighSpeed;
 	delete m_RRM;
 	delete m_RRMDRA;
 	delete m_RRMRR;
@@ -94,7 +93,7 @@ cVeUE::~cVeUE() {
 default_random_engine cVeUE::RRMDRA::s_Engine((unsigned)time(NULL));
 
 cVeUE::RRMDRA::RRMDRA(cVeUE* t_this) {
-	m_this = t_this;
+	m_This = t_this;
 }
 
 string cVeUE::RRMDRA::toString(int n) {
@@ -103,9 +102,9 @@ string cVeUE::RRMDRA::toString(int n) {
 		indent.append("    ");
 
 	ostringstream ss;
-	ss << indent << "{ VeUEId = " << left << setw(3) << m_this->m_VeUEId;
-	ss << " , RSUId = " << left << setw(3) << m_this->m_GTAT->m_RSUId;
-	ss << " , ClusterIdx = " << left << setw(3) << m_this->m_GTAT->m_ClusterIdx;
+	ss << indent << "{ VeUEId = " << left << setw(3) << m_This->m_VeUEId;
+	ss << " , RSUId = " << left << setw(3) << m_This->m_GTAT->m_RSUId;
+	ss << " , ClusterIdx = " << left << setw(3) << m_This->m_GTAT->m_ClusterIdx;
 	ss << " , ScheduleInterval = [" << left << setw(3) << get<0>(m_ScheduleInterval) << "," << left << setw(3) << get<1>(m_ScheduleInterval) << "] }";
 	return ss.str();
 }

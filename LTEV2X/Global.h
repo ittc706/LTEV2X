@@ -210,7 +210,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 }
 
 
-namespace ns_GTAT_High {
+namespace ns_GTAT_HighSpeed {
 	const int c_eNBNumber = 2;
 	const int c_laneNumber = 6;
 	const int c_RSUNumber = 35;

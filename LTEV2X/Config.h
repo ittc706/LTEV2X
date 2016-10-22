@@ -16,8 +16,8 @@ struct sConfigure {
 	int PeUENum;//行人总数
 
 	int eNBNum;//基站总数
-	int RoadNum;//Road总数
-	int LaneNum;//Lane总数
+	int UrbanRoadNum;//城镇Road总数
+	int HighSpeedRodeNum;//高速Rode总数
 	int RSUNum;//RSU总数
 	int* pupr;//user per road array
 	int wxNum;//ueTopo x轴 格数
@@ -83,7 +83,7 @@ struct sRSUConfigure
 struct sLocation
 {
 	bool bManhattan;
-	eLocationType eType;
+	LocationType eType;
 	double fDistance; // m
 	double fDistance1; // m
 	double fDistance2; // m

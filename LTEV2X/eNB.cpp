@@ -5,32 +5,32 @@
 using namespace std;
 
 
-void ceNB::initializeUrban(seNBConfigure &t_eNBConfigure){
-	m_wRoadID = t_eNBConfigure.wRoadID;
+void eNB::initializeUrban(seNBConfigure &t_eNBConfigure){
+	m_RoadId = t_eNBConfigure.wRoadID;
 	m_eNBId = t_eNBConfigure.weNBID;
-	m_fX = t_eNBConfigure.fX;
-	m_fY = t_eNBConfigure.fY;
-	m_fAbsX = t_eNBConfigure.fAbsX;
-	m_fAbsY = t_eNBConfigure.fAbsY;
+	m_X = t_eNBConfigure.fX;
+	m_Y = t_eNBConfigure.fY;
+	m_AbsX = t_eNBConfigure.fAbsX;
+	m_AbsY = t_eNBConfigure.fAbsY;
 	printf("»ùÕ¾£º");
-	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_fAbsX, m_fAbsY);
+	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_AbsX, m_AbsY);
 }
 
 
-void ceNB::initializeHigh(seNBConfigure &t_eNBConfigure)
+void eNB::initializeHighSpeed(seNBConfigure &t_eNBConfigure)
 {
 	//m_wLaneID = t_eNBConfigure.wLaneID;
 	m_eNBId = t_eNBConfigure.weNBID;
 	//m_fX = t_eNBConfigure.fX;
 	//m_fY = t_eNBConfigure.fY;
-	m_fAbsX = ns_GTAT_High::c_eNBTopo[m_eNBId * 2 + 0];
-	m_fAbsY = ns_GTAT_High::c_eNBTopo[m_eNBId * 2 + 1];
+	m_AbsX = ns_GTAT_HighSpeed::c_eNBTopo[m_eNBId * 2 + 0];
+	m_AbsY = ns_GTAT_HighSpeed::c_eNBTopo[m_eNBId * 2 + 1];
 	printf("»ùÕ¾£º");
-	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_fAbsX, m_fAbsY);
+	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_AbsX, m_AbsY);
 }
 
 
-string ceNB::toString(int n) {
+string eNB::toString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");

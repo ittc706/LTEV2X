@@ -33,9 +33,9 @@ public:
 	RRM_DRA() = delete;
 	RRM_DRA(int &systemTTI, 
 		sConfigure& systemConfig, 
-		cRSU* systemRSUAry, 
+		RSU* systemRSUAry, 
 		cVeUE* systemVeUEAry, 
-		std::vector<sEvent>& systemEventVec, 
+		std::vector<Event>& systemEventVec, 
 		std::vector<std::list<int>>& systemEventTTIList,
 		std::vector<std::vector<int>>& systemTTIRSUThroughput,
 		eDRAMode systemDRAMode,
@@ -93,13 +93,13 @@ private:
 
 	//日志记录函数
 	void DRAWriteScheduleInfo(std::ofstream& out);//记录调度信息日志
-	void DRAWriteTTILogInfo(std::ofstream& out, int TTI, eEventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx);
+	void DRAWriteTTILogInfo(std::ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx);
 	void DRAWriteClusterPerformInfo(std::ofstream &out);//写入分簇信息的日志
 
 
 	//工具函数
 	int DRAGetMaxIndex(const std::vector<double>&clusterSize);
 	int DRAGetPatternType(int patternIdx);
-	std::pair<int, int> DRAGetOccupiedSubCarrierRange(eMessageType messageType, int patternIdx);
+	std::pair<int, int> DRAGetOccupiedSubCarrierRange(MessageType messageType, int patternIdx);
 };
 

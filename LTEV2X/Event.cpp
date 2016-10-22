@@ -6,9 +6,9 @@
 
 using namespace std;
 
-int sEvent::s_EventCount = 0;
+int Event::s_EventCount = 0;
 
-sMessage::sMessage(eMessageType messageType) {
+Message::Message(MessageType messageType) {
 	this->messageType = messageType;
 	switch (messageType) {
 	case PERIOD:
@@ -24,7 +24,7 @@ sMessage::sMessage(eMessageType messageType) {
 	remainBitNum = bitNum;
 }
 
-string sMessage::toString() {
+string Message::toString() {
 	string s;
 	switch (messageType) {
 	case PERIOD:
@@ -44,20 +44,20 @@ string sMessage::toString() {
 }
 
 
-sEvent::sEvent(int VeUEId, int TTI, eMessageType messageType) :
+Event::Event(int VeUEId, int TTI, MessageType messageType) :
 	isSuccessded(false), 
 	propagationDelay(0), 
 	sendDelay(0), 
 	processingDelay(0), 
 	queuingDelay(0), 
 	conflictNum(0),
-	message(sMessage(messageType)) {
+	message(Message(messageType)) {
 	this->VeUEId = VeUEId;
 	this->TTI = TTI;
 }
 
 
-string sEvent::toString() {
+string Event::toString() {
 	ostringstream ss;
 	ss << "{ EventId = " << left << setw(3) << eventId;
 	ss << " , VeUEId = " << left << setw(3) << VeUEId;
@@ -66,7 +66,7 @@ string sEvent::toString() {
 }
 
 
-string sEvent::toLogString(int n) {
+string Event::toLogString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
@@ -78,7 +78,7 @@ string sEvent::toLogString(int n) {
 }
 
 
-void sEvent::addEventLog(int TTI, eEventLogType type, int RSUId, int clusterIdx, int patternIdx,std::string description) {
+void Event::addEventLog(int TTI, EventLogType type, int RSUId, int clusterIdx, int patternIdx,std::string description) {
 	stringstream ss;
 	switch (type) {
 	case SUCCEED:

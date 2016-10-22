@@ -4,22 +4,22 @@
 #include"Global.h"
 #include"Enumeration.h"
 
-struct sMessage {//消息类
+struct Message {//消息类
 	/*数据成员*/
-	eMessageType messageType;//该消息的类型
+	MessageType messageType;//该消息的类型
 	int bitNum; //该消息的比特数量
 	int remainBitNum;//剩余待传输的bit数
 
 	/*构造函数*/
-	sMessage() = delete;
-	sMessage(eMessageType messageType);
+	Message() = delete;
+	Message(MessageType messageType);
 
 	/*功能函数*/
 	std::string toString();
 	void resetRemainBitNum() { remainBitNum = bitNum; }
 };
 
-struct sEvent {//事件类
+struct Event {//事件类
 public:
 	static int s_EventCount;
 
@@ -63,16 +63,16 @@ public:
 private:
 	std::list<std::string> logTrackList;//记录该事件的所有日志
 public:
-	sMessage message;
+	Message message;
 
 	/*构造函数*/
-	sEvent() = delete;
-	sEvent(int VeUEId, int TTI, eMessageType messageType);
+	Event() = delete;
+	Event(int VeUEId, int TTI, MessageType messageType);
 
 	/*功能函数*/
 	std::string toString();//输出string类型的事件消息
 	std::string toLogString(int n);
-	void addEventLog(int TTI, eEventLogType type, int RSUId, int clusterIdx, int patternIdx, std::string description);//压入新的日志
+	void addEventLog(int TTI, EventLogType type, int RSUId, int clusterIdx, int patternIdx, std::string description);//压入新的日志
 };
 
 

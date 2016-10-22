@@ -1,3 +1,7 @@
+version_2016_10_22(大改动)
+	合并了Road和Lane
+	修改了RSU VeUE eNB Road 里面的参数名字
+
 version_2016_10_22(取消了RRM_RR的VeUE适配器以及RSU适配器)
 
 

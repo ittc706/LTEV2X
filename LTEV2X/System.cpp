@@ -37,14 +37,14 @@ void cSystem::process() {
 
 void cSystem::configure() {//系统仿真参数配置
 
-	m_Config.NTTI = 2000;//仿真TTI时间
+	m_Config.NTTI = 20;//仿真TTI时间
 	m_Config.periodicEventNTTI = 500;
 	m_Config.emergencyLambda = 0.0001;// 0.001;
 	m_Config.dataLambda = 0.0001;
 	m_Config.locationUpdateNTTI = 1000;
 
 	//地理拓扑与传输模式
-	m_GTATMode = URBAN;
+	m_GTATMode = HIGHSPEED;
 
 	//无线资源管理模式
 	m_RRMMode = RR;
@@ -70,7 +70,7 @@ void cSystem::initialization() {
 	RRMModuleInitialize();
 
 	//TMAC模块初始化
-	TMACmODULEInitialize();
+	TMACModuleInitialize();
 }
 
 
@@ -79,6 +79,8 @@ void cSystem::GTATModuleInitialize() {
 	case URBAN:
 		m_GTATPoint = new GTAT_Urban(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
 		break;
+	case HIGHSPEED:
+		m_GTATPoint = new GTAT_HighSpeed(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
 	}
 }
 
@@ -101,7 +103,7 @@ void cSystem::RRMModuleInitialize() {
 }
 
 
-void cSystem::TMACmODULEInitialize() {
+void cSystem::TMACModuleInitialize() {
 	m_TMACPoint = new TMAC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
 }
 

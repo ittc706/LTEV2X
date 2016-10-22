@@ -60,14 +60,14 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 		Matrix inverseExpLeft = m_Pt*m_Ploss*m_H * HHermit;//求逆表达式左边那项
 
 		//计算干扰项
-		Matrix Inter1(m_Nr, m_Nr);
+		Matrix Interference1(m_Nr, m_Nr);
 
 		/*for (int i = 0; i < (int)m_HInter.size(); i++) {
-			Inter1 = Inter1 + m_Pt*m_PlossInter[i] * m_HInter[i] * m_HInter[i].hermitian();
+			Interference1 = Interference1 + m_Pt*m_PlossInter[i] * m_HInter[i] * m_HInter[i].hermitian();
 		}*/
 
 		//求逆表达式右边那项
-		Matrix inverseExpRight = m_Sigma*Matrix::eye(m_Nr) + Inter1;//sigma上带曲线
+		Matrix inverseExpRight = m_Sigma*Matrix::eye(m_Nr) + Interference1;//sigma上带曲线
 		
 		Matrix W = (inverseExpLeft + inverseExpRight).inverse(true)*sqrt(m_Pt*m_Ploss)*m_H;//权重矩阵
 
@@ -203,7 +203,7 @@ void WT_B::configuration(int VeUEId){
 	m_Pt = pow(10,-4.7);//23dbm-70dbm
 	m_Sigma = pow(10,-17.4);
 
-	m_PlossInter = m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss;
+	m_PlossInterference = m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss;
 }
 
 
@@ -220,9 +220,9 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 }
 
 
-std::vector<Matrix> WT_B::readInterH(int VeUEIdx, int subCarrierIdx) {
+std::vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx) {
 	vector<Matrix> res;
-	for (int interVeUEIdx : m_VeUEAry[VeUEIdx].m_RRM->m_InterVeUEVec) {
+	for (int interVeUEIdx : m_VeUEAry[VeUEIdx].m_RRM->m_InterferenceVeUEVec) {
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {

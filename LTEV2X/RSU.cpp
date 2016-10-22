@@ -14,20 +14,20 @@
 using namespace std;
 
 
-cRSU::cRSU() {
+RSU::RSU() {
 	m_GTAT = new GTAT();
 	m_GTATUrban = new GTATUrban();
-	m_GTATHigh = new GTATHigh();
+	m_GTATHighSpeed = new GTATHighSpeed();
 }
 
 
-void cRSU::initializeUrban(sRSUConfigure &t_RSUConfigure){
+void RSU::initializeUrban(sRSUConfigure &t_RSUConfigure){
 	m_GTAT->m_RSUId = t_RSUConfigure.wRSUID;
-	m_GTATUrban->m_fAbsX = ns_GTAT_Urban::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 0] * ns_GTAT_Urban::c_wide;
-	m_GTATUrban->m_fAbsY = ns_GTAT_Urban::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 1] * ns_GTAT_Urban::c_length;
-	RandomUniform(&m_GTATUrban->m_fantennaAngle, 1, 180.0f, -180.0f, false);
+	m_GTATUrban->m_AbsX = ns_GTAT_Urban::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 0] * ns_GTAT_Urban::c_wide;
+	m_GTATUrban->m_AbsY = ns_GTAT_Urban::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 1] * ns_GTAT_Urban::c_length;
+	RandomUniform(&m_GTATUrban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 	printf("RSU£º");
-	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT->m_RSUId, m_GTATUrban->m_fAbsX, m_GTATUrban->m_fAbsY);
+	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT->m_RSUId, m_GTATUrban->m_AbsX, m_GTATUrban->m_AbsY);
 
 	m_GTAT->m_DRAClusterNum = ns_GTAT_Urban::c_RSUClusterNum[m_GTAT->m_RSUId];
 	m_GTAT->m_DRAClusterVeUEIdList = vector<list<int>>(m_GTAT->m_DRAClusterNum);
@@ -36,22 +36,22 @@ void cRSU::initializeUrban(sRSUConfigure &t_RSUConfigure){
 }
 
 
-void cRSU::initializeHigh(sRSUConfigure &t_RSUConfigure) {
+void RSU::initializeHighSpeed(sRSUConfigure &t_RSUConfigure) {
 	m_GTAT->m_RSUId = t_RSUConfigure.wRSUID;
-	m_GTATHigh->m_fAbsX = ns_GTAT_High::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 0] * 100;
-	m_GTATHigh->m_fAbsY = ns_GTAT_High::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 1];
-	RandomUniform(&m_GTATHigh->m_fantennaAngle, 1, 180.0f, -180.0f, false);
+	m_GTATHighSpeed->m_AbsX = ns_GTAT_HighSpeed::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 0] * 100;
+	m_GTATHighSpeed->m_AbsY = ns_GTAT_HighSpeed::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 1];
+	RandomUniform(&m_GTATHighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 	printf("RSU£º");
-	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT->m_RSUId, m_GTATHigh->m_fAbsX, m_GTATHigh->m_fAbsY);
+	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT->m_RSUId, m_GTATHighSpeed->m_AbsX, m_GTATHighSpeed->m_AbsY);
 
-	m_GTAT->m_DRAClusterNum = ns_GTAT_High::c_RSUClusterNum;
+	m_GTAT->m_DRAClusterNum = ns_GTAT_HighSpeed::c_RSUClusterNum;
 	m_GTAT->m_DRAClusterVeUEIdList = vector<list<int>>(m_GTAT->m_DRAClusterNum);
 
 	initializeElse();
 }
 
 
-void cRSU::initializeElse() {
+void RSU::initializeElse() {
 	m_RRM = new RRM();
 	m_RRMDRA = new RRMDRA(this);
 	m_RRMRR = new RRMRR();
@@ -59,10 +59,10 @@ void cRSU::initializeElse() {
 	m_TMAC = new TMAC();
 }
 
-cRSU::~cRSU() {
+RSU::~RSU() {
 	delete m_GTAT;
 	delete m_GTATUrban;
-	delete m_GTATHigh;
+	delete m_GTATHighSpeed;
 	delete m_RRM;
 	delete m_RRMDRA;
 	delete m_RRMRR;
@@ -72,7 +72,7 @@ cRSU::~cRSU() {
 
 
 
-string cRSU::RRMDRA::sDRAScheduleInfo::toLogString(int n) {
+string RSU::RRMDRA::sDRAScheduleInfo::toLogString(int n) {
 	ostringstream ss;
 	ss << "[ eventId = ";
 	ss << left << setw(3) << eventId;
@@ -81,7 +81,7 @@ string cRSU::RRMDRA::sDRAScheduleInfo::toLogString(int n) {
 }
 
 
-std::string cRSU::RRMDRA::sDRAScheduleInfo::toScheduleString(int n) {
+std::string RSU::RRMDRA::sDRAScheduleInfo::toScheduleString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
@@ -98,7 +98,7 @@ std::string cRSU::RRMDRA::sDRAScheduleInfo::toScheduleString(int n) {
 
 
 
-cRSU::RRMDRA::RRMDRA(cRSU* t_this) {
+RSU::RRMDRA::RRMDRA(RSU* t_this) {
 	m_this = t_this;
 
 	/*  EMERGENCY  */
@@ -114,7 +114,7 @@ cRSU::RRMDRA::RRMDRA(cRSU* t_this) {
 }
 
 
-int cRSU::RRMDRA::DRAGetClusterIdx(int TTI) {
+int RSU::RRMDRA::DRAGetClusterIdx(int TTI) {
 	int roundATTI = TTI%gc_DRA_NTTI; //½«TTIÓ³Éäµ½[0-gc_DRA_NTTI)µÄ·¶Î§
 	for (int clusterIdx = 0; clusterIdx < m_this->m_GTAT->m_DRAClusterNum; clusterIdx++)
 		if (roundATTI <= get<1>(m_DRAClusterTDRInfo[clusterIdx])) return clusterIdx;
@@ -122,7 +122,7 @@ int cRSU::RRMDRA::DRAGetClusterIdx(int TTI) {
 }
 
 
-string cRSU::RRMDRA::toString(int n) {
+string RSU::RRMDRA::toString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
@@ -171,7 +171,7 @@ string cRSU::RRMDRA::toString(int n) {
 
 
 
-std::string cRSU::RRMRR::sRRScheduleInfo::toLogString(int n) {
+std::string RSU::RRMRR::sRRScheduleInfo::toLogString(int n) {
 	ostringstream ss;
 	ss << "[ eventId = ";
 	ss << left << setw(3) << eventId;
@@ -180,7 +180,7 @@ std::string cRSU::RRMRR::sRRScheduleInfo::toLogString(int n) {
 }
 
 
-std::string cRSU::RRMRR::sRRScheduleInfo::toScheduleString(int n) {
+std::string RSU::RRMRR::sRRScheduleInfo::toScheduleString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
@@ -196,6 +196,6 @@ std::string cRSU::RRMRR::sRRScheduleInfo::toScheduleString(int n) {
 
 
 
-cRSU::RRMRR::RRMRR() {
+RSU::RRMRR::RRMRR() {
 	m_RRScheduleInfoTable = vector<sRRScheduleInfo*>(gc_RRPatternNum);
 }

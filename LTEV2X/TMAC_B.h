@@ -7,9 +7,9 @@ public:
 	TMAC_B() = delete;
 	TMAC_B(int &systemTTI, 
 		sConfigure& systemConfig, 
-		cRSU* systemRSUAry, 
+		RSU* systemRSUAry, 
 		cVeUE* systemVeUEAry, 
-		std::vector<sEvent>& systemEventVec, 
+		std::vector<Event>& systemEventVec, 
 		std::vector<std::list<int>>& systemEventTTIList, 
 		std::vector<std::vector<int>>& systemTTIRSUThroughput);
 

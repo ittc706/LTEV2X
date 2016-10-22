@@ -25,7 +25,7 @@
 using namespace std;
 
 
-RRM_RR::RRM_RR(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput) :
+RRM_RR::RRM_RR(int &systemTTI, sConfigure& systemConfig, RSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput) :
 	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput) {
 }
 
@@ -52,7 +52,7 @@ void RRM_RR::schedule() {
 
 void RRM_RR::RRInformationClean() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 		_RSU.m_RRMRR->m_RRAdmitEventIdList.clear();
 	}
 }
@@ -81,10 +81,10 @@ void RRM_RR::RRUpdateAdmitEventIdList(bool clusterFlag) {
 
 void RRM_RR::RRProcessEventList() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 
 		for (int eventId : m_EventTTIList[m_TTI]) {
-			sEvent event = m_EventVec[eventId];
+			Event event = m_EventVec[eventId];
 			int VeUEId = event.VeUEId;
 			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//当前事件对应的VeUE不在当前RSU中，跳过即可
 				continue;
@@ -106,14 +106,14 @@ void RRM_RR::RRProcessEventList() {
 
 void RRM_RR::RRProcessWaitEventIdListWhenLocationUpdate() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 
 		//开始处理 m_RRWaitEventIdList
 		list<int>::iterator it = _RSU.m_RRMRR->m_RRWaitEventIdList.begin();
 		while (it != _RSU.m_RRMRR->m_RRWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			eMessageType messageType = m_EventVec[eventId].message.messageType;
+			MessageType messageType = m_EventVec[eventId].message.messageType;
 			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
 				//将剩余待传bit重置
 				m_EventVec[eventId].message.resetRemainBitNum();
@@ -141,7 +141,7 @@ void RRM_RR::RRProcessWaitEventIdListWhenLocationUpdate() {
 
 void RRM_RR::RRProcessSwitchListWhenLocationUpdate() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 
 		list<int>::iterator it = m_RRSwitchEventIdList.begin();
 		while (it != m_RRSwitchEventIdList.end()) {
@@ -171,13 +171,13 @@ void RRM_RR::RRProcessSwitchListWhenLocationUpdate() {
 
 void RRM_RR::RRProcessWaitEventIdList() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 
 		int count = 0;
 		list<int>::iterator it = _RSU.m_RRMRR->m_RRWaitEventIdList.begin();
 		while (it != _RSU.m_RRMRR->m_RRWaitEventIdList.end() && count++ < gc_RRPatternNum) {
 			int eventId = *it;
-			eMessageType messageType = m_EventVec[eventId].message.messageType;
+			MessageType messageType = m_EventVec[eventId].message.messageType;
 			//压入接入链表
 			_RSU.m_RRMRR->RRPushToAdmitEventIdList(eventId);
 			
@@ -197,14 +197,14 @@ void RRM_RR::RRProcessWaitEventIdList() {
 
 void RRM_RR::RRTransimitBegin() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 
 		for (int patternIdx = 0; patternIdx < static_cast<int>(_RSU.m_RRMRR->m_RRAdmitEventIdList.size()); patternIdx++) {
 			int eventId = _RSU.m_RRMRR->m_RRAdmitEventIdList[patternIdx];
 			int VeUEId = m_EventVec[eventId].VeUEId;
 			int occupiedNumTTI = (int)ceil((double)m_EventVec[eventId].message.remainBitNum / (double)gc_BitNumPerRB / (double)gc_RRNumRBPerPattern);
-			eMessageType messageType = m_EventVec[eventId].message.messageType;
-			_RSU.m_RRMRR->m_RRScheduleInfoTable[patternIdx] = new cRSU::RRMRR::sRRScheduleInfo(eventId, messageType, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx, occupiedNumTTI);
+			MessageType messageType = m_EventVec[eventId].message.messageType;
+			_RSU.m_RRMRR->m_RRScheduleInfoTable[patternIdx] = new RSU::RRMRR::sRRScheduleInfo(eventId, messageType, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx, occupiedNumTTI);
 			m_NewCount++;
 		}
 	}
@@ -215,13 +215,13 @@ void RRM_RR::RRWriteScheduleInfo(std::ofstream& out) {
 	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	out << "{" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 		
 		out << "    RSU[" << _RSU.m_GTAT->m_RSUId << "] :" << endl;
 		out << "    {" << endl;
 		for (int patternIdx = 0; patternIdx < gc_RRPatternNum; patternIdx++) {
 			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << endl;
-			cRSU::RRMRR::sRRScheduleInfo* info = _RSU.m_RRMRR->m_RRScheduleInfoTable[patternIdx];
+			RSU::RRMRR::sRRScheduleInfo* info = _RSU.m_RRMRR->m_RRScheduleInfoTable[patternIdx];
 			if (info == nullptr) continue;
 			out << info->toScheduleString(3) << endl;
 		}
@@ -287,7 +287,7 @@ void RRM_RR::RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventI
 
 void RRM_RR::RRDelaystatistics() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 
 		//处理等待链表
 		for (int eventId : _RSU.m_RRMRR->m_RRWaitEventIdList)
@@ -304,10 +304,10 @@ void RRM_RR::RRDelaystatistics() {
 
 void RRM_RR::RRTransimitEnd() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		cRSU &_RSU = m_RSUAry[RSUId];
+		RSU &_RSU = m_RSUAry[RSUId];
 
 		for (int patternIdx = 0; patternIdx < gc_RRPatternNum; patternIdx++) {
-			cRSU::RRMRR::sRRScheduleInfo* &info = _RSU.m_RRMRR->m_RRScheduleInfoTable[patternIdx];
+			RSU::RRMRR::sRRScheduleInfo* &info = _RSU.m_RRMRR->m_RRScheduleInfoTable[patternIdx];
 			if (info == nullptr) continue;
 			//累计吞吐率
 			m_TTIRSUThroughput[m_TTI][_RSU.m_GTAT->m_RSUId] += m_EventVec[info->eventId].message.remainBitNum>gc_RRNumRBPerPattern*gc_BitNumPerRB? gc_RRNumRBPerPattern*gc_BitNumPerRB: m_EventVec[info->eventId].message.remainBitNum;

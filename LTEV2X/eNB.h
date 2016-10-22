@@ -5,19 +5,19 @@
 #include"Global.h"
 #include"Config.h"
 
-class ceNB{
+class eNB{
 public:
 	/*--------------------------------------------------------------
 	*                      地理拓扑单元
 	* -------------------------------------------------------------*/
-	int m_wRoadID;
+	int m_RoadId;
 	int m_eNBId;
-	double m_fX;
-	double m_fY;
-	double m_fAbsX;
-	double m_fAbsY;
+	double m_X;
+	double m_Y;
+	double m_AbsX;
+	double m_AbsY;
 	void initializeUrban(seNBConfigure &t_eNBConfigure);
-	void initializeHigh(seNBConfigure &t_eNBConfigure);
+	void initializeHighSpeed(seNBConfigure &t_eNBConfigure);
 
     //UNDONE
 	std::list<int> m_RSUIdList;//该基站中的RSU容器（存储RSU的Id）

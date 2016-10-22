@@ -13,14 +13,32 @@
 
 class cRoad{
 public:
+	cRoad();
+	~cRoad();
 
 	void initializeUrban(sRoadConfigure &t_RoadConfigure);
+	void initializeHighSpeed(sLaneConfigure &t_LaneConfigure);
 
-	int m_wRoadID;
-    int m_weNBNum;
-	int m_weNBID;
-	ceNB *m_peNB;
-    double m_fAbsX;
-	double m_fAbsY;
-	int  m_upr;
+	struct GTATUrban;
+	struct GTATHighSpeed;
+
+	GTATUrban* m_GTATUrban = nullptr;//用于存储城镇场景的特定参数
+	GTATHighSpeed* m_GTATHighSpeed = nullptr;//用于存储高速场景的特定参数
+
+	struct GTATUrban {
+		int m_RoadId;
+		int m_eNBNum;
+		int m_eNBId;
+		eNB *m_eNB;
+		double m_AbsX;
+		double m_AbsY;
+		int  m_upr;
+	};
+
+	struct GTATHighSpeed {
+		int m_RoadId;
+		double m_AbsX;
+		double m_AbsY;
+		int  m_upr;
+	};
 };
