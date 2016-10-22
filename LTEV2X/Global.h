@@ -30,10 +30,10 @@ extern std::ofstream g_FileRSUThroughput;
 *               全域函数声明
 * ==========================================*/
 //产生特定分布随机数
-void RandomUniform(float *t_pfArray, unsigned long t_ulNumber, float t_fUpBound, float t_fDownBound, bool t_bFlagZero);
-void RandomGaussian(float *t_pfArray, unsigned long t_ulNumber, float t_fMean, float t_fStandardDeviation);
-void SortBubble(float *t_pfArray, unsigned short t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
-void SelectMax(float *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyFirst, unsigned char *t_pbySecond);
+void RandomUniform(double *t_pfArray, unsigned long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero);
+void RandomGaussian(double *t_pfArray, unsigned long t_ulNumber, double t_fMean, double t_fStandardDeviation);
+void SortBubble(double *t_pfArray, unsigned short t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
+void SelectMax(double *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyFirst, unsigned char *t_pbySecond);
 
 
 
@@ -41,15 +41,15 @@ void SelectMax(float *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyF
 *             地理拓扑单元常量
 * ==========================================*/
 //数值常量设置
-const float c_PI = 3.1415926535897932384626433832795f;
-const float c_PINeg = -3.1415926535897932384626433832795f;
-const float c_PI2 = 6.283185307179586476925286766559f;
-const float c_PIHalf = 1.5707963267948966192313216916398f;
-const float c_Degree2PI = 0.01745329251994329576923690768489f;
-const float c_SqrtHalf = 0.70710678118654752440084436210485f;
-const float c_SqrtThree = 1.73205080756887729f;
-const float c_C = 299792458.0f;
-const float c_FC = 2e9f;
+const double c_PI = 3.1415926535897932384626433832795f;
+const double c_PINeg = -3.1415926535897932384626433832795f;
+const double c_PI2 = 6.283185307179586476925286766559f;
+const double c_PIHalf = 1.5707963267948966192313216916398f;
+const double c_Degree2PI = 0.01745329251994329576923690768489f;
+const double c_SqrtHalf = 0.70710678118654752440084436210485f;
+const double c_SqrtThree = 1.73205080756887729f;
+const double c_C = 299792458.0f;
+const double c_FC = 2e9f;
 
 namespace ns_GTAT_Urban {//城镇模块常量设置
 	const unsigned short c_eNBNumber = 7;
@@ -57,9 +57,9 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 	const unsigned short c_RSUNumber = 78;
 	const int c_wide = 250;
 	const int c_length = 433;
-	const float c_lane_wide = 3.5;
+	const double c_lane_wide = 3.5;
 
-	const float c_roadTopoRatio[c_roadNumber * 2] =
+	const double c_roadTopoRatio[c_roadNumber * 2] =
 	{
 		-1.5f, 1.0f,
 		-0.5f, 1.0f,
@@ -108,7 +108,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		8,4,8,4,8,4,8,4,8
 	};
 
-	const float c_RSUTopoRatio[c_RSUNumber * 2] =
+	const double c_RSUTopoRatio[c_RSUNumber * 2] =
 	{
 		-2.0f, 1.5f,
 		-1.5f, 1.5f,
@@ -216,12 +216,12 @@ namespace ns_GTAT_High {
 	const unsigned short c_RSUNumber = 35;
 	//const int c_wide=24;
 	const int c_length = 3464;
-	const float c_lane_wide = 4.0f;
-	const float Fresh_time = 0.1f;
-	const float c_ISD = 1732.0f;
+	const double c_lane_wide = 4.0f;
+	const double Fresh_time = 0.1f;
+	const double c_ISD = 1732.0f;
 	const int c_v = 140;
 
-	const float c_laneTopoRatio[c_laneNumber * 2] =
+	const double c_laneTopoRatio[c_laneNumber * 2] =
 	{
 		0.0f, -2.5f,
 		0.0f, -1.5f,
@@ -233,7 +233,7 @@ namespace ns_GTAT_High {
 
 	const unsigned short c_RSUClusterNum = 2;//每个RSU都只有2个簇
 
-	const float c_RSUTopoRatio[c_RSUNumber * 2] =
+	const double c_RSUTopoRatio[c_RSUNumber * 2] =
 	{
 		17.0f, 0.0f,
 		16.0f, 0.0f,
@@ -271,7 +271,7 @@ namespace ns_GTAT_High {
 		-16.0f, 0.0f,
 		-17.0f, 0.0f,
 	};
-	const float c_eNBTopo[c_eNBNumber * 2] =
+	const double c_eNBTopo[c_eNBNumber * 2] =
 	{
 		-0.5f*c_ISD,35,
 		0.5f*c_ISD,35,

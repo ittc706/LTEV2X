@@ -14,7 +14,7 @@ public:
 public:
 	unsigned short m_wLaneID;
 
-	float m_fAbsX;
-	float m_fAbsY;
+	double m_fAbsX;
+	double m_fAbsY;
 	int  m_upr;
 };

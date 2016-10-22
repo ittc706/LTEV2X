@@ -4,7 +4,7 @@
 #include"Global.h"
 
 
-const float cIMTA::m_sacfConstantUMiLoS[25] =
+const double cIMTA::m_sacfConstantUMiLoS[25] =
 {
 	0.753065949852806f, 0.241023875447849f, 0.454091158552085f, -0.097177920212920f, -0.398944655540474f,
 	0.241023875447849f, 0.929354051080552f, 0.137998056490968f, -0.242351266621617f, -0.020759074542993f,
@@ -12,7 +12,7 @@ const float cIMTA::m_sacfConstantUMiLoS[25] =
 	-0.097177920212920f, -0.242351266621617f, -0.175603398954279f, 0.915728740196339f, 0.249853229004786f,
 	-0.398944655540474f, -0.020759074542993f, -0.041377149612582f, 0.249853229004786f, 0.881063855850205f
 };
-const float cIMTA::m_sacfConstantUMiNLoS[25] =
+const double cIMTA::m_sacfConstantUMiNLoS[25] =
 {
 	0.913514893522226f, 0.0f, 0.178007039816570f, -0.365792336017060f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -20,7 +20,7 @@ const float cIMTA::m_sacfConstantUMiNLoS[25] =
 	-0.365792336017060f, 0.0f, -0.178007039816570f, 0.913514893522227f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const float cIMTA::m_sacfConstantUMiO2I[25] =
+const double cIMTA::m_sacfConstantUMiO2I[25] =
 {
 	0.896950683840360f, 0.241943793527554f, 0.223605545793171f, -0.294861376620174f, 0.0f,
 	0.241943793527554f, 0.959179465107684f, -0.030708888757422f, 0.143160464655990f, 0.0f,
@@ -28,7 +28,7 @@ const float cIMTA::m_sacfConstantUMiO2I[25] =
 	-0.294861376620174f, 0.143160464655990f, 0.036676495468768f, 0.944042734529146f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const float cIMTA::m_sacfConstantSMaLoS[25] =
+const double cIMTA::m_sacfConstantSMaLoS[25] =
 {
 	0.854017192528818f, -0.040746823503881f, 0.423846524961968f, -0.298912118384658f, 0.0f,
 	-0.040746823503881f, 0.958761974312789f, -0.023404035164252f, -0.280298812206218f, 0.0f,
@@ -36,7 +36,7 @@ const float cIMTA::m_sacfConstantSMaLoS[25] =
 	-0.298912118384658f, -0.280298812206218f, -0.215103894600008f, 0.886461750943879f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const float cIMTA::m_sacConstantSMaNLoS[25] =
+const double cIMTA::m_sacConstantSMaNLoS[25] =
 {
 	0.888863320019977f, -0.028738390905236f, 0.394136210972923f, -0.231846394000744f, 0.0f,
 	-0.028738390905236f, 0.976874642167262f, 0.011594978528380f, -0.211555181576079f, 0.0f,
@@ -44,7 +44,7 @@ const float cIMTA::m_sacConstantSMaNLoS[25] =
 	-0.231846394000744f, -0.211555181576079f, 0.050292184084163f, 0.948136251262026f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const float cIMTA::m_sacfConstantUMaLoS[25] =
+const double cIMTA::m_sacfConstantUMaLoS[25] =
 {
 	0.806310951408682f, 0.245016774934418f, 0.479171304494613f, -0.120392914754038f, -0.213845356893992f,
 	0.245016774934418f, 0.924083471541761f, -0.108566442433108f, -0.271617534928914f, 0.021766026753229f,
@@ -52,7 +52,7 @@ const float cIMTA::m_sacfConstantUMaLoS[25] =
 	-0.120392914754038f, -0.271617534928914f, -0.271600920527001f, 0.915216117252956f, -0.018489442540902f,
 	-0.213845356893992f, 0.021766026753229f, -0.055644441252067f, -0.018489442540902f, 0.974863190445988f
 };
-const float cIMTA::m_sacfConstantUMaNLoS[25] =
+const double cIMTA::m_sacfConstantUMaNLoS[25] =
 {
 	0.913941405256431f, 0.147728073775767f, 0.318005795482914f, -0.204352240055453f, 0.0f,
 	0.147728073775767f, 0.913941405256431f, 0.204352240055453f, -0.318005795482914f, 0.0f,
@@ -60,7 +60,7 @@ const float cIMTA::m_sacfConstantUMaNLoS[25] =
 	-0.204352240055453f, -0.318005795482914f, 0.070397088759368f, 0.923123353576218f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const float cIMTA::m_sacfConstantRMaLoS[25] =
+const double cIMTA::m_sacfConstantRMaLoS[25] =
 {
 	0.965925826289068f, 0.0f, 0.0f, -0.258819045102521f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -68,7 +68,7 @@ const float cIMTA::m_sacfConstantRMaLoS[25] =
 	-0.258819045102521f, 0.0f, 0.0f, 0.965925826289068f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const float cIMTA::m_sacfConstantRMaNLoS[25] =
+const double cIMTA::m_sacfConstantRMaNLoS[25] =
 {
 	0.955557150656242f, -0.173466133506044f, 0.0f, -0.238369529001059f, 0.0f,
 	-0.173466133506044f, 0.938008596337461f, 0.0f, 0.300082278256296f, 0.0f,
@@ -76,7 +76,7 @@ const float cIMTA::m_sacfConstantRMaNLoS[25] =
 	-0.238369529001059f, 0.300082278256296f, 0.0f, 0.923650688258459f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const float cIMTA::m_sacfAngleOffset[m_scbySubPathNum] =
+const double cIMTA::m_sacfAngleOffset[m_scbySubPathNum] =
 {
 	7.8016217564146532088488977351458e-4f, -7.8016217564146532088488977351458e-4f,
 	0.00246615023306798769219317505587f, -0.00246615023306798769219317505587f,
@@ -89,7 +89,7 @@ const float cIMTA::m_sacfAngleOffset[m_scbySubPathNum] =
 	0.02652027798405383792135548122719f, -0.02652027798405383792135548122719f,
 	0.03761359070972979671228245975171f, -0.03761359070972979671228245975171f
 };
-const float cIMTA::m_sacfMidPathDelayOffset[m_scbyMidPathNum] =
+const double cIMTA::m_sacfMidPathDelayOffset[m_scbyMidPathNum] =
 {
 	0.0f, 5.0e-9f, 10.0e-9f
 };
@@ -150,7 +150,7 @@ cIMTA::~cIMTA(void)
 	}
 }
 
-bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_eAntenna,  float t_fVelocity/*km/h*/, float t_fVAngle/*degree*/)
+bool cIMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/)
 {
 	m_bBuilt = false;
 	m_fAntGain = t_eAntenna.fAntGain * 0.1f;
@@ -161,25 +161,25 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 	{		
 		delete []m_pfTxAntSpacing;
 	}
-	m_pfTxAntSpacing = new float[m_byTxAntNum];
+	m_pfTxAntSpacing = new double[m_byTxAntNum];
 
 		if (m_pfTxSlantAngle)
 	{
 		delete []m_pfTxSlantAngle;
 	}
-	m_pfTxSlantAngle = new float[m_byTxAntNum];
+	m_pfTxSlantAngle = new double[m_byTxAntNum];
 
 	if (m_pfRxAntSpacing)
 	{
 		delete []m_pfRxAntSpacing;
 	}
-	m_pfRxAntSpacing = new float[m_byRxAntNum];
+	m_pfRxAntSpacing = new double[m_byRxAntNum];
 
 	if (m_pfRxSlantAngle)
 	{
 		delete []m_pfRxSlantAngle;
 	}
-	m_pfRxSlantAngle = new float[m_byRxAntNum];
+	m_pfRxSlantAngle = new double[m_byRxAntNum];
 
 	for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 	{
@@ -213,11 +213,11 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 		}
 	}
 
-	float fTemp;
-	float fSFSTD;
-	float fPL1;
-	float fPL2;
-	float fDistanceBP = 4*(t_eLocation.fUEAntH-1)*(t_eLocation.fUEAntH-1)*t_fFrequency/c_C;
+	double fTemp;
+	double fSFSTD;
+	double fPL1;
+	double fPL2;
+	double fDistanceBP = 4*(t_eLocation.fUEAntH-1)*(t_eLocation.fUEAntH-1)*t_fFrequency/c_C;
 	switch (t_eLocation.eType)
 	{
 	case Los:
@@ -281,15 +281,15 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 	}
 
 	fSFSTD = 3.0f;
-	float fDSMean;
-	float fDSSTD;
-	float fASDMean;
-	float fASDSTD;
-	float fASAMean;
-	float fASASTD;
-	float fKMean;
-	float fKSTD;
-	const float *cpfConstant;
+	double fDSMean;
+	double fDSSTD;
+	double fASDMean;
+	double fASDSTD;
+	double fASAMean;
+	double fASASTD;
+	double fKMean;
+	double fKSTD;
+	const double *cpfConstant;
 
 			if (t_eLocation.bManhattan)
 			{
@@ -333,7 +333,7 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 	m_fXPR = pow(10.0f, m_fXPR * -0.05f);
 	m_fPathShadowSTD /= 10.0f;
 
-	float afTemp[5] = {0.0f};
+	double afTemp[5] = {0.0f};
 	for (unsigned char byTemp = 0; byTemp != 5; ++ byTemp)
 	{
 		for (unsigned char byTempTime = 0; byTempTime != 5; ++ byTempTime)
@@ -381,26 +381,26 @@ bool cIMTA::Enable(bool *t_pbEnable)
     
 	if (m_bLoS)
 	{
-		m_pfPhaseLoS = new float[m_byTxAntNum * m_byRxAntNum * 2];
+		m_pfPhaseLoS = new double[m_byTxAntNum * m_byRxAntNum * 2];
 	}
 
-	m_pfGain = new float[m_byPathNum * m_scbySubPathNum];
-	m_pfSinAoD = new float[m_byPathNum * m_scbySubPathNum];
-	m_pfCosAoD = new float[m_byPathNum * m_scbySubPathNum];
-	m_pfPhase = new float[m_byTxAntNum * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2];	
-	m_pfSinAoA = new float[m_byPathNum * m_scbySubPathNum];
-	m_pfCosAoA = new float[m_byPathNum * m_scbySubPathNum];
+	m_pfGain = new double[m_byPathNum * m_scbySubPathNum];
+	m_pfSinAoD = new double[m_byPathNum * m_scbySubPathNum];
+	m_pfCosAoD = new double[m_byPathNum * m_scbySubPathNum];
+	m_pfPhase = new double[m_byTxAntNum * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2];	
+	m_pfSinAoA = new double[m_byPathNum * m_scbySubPathNum];
+	m_pfCosAoA = new double[m_byPathNum * m_scbySubPathNum];
 	m_pwFFTIndex = new unsigned short[m_byPathNum];
 
-	float *pfPathDelay = new float[m_byPathNum];
-	float *pfPathPower = new float[m_byPathNum];
-	float fPowerTotal = 0.0f;
-	float *pfAoD = new float[m_byPathNum];
-	float *pfAoA = new float[m_byPathNum];
+	double *pfPathDelay = new double[m_byPathNum];
+	double *pfPathPower = new double[m_byPathNum];
+	double fPowerTotal = 0.0f;
+	double *pfAoD = new double[m_byPathNum];
+	double *pfAoA = new double[m_byPathNum];
 //	unsigned char abyIndex[m_scbySubPathNum];
-	float *pfXAoD = new float[m_byPathNum];
-	float *pfXAoA = new float[m_byPathNum];
-	float fPowerMax;
+	double *pfXAoD = new double[m_byPathNum];
+	double *pfXAoA = new double[m_byPathNum];
+	double fPowerMax;
 	unsigned char byStoreIndex = 0;
 	RandomUniform(pfPathDelay, m_byPathNum, 1.0f, 0.0f, true);
 	for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
@@ -523,11 +523,11 @@ bool cIMTA::Enable(bool *t_pbEnable)
 		}
 
 
-	float *pfPhasePol = new float[m_byPathNum * m_scbySubPathNum * 4];
-	float *pfSlantVV = new float[m_byTxAntNum * m_byRxAntNum];
-	float *pfSlantVH = new float[m_byTxAntNum * m_byRxAntNum];
-	float *pfSlantHV = new float[m_byTxAntNum * m_byRxAntNum];
-	float *pfSlantHH = new float[m_byTxAntNum * m_byRxAntNum];
+	double *pfPhasePol = new double[m_byPathNum * m_scbySubPathNum * 4];
+	double *pfSlantVV = new double[m_byTxAntNum * m_byRxAntNum];
+	double *pfSlantVH = new double[m_byTxAntNum * m_byRxAntNum];
+	double *pfSlantHV = new double[m_byTxAntNum * m_byRxAntNum];
+	double *pfSlantHH = new double[m_byTxAntNum * m_byRxAntNum];
 	for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 	{
 		for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
@@ -597,12 +597,12 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	return true;
 }
 
-void cIMTA::Calculate(float* t_HAfterFFT, float t_fT/*s */, float *t_pfTemp, float *t_pfSin, float *t_pfCos,float *t_pfH,float *t_pfHFFT)
+void cIMTA::Calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, double *t_pfSin, double *t_pfCos,double *t_pfH,double *t_pfHFFT)
 {
-	float fCos;
-	float fSin;
+	double fCos;
+	double fSin;
 
-	memset(t_pfH, 0, m_byTxAntNum * m_byRxAntNum * m_byPathNum * 2 * sizeof(float));
+	memset(t_pfH, 0, m_byTxAntNum * m_byRxAntNum * m_byPathNum * 2 * sizeof(double));
 
 		for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 		{
@@ -657,7 +657,7 @@ void cIMTA::Calculate(float* t_HAfterFFT, float t_fT/*s */, float *t_pfTemp, flo
 		}
 
 
-		memset(t_pfHFFT, 0, m_byTxAntNum * m_byRxAntNum * 1024 * 2 * sizeof(float));
+		memset(t_pfHFFT, 0, m_byTxAntNum * m_byRxAntNum * 1024 * 2 * sizeof(double));
 
 		for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++byTempTxAnt)
 		{
@@ -697,12 +697,12 @@ void cIMTA::Calculate(float* t_HAfterFFT, float t_fT/*s */, float *t_pfTemp, flo
 
 		int HAfterFFT_Iter = 0;
 		for (int row = 0; row < 1024; row++) {
-			t_HAfterFFT[HAfterFFT_Iter++] = (float)out1[row][0];
-			t_HAfterFFT[HAfterFFT_Iter++] = (float)out1[row][1];
+			t_HAfterFFT[HAfterFFT_Iter++] = (double)out1[row][0];
+			t_HAfterFFT[HAfterFFT_Iter++] = (double)out1[row][1];
 		}
 		for (int row = 0; row < 1024; row++) {
-			t_HAfterFFT[HAfterFFT_Iter++] = (float)out2[row][0];
-			t_HAfterFFT[HAfterFFT_Iter++] = (float)out2[row][1];
+			t_HAfterFFT[HAfterFFT_Iter++] = (double)out2[row][0];
+			t_HAfterFFT[HAfterFFT_Iter++] = (double)out2[row][1];
 		}
 		
 

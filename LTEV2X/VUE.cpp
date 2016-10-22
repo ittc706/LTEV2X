@@ -37,7 +37,7 @@ void cVeUE::initializeUrban(sUEConfigure &t_UEConfigure)
 	m_Nt = 1;
 	m_Nr = 2;
 	m_PreModulation = 4;
-	m_H = new float[2 * 1024 * 2];
+	m_H = new double[2 * 1024 * 2];
 
 }
 

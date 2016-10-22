@@ -12,10 +12,10 @@ public:
 	* -------------------------------------------------------------*/
 	unsigned short m_wRoadID;
 	unsigned short m_eNBId;
-	float m_fX;
-	float m_fY;
-	float m_fAbsX;
-	float m_fAbsY;
+	double m_fX;
+	double m_fY;
+	double m_fAbsX;
+	double m_fAbsY;
 	void initializeUrban(seNBConfigure &t_eNBConfigure);
 	void initializeHigh(seNBConfigure &t_eNBConfigure);
 

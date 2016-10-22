@@ -31,7 +31,7 @@ ofstream g_FileRSUThroughput("Log\\TMACLog\\RSUThroughput.txt");
 /*===========================================
 *               全域函数定义
 * ==========================================*/
-void RandomUniform(float *t_pfArray, unsigned long t_ulNumber, float t_fUpBound, float t_fDownBound, bool t_bFlagZero)
+void RandomUniform(double *t_pfArray, unsigned long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero)
 {
 	for (unsigned long ulTemp = 0; ulTemp != t_ulNumber; ++ulTemp)
 	{
@@ -45,13 +45,13 @@ void RandomUniform(float *t_pfArray, unsigned long t_ulNumber, float t_fUpBound,
 }
 
 
-void RandomGaussian(float *t_pfArray, unsigned long t_ulNumber, float t_fMean, float t_fStandardDeviation)
+void RandomGaussian(double *t_pfArray, unsigned long t_ulNumber, double t_fMean, double t_fStandardDeviation)
 {
 	unsigned long ulHalfNum = t_ulNumber / 2;
 	if (ulHalfNum)
 	{
-		float *pfTemp1 = new float[ulHalfNum];
-		float *pfTemp2 = new float[ulHalfNum];
+		double *pfTemp1 = new double[ulHalfNum];
+		double *pfTemp2 = new double[ulHalfNum];
 		RandomUniform(pfTemp1, ulHalfNum, 1.0f, 0.0f, true);
 		RandomUniform(pfTemp2, ulHalfNum, c_PI, c_PINeg, false);
 		for (unsigned long ulTemp = 0; ulTemp != ulHalfNum; ++ulTemp)
@@ -64,8 +64,8 @@ void RandomGaussian(float *t_pfArray, unsigned long t_ulNumber, float t_fMean, f
 	}
 	if (t_ulNumber % 2)
 	{
-		float fTemp1;
-		float fTemp2;
+		double fTemp1;
+		double fTemp2;
 		RandomUniform(&fTemp1, 1, 1.0f, 0.0f, true);
 		RandomUniform(&fTemp2, 1, c_PI, c_PINeg, false);
 		t_pfArray[t_ulNumber - 1] = sqrt(log(fTemp1) * -2.0f) * cos(fTemp2) * t_fStandardDeviation + t_fMean;
@@ -75,9 +75,9 @@ void RandomGaussian(float *t_pfArray, unsigned long t_ulNumber, float t_fMean, f
 }
 
 
-void SortBubble(float *t_pfArray, unsigned short t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
+void SortBubble(double *t_pfArray, unsigned short t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
 {
-	float fTemp;
+	double fTemp;
 	bool bFlagDone;
 	for (unsigned char i1 = 0; i1 != t_wNumber - 1; ++i1)
 	{
@@ -140,7 +140,7 @@ void SortBubble(float *t_pfArray, unsigned short t_wNumber, bool t_bFlagDirectio
 	return;
 }
 
-void SelectMax(float *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyFirst, unsigned char *t_pbySecond)
+void SelectMax(double *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyFirst, unsigned char *t_pbySecond)
 {
 	unsigned char byFisrtIndex;
 	unsigned char bySecondIndex;

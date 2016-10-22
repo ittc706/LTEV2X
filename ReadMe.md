@@ -1,3 +1,7 @@
+version_2016_10_22(统一基本数据类型1)
+	float改为double
+
+
 version_2016_10_22(更改了VeUE的成员)
 	删除了表示当前调度子载波的范围
 	更改了地理拓扑单元的calculateInter函数

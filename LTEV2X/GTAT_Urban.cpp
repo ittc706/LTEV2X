@@ -27,7 +27,7 @@ void GTAT_Urban::configure() {
 		long double l = exp(-Lambda);  /* 为了精度，才定义为long double的，exp(-Lambda)是接近0的小数*/
 		while (p >= l)
 		{
-			double u = (float)(rand() % 10000)*0.0001f;
+			double u = (double)(rand() % 10000)*0.0001f;
 			p *= u;
 			k++;
 		}
@@ -37,9 +37,9 @@ void GTAT_Urban::configure() {
 	m_Config.wxNum = 36;
 	m_Config.wyNum = 62;
 	m_Config.ueTopoNum = (m_Config.wxNum + m_Config.wyNum) * 2 - 4;
-	m_Config.pueTopo = new float[m_Config.ueTopoNum * 2];//重合了4个
-	float temp_x = -(float)c_wide / 2 + c_lane_wide;
-	float temp_y = -(float)c_length / 2 + c_lane_wide;
+	m_Config.pueTopo = new double[m_Config.ueTopoNum * 2];//重合了4个
+	double temp_x = -(double)c_wide / 2 + c_lane_wide;
+	double temp_y = -(double)c_length / 2 + c_lane_wide;
 	for (int temp = 0; temp != m_Config.ueTopoNum; ++temp)
 	{
 		if (temp>0 && temp <= 61) {
@@ -414,7 +414,7 @@ void GTAT_Urban::freshLoc() {
 		location.fDistance1 = 0;
 		location.fDistance2 = 0;
 
-		float angle = 0;
+		double angle = 0;
 		if (location.bManhattan == true)  //计算location distance
 		{
 		
@@ -433,10 +433,10 @@ void GTAT_Urban::freshLoc() {
 		antenna.fAntGain = 6;//收发天线各3dbi
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
-		antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
-		antenna.pfTxAntSpacing = new float[antenna.byTxAntNum];
-		antenna.pfRxSlantAngle = new float[antenna.byRxAntNum];
-		antenna.pfRxAntSpacing = new float[antenna.byRxAntNum];
+		antenna.pfTxSlantAngle = new double[antenna.byTxAntNum];
+		antenna.pfTxAntSpacing = new double[antenna.byTxAntNum];
+		antenna.pfRxSlantAngle = new double[antenna.byRxAntNum];
+		antenna.pfRxAntSpacing = new double[antenna.byRxAntNum];
 		antenna.pfTxSlantAngle[0] = 90.0f;
 		antenna.pfTxAntSpacing[0] = 0.0f;
 		antenna.pfRxSlantAngle[0] = 90.0f;
@@ -444,7 +444,7 @@ void GTAT_Urban::freshLoc() {
 		antenna.pfRxAntSpacing[0] = 0.0f;
 		antenna.pfRxAntSpacing[1] = 0.5f;
 
-		float t_Pl = 0;
+		double t_Pl = 0;
 
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[UserIdx1].m_fv, m_VeUEAry[UserIdx1].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
 		bool *flag = new bool();
@@ -453,13 +453,13 @@ void GTAT_Urban::freshLoc() {
 
 		*flag = true;
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag);
-		float *H = new float[1 * 2 * 12 * 2];
-		float *FFT = new float[1 * 2 * 1024 * 2];
-		float *ch_buffer = new float[1 * 2 * 12 * 20];
-		float *ch_sin = new float[1 * 2 * 12 * 20];
-		float *ch_cos = new float[1 * 2 * 12 * 20];
+		double *H = new double[1 * 2 * 12 * 2];
+		double *FFT = new double[1 * 2 * 1024 * 2];
+		double *ch_buffer = new double[1 * 2 * 12 * 20];
+		double *ch_sin = new double[1 * 2 * 12 * 20];
+		double *ch_cos = new double[1 * 2 * 12 * 20];
 
-		float *t_HAfterFFT = new float[2 * 1024 * 2];
+		double *t_HAfterFFT = new double[2 * 1024 * 2];
 
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Calculate(t_HAfterFFT,0.01f, ch_buffer, ch_sin, ch_cos, H,FFT);
 		memcpy(m_VeUEAry[UserIdx1].m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
@@ -505,7 +505,7 @@ void GTAT_Urban::calculateInter(std::vector<int> transimitingVeUEId) {
 		m_VeUEAry[VeUEId].m_InterferencePloss.assign(m_VeUEAry[VeUEId].m_InterVeUENum, 0);
 
 		if (m_VeUEAry[VeUEId].m_InterferenceH != nullptr) delete[]m_VeUEAry[VeUEId].m_InterferenceH;
-		m_VeUEAry[VeUEId].m_InterferenceH = new float[m_VeUEAry[VeUEId].m_InterVeUENum * 2 * 1024 * 2];
+		m_VeUEAry[VeUEId].m_InterferenceH = new double[m_VeUEAry[VeUEId].m_InterVeUENum * 2 * 1024 * 2];
 
 		for (int count = 0; count != m_VeUEAry[VeUEId].m_InterVeUENum; count++)
 		{
@@ -520,7 +520,7 @@ void GTAT_Urban::calculateInter(std::vector<int> transimitingVeUEId) {
 			location.fDistance1 = 0;
 			location.fDistance2 = 0;
 
-			float angle = 0;
+			double angle = 0;
 			if (location.bManhattan == true)  //计算location distance
 			{
 				if (abs(m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY) <= 10.5)
@@ -547,10 +547,10 @@ void GTAT_Urban::calculateInter(std::vector<int> transimitingVeUEId) {
 			antenna.fAntGain = 6;
 			antenna.byTxAntNum = 1;
 			antenna.byRxAntNum = 2;
-			antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
-			antenna.pfTxAntSpacing = new float[antenna.byTxAntNum];
-			antenna.pfRxSlantAngle = new float[antenna.byRxAntNum];
-			antenna.pfRxAntSpacing = new float[antenna.byRxAntNum];
+			antenna.pfTxSlantAngle = new double[antenna.byTxAntNum];
+			antenna.pfTxAntSpacing = new double[antenna.byTxAntNum];
+			antenna.pfRxSlantAngle = new double[antenna.byRxAntNum];
+			antenna.pfRxAntSpacing = new double[antenna.byRxAntNum];
 			antenna.pfTxSlantAngle[0] = 90.0f;
 			antenna.pfTxAntSpacing[0] = 0.0f;
 			antenna.pfRxSlantAngle[0] = 90.0f;
@@ -558,7 +558,7 @@ void GTAT_Urban::calculateInter(std::vector<int> transimitingVeUEId) {
 			antenna.pfRxAntSpacing[0] = 0.0f;
 			antenna.pfRxAntSpacing[1] = 0.5f;
 
-			float t_Pl = 0;
+			double t_Pl = 0;
 			m_VeUEAry[interUserIdx].imta[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_fv, m_VeUEAry[interUserIdx].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
 			bool *flag = new bool();
 
@@ -568,13 +568,13 @@ void GTAT_Urban::calculateInter(std::vector<int> transimitingVeUEId) {
 
 			*flag = true;
 			m_VeUEAry[interUserIdx].imta[RSUIdx].Enable(flag);
-			float *H = new float[1 * 2 * 12 * 2];
-			float *FFT = new float[1 * 2 * 1024 * 2];
-			float *ch_buffer = new float[1 * 2 * 12 * 20];
-			float *ch_sin = new float[1 * 2 * 12 * 20];
-			float *ch_cos = new float[1 * 2 * 12 * 20];
+			double *H = new double[1 * 2 * 12 * 2];
+			double *FFT = new double[1 * 2 * 1024 * 2];
+			double *ch_buffer = new double[1 * 2 * 12 * 20];
+			double *ch_sin = new double[1 * 2 * 12 * 20];
+			double *ch_cos = new double[1 * 2 * 12 * 20];
 
-			float *t_HAfterFFT = new float[2 * 1024 * 2];
+			double *t_HAfterFFT = new double[2 * 1024 * 2];
 
 			m_VeUEAry[interUserIdx].imta[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 

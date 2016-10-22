@@ -19,7 +19,7 @@ void GTAT_High::configure() {
 	m_Config.RSUNum = c_RSUNumber;//目前只表示UE RSU数
 	m_Config.pupr = new int[m_Config.LaneNum];
 	m_Config.VeUENum = 0;
-	float Lambda = c_length*3.6 / (2.5 * 140);
+	double Lambda = c_length*3.6 / (2.5 * 140);
 	srand((unsigned)time(NULL));
 	for (unsigned short temp = 0; temp != m_Config.LaneNum; ++temp)
 	{
@@ -28,7 +28,7 @@ void GTAT_High::configure() {
 		long double l = exp(-Lambda);  /* 为了精度，才定义为long double的，exp(-Lambda)是接近0的小数*/
 		while (p >= l)
 		{
-			double u = (float)(rand() % 10000)*0.0001f;
+			double u = (double)(rand() % 10000)*0.0001f;
 			p *= u;
 			k++;
 		}
@@ -194,7 +194,7 @@ void GTAT_High::freshLoc() {
 		location.fDistance1 = 0;
 		location.fDistance2 = 0;
 
-		float angle = 0;
+		double angle = 0;
 		location.bManhattan = false;
 
 		location.eType = Los;
@@ -210,10 +210,10 @@ void GTAT_High::freshLoc() {
 		antenna.fAntGain = 3;
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
-		antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
-		antenna.pfTxAntSpacing = new float[antenna.byTxAntNum];
-		antenna.pfRxSlantAngle = new float[antenna.byRxAntNum];
-		antenna.pfRxAntSpacing = new float[antenna.byRxAntNum];
+		antenna.pfTxSlantAngle = new double[antenna.byTxAntNum];
+		antenna.pfTxAntSpacing = new double[antenna.byTxAntNum];
+		antenna.pfRxSlantAngle = new double[antenna.byRxAntNum];
+		antenna.pfRxAntSpacing = new double[antenna.byRxAntNum];
 		antenna.pfTxSlantAngle[0] = 90.0f;
 		antenna.pfTxAntSpacing[0] = 0.0f;
 		antenna.pfRxSlantAngle[0] = 90.0f;
@@ -221,7 +221,7 @@ void GTAT_High::freshLoc() {
 		antenna.pfRxAntSpacing[0] = 0.0f;
 		antenna.pfRxAntSpacing[1] = 0.5f;
 
-		float t_Pl = 0;
+		double t_Pl = 0;
 
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[UserIdx1].m_fv, m_VeUEAry[UserIdx1].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
 		bool *flag = new bool();
@@ -231,13 +231,13 @@ void GTAT_High::freshLoc() {
 		*flag = true;
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag);
 
-		float *H = new float[1 * 2 * 19 * 2];
-		float *FFT = new float[1 * 2 * 1024 * 2];
-		float *ch_buffer = new float[1 * 2 * 19 * 20];
-		float *ch_sin = new float[1 * 2 * 19 * 20];
-		float *ch_cos = new float[1 * 2 * 19 * 20];
+		double *H = new double[1 * 2 * 19 * 2];
+		double *FFT = new double[1 * 2 * 1024 * 2];
+		double *ch_buffer = new double[1 * 2 * 19 * 20];
+		double *ch_sin = new double[1 * 2 * 19 * 20];
+		double *ch_cos = new double[1 * 2 * 19 * 20];
 
-		float *t_HAfterFFT = new float[2 * 1024 * 2];
+		double *t_HAfterFFT = new double[2 * 1024 * 2];
 
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 		memcpy(m_VeUEAry[UserIdx1].m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
@@ -284,7 +284,7 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 		m_VeUEAry[VeUEId].m_InterferencePloss.assign(m_VeUEAry[VeUEId].m_InterVeUENum, 0);
 
 		delete[]m_VeUEAry[VeUEId].m_InterferenceH;
-		m_VeUEAry[VeUEId].m_InterferenceH = new float[m_VeUEAry[VeUEId].m_InterVeUENum * 2 * 1024 * 2];
+		m_VeUEAry[VeUEId].m_InterferenceH = new double[m_VeUEAry[VeUEId].m_InterVeUENum * 2 * 1024 * 2];
 
 		for (int count = 0; count != m_VeUEAry[VeUEId].m_InterVeUENum; count++)
 		{
@@ -299,7 +299,7 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 			location.fDistance1 = 0;
 			location.fDistance2 = 0;
 
-			float angle = 0;
+			double angle = 0;
 			location.bManhattan = false;
 
 			location.eType = Los;
@@ -315,10 +315,10 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 			antenna.fAntGain = 6;
 			antenna.byTxAntNum = 1;
 			antenna.byRxAntNum = 2;
-			antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
-			antenna.pfTxAntSpacing = new float[antenna.byTxAntNum];
-			antenna.pfRxSlantAngle = new float[antenna.byRxAntNum];
-			antenna.pfRxAntSpacing = new float[antenna.byRxAntNum];
+			antenna.pfTxSlantAngle = new double[antenna.byTxAntNum];
+			antenna.pfTxAntSpacing = new double[antenna.byTxAntNum];
+			antenna.pfRxSlantAngle = new double[antenna.byRxAntNum];
+			antenna.pfRxAntSpacing = new double[antenna.byRxAntNum];
 			antenna.pfTxSlantAngle[0] = 90.0f;
 			antenna.pfTxAntSpacing[0] = 0.0f;
 			antenna.pfRxSlantAngle[0] = 90.0f;
@@ -326,7 +326,7 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 			antenna.pfRxAntSpacing[0] = 0.0f;
 			antenna.pfRxAntSpacing[1] = 0.5f;
 
-			float t_Pl = 0;
+			double t_Pl = 0;
 			m_VeUEAry[interUserIdx].imta[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_fv, m_VeUEAry[interUserIdx].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
 			bool *flag = new bool();
 
@@ -336,13 +336,13 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 
 			*flag = true;
 			m_VeUEAry[interUserIdx].imta[RSUIdx].Enable(flag);
-			float *H = new float[1 * 2 * 19 * 2];
-			float *FFT = new float[1 * 2 * 1024 * 2];
-			float *ch_buffer = new float[1 * 2 * 19 * 20];
-			float *ch_sin = new float[1 * 2 * 19 * 20];
-			float *ch_cos = new float[1 * 2 * 19 * 20];
+			double *H = new double[1 * 2 * 19 * 2];
+			double *FFT = new double[1 * 2 * 1024 * 2];
+			double *ch_buffer = new double[1 * 2 * 19 * 20];
+			double *ch_sin = new double[1 * 2 * 19 * 20];
+			double *ch_cos = new double[1 * 2 * 19 * 20];
 
-			float *t_HAfterFFT = new float[2 * 1024 * 2];
+			double *t_HAfterFFT = new double[2 * 1024 * 2];
 
 			m_VeUEAry[interUserIdx].imta[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 

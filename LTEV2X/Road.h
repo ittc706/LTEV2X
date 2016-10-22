@@ -20,7 +20,7 @@ public:
     unsigned short m_weNBNum;
 	unsigned short m_weNBID;
 	ceNB *m_peNB;
-    float m_fAbsX;
-	float m_fAbsY;
+    double m_fAbsX;
+	double m_fAbsY;
 	int  m_upr;
 };

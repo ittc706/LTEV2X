@@ -10,8 +10,8 @@ struct sConfigure {
 	double emergencyLambda;//紧急事件泊松过程Lamda,单位次/TTI
 	int locationUpdateNTTI;//车辆刷新位置的周期
 
-	float ISD;
-	float fc;
+	double ISD;
+	double fc;
 	int VeUENum;//车辆总数
 	int PeUENum;//行人总数
 
@@ -23,9 +23,9 @@ struct sConfigure {
 	unsigned short wxNum;//ueTopo x轴 格数
 	unsigned short wyNum;//ueTopo y轴 格数
 	int ueTopoNum;
-	float *pueTopo;//一个Road中ue相对坐标
+	double *pueTopo;//一个Road中ue相对坐标
 
-	float fv;//车辆车速
+	double fv;//车辆车速
 
 };
 
@@ -35,10 +35,10 @@ struct seNBConfigure
 	sConfigure* sys_config;
 	unsigned short wRoadID;
 	unsigned short weNBID;
-	float fX;
-	float fY;
-	float fAbsX;
-	float fAbsY;
+	double fX;
+	double fY;
+	double fAbsX;
+	double fAbsY;
 };
 /*Road配置参数*/
 struct sRoadConfigure
@@ -66,11 +66,11 @@ struct sUEConfigure
 	unsigned short wRoadID;
 	unsigned short wLaneID;
 	int locationID;
-	float fX;
-	float fY;
-	float fAbsX;
-	float fAbsY;
-	float fv;
+	double fX;
+	double fY;
+	double fAbsX;
+	double fAbsY;
+	double fv;
 };
 
 /*RSU配置参数*/
@@ -84,26 +84,26 @@ struct sLocation
 {
 	bool bManhattan;
 	eLocationType eType;
-	float fDistance; // m
-	float fDistance1; // m
-	float fDistance2; // m
-	float feNBAntH; // m
-	float fUEAntH; // m
-	float afPosCor[5];
+	double fDistance; // m
+	double fDistance1; // m
+	double fDistance2; // m
+	double feNBAntH; // m
+	double fUEAntH; // m
+	double afPosCor[5];
 
 };
 
 /*天线配置参数*/
 struct sAntenna
 {
-	float fTxAngle; // degree
-	float fRxAngle; // degree
-	float fMaxAttenu; // dB
+	double fTxAngle; // degree
+	double fRxAngle; // degree
+	double fMaxAttenu; // dB
 	unsigned char byTxAntNum;
 	unsigned char byRxAntNum;
-	float *pfTxSlantAngle; // degree
-	float *pfRxSlantAngle; // degree
-	float *pfTxAntSpacing;
-	float *pfRxAntSpacing;
-	float fAntGain;
+	double *pfTxSlantAngle; // degree
+	double *pfRxSlantAngle; // degree
+	double *pfTxAntSpacing;
+	double *pfRxAntSpacing;
+	double fAntGain;
 };
