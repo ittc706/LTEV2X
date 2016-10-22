@@ -37,14 +37,14 @@ void System::process() {
 
 void System::configure() {//系统仿真参数配置
 
-	m_Config.NTTI = 20;//仿真TTI时间
+	m_Config.NTTI = 2000;//仿真TTI时间
 	m_Config.periodicEventNTTI = 500;
 	m_Config.emergencyLambda = 0.0001;// 0.001;
 	m_Config.dataLambda = 0.0001;
 	m_Config.locationUpdateNTTI = 1000;
 
 	//地理拓扑与传输模式
-	m_GTATMode = HIGHSPEED;
+	m_GTATMode = URBAN;
 
 	//无线资源管理模式
 	m_RRMMode = RR;
@@ -81,6 +81,7 @@ void System::GTATModuleInitialize() {
 		break;
 	case HIGHSPEED:
 		m_GTATPoint = new GTAT_HighSpeed(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
+		break;
 	}
 }
 
