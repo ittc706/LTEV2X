@@ -20,7 +20,7 @@ void GTAT_Urban::configure() {
 	m_Config.pupr = new int[m_Config.RoadNum];
 	m_Config.VeUENum = 0;
 	int Lambda = static_cast<int>((c_length + c_wide) * 2 * 3.6 / (2.5 * 15));
-	for (unsigned short temp = 0; temp != m_Config.RoadNum; ++temp)
+	for (int temp = 0; temp != m_Config.RoadNum; ++temp)
 	{
 		int k = 0;
 		long double p = 1.0;
@@ -69,7 +69,7 @@ void GTAT_Urban::initialize() {
 	m_RSUAry = new cRSU[m_Config.RSUNum];
 
 	sRoadConfigure roadConfigure;
-	for (unsigned short temp = 0; temp != m_Config.RoadNum; ++temp)
+	for (int temp = 0; temp != m_Config.RoadNum; ++temp)
 	{
 		roadConfigure.wRoadID = temp;
 		if (temp % 2 == 0)
@@ -87,7 +87,7 @@ void GTAT_Urban::initialize() {
 	}
 
 	sRSUConfigure RSUConfigure;
-	for (unsigned short RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++)
+	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++)
 	{
 
 		RSUConfigure.wRSUID = RSUIdx;
@@ -97,7 +97,7 @@ void GTAT_Urban::initialize() {
 	sUEConfigure ueConfigure;
 	int ueidx = 0;
 
-	for (unsigned short RoadIdx = 0; RoadIdx != m_Config.RoadNum; RoadIdx++)
+	for (int RoadIdx = 0; RoadIdx != m_Config.RoadNum; RoadIdx++)
 	{
 
 		for (int uprIdx = 0; uprIdx != m_Config.pupr[RoadIdx]; uprIdx++)
@@ -283,8 +283,8 @@ void GTAT_Urban::freshLoc() {
 	sAntenna antenna;
 	location.bManhattan = true;
 
-	unsigned short RSUIdx = 0;
-	unsigned short ClusterID = 0;
+	int RSUIdx = 0;
+	int ClusterID = 0;
 	for (int UserIdx1 = 0; UserIdx1 != m_Config.VeUENum; UserIdx1++)
 	{
 		m_VeUEAry[UserIdx1].imta = new cIMTA[m_Config.RSUNum];
@@ -514,7 +514,7 @@ void GTAT_Urban::calculateInter(std::vector<int> transimitingVeUEId) {
 			sAntenna antenna;
 			location.bManhattan = true;
 
-			unsigned short RSUIdx = m_VeUEAry[VeUEId].m_RSUId;
+			int RSUIdx = m_VeUEAry[VeUEId].m_RSUId;
 			location.eType = None;
 			location.fDistance = 0;
 			location.fDistance1 = 0;

@@ -12,7 +12,7 @@ class cLane
 public:
 	void initializeHigh(sLaneConfigure &t_LaneConfigure);
 public:
-	unsigned short m_wLaneID;
+	int m_wLaneID;
 
 	double m_fAbsX;
 	double m_fAbsY;

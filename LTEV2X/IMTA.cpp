@@ -390,7 +390,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	m_pfPhase = new double[m_byTxAntNum * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2];	
 	m_pfSinAoA = new double[m_byPathNum * m_scbySubPathNum];
 	m_pfCosAoA = new double[m_byPathNum * m_scbySubPathNum];
-	m_pwFFTIndex = new unsigned short[m_byPathNum];
+	m_pwFFTIndex = new int[m_byPathNum];
 
 	double *pfPathDelay = new double[m_byPathNum];
 	double *pfPathPower = new double[m_byPathNum];
@@ -484,7 +484,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++byTempPath)
 	{
 		pfPathPower[byTempPath] /= m_scbySubPathNum;
-		m_pwFFTIndex[byStoreIndex] = (unsigned short)floor(pfPathDelay[byTempPath] / m_fFFTTime + 0.5f);
+		m_pwFFTIndex[byStoreIndex] = (int)floor(pfPathDelay[byTempPath] / m_fFFTTime + 0.5f);
 		if (m_pwFFTIndex[byStoreIndex] >= m_wFFTNum)
 		{
 			m_pwFFTIndex[byStoreIndex] = m_wFFTNum - 1;

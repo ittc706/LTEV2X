@@ -20,8 +20,8 @@ struct sConfigure {
 	int LaneNum;//Lane总数
 	int RSUNum;//RSU总数
 	int* pupr;//user per road array
-	unsigned short wxNum;//ueTopo x轴 格数
-	unsigned short wyNum;//ueTopo y轴 格数
+	int wxNum;//ueTopo x轴 格数
+	int wyNum;//ueTopo y轴 格数
 	int ueTopoNum;
 	double *pueTopo;//一个Road中ue相对坐标
 
@@ -33,8 +33,8 @@ struct sConfigure {
 struct seNBConfigure
 {
 	sConfigure* sys_config;
-	unsigned short wRoadID;
-	unsigned short weNBID;
+	int wRoadID;
+	int weNBID;
 	double fX;
 	double fY;
 	double fAbsX;
@@ -44,27 +44,27 @@ struct seNBConfigure
 struct sRoadConfigure
 {
 	sConfigure* sys_config;
-	unsigned short wRoadID;
+	int wRoadID;
 	void *peNB;
-	unsigned short weNBNum;
-	unsigned short weNBOffset;
+	int weNBNum;
+	int weNBOffset;
 	void *pLane;
-	unsigned short wLaneNum;
-	unsigned short wLaneOffset;
+	int wLaneNum;
+	int wLaneOffset;
 };
 
 struct sLaneConfigure
 {
 	sConfigure* sys_config;
-	unsigned short wLaneID;
+	int wLaneID;
 };
 
 
 /*UE配置参数*/
 struct sUEConfigure
 {
-	unsigned short wRoadID;
-	unsigned short wLaneID;
+	int wRoadID;
+	int wLaneID;
 	int locationID;
 	double fX;
 	double fY;
@@ -76,7 +76,7 @@ struct sUEConfigure
 /*RSU配置参数*/
 struct sRSUConfigure
 {
-	unsigned short wRSUID;
+	int wRSUID;
 };
 
 /*地理位置配置参数*/

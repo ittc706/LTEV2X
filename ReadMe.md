@@ -1,3 +1,6 @@
+version_2016_10_22(统一基本数据类型2)
+	unsigned short改为int
+
 version_2016_10_22(统一基本数据类型1)
 	float改为double
 

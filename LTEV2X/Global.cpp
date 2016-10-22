@@ -75,7 +75,7 @@ void RandomGaussian(double *t_pfArray, unsigned long t_ulNumber, double t_fMean,
 }
 
 
-void SortBubble(double *t_pfArray, unsigned short t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
+void SortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
 {
 	double fTemp;
 	bool bFlagDone;

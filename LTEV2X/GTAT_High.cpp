@@ -21,7 +21,7 @@ void GTAT_High::configure() {
 	m_Config.VeUENum = 0;
 	double Lambda = c_length*3.6 / (2.5 * 140);
 	srand((unsigned)time(NULL));
-	for (unsigned short temp = 0; temp != m_Config.LaneNum; ++temp)
+	for (int temp = 0; temp != m_Config.LaneNum; ++temp)
 	{
 		int k = 0;
 		long double p = 1.0;
@@ -47,7 +47,7 @@ void GTAT_High::initialize() {
 	m_RSUAry = new cRSU[m_Config.RSUNum];
 
 	seNBConfigure eNBConfigure;
-	for (unsigned short temp = 0; temp != m_Config.eNBNum; ++temp)
+	for (int temp = 0; temp != m_Config.eNBNum; ++temp)
 	{
 		eNBConfigure.weNBID = temp;
 		m_eNBAry[temp].initializeHigh(eNBConfigure);
@@ -55,13 +55,13 @@ void GTAT_High::initialize() {
 
 
 	sLaneConfigure laneConfigure;
-	for (unsigned short temp = 0; temp != m_Config.LaneNum; ++temp) {
+	for (int temp = 0; temp != m_Config.LaneNum; ++temp) {
 		laneConfigure.wLaneID = temp;
 		m_LaneAry[temp].initializeHigh(laneConfigure);
 	}
 
 	sRSUConfigure RSUConfigure;
-	for (unsigned short RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++) {
+	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++) {
 
 		RSUConfigure.wRSUID = RSUIdx;
 		m_RSUAry[RSUIdx].initializeHigh(RSUConfigure);
@@ -70,7 +70,7 @@ void GTAT_High::initialize() {
 	sUEConfigure ueConfigure;
 	int ueidx = 0;
 
-	for (unsigned short LaneIdx = 0; LaneIdx != m_Config.LaneNum; LaneIdx++) {
+	for (int LaneIdx = 0; LaneIdx != m_Config.LaneNum; LaneIdx++) {
 		for (int uprIdx = 0; uprIdx != m_Config.pupr[LaneIdx]; uprIdx++) {
 			ueConfigure.wLaneID = LaneIdx;
 			//ueConfigure.locationID=rand()%conf.ueTopoNum;
@@ -181,8 +181,8 @@ void GTAT_High::freshLoc() {
 	sAntenna antenna;
 
 
-	unsigned short RSUIdx = 0;
-	unsigned short ClusterID = 0;
+	int RSUIdx = 0;
+	int ClusterID = 0;
 	for (int UserIdx1 = 0; UserIdx1 != m_Config.VeUENum; UserIdx1++)
 	{
 		m_VeUEAry[UserIdx1].imta = new cIMTA[m_Config.RSUNum];
@@ -293,7 +293,7 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 			sAntenna antenna;
 
 
-			unsigned short RSUIdx = m_VeUEAry[VeUEId].m_RSUId;
+			int RSUIdx = m_VeUEAry[VeUEId].m_RSUId;
 			location.eType = None;
 			location.fDistance = 0;
 			location.fDistance1 = 0;

@@ -10,8 +10,8 @@ public:
 	/*--------------------------------------------------------------
 	*                      地理拓扑单元
 	* -------------------------------------------------------------*/
-	unsigned short m_wRoadID;
-	unsigned short m_eNBId;
+	int m_wRoadID;
+	int m_eNBId;
 	double m_fX;
 	double m_fY;
 	double m_fAbsX;

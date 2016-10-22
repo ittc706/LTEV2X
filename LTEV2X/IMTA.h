@@ -45,7 +45,7 @@ public:
 	double m_fRxAngle;
 
 	//信道所需配置常量
-	unsigned short m_byPathNum;
+	int m_byPathNum;
 	double m_fVelocity;
 	double m_fvAngle;
 	double m_fC;
@@ -84,11 +84,11 @@ public:
 	double *m_pfPhaseLoS;
 
 	//FFT所用变量
-	unsigned short m_wFFTNum;
+	int m_wFFTNum;
 	unsigned char m_byFFTOrder;
 	double m_fFFTTime;
-	unsigned short m_wHNum;
-	unsigned short *m_pwFFTIndex;
+	int m_wHNum;
+	int *m_pwFFTIndex;
 public:
 	cIMTA(void);
 	~cIMTA(void);

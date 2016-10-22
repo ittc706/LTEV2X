@@ -16,9 +16,9 @@ public:
 
 	void initializeUrban(sRoadConfigure &t_RoadConfigure);
 
-	unsigned short m_wRoadID;
-    unsigned short m_weNBNum;
-	unsigned short m_weNBID;
+	int m_wRoadID;
+    int m_weNBNum;
+	int m_weNBID;
 	ceNB *m_peNB;
     double m_fAbsX;
 	double m_fAbsY;

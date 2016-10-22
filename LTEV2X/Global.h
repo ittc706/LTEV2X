@@ -32,7 +32,7 @@ extern std::ofstream g_FileRSUThroughput;
 //产生特定分布随机数
 void RandomUniform(double *t_pfArray, unsigned long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero);
 void RandomGaussian(double *t_pfArray, unsigned long t_ulNumber, double t_fMean, double t_fStandardDeviation);
-void SortBubble(double *t_pfArray, unsigned short t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
+void SortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
 void SelectMax(double *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyFirst, unsigned char *t_pbySecond);
 
 
@@ -52,9 +52,9 @@ const double c_C = 299792458.0f;
 const double c_FC = 2e9f;
 
 namespace ns_GTAT_Urban {//城镇模块常量设置
-	const unsigned short c_eNBNumber = 7;
-	const unsigned short c_roadNumber = 14;
-	const unsigned short c_RSUNumber = 78;
+	const int c_eNBNumber = 7;
+	const int c_roadNumber = 14;
+	const int c_RSUNumber = 78;
 	const int c_wide = 250;
 	const int c_length = 433;
 	const double c_lane_wide = 3.5;
@@ -76,7 +76,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		0.5f,-1.0f,
 		1.5f,-1.0f
 	};
-	const unsigned short c_WrapAroundRoad[c_roadNumber][9] =
+	const int c_WrapAroundRoad[c_roadNumber][9] =
 	{
 		{ 0,1,6,5,4,13,8,9,10 },
 		{ 1,2,7,6,5,0,9,10,11 },
@@ -95,7 +95,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 
 	};
 
-	const unsigned short c_RSUClusterNum[c_RSUNumber] = {
+	const int c_RSUClusterNum[c_RSUNumber] = {
 		8,4,8,4,8,4,8,4,8,
 		4,4,4,4,4,
 		4,4,4,4,4,
@@ -190,7 +190,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		2.0f,-1.5f,
 	};
 
-	const unsigned short c_RSUInRoad[c_roadNumber][10] =
+	const int c_RSUInRoad[c_roadNumber][10] =
 	{
 		{ 0,1,2,10,15,23,22,21,14,9 },
 		{ 2,3,4,11,16,25,24,23,15,10 },
@@ -211,9 +211,9 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 
 
 namespace ns_GTAT_High {
-	const unsigned short c_eNBNumber = 2;
-	const unsigned short c_laneNumber = 6;
-	const unsigned short c_RSUNumber = 35;
+	const int c_eNBNumber = 2;
+	const int c_laneNumber = 6;
+	const int c_RSUNumber = 35;
 	//const int c_wide=24;
 	const int c_length = 3464;
 	const double c_lane_wide = 4.0f;
@@ -231,7 +231,7 @@ namespace ns_GTAT_High {
 		0.0f, 2.5f,
 	};
 
-	const unsigned short c_RSUClusterNum = 2;//每个RSU都只有2个簇
+	const int c_RSUClusterNum = 2;//每个RSU都只有2个簇
 
 	const double c_RSUTopoRatio[c_RSUNumber * 2] =
 	{
