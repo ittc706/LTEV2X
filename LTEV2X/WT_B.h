@@ -24,7 +24,7 @@ public:
 	std::vector<double> m_QAM_MI16;
 	std::vector<double> m_QAM_MI64;
 
-	WT_B(cVeUE* systemVeUEAry);
+	WT_B(VeUE* systemVeUEAry);
 	void SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd) override;
 	void testCloest();
 

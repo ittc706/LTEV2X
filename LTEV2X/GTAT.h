@@ -19,15 +19,15 @@ struct Geography {
 class GTAT_Basic {
 public:
 	GTAT_Basic() = delete;
-	GTAT_Basic(int &systemTTI, sConfigure& systemConfig, eNB* &systemeNBAry, cRoad* &systemRoadAry, RSU* &systemRSUAry, cVeUE* &systemVeUEAry) :
+	GTAT_Basic(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry) :
 		m_TTI(systemTTI), m_Config(systemConfig), m_eNBAry(systemeNBAry), m_RoadAry(systemRoadAry), m_RSUAry(systemRSUAry), m_VeUEAry(systemVeUEAry) {}
 	
 	int& m_TTI;//当前的TTI时刻
-	sConfigure& m_Config;//系统参数配置
+	Configure& m_Config;//系统参数配置
 	eNB* &m_eNBAry;//基站容器，这里为什么必须是引用类型，因为系统的这些数组指针必须靠该模块来初始化，因此不能传入拷贝
-	cRoad* &m_RoadAry;//道路容器
+	Road* &m_RoadAry;//道路容器
 	RSU* &m_RSUAry;//RSU容器
-	cVeUE* &m_VeUEAry;//VeUE容器
+	VeUE* &m_VeUEAry;//VeUE容器
 
 
 	virtual void configure() = 0;//参数配置

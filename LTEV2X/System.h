@@ -18,15 +18,15 @@
 #include"TMAC.h"
 #include"TMAC_B.h"
 
-class cSystem{
+class System{
 public:
 	/*------------------数据成员------------------*/
 	int m_TTI;//当前的TTI时刻
-	sConfigure m_Config;//系统参数配置
+	Configure m_Config;//系统参数配置
 	eNB* m_eNBAry;//基站容器
-	cRoad* m_RoadAry;//道路容器
+	Road* m_RoadAry;//道路容器
 	RSU* m_RSUAry;//RSU容器
-	cVeUE* m_VeUEAry;//VeUE容器
+	VeUE* m_VeUEAry;//VeUE容器
 
 	std::vector<Event> m_EventVec;//事件容器，下标代表事件ID
 	std::vector<std::list<int>> m_EventTTIList;//事件触发链表，m_EventList[i]代表第i个TTI的事件表

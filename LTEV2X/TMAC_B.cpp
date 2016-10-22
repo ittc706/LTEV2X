@@ -26,9 +26,9 @@
 using namespace std;
 
 TMAC_B::TMAC_B(int &systemTTI, 
-	sConfigure& systemConfig, 
+	Configure& systemConfig, 
 	RSU* systemRSUAry, 
-	cVeUE* systemVeUEAry, 
+	VeUE* systemVeUEAry, 
 	std::vector<Event>& systemEventVec, 
 	std::vector<std::list<int>>& systemEventTTIList, 
 	std::vector<std::vector<int>>& systemTTIRSUThroughput) :

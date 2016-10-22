@@ -4,7 +4,7 @@
 #include"Global.h"
 
 
-const double cIMTA::m_sacfConstantUMiLoS[25] =
+const double IMTA::m_sacfConstantUMiLoS[25] =
 {
 	0.753065949852806f, 0.241023875447849f, 0.454091158552085f, -0.097177920212920f, -0.398944655540474f,
 	0.241023875447849f, 0.929354051080552f, 0.137998056490968f, -0.242351266621617f, -0.020759074542993f,
@@ -12,7 +12,7 @@ const double cIMTA::m_sacfConstantUMiLoS[25] =
 	-0.097177920212920f, -0.242351266621617f, -0.175603398954279f, 0.915728740196339f, 0.249853229004786f,
 	-0.398944655540474f, -0.020759074542993f, -0.041377149612582f, 0.249853229004786f, 0.881063855850205f
 };
-const double cIMTA::m_sacfConstantUMiNLoS[25] =
+const double IMTA::m_sacfConstantUMiNLoS[25] =
 {
 	0.913514893522226f, 0.0f, 0.178007039816570f, -0.365792336017060f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -20,7 +20,7 @@ const double cIMTA::m_sacfConstantUMiNLoS[25] =
 	-0.365792336017060f, 0.0f, -0.178007039816570f, 0.913514893522227f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double cIMTA::m_sacfConstantUMiO2I[25] =
+const double IMTA::m_sacfConstantUMiO2I[25] =
 {
 	0.896950683840360f, 0.241943793527554f, 0.223605545793171f, -0.294861376620174f, 0.0f,
 	0.241943793527554f, 0.959179465107684f, -0.030708888757422f, 0.143160464655990f, 0.0f,
@@ -28,7 +28,7 @@ const double cIMTA::m_sacfConstantUMiO2I[25] =
 	-0.294861376620174f, 0.143160464655990f, 0.036676495468768f, 0.944042734529146f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double cIMTA::m_sacfConstantSMaLoS[25] =
+const double IMTA::m_sacfConstantSMaLoS[25] =
 {
 	0.854017192528818f, -0.040746823503881f, 0.423846524961968f, -0.298912118384658f, 0.0f,
 	-0.040746823503881f, 0.958761974312789f, -0.023404035164252f, -0.280298812206218f, 0.0f,
@@ -36,7 +36,7 @@ const double cIMTA::m_sacfConstantSMaLoS[25] =
 	-0.298912118384658f, -0.280298812206218f, -0.215103894600008f, 0.886461750943879f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double cIMTA::m_sacConstantSMaNLoS[25] =
+const double IMTA::m_sacConstantSMaNLoS[25] =
 {
 	0.888863320019977f, -0.028738390905236f, 0.394136210972923f, -0.231846394000744f, 0.0f,
 	-0.028738390905236f, 0.976874642167262f, 0.011594978528380f, -0.211555181576079f, 0.0f,
@@ -44,7 +44,7 @@ const double cIMTA::m_sacConstantSMaNLoS[25] =
 	-0.231846394000744f, -0.211555181576079f, 0.050292184084163f, 0.948136251262026f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double cIMTA::m_sacfConstantUMaLoS[25] =
+const double IMTA::m_sacfConstantUMaLoS[25] =
 {
 	0.806310951408682f, 0.245016774934418f, 0.479171304494613f, -0.120392914754038f, -0.213845356893992f,
 	0.245016774934418f, 0.924083471541761f, -0.108566442433108f, -0.271617534928914f, 0.021766026753229f,
@@ -52,7 +52,7 @@ const double cIMTA::m_sacfConstantUMaLoS[25] =
 	-0.120392914754038f, -0.271617534928914f, -0.271600920527001f, 0.915216117252956f, -0.018489442540902f,
 	-0.213845356893992f, 0.021766026753229f, -0.055644441252067f, -0.018489442540902f, 0.974863190445988f
 };
-const double cIMTA::m_sacfConstantUMaNLoS[25] =
+const double IMTA::m_sacfConstantUMaNLoS[25] =
 {
 	0.913941405256431f, 0.147728073775767f, 0.318005795482914f, -0.204352240055453f, 0.0f,
 	0.147728073775767f, 0.913941405256431f, 0.204352240055453f, -0.318005795482914f, 0.0f,
@@ -60,7 +60,7 @@ const double cIMTA::m_sacfConstantUMaNLoS[25] =
 	-0.204352240055453f, -0.318005795482914f, 0.070397088759368f, 0.923123353576218f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double cIMTA::m_sacfConstantRMaLoS[25] =
+const double IMTA::m_sacfConstantRMaLoS[25] =
 {
 	0.965925826289068f, 0.0f, 0.0f, -0.258819045102521f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -68,7 +68,7 @@ const double cIMTA::m_sacfConstantRMaLoS[25] =
 	-0.258819045102521f, 0.0f, 0.0f, 0.965925826289068f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double cIMTA::m_sacfConstantRMaNLoS[25] =
+const double IMTA::m_sacfConstantRMaNLoS[25] =
 {
 	0.955557150656242f, -0.173466133506044f, 0.0f, -0.238369529001059f, 0.0f,
 	-0.173466133506044f, 0.938008596337461f, 0.0f, 0.300082278256296f, 0.0f,
@@ -76,7 +76,7 @@ const double cIMTA::m_sacfConstantRMaNLoS[25] =
 	-0.238369529001059f, 0.300082278256296f, 0.0f, 0.923650688258459f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double cIMTA::m_sacfAngleOffset[m_scbySubPathNum] =
+const double IMTA::m_sacfAngleOffset[m_scbySubPathNum] =
 {
 	7.8016217564146532088488977351458e-4f, -7.8016217564146532088488977351458e-4f,
 	0.00246615023306798769219317505587f, -0.00246615023306798769219317505587f,
@@ -89,16 +89,16 @@ const double cIMTA::m_sacfAngleOffset[m_scbySubPathNum] =
 	0.02652027798405383792135548122719f, -0.02652027798405383792135548122719f,
 	0.03761359070972979671228245975171f, -0.03761359070972979671228245975171f
 };
-const double cIMTA::m_sacfMidPathDelayOffset[m_scbyMidPathNum] =
+const double IMTA::m_sacfMidPathDelayOffset[m_scbyMidPathNum] =
 {
 	0.0f, 5.0e-9f, 10.0e-9f
 };
-const int cIMTA::m_sacbyMidPathIndex[m_scbySubPathNum] =
+const int IMTA::m_sacbyMidPathIndex[m_scbySubPathNum] =
 {
 	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0
 };
 
-cIMTA::cIMTA(void)
+IMTA::IMTA(void)
 {
 	m_pfGain = 0;
 	m_pfSinAoD = 0;
@@ -125,7 +125,7 @@ cIMTA::cIMTA(void)
 	m_pwFFTIndex = 0;
 }
 
-cIMTA::~cIMTA(void)
+IMTA::~IMTA(void)
 {
 	Refresh();
 	if (m_pfTxAntSpacing)
@@ -150,7 +150,7 @@ cIMTA::~cIMTA(void)
 	}
 }
 
-bool cIMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,sLocation &t_eLocation, sAntenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/)
+bool IMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/)
 {
 	m_bBuilt = false;
 	m_fAntGain = t_eAntenna.fAntGain * 0.1f;
@@ -371,7 +371,7 @@ bool cIMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,sLocation &t_eLocation
 	return true;
 }
 
-bool cIMTA::Enable(bool *t_pbEnable)
+bool IMTA::Enable(bool *t_pbEnable)
 {
 	//if (m_bBuilt == false)
 	//{
@@ -597,7 +597,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	return true;
 }
 
-void cIMTA::Calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, double *t_pfSin, double *t_pfCos,double *t_pfH,double *t_pfHFFT)
+void IMTA::Calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, double *t_pfSin, double *t_pfCos,double *t_pfH,double *t_pfHFFT)
 {
 	double fCos;
 	double fSin;
@@ -726,7 +726,7 @@ void cIMTA::Calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, 
 	return;
 }
 
-void cIMTA::Refresh(void)
+void IMTA::Refresh(void)
 {
 	if (m_pfGain)
 	{

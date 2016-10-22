@@ -11,33 +11,33 @@
 #include"IMTA.h"
 
 
-class cVeUE {
+class VeUE {
 public:
 	static int m_VeUECount;
 
-	cVeUE();
-	~cVeUE();
-	void initializeUrban(sUEConfigure &t_UEConfigure);
-	void initializeHighSpeed(sUEConfigure &t_UEConfigure);
+	VeUE();
+	~VeUE();
+	void initializeUrban(VeUEConfigure &t_UEConfigure);
+	void initializeHighSpeed(VeUEConfigure &t_UEConfigure);
 	void initializeElse();//由于其他模块的成员初始化可能依赖于GTAT模块，因此初始化GTAT完毕后，再调用该函数
 
 	//类内嵌套结构体前置声明
 	struct GTAT;
-	struct GTATUrban;
-	struct GTATHighSpeed;
+	struct GTAT_Urban;
+	struct GTAT_HighSpeed;
 	struct RRM;
-	struct RRMDRA;
-	struct RRMRR;
+	struct RRM_DRA;
+	struct RRM_RR;
 	struct WT;
 	struct TMAC;
 
 	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
 	GTAT* m_GTAT = nullptr;//用于存储供其他模块使用的参数
-	GTATUrban* m_GTATUrban = nullptr;//用于存储城镇场景的特定参数
-	GTATHighSpeed* m_GTATHighSpeed = nullptr;//用于存储高速场景的特定参数
+	GTAT_Urban* m_GTAT_Urban = nullptr;//用于存储城镇场景的特定参数
+	GTAT_HighSpeed* m_GTAT_HighSpeed = nullptr;//用于存储高速场景的特定参数
 	RRM* m_RRM = nullptr;
-	RRMDRA* m_RRMDRA = nullptr;//用于存储DRA模式的特定参数
-	RRMRR* m_RRMRR = nullptr;//用于存储RR模式的特定参数
+	RRM_DRA* m_RRM_DRA = nullptr;//用于存储DRA模式的特定参数
+	RRM_RR* m_RRM_RR = nullptr;//用于存储RR模式的特定参数
 	WT* m_WT = nullptr;
 	TMAC* m_TMAC = nullptr;
 	
@@ -59,7 +59,7 @@ public:
 		double *m_InterferenceH = nullptr;//干扰信道响应矩阵，WT_B模块需要
 	};
 
-	struct GTATUrban {
+	struct GTAT_Urban {
 		int m_RoadId;
 		int m_LocationId;
 		double m_X;//相对横坐标
@@ -69,10 +69,10 @@ public:
 		double m_V;//速度
 		double m_VAngle;
 		double m_FantennaAngle;
-		cIMTA *m_IMTA=nullptr;
+		IMTA *m_IMTA=nullptr;
 	};
 
-	struct GTATHighSpeed {
+	struct GTAT_HighSpeed {
 		int m_RoadId;
 		double m_X;//相对横坐标
 		double m_Y;
@@ -81,7 +81,7 @@ public:
 		double m_V;//速度
 		double m_VAngle;
 		double m_FantennaAngle;
-		cIMTA *m_IMTA=nullptr;
+		IMTA *m_IMTA=nullptr;
 	};
 
 	struct RRM {
@@ -90,14 +90,14 @@ public:
 		int  m_PreModulation = 4;//上一次的调制方式，WT_B模块需要
 	};
 
-	struct RRMDRA {
+	struct RRM_DRA {
 		static std::default_random_engine s_Engine;
 
-		cVeUE* m_This;//RRMDRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+		VeUE* m_This;//RRM_DRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 		
 		std::tuple<int, int> m_ScheduleInterval;//该VeUE所在簇的当前一轮调度区间
 
-		RRMDRA(cVeUE* t_this);
+		RRM_DRA(VeUE* t_this);
 		//成员函数
 		int DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, MessageType messageType);
 		int DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
@@ -105,7 +105,7 @@ public:
 		std::string toString(int n);//用于打印VeUE信息
 	};
 
-	struct RRMRR {
+	struct RRM_RR {
 
 	};
 
@@ -120,7 +120,7 @@ public:
 
 
 inline
-int cVeUE::RRMDRA::DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, MessageType messageType) {
+int VeUE::RRM_DRA::DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, MessageType messageType) {
 	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
 	if (size == 0) return -1;
 	std::uniform_int_distribution<int> u(0, size - 1);
@@ -128,7 +128,7 @@ int cVeUE::RRMDRA::DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curA
 }
 
 inline
-int cVeUE::RRMDRA::DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
+int VeUE::RRM_DRA::DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
 	int size = static_cast<int>(curAvaliableEmergencyPatternIdx.size());
 	if (size == 0) return -1;
 	std::uniform_int_distribution<int> u(0, size - 1);

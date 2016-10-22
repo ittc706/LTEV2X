@@ -16,8 +16,8 @@ public:
 	double m_Y;
 	double m_AbsX;
 	double m_AbsY;
-	void initializeUrban(seNBConfigure &t_eNBConfigure);
-	void initializeHighSpeed(seNBConfigure &t_eNBConfigure);
+	void initializeUrban(eNBConfigure &t_eNBConfigure);
+	void initializeHighSpeed(eNBConfigure &t_eNBConfigure);
 
     //UNDONE
 	std::list<int> m_RSUIdList;//该基站中的RSU容器（存储RSU的Id）

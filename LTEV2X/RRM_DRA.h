@@ -15,7 +15,7 @@
 /*===========================================
 *        用于该模块的枚举类型定义
 * ==========================================*/
-enum eDRAMode {
+enum DRAMode {
 	//P1:  Collision avoidance based on sensing
 	//P2:  Enhanced random resource selection
 	//P3:  Location-based resource selection
@@ -32,20 +32,20 @@ class RRM_DRA :public RRM_Basic {
 public:
 	RRM_DRA() = delete;
 	RRM_DRA(int &systemTTI, 
-		sConfigure& systemConfig, 
+		Configure& systemConfig, 
 		RSU* systemRSUAry, 
-		cVeUE* systemVeUEAry, 
+		VeUE* systemVeUEAry, 
 		std::vector<Event>& systemEventVec, 
 		std::vector<std::list<int>>& systemEventTTIList,
 		std::vector<std::vector<int>>& systemTTIRSUThroughput,
-		eDRAMode systemDRAMode,
+		DRAMode systemDRAMode,
 		WT_Basic* systemWTPoint,
 		GTAT_Basic* systemGTATPoint
 	);
 
 	/*------------------数据成员------------------*/
 
-	eDRAMode m_DRAMode;//资源快选择的策略
+	DRAMode m_DRAMode;//资源快选择的策略
 	GTAT_Basic* m_GTATPoint;//地理拓扑单元模块指针
 	WT_Basic* m_WTPoint;//无线传输单元模块指针
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用

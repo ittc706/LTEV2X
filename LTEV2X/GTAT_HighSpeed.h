@@ -5,7 +5,7 @@ class GTAT_HighSpeed :public GTAT_Basic {
 public:
 	static std::default_random_engine s_Engine;
 	GTAT_HighSpeed() = delete;
-	GTAT_HighSpeed(int &systemTTI, sConfigure& systemConfig, eNB* &systemeNBAry, cRoad* &systemRoadAry, RSU* &systemRSUAry, cVeUE* &systemVeUEAry);
+	GTAT_HighSpeed(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry);
 
 	std::vector<std::vector<int>> m_VeUENumPerRSU;//统计每个RSU下的车辆数目，外层下标代表第几次位置更新(从0开始)，内层下标代表RSU编号
 

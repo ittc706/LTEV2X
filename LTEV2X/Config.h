@@ -2,7 +2,7 @@
 #include"Enumeration.h"
 
 /*系统基本的仿真参数*/
-struct sConfigure {
+struct Configure {
 	int NTTI;//仿真总共的TTI
 
 	int periodicEventNTTI;//周期性事件的周期（单位TTI）
@@ -30,9 +30,9 @@ struct sConfigure {
 };
 
 /*eNB配置参数*/
-struct seNBConfigure
+struct eNBConfigure
 {
-	sConfigure* sys_config;
+	Configure* sys_config;
 	int wRoadID;
 	int weNBID;
 	double fX;
@@ -41,9 +41,9 @@ struct seNBConfigure
 	double fAbsY;
 };
 /*Road配置参数*/
-struct sRoadConfigure
+struct RoadConfigure
 {
-	sConfigure* sys_config;
+	Configure* sys_config;
 	int wRoadID;
 	void *peNB;
 	int weNBNum;
@@ -53,15 +53,15 @@ struct sRoadConfigure
 	int wLaneOffset;
 };
 
-struct sLaneConfigure
+struct HighSpeedRodeConfigure
 {
-	sConfigure* sys_config;
+	Configure* sys_config;
 	int wLaneID;
 };
 
 
 /*UE配置参数*/
-struct sUEConfigure
+struct VeUEConfigure
 {
 	int wRoadID;
 	int wLaneID;
@@ -74,13 +74,13 @@ struct sUEConfigure
 };
 
 /*RSU配置参数*/
-struct sRSUConfigure
+struct RSUConfigure
 {
 	int wRSUID;
 };
 
 /*地理位置配置参数*/
-struct sLocation
+struct Location
 {
 	bool bManhattan;
 	LocationType eType;
@@ -94,7 +94,7 @@ struct sLocation
 };
 
 /*天线配置参数*/
-struct sAntenna
+struct Antenna
 {
 	double fTxAngle; // degree
 	double fRxAngle; // degree

@@ -30,7 +30,7 @@ using namespace std;
 default_random_engine WT_B::s_Engine(0);
 
 
-WT_B::WT_B(cVeUE* systemVeUEAry):WT_Basic(systemVeUEAry){
+WT_B::WT_B(VeUE* systemVeUEAry):WT_Basic(systemVeUEAry){
 	initialize();
 }
 

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void cSystem::process() {
+void System::process() {
 	//参数配置
 	configure();
 
@@ -35,7 +35,7 @@ void cSystem::process() {
 	m_GTATPoint->writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo, g_FileVeUENumPerRSULogInfo);
 }
 
-void cSystem::configure() {//系统仿真参数配置
+void System::configure() {//系统仿真参数配置
 
 	m_Config.NTTI = 20;//仿真TTI时间
 	m_Config.periodicEventNTTI = 500;
@@ -51,7 +51,7 @@ void cSystem::configure() {//系统仿真参数配置
 }
 
 
-void cSystem::initialization() {
+void System::initialization() {
 	m_TTI = 0;	
 
 	//GTAT模块初始化
@@ -74,7 +74,7 @@ void cSystem::initialization() {
 }
 
 
-void cSystem::GTATModuleInitialize() {
+void System::GTATModuleInitialize() {
 	switch (m_GTATMode) {
 	case URBAN:
 		m_GTATPoint = new GTAT_Urban(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
@@ -84,12 +84,12 @@ void cSystem::GTATModuleInitialize() {
 	}
 }
 
-void cSystem::WTModuleInitialize() {
+void System::WTModuleInitialize() {
 	m_WTPoint = new WT_B(m_VeUEAry);
 }
 
 
-void cSystem::RRMModuleInitialize() {
+void System::RRMModuleInitialize() {
 	switch (m_RRMMode) {
 	case RR:
 		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
@@ -103,12 +103,12 @@ void cSystem::RRMModuleInitialize() {
 }
 
 
-void cSystem::TMACModuleInitialize() {
+void System::TMACModuleInitialize() {
 	m_TMACPoint = new TMAC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
 }
 
 
-void cSystem::dispose() {
+void System::dispose() {
 	delete m_TMACPoint;
 	delete m_RRMPoint;
 	delete m_GTATPoint;

@@ -5,7 +5,7 @@
 using namespace std;
 
 
-void eNB::initializeUrban(seNBConfigure &t_eNBConfigure){
+void eNB::initializeUrban(eNBConfigure &t_eNBConfigure){
 	m_RoadId = t_eNBConfigure.wRoadID;
 	m_eNBId = t_eNBConfigure.weNBID;
 	m_X = t_eNBConfigure.fX;
@@ -17,7 +17,7 @@ void eNB::initializeUrban(seNBConfigure &t_eNBConfigure){
 }
 
 
-void eNB::initializeHighSpeed(seNBConfigure &t_eNBConfigure)
+void eNB::initializeHighSpeed(eNBConfigure &t_eNBConfigure)
 {
 	//m_wLaneID = t_eNBConfigure.wLaneID;
 	m_eNBId = t_eNBConfigure.weNBID;

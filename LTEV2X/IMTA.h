@@ -10,7 +10,7 @@
 /*===========================================
 *               IMTA信道模型
 * ==========================================*/
-class cIMTA {
+class IMTA {
 public:
 	//路径数
 	static const int m_scbySubPathNum = 20;
@@ -90,9 +90,9 @@ public:
 	int m_wHNum;
 	int *m_pwFFTIndex;
 public:
-	cIMTA(void);
-	~cIMTA(void);
-	bool Build(double* t_Pl, double t_fFrequency/*Hz*/, sLocation &t_eLocation, sAntenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/);
+	IMTA(void);
+	~IMTA(void);
+	bool Build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/);
 	bool Enable(bool *t_pbEnable);
 	void Calculate(double* t_HAfterFFT, double t_fT/*s*/, double *t_pfTemp, double *t_pfSin, double *t_pfCos, double *t_pfH, double *t_pfHFFT);
 	double GetPLSF(void)

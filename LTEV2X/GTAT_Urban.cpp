@@ -9,7 +9,7 @@ using namespace ns_GTAT_Urban;
 
 default_random_engine GTAT_Urban::s_Engine((unsigned)time(NULL));
 
-GTAT_Urban::GTAT_Urban(int &systemTTI, sConfigure& systemConfig, eNB* &systemeNBAry, cRoad* &systemRoadAry, RSU* &systemRSUAry, cVeUE* &systemVeUEAry) :
+GTAT_Urban::GTAT_Urban(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry) :
 	GTAT_Basic(systemTTI, systemConfig, systemeNBAry, systemRoadAry, systemRSUAry, systemVeUEAry) {}
 
 
@@ -64,11 +64,11 @@ void GTAT_Urban::configure() {
 
 void GTAT_Urban::initialize() {
 	m_eNBAry = new eNB[m_Config.eNBNum];
-	m_RoadAry = new cRoad[m_Config.UrbanRoadNum];
-	m_VeUEAry = new cVeUE[m_Config.VeUENum];
+	m_RoadAry = new Road[m_Config.UrbanRoadNum];
+	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	m_RSUAry = new RSU[m_Config.RSUNum];
 
-	sRoadConfigure roadConfigure;
+	RoadConfigure roadConfigure;
 	for (int temp = 0; temp != m_Config.UrbanRoadNum; ++temp)
 	{
 		roadConfigure.wRoadID = temp;
@@ -86,7 +86,7 @@ void GTAT_Urban::initialize() {
 		m_RoadAry[temp].initializeUrban(roadConfigure);
 	}
 
-	sRSUConfigure RSUConfigure;
+	RSUConfigure RSUConfigure;
 	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++)
 	{
 
@@ -94,7 +94,7 @@ void GTAT_Urban::initialize() {
 		m_RSUAry[RSUIdx].initializeUrban(RSUConfigure);
 	}
 
-	sUEConfigure ueConfigure;
+	VeUEConfigure ueConfigure;
 	int ueidx = 0;
 
 	for (int RoadIdx = 0; RoadIdx != m_Config.UrbanRoadNum; RoadIdx++)
@@ -106,8 +106,8 @@ void GTAT_Urban::initialize() {
 			ueConfigure.locationID = rand() % m_Config.ueTopoNum;
 			ueConfigure.fX = m_Config.pueTopo[ueConfigure.locationID * 2 + 0];
 			ueConfigure.fY = m_Config.pueTopo[ueConfigure.locationID * 2 + 1];
-			ueConfigure.fAbsX = m_RoadAry[RoadIdx].m_GTATUrban->m_AbsX + ueConfigure.fX;
-			ueConfigure.fAbsY = m_RoadAry[RoadIdx].m_GTATUrban->m_AbsY + ueConfigure.fY;
+			ueConfigure.fAbsX = m_RoadAry[RoadIdx].m_GTAT_Urban->m_AbsX + ueConfigure.fX;
+			ueConfigure.fAbsY = m_RoadAry[RoadIdx].m_GTAT_Urban->m_AbsY + ueConfigure.fY;
 			ueConfigure.fv = m_Config.fv;
 			m_VeUEAry[ueidx++].initializeUrban(ueConfigure);
 
@@ -173,31 +173,31 @@ void GTAT_Urban::freshLoc() {
 	{
 		bool RoadChangeFlag = false;
 		int temp;
-		switch (m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId)
+		switch (m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId)
 		{
 		case 191:
-			m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 0;
+			m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 0;
 			break;
 		case 0:
 			temp = rand() % 4;
 			if (temp == 0)//turn left
 			{
 				RoadChangeFlag = true;
-				m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId][4];
-				m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 96;
-				m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = -90;
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId][4];
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 96;
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = -90;
 			}
 			else
 				if (temp == 2)//turn right
 				{
-					m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId + 1;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = 90;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId + 1;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = 90;
 				}
 				else//go straight，不改变方向
 				{
 					RoadChangeFlag = true;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId][5];
-					m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 157;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId][5];
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 157;
 				}
 			break;
 		case 61:
@@ -205,22 +205,22 @@ void GTAT_Urban::freshLoc() {
 			if (temp == 0)//turn left
 			{
 				RoadChangeFlag = true;
-				m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId][6];
-				m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 157;
-				m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = -180;
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId][6];
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 157;
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = -180;
 			}
 			else
 				if (temp == 2)
 				{
-					m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId + 1;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = 0;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId + 1;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = 0;
 				}
 				else
 				{
 					RoadChangeFlag = true;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId][7];
-					m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 0;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = 270;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId][7];
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 0;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = 270;
 				}
 			break;
 		case 96:
@@ -228,21 +228,21 @@ void GTAT_Urban::freshLoc() {
 			if (temp == 0)//turn left
 			{
 				RoadChangeFlag = true;
-				m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId][8];
-				m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 0;
-				m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = 90;
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId][8];
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 0;
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = 90;
 			}
 			else
 				if (temp == 2)
 				{
-					m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId + 1;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = -90;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId + 1;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = -90;
 				}
 				else
 				{
 					RoadChangeFlag = true;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId][1];
-					m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 61;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId][1];
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 61;
 				}
 			break;
 		case 157:
@@ -250,157 +250,157 @@ void GTAT_Urban::freshLoc() {
 			if (temp == 0)//turn left
 			{
 				RoadChangeFlag = true;
-				m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId][2];
-				m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 61;
-				m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = 0;
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId][2];
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 61;
+				m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = 0;
 			}
 			else
 				if (temp == 2)
 				{
-					m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId + 1;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_VAngle = -180;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId + 1;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_VAngle = -180;
 				}
 				else
 				{
 					RoadChangeFlag = true;
-					m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId][3];
-					m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = 96;
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId = c_WrapAroundRoad[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId][3];
+					m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = 96;
 				}
 			break;
 		default:
-			m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId = m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId + 1;
+			m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId = m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId + 1;
 			break;
 		}
-		m_VeUEAry[UserIdx].m_GTATUrban->m_X = m_Config.pueTopo[m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId * 2 + 0];
-		m_VeUEAry[UserIdx].m_GTATUrban->m_Y = m_Config.pueTopo[m_VeUEAry[UserIdx].m_GTATUrban->m_LocationId * 2 + 1];
-		m_VeUEAry[UserIdx].m_GTATUrban->m_AbsX = m_RoadAry[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId].m_GTATUrban->m_AbsX + m_VeUEAry[UserIdx].m_GTATUrban->m_X;
-		m_VeUEAry[UserIdx].m_GTATUrban->m_AbsY = m_RoadAry[m_VeUEAry[UserIdx].m_GTATUrban->m_RoadId].m_GTATUrban->m_AbsY + m_VeUEAry[UserIdx].m_GTATUrban->m_Y;
+		m_VeUEAry[UserIdx].m_GTAT_Urban->m_X = m_Config.pueTopo[m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId * 2 + 0];
+		m_VeUEAry[UserIdx].m_GTAT_Urban->m_Y = m_Config.pueTopo[m_VeUEAry[UserIdx].m_GTAT_Urban->m_LocationId * 2 + 1];
+		m_VeUEAry[UserIdx].m_GTAT_Urban->m_AbsX = m_RoadAry[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId].m_GTAT_Urban->m_AbsX + m_VeUEAry[UserIdx].m_GTAT_Urban->m_X;
+		m_VeUEAry[UserIdx].m_GTAT_Urban->m_AbsY = m_RoadAry[m_VeUEAry[UserIdx].m_GTAT_Urban->m_RoadId].m_GTAT_Urban->m_AbsY + m_VeUEAry[UserIdx].m_GTAT_Urban->m_Y;
 
 	}
 
 
-	sLocation location;
-	sAntenna antenna;
+	Location location;
+	Antenna antenna;
 	location.bManhattan = true;
 
 	int RSUIdx = 0;
 	int ClusterID = 0;
 	for (int UserIdx1 = 0; UserIdx1 != m_Config.VeUENum; UserIdx1++)
 	{
-		m_VeUEAry[UserIdx1].m_GTATUrban->m_IMTA = new cIMTA[m_Config.RSUNum];
-		switch (m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId / 10)
+		m_VeUEAry[UserIdx1].m_GTAT_Urban->m_IMTA = new IMTA[m_Config.RSUNum];
+		switch (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId / 10)
 		{
 		case 1:
-			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][8];
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][8];
 			ClusterID = 2;
 			break;
 		case 2:
-			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][8];
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][8];
 			ClusterID = 1;
 			break;
 		case 3:
-			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][9];
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][9];
 			ClusterID = 2;
 			break;
 		case 4:
-			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][9];
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][9];
 			ClusterID = 1;
 			break;
 		case 5:
-			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][0];
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][0];
 			ClusterID = 4;
 			break;
 		case 6:
-			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][0];
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][0];
 			ClusterID = 3;
 			break;
 		case 7:
 		case 8:
 		case 9:
-			if (m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<87)
+			if (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<87)
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][1];
-				if ((m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<78))  ClusterID = 3;
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][1];
+				if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<78))  ClusterID = 3;
 				else ClusterID = 2;
 			}
 			else
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][2];
-				if ((m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<96))  ClusterID = 6;
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][2];
+				if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<96))  ClusterID = 6;
 				else ClusterID = 5;
 			}
 			break;
 		case 10:
 		case 11:
 		case 12:
-			if (m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<106)
+			if (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<106)
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][2];
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][2];
 				ClusterID = 5;
 			}
 			else
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][3];
-				if ((m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<116))  ClusterID = 0;
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][3];
+				if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<116))  ClusterID = 0;
 				else ClusterID = 3;
 			}
 			break;
 		case 13:
-			if (m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<126)
+			if (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<126)
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][3];
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][3];
 				ClusterID = 3;
 			}
 			else
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][4];
-				if ((m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<136))  ClusterID = 0;
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][4];
+				if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<136))  ClusterID = 0;
 				else ClusterID = 3;
 			}
 			break;
 		case 14:
-			if (m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<146)
+			if (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<146)
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][4];
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][4];
 				ClusterID = 3;
 			}
 			else
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][5];
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][5];
 				ClusterID = 0;
 			}
 			break;
 		case 15:
 		case 16:
 		case 17:
-			if (m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<165)
+			if (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<165)
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][5];
-				if ((m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<157))  ClusterID = 0;
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][5];
+				if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<157))  ClusterID = 0;
 				else ClusterID = 7;
 			}
 			else
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][6];
-				if ((m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<174))  ClusterID = 1;
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][6];
+				if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<174))  ClusterID = 1;
 				else ClusterID = 0;
 			}
 			break;
 		case 18:
 		case 19:
-			if (m_VeUEAry[UserIdx1].m_GTATUrban->m_LocationId<183)
+			if (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId<183)
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][6];
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][6];
 				ClusterID = 0;
 			}
 			else
 			{
-				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][7];
+				RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][7];
 				ClusterID = 2;
 			}
 			break;
 		case 0:
-			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTATUrban->m_RoadId][7];
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][7];
 			ClusterID = 1;
 			break;
 		default:
@@ -419,8 +419,8 @@ void GTAT_Urban::freshLoc() {
 		{
 		
 			location.eType = Los;// 车辆与所对应的RSU之间均为LOS
-			location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTATUrban->m_AbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTATUrban->m_AbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsY), 2.0f));
-			angle = atan2(m_VeUEAry[UserIdx1].m_GTATUrban->m_AbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsY, m_VeUEAry[UserIdx1].m_GTATUrban->m_AbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsX) / c_Degree2PI;
+			location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY), 2.0f));
+			angle = atan2(m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY, m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) / c_Degree2PI;
 
 		}
 	
@@ -428,8 +428,8 @@ void GTAT_Urban::freshLoc() {
 		location.fUEAntH = 1.5;
 		RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
-		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTATUrban->m_FantennaAngle;
-		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATUrban->m_FantennaAngle;
+		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTAT_Urban->m_FantennaAngle;
+		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTAT_Urban->m_FantennaAngle;
 		antenna.fAntGain = 6;//收发天线各3dbi
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
@@ -446,13 +446,13 @@ void GTAT_Urban::freshLoc() {
 
 		double t_Pl = 0;
 
-		m_VeUEAry[UserIdx1].m_GTATUrban->m_IMTA[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[UserIdx1].m_GTATUrban->m_V, m_VeUEAry[UserIdx1].m_GTATUrban->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
+		m_VeUEAry[UserIdx1].m_GTAT_Urban->m_IMTA[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[UserIdx1].m_GTAT_Urban->m_V, m_VeUEAry[UserIdx1].m_GTAT_Urban->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
 		bool *flag = new bool();
 
 		m_VeUEAry[UserIdx1].m_GTAT->m_Ploss = t_Pl;
 
 		*flag = true;
-		m_VeUEAry[UserIdx1].m_GTATUrban->m_IMTA[RSUIdx].Enable(flag);
+		m_VeUEAry[UserIdx1].m_GTAT_Urban->m_IMTA[RSUIdx].Enable(flag);
 		double *H = new double[1 * 2 * 12 * 2];
 		double *FFT = new double[1 * 2 * 1024 * 2];
 		double *ch_buffer = new double[1 * 2 * 12 * 20];
@@ -461,7 +461,7 @@ void GTAT_Urban::freshLoc() {
 
 		double *t_HAfterFFT = new double[2 * 1024 * 2];
 
-		m_VeUEAry[UserIdx1].m_GTATUrban->m_IMTA[RSUIdx].Calculate(t_HAfterFFT,0.01f, ch_buffer, ch_sin, ch_cos, H,FFT);
+		m_VeUEAry[UserIdx1].m_GTAT_Urban->m_IMTA[RSUIdx].Calculate(t_HAfterFFT,0.01f, ch_buffer, ch_sin, ch_cos, H,FFT);
 		memcpy(m_VeUEAry[UserIdx1].m_GTAT->m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
 
 		delete flag;
@@ -473,7 +473,7 @@ void GTAT_Urban::freshLoc() {
 		delete[]antenna.pfTxAntSpacing;
 		delete[]antenna.pfRxSlantAngle;
 		delete[]antenna.pfRxAntSpacing;
-		delete[]m_VeUEAry[UserIdx1].m_GTATUrban->m_IMTA;
+		delete[]m_VeUEAry[UserIdx1].m_GTAT_Urban->m_IMTA;
 		delete[] FFT;
 		delete[]t_HAfterFFT;
 	}
@@ -498,7 +498,7 @@ void GTAT_Urban::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstre
 
 void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 	for (int VeUEId : transimitingVeUEId) {
-		m_VeUEAry[VeUEId].m_GTATUrban->m_IMTA = new cIMTA[m_Config.RSUNum];
+		m_VeUEAry[VeUEId].m_GTAT_Urban->m_IMTA = new IMTA[m_Config.RSUNum];
 	}
 
 	for (int VeUEId : transimitingVeUEId) {
@@ -510,8 +510,8 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 		for (int count = 0; count != m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum; count++)
 		{
 			int interUserIdx = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[count];
-			sLocation location;
-			sAntenna antenna;
+			Location location;
+			Antenna antenna;
 			location.bManhattan = true;
 
 			int RSUIdx = m_VeUEAry[VeUEId].m_GTAT->m_RSUId;
@@ -523,17 +523,17 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 			double angle = 0;
 			if (location.bManhattan == true)  //计算location distance
 			{
-				if (abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_AbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_AbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsY) <= 10.5)
+				if (abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY) <= 10.5)
 				{
 					location.eType = Los;
-					location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTATUrban->m_AbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTATUrban->m_AbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsY), 2.0f));
-					angle = atan2(m_VeUEAry[interUserIdx].m_GTATUrban->m_AbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsY, m_VeUEAry[interUserIdx].m_GTATUrban->m_AbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsX) / c_Degree2PI;
+					location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY), 2.0f));
+					angle = atan2(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) / c_Degree2PI;
 				}
 				else
 				{
 					location.eType = Nlos;
-					location.fDistance1 = abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_AbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsX);
-					location.fDistance2 = abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_AbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_AbsY);
+					location.fDistance1 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX);
+					location.fDistance2 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY);
 					location.fDistance = sqrt(pow(location.fDistance1, 2.0f) + pow(location.fDistance2, 2.0f));
 
 				}
@@ -542,8 +542,8 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 			location.fUEAntH = 1.5;
 			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
-			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTATUrban->m_FantennaAngle;
-			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATUrban->m_FantennaAngle;
+			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTAT_Urban->m_FantennaAngle;
+			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTAT_Urban->m_FantennaAngle;
 			antenna.fAntGain = 6;
 			antenna.byTxAntNum = 1;
 			antenna.byRxAntNum = 2;
@@ -559,7 +559,7 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 			antenna.pfRxAntSpacing[1] = 0.5f;
 
 			double t_Pl = 0;
-			m_VeUEAry[interUserIdx].m_GTATUrban->m_IMTA[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_GTATUrban->m_V, m_VeUEAry[interUserIdx].m_GTATUrban->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
+			m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].Build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_V, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
 			bool *flag = new bool();
 
 
@@ -567,7 +567,7 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 
 
 			*flag = true;
-			m_VeUEAry[interUserIdx].m_GTATUrban->m_IMTA[RSUIdx].Enable(flag);
+			m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].Enable(flag);
 			double *H = new double[1 * 2 * 12 * 2];
 			double *FFT = new double[1 * 2 * 1024 * 2];
 			double *ch_buffer = new double[1 * 2 * 12 * 20];
@@ -576,7 +576,7 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 
 			double *t_HAfterFFT = new double[2 * 1024 * 2];
 
-			m_VeUEAry[interUserIdx].m_GTATUrban->m_IMTA[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
+			m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 
 
 			memcpy(&m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[count * 2 * 1024 * 2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
@@ -595,6 +595,6 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 		}
 	}
 	for (int VeUEId : transimitingVeUEId) {
-		delete[]m_VeUEAry[VeUEId].m_GTATUrban->m_IMTA;
+		delete[]m_VeUEAry[VeUEId].m_GTAT_Urban->m_IMTA;
 	}
 }

@@ -11,7 +11,7 @@ int main() {
 	long double start = clock();
 	srand((unsigned)time(NULL));
 	//try {
-		cSystem _system;
+		System _system;
 		_system.process();
 	/*}
 	catch (Exp e) {

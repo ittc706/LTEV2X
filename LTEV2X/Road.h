@@ -11,21 +11,21 @@
 #include"eNB.h"
 
 
-class cRoad{
+class Road{
 public:
-	cRoad();
-	~cRoad();
+	Road();
+	~Road();
 
-	void initializeUrban(sRoadConfigure &t_RoadConfigure);
-	void initializeHighSpeed(sLaneConfigure &t_LaneConfigure);
+	void initializeUrban(RoadConfigure &t_RoadConfigure);
+	void initializeHighSpeed(HighSpeedRodeConfigure &t_LaneConfigure);
 
-	struct GTATUrban;
-	struct GTATHighSpeed;
+	struct GTAT_Urban;
+	struct GTAT_HighSpeed;
 
-	GTATUrban* m_GTATUrban = nullptr;//用于存储城镇场景的特定参数
-	GTATHighSpeed* m_GTATHighSpeed = nullptr;//用于存储高速场景的特定参数
+	GTAT_Urban* m_GTAT_Urban = nullptr;//用于存储城镇场景的特定参数
+	GTAT_HighSpeed* m_GTAT_HighSpeed = nullptr;//用于存储高速场景的特定参数
 
-	struct GTATUrban {
+	struct GTAT_Urban {
 		int m_RoadId;
 		int m_eNBNum;
 		int m_eNBId;
@@ -35,7 +35,7 @@ public:
 		int  m_upr;
 	};
 
-	struct GTATHighSpeed {
+	struct GTAT_HighSpeed {
 		int m_RoadId;
 		double m_AbsX;
 		double m_AbsY;

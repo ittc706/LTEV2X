@@ -27,7 +27,7 @@
 
 using namespace std;
 
-RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, RSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, eDRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint) :
+RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, DRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint) :
 	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint) {
 
 	m_DRAInterferenceVec = vector<list<int>>(gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum);
@@ -81,8 +81,8 @@ void RRM_DRA::schedule() {
 void RRM_DRA::DRAInformationClean() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
-		_RSU.m_RRMDRA->m_DRAAdmitEventIdList.clear();
-		_RSU.m_RRMDRA->m_DRAEmergencyAdmitEventIdList.clear();
+		_RSU.m_RRM_DRA->m_DRAAdmitEventIdList.clear();
+		_RSU.m_RRM_DRA->m_DRAEmergencyAdmitEventIdList.clear();
 	}
 }
 
@@ -98,12 +98,12 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 			* 若赋值为(0,-1,0)会导致获取当前簇编号失败，导致其他地方需要讨论
 			* 因此直接给每个簇都赋值为整个区间，反正也没有任何作用，免得其他部分讨论
 			*------------------------ATTENTION-----------------------*/
-			_RSU.m_RRMDRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_DRAClusterNum, tuple<int, int, int>(0, gc_DRA_NTTI - 1, gc_DRA_NTTI));
+			_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_DRAClusterNum, tuple<int, int, int>(0, gc_DRA_NTTI - 1, gc_DRA_NTTI));
 			continue;
 		}
 
 		//初始化
-		_RSU.m_RRMDRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_DRAClusterNum, tuple<int, int, int>(0, 0, 0));
+		_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_DRAClusterNum, tuple<int, int, int>(0, 0, 0));
 
 		//计算每个TTI时隙对应的VeUE数目(double)，!!!浮点数!!！
 		double VeUESizePerTTI = static_cast<double>(_RSU.m_GTAT->m_VeUEIdList.size()) / static_cast<double>(gc_DRA_NTTI);
@@ -120,7 +120,7 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
 			//如果该簇内至少有一辆VeUE，直接分配给一个单位的时域资源
 			if (_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].size() != 0) {
-				get<2>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]) = 1;
+				get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) = 1;
 				clusterSize[clusterIdx] -= VeUESizePerTTI;
 				basicNTTI++;
 			}
@@ -133,24 +133,24 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 		while (remainNTTI > 0) {
 			int dex = DRAGetMaxIndex(clusterSize);
 			if (dex == -1) throw Exp("还存在没有分配的时域资源，但是每个簇内的VeUE已经为负数");
-			get<2>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[dex])++;
+			get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[dex])++;
 			remainNTTI--;
 			clusterSize[dex] -= VeUESizePerTTI;
 		}
 
 		//开始生成区间范围，闭区间
-		get<0>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[0]) = 0;
-		get<1>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[0]) = get<0>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[0]) + get<2>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[0]) - 1;
+		get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[0]) = 0;
+		get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[0]) = get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[0]) + get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[0]) - 1;
 		for (int clusterIdx = 1; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
-			get<0>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]) = get<1>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx - 1]) + 1;
-			get<1>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]) = get<0>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]) + get<2>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]) - 1;
+			get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) = get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx - 1]) + 1;
+			get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) = get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) + get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) - 1;
 		}
 
 
 		//将调度区间写入该RSU内的每一个车辆
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; ++clusterIdx) {
 			for (int VeUEId : _RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
-				m_VeUEAry[VeUEId].m_RRMDRA->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]));
+				m_VeUEAry[VeUEId].m_RRM_DRA->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]));
 		}
 	}
 	DRAWriteClusterPerformInfo(g_FileClasterPerformInfo);
@@ -182,7 +182,7 @@ void RRM_DRA::DRAProcessEventList() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);//当前可传输数据的簇编号
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);//当前可传输数据的簇编号
 		for (int eventId : m_EventTTIList[m_TTI]) {
 			Event event = m_EventVec[eventId];
 			
@@ -194,7 +194,7 @@ void RRM_DRA::DRAProcessEventList() {
 				if (m_EventVec[eventId].message.messageType == EMERGENCY) {//若是紧急性事件
 					/*  EMERGENCY  */
 					//将该事件压入紧急事件等待链表
-					_RSU.m_RRMDRA->DRAPushToEmergencyWaitEventIdList(eventId);
+					_RSU.m_RRM_DRA->DRAPushToEmergencyWaitEventIdList(eventId);
 
 					//更新该事件的日志
 					m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSU.m_GTAT->m_RSUId, -1, -1, "Trigger");
@@ -205,7 +205,7 @@ void RRM_DRA::DRAProcessEventList() {
 				}
 				else {//非紧急性事件
 				    //将该事件压入等待链表
-					_RSU.m_RRMDRA->DRAPushToWaitEventIdList(eventId);
+					_RSU.m_RRM_DRA->DRAPushToWaitEventIdList(eventId);
 
 					//更新该事件的日志
 					m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, _RSU.m_GTAT->m_RSUId, -1, -1, "Trigger");
@@ -225,26 +225,26 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			if (_RSU.m_RRMDRA->m_DRAEmergencyScheduleInfoTable[patternIdx] == nullptr) {//当前EmergencyPattern无事件传输
+			if (_RSU.m_RRM_DRA->m_DRAEmergencyScheduleInfoTable[patternIdx] == nullptr) {//当前EmergencyPattern无事件传输
 				continue;
 			}
 			else {
-				int eventId = _RSU.m_RRMDRA->m_DRAEmergencyScheduleInfoTable[patternIdx]->eventId;
+				int eventId = _RSU.m_RRM_DRA->m_DRAEmergencyScheduleInfoTable[patternIdx]->eventId;
 				int VeUEId = m_EventVec[eventId].VeUEId;
 				if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
 					//压入Switch链表
-					_RSU.m_RRMDRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
+					_RSU.m_RRM_DRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 
 					//将剩余待传bit重置
 					m_EventVec[eventId].message.resetRemainBitNum();
 
 					//并释放该调度信息的资源
-					delete _RSU.m_RRMDRA->m_DRAEmergencyScheduleInfoTable[patternIdx];
+					delete _RSU.m_RRM_DRA->m_DRAEmergencyScheduleInfoTable[patternIdx];
 					m_DeleteCount++;
-					_RSU.m_RRMDRA->m_DRAEmergencyScheduleInfoTable[patternIdx] = nullptr;
+					_RSU.m_RRM_DRA->m_DRAEmergencyScheduleInfoTable[patternIdx] = nullptr;
 
 					//释放Pattern资源
-					_RSU.m_RRMDRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
+					_RSU.m_RRM_DRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
 
 					//更新该事件的日志
 					m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSU.m_GTAT->m_RSUId, -1, patternIdx, "LocationUpdate");
@@ -263,26 +263,26 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 		//开始处理 m_DRAScheduleInfoTable
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
-				if (_RSU.m_RRMDRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx] == nullptr) {//当前Pattern块无事件在传输
+				if (_RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx] == nullptr) {//当前Pattern块无事件在传输
 					continue;
 				}
 				else {
-					int eventId = _RSU.m_RRMDRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx]->eventId;
+					int eventId = _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx]->eventId;
 					int VeUEId = m_EventVec[eventId].VeUEId;
 					if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
 						//压入Switch链表
-						_RSU.m_RRMDRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
+						_RSU.m_RRM_DRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 
 						//将剩余待传bit重置
 						m_EventVec[eventId].message.resetRemainBitNum();
 
 						//并释放该调度信息的资源
-						delete _RSU.m_RRMDRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx];
+						delete _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx];
 						m_DeleteCount++;
-						_RSU.m_RRMDRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+						_RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
 
 						//释放Pattern资源
-						_RSU.m_RRMDRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
+						_RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
 						//更新该事件的日志
 						m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSU.m_GTAT->m_RSUId, clusterIdx, patternIdx, "LocationUpdate");
@@ -291,20 +291,20 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 						DRAWriteTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSU.m_GTAT->m_RSUId, clusterIdx, patternIdx);
 					}
 					else {
-						if (_RSU.m_RRMDRA->DRAGetClusterIdxOfVeUE(VeUEId) != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
+						if (_RSU.m_RRM_DRA->DRAGetClusterIdxOfVeUE(VeUEId) != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
 							//压入该RSU的等待链表
-							_RSU.m_RRMDRA->DRAPushToWaitEventIdList(eventId);
+							_RSU.m_RRM_DRA->DRAPushToWaitEventIdList(eventId);
 
 							//将剩余待传bit重置
 							m_EventVec[eventId].message.resetRemainBitNum();
 
 							//并释放该调度信息的资源
-							delete _RSU.m_RRMDRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx];
+							delete _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx];
 							m_DeleteCount++;
-							_RSU.m_RRMDRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+							_RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
 
 							//释放Pattern资源
-							_RSU.m_RRMDRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
+							_RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
 							//更新该事件的日志
 							m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSU.m_GTAT->m_RSUId, clusterIdx, patternIdx, "LocationUpdate");
@@ -330,16 +330,16 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 
 		/*  EMERGENCY  */
 		//开始处理m_DRAEmergencyWaitEventIdList
-		list<int>::iterator it = _RSU.m_RRMDRA->m_DRAEmergencyWaitEventIdList.begin();
-		while (it != _RSU.m_RRMDRA->m_DRAEmergencyWaitEventIdList.end()) {
+		list<int>::iterator it = _RSU.m_RRM_DRA->m_DRAEmergencyWaitEventIdList.begin();
+		while (it != _RSU.m_RRM_DRA->m_DRAEmergencyWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
 			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
                 //将其添加到System级别的RSU切换链表中
-				_RSU.m_RRMDRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
+				_RSU.m_RRM_DRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 				
                 //从等待链表将其删除
-				it = _RSU.m_RRMDRA->m_DRAEmergencyWaitEventIdList.erase(it);
+				it = _RSU.m_RRM_DRA->m_DRAEmergencyWaitEventIdList.erase(it);
 
 				//将剩余待传bit重置
 				m_EventVec[eventId].message.resetRemainBitNum();
@@ -359,16 +359,16 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 
 
 		//开始处理 m_DRAWaitEventIdList
-		it = _RSU.m_RRMDRA->m_DRAWaitEventIdList.begin();
-		while (it != _RSU.m_RRMDRA->m_DRAWaitEventIdList.end()) {
+		it = _RSU.m_RRM_DRA->m_DRAWaitEventIdList.begin();
+		while (it != _RSU.m_RRM_DRA->m_DRAWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
 			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
 				//将其添加到System级别的RSU切换链表中
-				_RSU.m_RRMDRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
+				_RSU.m_RRM_DRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 				
 			    //将其从等待链表中删除
-				it = _RSU.m_RRMDRA->m_DRAWaitEventIdList.erase(it);
+				it = _RSU.m_RRM_DRA->m_DRAWaitEventIdList.erase(it);
 
 				//将剩余待传bit重置
 				m_EventVec[eventId].message.resetRemainBitNum();
@@ -393,7 +393,7 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 		RSU &_RSU = m_RSUAry[RSUId];
 
 		list<int>::iterator it = m_DRASwitchEventIdList.begin();
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);//当前可传输数据的簇编号
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);//当前可传输数据的簇编号
 		while (it !=m_DRASwitchEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
@@ -405,7 +405,7 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 				  /*  EMERGENCY  */
 				if (m_EventVec[eventId].message.messageType == EMERGENCY) {//属于紧急事件
 					//转入等待链表
-					_RSU.m_RRMDRA->DRAPushToEmergencyWaitEventIdList(eventId);
+					_RSU.m_RRM_DRA->DRAPushToEmergencyWaitEventIdList(eventId);
 
 					//从Switch表中将其删除
 					it = m_DRASwitchEventIdList.erase(it);
@@ -420,7 +420,7 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 
 				else {//非紧急事件
 					//转入等待链表
-					_RSU.m_RRMDRA->DRAPushToWaitEventIdList(eventId);
+					_RSU.m_RRM_DRA->DRAPushToWaitEventIdList(eventId);
 
 					//从Switch表中将其删除
 					it = m_DRASwitchEventIdList.erase(it);
@@ -442,8 +442,8 @@ void RRM_DRA::DRAProcessWaitEventIdList() {
 		RSU &_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
-		for (int eventId : _RSU.m_RRMDRA->m_DRAEmergencyWaitEventIdList) {
-			_RSU.m_RRMDRA->DRAPushToEmergencyAdmitEventIdList(eventId);//将事件压入接入链表
+		for (int eventId : _RSU.m_RRM_DRA->m_DRAEmergencyWaitEventIdList) {
+			_RSU.m_RRM_DRA->DRAPushToEmergencyAdmitEventIdList(eventId);//将事件压入接入链表
 
 		    //更新该事件的日志
 			m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSU.m_GTAT->m_RSUId, -1, -1, "TryAccept");
@@ -453,19 +453,19 @@ void RRM_DRA::DRAProcessWaitEventIdList() {
 		}
 
 		//由于会全部压入Emergency接入链表，因此直接清空就行了，不需要一个个删除
-		_RSU.m_RRMDRA->m_DRAEmergencyWaitEventIdList.clear();
+		_RSU.m_RRM_DRA->m_DRAEmergencyWaitEventIdList.clear();
 		/*  EMERGENCY  */
 
 
 		//开始处理 m_DRAWaitEventIdList
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);//处于调度中的簇编号
-		list<int>::iterator it = _RSU.m_RRMDRA->m_DRAWaitEventIdList.begin();
-		while (it != _RSU.m_RRMDRA->m_DRAWaitEventIdList.end()) {
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);//处于调度中的簇编号
+		list<int>::iterator it = _RSU.m_RRM_DRA->m_DRAWaitEventIdList.begin();
+		while (it != _RSU.m_RRM_DRA->m_DRAWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
 			if (m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx == clusterIdx) {//该事件当前可以进行调度
-				_RSU.m_RRMDRA->DRAPushToAdmitEventIdList(eventId);//添加到RSU级别的接纳链表中
-				it = _RSU.m_RRMDRA->m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
+				_RSU.m_RRM_DRA->DRAPushToAdmitEventIdList(eventId);//添加到RSU级别的接纳链表中
+				it = _RSU.m_RRM_DRA->m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
 
 				//更新该事件的日志
 				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, _RSU.m_GTAT->m_RSUId, -1, -1, "TryAccept");
@@ -500,19 +500,19 @@ void RRM_DRA::DRASelectBasedOnP123() {
 		vector<int> curAvaliableEmergencyPatternIdx;//当前可用的EmergencyPattern编号
 
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			if (_RSU.m_RRMDRA->m_DRAEmergencyPatternIsAvailable[patternIdx]) {
+			if (_RSU.m_RRM_DRA->m_DRAEmergencyPatternIsAvailable[patternIdx]) {
 				curAvaliableEmergencyPatternIdx.push_back(patternIdx);
 			}
 		}
 
-		for (int eventId : _RSU.m_RRMDRA->m_DRAEmergencyAdmitEventIdList) {
+		for (int eventId : _RSU.m_RRM_DRA->m_DRAEmergencyAdmitEventIdList) {
 			int VeUEId = m_EventVec[eventId].VeUEId;
 
 			//为当前用户在可用的EmergencyPattern块中随机选择一个，每个用户自行随机选择可用EmergencyPattern块
-			int patternIdx = m_VeUEAry[VeUEId].m_RRMDRA->DRARBEmergencySelectBasedOnP2(curAvaliableEmergencyPatternIdx);
+			int patternIdx = m_VeUEAry[VeUEId].m_RRM_DRA->DRARBEmergencySelectBasedOnP2(curAvaliableEmergencyPatternIdx);
 
 			if (patternIdx == -1) {//无对应Pattern类型的pattern资源可用
-				_RSU.m_RRMDRA->DRAPushToEmergencyWaitEventIdList(eventId);
+				_RSU.m_RRM_DRA->DRAPushToEmergencyWaitEventIdList(eventId);
 
 				//更新该事件的日志
 				m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSU.m_GTAT->m_RSUId, -1, -1, "AllBusy");
@@ -524,20 +524,20 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			}
 
 			//将资源标记为占用
-			_RSU.m_RRMDRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = false;
+			_RSU.m_RRM_DRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = false;
 
 			//将调度信息压入m_DRAEmergencyTransimitEventIdList中
-			_RSU.m_RRMDRA->DRAPushToEmergencyTransmitScheduleInfoList(new RSU::RRMDRA::sDRAScheduleInfo(eventId, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx), patternIdx);
+			_RSU.m_RRM_DRA->DRAPushToEmergencyTransmitScheduleInfoList(new RSU::RRM_DRA::DRAScheduleInfo(eventId, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx), patternIdx);
 			m_NewCount++;
 		}
-		_RSU.m_RRMDRA->DRAPullFromEmergencyScheduleInfoTable();
+		_RSU.m_RRM_DRA->DRAPullFromEmergencyScheduleInfoTable();
 		/*  EMERGENCY  */
 
 
 		//开始处理非Emergency的事件
 		int roundATTI = m_TTI%gc_DRA_NTTI;//将TTI映射到[0-gc_DRA_NTTI)的范围
 
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
 
 		/*
 		* 当前TTI可用的Pattern块编号
@@ -548,21 +548,21 @@ void RRM_DRA::DRASelectBasedOnP123() {
 
 		for (int patternTypeIdx = 0; patternTypeIdx < gc_DRAPatternTypeNum; patternTypeIdx++) {
 			for (int patternIdx = gc_DRAPatternTypePatternIdxInterval[patternTypeIdx][0]; patternIdx <= gc_DRAPatternTypePatternIdxInterval[patternTypeIdx][1]; patternIdx++) {
-				if (_RSU.m_RRMDRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx]) {
+				if (_RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx]) {
 					curAvaliablePatternIdx[patternTypeIdx].push_back(patternIdx);
 				}
 			}
 		}
 
-		for (int eventId : _RSU.m_RRMDRA->m_DRAAdmitEventIdList) {//遍历该簇内接纳链表中的事件
+		for (int eventId : _RSU.m_RRM_DRA->m_DRAAdmitEventIdList) {//遍历该簇内接纳链表中的事件
 
 			int VeUEId = m_EventVec[eventId].VeUEId;
 
 			//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
-			int patternIdx = m_VeUEAry[VeUEId].m_RRMDRA->DRARBSelectBasedOnP2(curAvaliablePatternIdx, m_EventVec[eventId].message.messageType);
+			int patternIdx = m_VeUEAry[VeUEId].m_RRM_DRA->DRARBSelectBasedOnP2(curAvaliablePatternIdx, m_EventVec[eventId].message.messageType);
 
 			if (patternIdx == -1) {//该用户传输的信息类型没有pattern剩余了
-				_RSU.m_RRMDRA->DRAPushToWaitEventIdList(eventId);
+				_RSU.m_RRM_DRA->DRAPushToWaitEventIdList(eventId);
 
 				//更新该事件的日志
 				m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSU.m_GTAT->m_RSUId, -1, -1, "AllBusy");
@@ -573,15 +573,15 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			}
 
 			//将资源标记为占用
-			_RSU.m_RRMDRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = false;
+			_RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = false;
 
 			//将调度信息压入m_DRATransimitEventIdList中
-			_RSU.m_RRMDRA->DRAPushToTransmitScheduleInfoList(new RSU::RRMDRA::sDRAScheduleInfo(eventId, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx), patternIdx);
+			_RSU.m_RRM_DRA->DRAPushToTransmitScheduleInfoList(new RSU::RRM_DRA::DRAScheduleInfo(eventId, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx), patternIdx);
 			m_NewCount++;
 		}
 
 		//将调度表中当前可以继续传输的用户压入传输链表中
-		_RSU.m_RRMDRA->DRAPullFromScheduleInfoTable(m_TTI);
+		_RSU.m_RRM_DRA->DRAPullFromScheduleInfoTable(m_TTI);
 	}
 }
 
@@ -596,28 +596,28 @@ void RRM_DRA::DRADelaystatistics() {
 
 		//处理等待链表
 		/*  EMERGENCY  */
-		for (int eventId : _RSU.m_RRMDRA->m_DRAEmergencyWaitEventIdList)
+		for (int eventId : _RSU.m_RRM_DRA->m_DRAEmergencyWaitEventIdList)
 			m_EventVec[eventId].queuingDelay++;
 		/*  EMERGENCY  */
-		for (int eventId : _RSU.m_RRMDRA->m_DRAWaitEventIdList)
+		for (int eventId : _RSU.m_RRM_DRA->m_DRAWaitEventIdList)
 			m_EventVec[eventId].queuingDelay++;
 
 		//处理此刻正在将要传输的传输链表
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++)
-			for (RSU::RRMDRA::sDRAScheduleInfo* &p : _RSU.m_RRMDRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx])
+			for (RSU::RRM_DRA::DRAScheduleInfo* &p : _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx])
 				m_EventVec[p->eventId].sendDelay++;
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
-			for (RSU::RRMDRA::sDRAScheduleInfo* &p : _RSU.m_RRMDRA->m_DRATransimitScheduleInfoList[patternIdx])
+			for (RSU::RRM_DRA::DRAScheduleInfo* &p : _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[patternIdx])
 				m_EventVec[p->eventId].sendDelay++;
 		}
 
 		//处理此刻位于调度表中，但不属于当前簇的事件
-		int curClusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);
+		int curClusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
 			if (clusterIdx == curClusterIdx) continue;
-			for (RSU::RRMDRA::sDRAScheduleInfo *p : _RSU.m_RRMDRA->m_DRAScheduleInfoTable[clusterIdx]) {
+			for (RSU::RRM_DRA::DRAScheduleInfo *p : _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx]) {
 				if (p == nullptr) continue;
 				m_EventVec[p->eventId].queuingDelay++;
 			}
@@ -631,14 +631,14 @@ void RRM_DRA::DRAConflictListener() {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			list<RSU::RRMDRA::sDRAScheduleInfo*> &lst = _RSU.m_RRMDRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
-				for (RSU::RRMDRA::sDRAScheduleInfo* &info : lst) {
+				for (RSU::RRM_DRA::DRAScheduleInfo* &info : lst) {
 					//更新该事件的日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTAT->m_RSUId, -1, patternIdx, "Transimit");
 
 					//首先将事件压入等待列表
-					_RSU.m_RRMDRA->DRAPushToEmergencyWaitEventIdList(info->eventId);
+					_RSU.m_RRM_DRA->DRAPushToEmergencyWaitEventIdList(info->eventId);
 
 					//更新该事件的日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSU.m_GTAT->m_RSUId, -1, -1, "Conflict");
@@ -653,7 +653,7 @@ void RRM_DRA::DRAConflictListener() {
 				}
 
 				//释放Pattern资源
-				_RSU.m_RRMDRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
+				_RSU.m_RRM_DRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
 
 				lst.clear();
 			}
@@ -661,16 +661,16 @@ void RRM_DRA::DRAConflictListener() {
 		/*  EMERGENCY  */
 
 
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
 		for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
-			list<RSU::RRMDRA::sDRAScheduleInfo*> &lst = _RSU.m_RRMDRA->m_DRATransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[patternIdx];
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
-				for (RSU::RRMDRA::sDRAScheduleInfo* &info : lst) {
+				for (RSU::RRM_DRA::DRAScheduleInfo* &info : lst) {
 					//更新该事件的日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTAT->m_RSUId, clusterIdx, patternIdx, "Transimit");
 
 					//首先将事件压入等待列表
-					_RSU.m_RRMDRA->DRAPushToWaitEventIdList(info->eventId);
+					_RSU.m_RRM_DRA->DRAPushToWaitEventIdList(info->eventId);
 
 					//更新该事件的日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSU.m_GTAT->m_RSUId, -1, -1, "Conflict");
@@ -684,7 +684,7 @@ void RRM_DRA::DRAConflictListener() {
 					m_DeleteCount++;
 				}
 				//释放Pattern资源
-				_RSU.m_RRMDRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
+				_RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 
 				lst.clear();
 			}
@@ -705,19 +705,19 @@ void RRM_DRA::DRATransimitPreparation() {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			list<RSU::RRMDRA::sDRAScheduleInfo*> &lst = _RSU.m_RRMDRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
-				RSU::RRMDRA::sDRAScheduleInfo *info = *lst.begin();
+				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
 				m_DRAInterferenceVec[patternIdx].push_back(info->VeUEId);
 			}
 		}
 		/*  EMERGENCY  */
 
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
 		for (int relativePatternIdx = 0; relativePatternIdx < gc_DRATotalPatternNum; relativePatternIdx++) {
-			list<RSU::RRMDRA::sDRAScheduleInfo*> &lst = _RSU.m_RRMDRA->m_DRATransimitScheduleInfoList[relativePatternIdx];
+			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRMDRA::sDRAScheduleInfo *info = *lst.begin();
+				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
 				m_DRAInterferenceVec[relativePatternIdx + gc_DRAEmergencyTotalPatternNum].push_back(info->VeUEId);
 			}
 		}
@@ -753,9 +753,9 @@ void RRM_DRA::DRATransimitStart() {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			list<RSU::RRMDRA::sDRAScheduleInfo*> &lst = _RSU.m_RRMDRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
-				RSU::RRMDRA::sDRAScheduleInfo *info = *lst.begin();
+				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
 
 				//计算SINR，获取调制编码方式
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
@@ -786,11 +786,11 @@ void RRM_DRA::DRATransimitStart() {
 		/*  EMERGENCY  */
 
 
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
 		for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
-			list<RSU::RRMDRA::sDRAScheduleInfo*> &lst = _RSU.m_RRMDRA->m_DRATransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRMDRA::sDRAScheduleInfo *info = *lst.begin();
+				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
 
 				int patternType = DRAGetPatternType(patternIdx);
 
@@ -829,33 +829,33 @@ void RRM_DRA::DRAWriteScheduleInfo(std::ofstream& out) {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
 		out << "    RSU[" << _RSU.m_GTAT->m_RSUId << "][TTI = " << m_TTI << "]" << endl;
 		out << "    {" << endl;
 		out << "    EMERGENCY:" << endl;
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			bool isAvaliable = _RSU.m_RRMDRA->m_DRAEmergencyPatternIsAvailable[patternIdx];
+			bool isAvaliable = _RSU.m_RRM_DRA->m_DRAEmergencyPatternIsAvailable[patternIdx];
 			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
-				RSU::RRMDRA::sDRAScheduleInfo *info = *(_RSU.m_RRMDRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx].begin());
+				RSU::RRM_DRA::DRAScheduleInfo *info = *(_RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx].begin());
 				out << info->toScheduleString(3) << endl;
 			}
 		}
 		out << "    PERIOD:" << endl;
 		for (int patternIdx = 0; patternIdx < gc_DRAPatternNumPerPatternType[PERIOD]; patternIdx++) {
-			bool isAvaliable = _RSU.m_RRMDRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx];
+			bool isAvaliable = _RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx];
 			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
-				RSU::RRMDRA::sDRAScheduleInfo *info=*(_RSU.m_RRMDRA->m_DRATransimitScheduleInfoList[patternIdx].begin());
+				RSU::RRM_DRA::DRAScheduleInfo *info=*(_RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[patternIdx].begin());
 				out << info->toScheduleString(3) << endl;
 			}
 		}
 		out << "    DATA:" << endl;
 		for (int patternIdx = gc_DRAPatternNumPerPatternType[PERIOD]; patternIdx < gc_DRAPatternNumPerPatternType[PERIOD] + gc_DRAPatternNumPerPatternType[DATA]; patternIdx++) {
-			bool isAvaliable = _RSU.m_RRMDRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx];
+			bool isAvaliable = _RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx];
 			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
-				RSU::RRMDRA::sDRAScheduleInfo *info = *(_RSU.m_RRMDRA->m_DRATransimitScheduleInfoList[patternIdx].begin());
+				RSU::RRM_DRA::DRAScheduleInfo *info = *(_RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[patternIdx].begin());
 				out << info->toScheduleString(3) << endl;
 			}
 		}
@@ -872,9 +872,9 @@ void RRM_DRA::DRATransimitEnd() {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
-			list<RSU::RRMDRA::sDRAScheduleInfo*> &lst = _RSU.m_RRMDRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
-				RSU::RRMDRA::sDRAScheduleInfo *info = *lst.begin();
+				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
 				if (m_EventVec[info->eventId].message.remainBitNum == 0) {//已经传输完毕，将资源释放
 
 					//设置传输成功标记
@@ -891,10 +891,10 @@ void RRM_DRA::DRATransimitEnd() {
 					m_DeleteCount++;
 
 					//释放Pattern资源
-					_RSU.m_RRMDRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
+					_RSU.m_RRM_DRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
 				}
 				else {//尚未传输完毕
-					_RSU.m_RRMDRA->DRAPushToEmergencyScheduleInfoTable(patternIdx, *lst.begin());
+					_RSU.m_RRM_DRA->DRAPushToEmergencyScheduleInfoTable(patternIdx, *lst.begin());
 					*lst.begin() = nullptr;
 				}
 			}
@@ -903,11 +903,11 @@ void RRM_DRA::DRATransimitEnd() {
 		/*  EMERGENCY  */
 
 
-		int clusterIdx = _RSU.m_RRMDRA->DRAGetClusterIdx(m_TTI);
+		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
 		for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
-			list<RSU::RRMDRA::sDRAScheduleInfo*> &lst = _RSU.m_RRMDRA->m_DRATransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRMDRA::sDRAScheduleInfo *info = *lst.begin();
+				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
 				if (m_EventVec[info->eventId].message.remainBitNum == 0) {//说明该数据已经传输完毕
 
 					//设置传输成功标记
@@ -924,10 +924,10 @@ void RRM_DRA::DRATransimitEnd() {
 					m_DeleteCount++;
 
 					//释放Pattern资源
-					_RSU.m_RRMDRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
+					_RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][patternIdx] = true;
 				}
 				else {//该数据仍未传完，将其压回m_DRAScheduleInfoTable
-					_RSU.m_RRMDRA->DRAPushToScheduleInfoTable(clusterIdx, patternIdx, *lst.begin());
+					_RSU.m_RRM_DRA->DRAPushToScheduleInfoTable(clusterIdx, patternIdx, *lst.begin());
 					*lst.begin() = nullptr;
 				}
 			}
@@ -1022,8 +1022,8 @@ void RRM_DRA::DRAWriteClusterPerformInfo(std::ofstream &out) {
 	out << "    VUE Info: " << endl;
 	out << "    {" << endl;
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		cVeUE &_VeUE = m_VeUEAry[VeUEId];
-		out << _VeUE.m_RRMDRA->toString(2) << endl;
+		VeUE &_VeUE = m_VeUEAry[VeUEId];
+		out << _VeUE.m_RRM_DRA->toString(2) << endl;
 	}
 	out << "    }\n" << endl;
 
@@ -1041,7 +1041,7 @@ void RRM_DRA::DRAWriteClusterPerformInfo(std::ofstream &out) {
 	out << "    {" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
-		out << _RSU.m_RRMDRA->toString(2) << endl;
+		out << _RSU.m_RRM_DRA->toString(2) << endl;
 	}
 	out << "    }" << endl;
 
