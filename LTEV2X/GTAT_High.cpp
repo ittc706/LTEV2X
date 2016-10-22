@@ -276,26 +276,24 @@ void GTAT_High::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstrea
 }
 
 
-void GTAT_High::calculateInter() {
-	for (int UserIdx = 0; UserIdx != m_Config.VeUENum; UserIdx++)
-	{
-		m_VeUEAry[UserIdx].imta = new cIMTA[m_Config.RSUNum];
+void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
+	for (int VeUEId : transimitingVeUEId) {
+		m_VeUEAry[VeUEId].imta = new cIMTA[m_Config.RSUNum];
 	}
-	for (int UserIdx = 0; UserIdx != m_Config.VeUENum; UserIdx++)
-	{
-		m_VeUEAry[UserIdx].m_InterferencePloss.assign(m_VeUEAry[UserIdx].m_InterVeUENum, 0);
+	for (int VeUEId : transimitingVeUEId) {
+		m_VeUEAry[VeUEId].m_InterferencePloss.assign(m_VeUEAry[VeUEId].m_InterVeUENum, 0);
 
-		delete[]m_VeUEAry[UserIdx].m_InterferenceH;
-		m_VeUEAry[UserIdx].m_InterferenceH = new float[m_VeUEAry[UserIdx].m_InterVeUENum * 2 * 1024 * 2];
+		delete[]m_VeUEAry[VeUEId].m_InterferenceH;
+		m_VeUEAry[VeUEId].m_InterferenceH = new float[m_VeUEAry[VeUEId].m_InterVeUENum * 2 * 1024 * 2];
 
-		for (int count = 0; count != m_VeUEAry[UserIdx].m_InterVeUENum; count++)
+		for (int count = 0; count != m_VeUEAry[VeUEId].m_InterVeUENum; count++)
 		{
-			int interUserIdx = m_VeUEAry[UserIdx].m_InterVeUEVec[count];
+			int interUserIdx = m_VeUEAry[VeUEId].m_InterVeUEVec[count];
 			sLocation location;
 			sAntenna antenna;
 
 
-			unsigned short RSUIdx = m_VeUEAry[UserIdx].m_RSUId;
+			unsigned short RSUIdx = m_VeUEAry[VeUEId].m_RSUId;
 			location.eType = None;
 			location.fDistance = 0;
 			location.fDistance1 = 0;
@@ -333,7 +331,7 @@ void GTAT_High::calculateInter() {
 			bool *flag = new bool();
 
 
-			m_VeUEAry[UserIdx].m_InterferencePloss[count] = t_Pl;
+			m_VeUEAry[VeUEId].m_InterferencePloss[count] = t_Pl;
 
 
 			*flag = true;
@@ -349,7 +347,7 @@ void GTAT_High::calculateInter() {
 			m_VeUEAry[interUserIdx].imta[RSUIdx].Calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 
 
-			memcpy(&m_VeUEAry[UserIdx].m_InterferenceH[count * 2 * 1024 * 2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
+			memcpy(&m_VeUEAry[VeUEId].m_InterferenceH[count * 2 * 1024 * 2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
 
 			delete flag;
 			delete[] H;
@@ -364,8 +362,7 @@ void GTAT_High::calculateInter() {
 			delete[]t_HAfterFFT;
 		}
 	}
-	for (int UserIdx = 0; UserIdx != m_Config.VeUENum; UserIdx++)
-	{
-		delete[]m_VeUEAry[UserIdx].imta;
+	for (int VeUEId : transimitingVeUEId) {
+		delete[]m_VeUEAry[VeUEId].imta;
 	}
 }

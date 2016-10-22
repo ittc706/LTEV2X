@@ -830,9 +830,6 @@ void RRM_DRA::DRATransimitPreparation() {
 			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
 				sDRAScheduleInfo *info = *lst.begin();
-
-				m_VeUEAry[info->VeUEId].m_SubCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
-
 				m_DRAInterferenceVec[patternIdx].push_back(info->VeUEId);
 			}
 		}
@@ -843,18 +840,18 @@ void RRM_DRA::DRATransimitPreparation() {
 			list<sDRAScheduleInfo*> &lst = _RSUAdapterDRA.m_DRATransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				sDRAScheduleInfo *info = *lst.begin();
-
-				m_VeUEAry[info->VeUEId].m_SubCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, relativePatternIdx);
-
 				m_DRAInterferenceVec[relativePatternIdx + gc_DRAEmergencyTotalPatternNum].push_back(info->VeUEId);
 			}
 		}
 	}
     
 	//更新每辆车的干扰车辆列表
+	vector<int> transmitingVeUEId;
 	for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum; patternIdx++) {
 		list<int> &lst = m_DRAInterferenceVec[patternIdx];
 		for (int VeUEId : lst) {
+			transmitingVeUEId.push_back(VeUEId);
+
 			m_VeUEAry[VeUEId].m_InterVeUENum = (int)lst.size() - 1;//写入干扰数目
 			set<int> s(lst.begin(), lst.end());
 			s.erase(VeUEId);
@@ -868,7 +865,7 @@ void RRM_DRA::DRATransimitPreparation() {
 	}
 
 	//请求地理拓扑单元计算干扰响应矩阵
-	//m_GTATPoint->calculateInter();
+	m_GTATPoint->calculateInter(transmitingVeUEId);
 }
 
 
@@ -883,7 +880,7 @@ void RRM_DRA::DRATransimitStart() {
 				sDRAScheduleInfo *info = *lst.begin();
 
 				//计算SINR，获取调制编码方式
-				pair<int, int> &subCarrierIdxRange = m_VeUEAry[info->VeUEId].m_SubCarrierIdxRange;
+				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
 				m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
 
@@ -920,7 +917,7 @@ void RRM_DRA::DRATransimitStart() {
 				int patternType = DRAGetPatternType(patternIdx);
 
 				//计算SINR，获取调制编码方式
-				pair<int, int> &subCarrierIdxRange = m_VeUEAry[info->VeUEId].m_SubCarrierIdxRange;
+				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "NoEmergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
 				m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
 
@@ -1197,6 +1194,10 @@ int RRM_DRA::DRAGetPatternType(int patternIdx) {
 
 
 pair<int, int> RRM_DRA::DRAGetOccupiedSubCarrierRange(eMessageType messageType, int patternIdx) {
+	/*
+	* 对于紧急事件而言，patternIdx从0开始
+	* 对于非紧急事件，patternIdx也是从0开始，但可能有多种事件存在，因此要处理偏移的问题
+	*/
 	pair<int, int> res;
 	if (messageType == EMERGENCY) {
 		res.first = gc_DRAEmergencyRBNumPerPattern*patternIdx;

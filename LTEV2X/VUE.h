@@ -37,13 +37,12 @@ public:
 
 	int m_Nt;//发送天线数目
 	int m_Nr;//接收天线数目
-	std::pair<int, int> m_SubCarrierIdxRange;//当前TTI，占用频段的起始子载波(包含)
 	float m_Ploss;//路径损耗
 	float *m_H;//信道响应矩阵
 	unsigned short m_InterVeUENum;//同频干扰数量
 	std::vector<int> m_InterVeUEVec;//同频干扰车辆ID，不包含当前车辆
 	std::vector<double> m_InterferencePloss;//干扰路径损耗
-	float *m_InterferenceH;//干扰信道响应矩阵
+	float *m_InterferenceH = nullptr;//干扰信道响应矩阵
 	int  m_PreModulation;//上一次的调制方式
 
 
