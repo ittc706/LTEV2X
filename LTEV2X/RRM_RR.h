@@ -6,26 +6,10 @@
 #include"Global.h"
 //RRM_DRA:Radio Resource Management Round-Robin
 
-
-
-/*===========================================
-*                VeUE适配器
-* ==========================================*/
-class VeUEAdapterRR {
-public:
-	cVeUE& m_HoldObj;//该适配器持有的原VeUE对象
-	VeUEAdapterRR() = delete;
-	VeUEAdapterRR(cVeUE& _VeUE) :m_HoldObj(_VeUE) {}
-};
-
-
-
 class RRM_RR :public RRM_Basic {
 public:
 	RRM_RR() = delete;
 	RRM_RR(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput);
-
-	std::vector<VeUEAdapterRR> m_VeUEAdapterVec;
 
 	/*------------------数据成员------------------*/
 	std::list<int> m_RRSwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用

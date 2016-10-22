@@ -1,3 +1,6 @@
+version_2016_10_22(取消了RRM_RR的VeUE适配器以及RSU适配器)
+
+
 version_2016_10_22(取消了RRM_DRA的VeUE适配器)
 	RSU的组织不可改为由明明空间来组织分类，不支持这样的语法
 
