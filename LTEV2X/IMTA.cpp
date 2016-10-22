@@ -154,7 +154,6 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 {
 	m_bBuilt = false;
 	m_fAntGain = t_eAntenna.fAntGain * 0.1f;
-	//m_fMaxAttenu=t_eAntenna.fMaxAttenu * -0.1f;
 	m_byTxAntNum=t_eAntenna.byTxAntNum;
 	m_byRxAntNum=t_eAntenna.byRxAntNum;
 	
@@ -349,7 +348,6 @@ bool cIMTA::Build(float* t_Pl, float t_fFrequency/*Hz*/,sLocation &t_eLocation, 
 	m_fAoA = m_fAoA < 104.0f ? m_fAoA : 104.0f;
 	m_fAoD *= c_Degree2PI;
 	m_fAoA *= c_Degree2PI;
-	//m_fPLSF *= pow(10.0f, fSFSTD * afTemp[3] * 0.1f);
 	m_fPLSF+=fSFSTD * afTemp[3];
 	*t_Pl = pow(10, -m_fPLSF / 10);
 	m_fKDB = fKSTD * afTemp[4] + fKMean;
@@ -493,25 +491,12 @@ bool cIMTA::Enable(bool *t_pbEnable)
 		}
 		++byStoreIndex;
 	}
-	//for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
-	//{
-	//        while (pfAoA[byTempPath] > 2*c_PI)
-	//		{
-	//			pfAoA[byTempPath] -= c_PI2;
-	//		}
-	//		while (pfAoA[byTempPath] < 0)
-	//		{
-	//			pfAoA[byTempPath] += c_PI2;
-	//		}
-	//fprintf(t_fp,"%f\n",pfAoA[byTempPath]/c_Degree2PI);
-	//}
-        //FILE *fp3;//建立一个文件操作指针
-        //fp3=fopen("sinAoA.txt","w+");//以追加的方式建立或打开1.txt，默认位置在你程序的目录下面
+
 		for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
  		{
       		for (unsigned char byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
 		    {
-				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = 0.6f;
+				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = 0.6f;//m_fAntGain
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = pow(10.0f, m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath]);
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] *= pfPathPower[byTempPath];
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = sqrt(m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath]);

@@ -417,30 +417,20 @@ void GTAT_Urban::freshLoc() {
 		float angle = 0;
 		if (location.bManhattan == true)  //计算location distance
 		{
-			//if (abs(veUE[UserIdx1].m_fAbsX - RSU[RSUIdx].m_fAbsX) <= 10.5 || abs(veUE[UserIdx1].m_fAbsY - RSU[RSUIdx].m_fAbsY) <= 10.5)
-			//{
-			location.eType = Los;
+		
+			location.eType = Los;// 车辆与所对应的RSU之间均为LOS
 			location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
 			angle = atan2(m_VeUEAry[UserIdx1].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[UserIdx1].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
-			//}
-			//else
-			//{
-			//	location.eType = Nlos;
-			//	location.fDistance1 = abs(veUE[UserIdx1].m_fAbsX - RSU[RSUIdx].m_fAbsX);
-			//	location.fDistance2 = abs(veUE[UserIdx1].m_fAbsY - RSU[RSUIdx].m_fAbsY);
-			//	location.fDistance = sqrt(pow(location.fDistance1,2.0f)+pow(location.fDistance2,2.0f)); 
 
-			//}
 		}
-		//	fprintf(fp, "%f\n", location.fDistance);
+	
 		location.feNBAntH = 5;
 		location.fUEAntH = 1.5;
 		RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_fantennaAngle;
 		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
-		antenna.fAntGain = 6;
-		//antenna.fMaxAttenu = 23;
+		antenna.fAntGain = 6;//收发天线各3dbi
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
 		antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
@@ -473,17 +463,7 @@ void GTAT_Urban::freshLoc() {
 
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Calculate(t_HAfterFFT,0.01f, ch_buffer, ch_sin, ch_cos, H,FFT);
 		memcpy(m_VeUEAry[UserIdx1].m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
-		//		for (unsigned char byTempTxAnt = 0; byTempTxAnt != 1; ++ byTempTxAnt)
-		//{
-		//	for (unsigned char byTempRxAnt = 0; byTempRxAnt !=2; ++ byTempRxAnt)
-		//	{
-		//    	for (unsigned char byTempPath = 0; byTempPath != 12; ++ byTempPath)
-		//    		{
-		//       fprintf(fp1, "%f\n", H[byTempTxAnt * 2 * 12 * 2 + byTempRxAnt * 12  * 2 + byTempPath * 2 ]);
-		//    fprintf(fp2, "%f\n", H[byTempTxAnt * 2 * 12 * 2 + byTempRxAnt * 12  * 2 + byTempPath * 2 + 1]);
-		//   	    }
-		//	}
-		//}
+
 		delete flag;
 		delete[] H;
 		delete[]ch_buffer;
@@ -559,7 +539,6 @@ void GTAT_Urban::calculateInter() {
 
 				}
 			}
-			//	fprintf(fp, "%f\n", location.fDistance);
 			location.feNBAntH = 5;
 			location.fUEAntH = 1.5;
 			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
@@ -567,7 +546,6 @@ void GTAT_Urban::calculateInter() {
 			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_fantennaAngle;
 			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
 			antenna.fAntGain = 6;
-			//antenna.fMaxAttenu = 23;
 			antenna.byTxAntNum = 1;
 			antenna.byRxAntNum = 2;
 			antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
@@ -603,17 +581,7 @@ void GTAT_Urban::calculateInter() {
 
 
 			memcpy(&m_VeUEAry[UserIdx].m_InterferenceH[count*2*1024*2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
-			//		for (unsigned char byTempTxAnt = 0; byTempTxAnt != 1; ++ byTempTxAnt)
-			//{
-			//	for (unsigned char byTempRxAnt = 0; byTempRxAnt !=2; ++ byTempRxAnt)
-			//	{
-			//    	for (unsigned char byTempPath = 0; byTempPath != 12; ++ byTempPath)
-			//    		{
-			//       fprintf(fp1, "%f\n", H[byTempTxAnt * 2 * 12 * 2 + byTempRxAnt * 12  * 2 + byTempPath * 2 ]);
-			//    fprintf(fp2, "%f\n", H[byTempTxAnt * 2 * 12 * 2 + byTempRxAnt * 12  * 2 + byTempPath * 2 + 1]);
-			//   	    }
-			//	}
-			//}
+
 			delete flag;
 			delete[] H;
 			delete[]ch_buffer;

@@ -140,10 +140,11 @@ void GTAT_High::channelGeneration() {
 void GTAT_High::freshLoc() {
 	for (int UserIdx = 0; UserIdx != m_Config.VeUENum; UserIdx++)
 	{
-		//bool RoadChangeFlag=false;
-		//int temp;
+
 		if (m_VeUEAry[UserIdx].m_fvAngle == 0)
 		{
+			m_VeUEAry[UserIdx].m_ClusterIdx = 0;//由西向东车辆簇编号为0
+
 			if ((m_VeUEAry[UserIdx].m_fAbsX + Fresh_time*m_VeUEAry[UserIdx].m_fv)>(c_length / 2))
 			{
 				m_VeUEAry[UserIdx].m_fAbsX = (m_VeUEAry[UserIdx].m_fAbsX + Fresh_time*m_VeUEAry[UserIdx].m_fv) - c_length;
@@ -157,6 +158,8 @@ void GTAT_High::freshLoc() {
 		}
 		else
 		{
+			m_VeUEAry[UserIdx].m_ClusterIdx = 1;//由东向西车辆簇编号为1
+
 			if ((m_VeUEAry[UserIdx].m_fAbsX - Fresh_time*m_VeUEAry[UserIdx].m_fv)<(-c_length / 2))
 			{
 				m_VeUEAry[UserIdx].m_fAbsX = (m_VeUEAry[UserIdx].m_fAbsX - Fresh_time*m_VeUEAry[UserIdx].m_fv) + c_length;
@@ -176,15 +179,16 @@ void GTAT_High::freshLoc() {
 
 	sLocation location;
 	sAntenna antenna;
-	//location.bManhattan = true;
+
 
 	unsigned short RSUIdx = 0;
+	unsigned short ClusterID = 0;
 	for (int UserIdx1 = 0; UserIdx1 != m_Config.VeUENum; UserIdx1++)
 	{
 		m_VeUEAry[UserIdx1].imta = new cIMTA[m_Config.RSUNum];
 		RSUIdx = 17 - int(m_VeUEAry[UserIdx1].m_fAbsX / 100 + 0.5);
 		m_VeUEAry[UserIdx1].m_RSUId = RSUIdx;
-		m_VeUEAry[UserIdx1].m_ClusterIdx = m_VeUEAry[UserIdx1].m_wLaneID;
+		m_RSUAry[RSUIdx].m_VeUEIdList.push_back(UserIdx1);
 		location.eType = None;
 		location.fDistance = 0;
 		location.fDistance1 = 0;
@@ -192,24 +196,11 @@ void GTAT_High::freshLoc() {
 
 		float angle = 0;
 		location.bManhattan = false;
-		//if (location.bManhattan == true)  //计算location distance
-		//{
-		//if (abs(veUE[UserIdx1].m_fAbsX - RSU[RSUIdx].m_fAbsX) <= 10.5 || abs(veUE[UserIdx1].m_fAbsY - RSU[RSUIdx].m_fAbsY) <= 10.5)
-		//{
+
 		location.eType = Los;
 		location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
 		angle = atan2(m_VeUEAry[UserIdx1].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[UserIdx1].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
-		//}
-		//else
-		//{
-		//	location.eType = Nlos;
-		//	location.fDistance1 = abs(veUE[UserIdx1].m_fAbsX - RSU[RSUIdx].m_fAbsX);
-		//	location.fDistance2 = abs(veUE[UserIdx1].m_fAbsY - RSU[RSUIdx].m_fAbsY);
-		//	location.fDistance = sqrt(pow(location.fDistance1,2.0f)+pow(location.fDistance2,2.0f)); 
 
-		//}
-		//}
-		//	fprintf(fp, "%f\n", location.fDistance);
 		location.feNBAntH = 5;
 		location.fUEAntH = 1.5;
 		RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
@@ -217,7 +208,6 @@ void GTAT_High::freshLoc() {
 		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_fantennaAngle;
 		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
 		antenna.fAntGain = 3;
-		antenna.fMaxAttenu = 23;
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
 		antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
@@ -241,11 +231,6 @@ void GTAT_High::freshLoc() {
 		*flag = true;
 		m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag);
 
-
-		//m_VeUEAry[UserIdx1].imta[RSUIdx].Build(c_FC, location, antenna, m_VeUEAry[UserIdx1].m_fv*3.6, m_VeUEAry[UserIdx1].m_fvAngle);//计算了结果代入信道模型计算UE之间信道系数
-		//bool *flag = new bool();
-		//*flag = true;
-		//m_VeUEAry[UserIdx1].imta[RSUIdx].Enable(flag);
 		float *H = new float[1 * 2 * 19 * 2];
 		float *FFT = new float[1 * 2 * 1024 * 2];
 		float *ch_buffer = new float[1 * 2 * 19 * 20];
@@ -308,7 +293,7 @@ void GTAT_High::calculateInter() {
 			int interUserIdx = m_VeUEAry[UserIdx].m_InterVeUEVec[count];
 			sLocation location;
 			sAntenna antenna;
-			//location.bManhattan = true;
+
 
 			unsigned short RSUIdx = m_VeUEAry[UserIdx].m_RSUId;
 			location.eType = None;
@@ -318,24 +303,11 @@ void GTAT_High::calculateInter() {
 
 			float angle = 0;
 			location.bManhattan = false;
-			//if (location.bManhattan == true)  //计算location distance
-			//{
-			//	//if (abs(veUE[UserIdx1].m_fAbsX - RSU[RSUIdx].m_fAbsX) <= 10.5 || abs(veUE[UserIdx1].m_fAbsY - RSU[RSUIdx].m_fAbsY) <= 10.5)
-			//	//{
-				location.eType = Los;
-				location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
-				angle = atan2(m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
-			
-				//else
-				//{
-				//	location.eType = Nlos;
-				//	location.fDistance1 = abs(veUE[UserIdx1].m_fAbsX - RSU[RSUIdx].m_fAbsX);
-				//	location.fDistance2 = abs(veUE[UserIdx1].m_fAbsY - RSU[RSUIdx].m_fAbsY);
-				//	location.fDistance = sqrt(pow(location.fDistance1,2.0f)+pow(location.fDistance2,2.0f)); 
 
-				//}
-			/*}*/
-			//	fprintf(fp, "%f\n", location.fDistance);
+			location.eType = Los;
+			location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
+			angle = atan2(m_VeUEAry[interUserIdx].m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[interUserIdx].m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
+
 			location.feNBAntH = 5;
 			location.fUEAntH = 1.5;
 			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
@@ -343,7 +315,6 @@ void GTAT_High::calculateInter() {
 			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_fantennaAngle;
 			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
 			antenna.fAntGain = 6;
-			//antenna.fMaxAttenu = 23;
 			antenna.byTxAntNum = 1;
 			antenna.byRxAntNum = 2;
 			antenna.pfTxSlantAngle = new float[antenna.byTxAntNum];
@@ -379,17 +350,7 @@ void GTAT_High::calculateInter() {
 
 
 			memcpy(&m_VeUEAry[UserIdx].m_InterferenceH[count * 2 * 1024 * 2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
-			//		for (unsigned char byTempTxAnt = 0; byTempTxAnt != 1; ++ byTempTxAnt)
-			//{
-			//	for (unsigned char byTempRxAnt = 0; byTempRxAnt !=2; ++ byTempRxAnt)
-			//	{
-			//    	for (unsigned char byTempPath = 0; byTempPath != 12; ++ byTempPath)
-			//    		{
-			//       fprintf(fp1, "%f\n", H[byTempTxAnt * 2 * 12 * 2 + byTempRxAnt * 12  * 2 + byTempPath * 2 ]);
-			//    fprintf(fp2, "%f\n", H[byTempTxAnt * 2 * 12 * 2 + byTempRxAnt * 12  * 2 + byTempPath * 2 + 1]);
-			//   	    }
-			//	}
-			//}
+
 			delete flag;
 			delete[] H;
 			delete[]ch_buffer;
