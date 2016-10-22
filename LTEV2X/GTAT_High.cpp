@@ -89,9 +89,9 @@ void GTAT_High::channelGeneration() {
 	//RSU.m_VeUEIdList是在freshLoc函数内生成的，因此需要在更新位置前清空这个列表
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
-		_RSU.m_VeUEIdList.clear();
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_DRAClusterNum; clusterIdx++) {
-			_RSU.m_DRAClusterVeUEIdList[clusterIdx].clear();
+		_RSU.m_GTAT->m_VeUEIdList.clear();
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+			_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].clear();
 		}
 	}
 	//同时也清除eNB.m_VeUEIdList
@@ -104,9 +104,9 @@ void GTAT_High::channelGeneration() {
 	//将更新后的RSU.m_VeUEIdList压入对应的簇中
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
-		for (int VeUEId : _RSU.m_VeUEIdList) {
+		for (int VeUEId : _RSU.m_GTAT->m_VeUEIdList) {
 			int clusterIdx = m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx;
-			_RSU.m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
+			_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
 		}
 	}
 
@@ -118,7 +118,7 @@ void GTAT_High::channelGeneration() {
 	vector<int> curVeUENum;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
-		curVeUENum.push_back(static_cast<int>(_RSU.m_VeUEIdList.size()));
+		curVeUENum.push_back(static_cast<int>(_RSU.m_GTAT->m_VeUEIdList.size()));
 	}
 	m_VeUENumPerRSU.push_back(curVeUENum);
 
@@ -128,7 +128,7 @@ void GTAT_High::channelGeneration() {
 	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
 		ceNB &_eNB = m_eNBAry[eNBId];
 		for (int RSUId : _eNB.m_RSUIdList) {
-			for (int VeUEId : m_RSUAry[RSUId].m_VeUEIdList) {
+			for (int VeUEId : m_RSUAry[RSUId].m_GTAT->m_VeUEIdList) {
 				_eNB.m_VeUEIdList.push_back(VeUEId);
 			}
 		}
@@ -188,7 +188,7 @@ void GTAT_High::freshLoc() {
 		m_VeUEAry[UserIdx1].m_GTATHigh->imta = new cIMTA[m_Config.RSUNum];
 		RSUIdx = 17 - int(m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsX / 100 + 0.5);
 		m_VeUEAry[UserIdx1].m_GTAT->m_RSUId = RSUIdx;
-		m_RSUAry[RSUIdx].m_VeUEIdList.push_back(UserIdx1);
+		m_RSUAry[RSUIdx].m_GTAT->m_VeUEIdList.push_back(UserIdx1);
 		location.eType = None;
 		location.fDistance = 0;
 		location.fDistance1 = 0;
@@ -198,15 +198,15 @@ void GTAT_High::freshLoc() {
 		location.bManhattan = false;
 
 		location.eType = Los;
-		location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
-		angle = atan2(m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
+		location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsY), 2.0f));
+		angle = atan2(m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsY, m_VeUEAry[UserIdx1].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsX) / c_Degree2PI;
 
 		location.feNBAntH = 5;
 		location.fUEAntH = 1.5;
 		RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTATHigh->m_fantennaAngle;
-		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
+		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATHigh->m_fantennaAngle;
 		antenna.fAntGain = 3;
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
@@ -303,15 +303,15 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 			location.bManhattan = false;
 
 			location.eType = Los;
-			location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
-			angle = atan2(m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
+			location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsY), 2.0f));
+			angle = atan2(m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsY - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsY, m_VeUEAry[interUserIdx].m_GTATHigh->m_fAbsX - m_RSUAry[RSUIdx].m_GTATHigh->m_fAbsX) / c_Degree2PI;
 
 			location.feNBAntH = 5;
 			location.fUEAntH = 1.5;
 			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTATHigh->m_fantennaAngle;
-			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
+			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATHigh->m_fantennaAngle;
 			antenna.fAntGain = 6;
 			antenna.byTxAntNum = 1;
 			antenna.byRxAntNum = 2;

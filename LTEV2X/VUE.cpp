@@ -15,6 +15,8 @@ cVeUE::cVeUE() {
     m_GTATHigh = new GTATHigh();
 	m_RRMDRA = new RRMDRA();
 	m_RRMRR = new RRMRR();
+	m_WT = new WT();
+	m_TMAC = new TMAC();
 }
 
 
@@ -72,6 +74,9 @@ cVeUE::~cVeUE() {
 	delete m_GTAT;
 	delete m_GTATUrban;
 	delete m_GTATHigh;
+	delete m_RRM;
 	delete m_RRMDRA;
 	delete m_RRMRR;
+	delete m_WT;
+	delete m_TMAC;
 }

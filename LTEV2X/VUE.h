@@ -26,14 +26,18 @@ public:
 	struct RRM;
 	struct RRMDRA;
 	struct RRMRR;
+	struct WT;
+	struct TMAC;
 
-	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现
+	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
 	GTAT* m_GTAT = nullptr;//用于存储供其他模块使用的参数
 	GTATUrban* m_GTATUrban = nullptr;//用于存储城镇场景的特定参数
 	GTATHigh* m_GTATHigh = nullptr;//用于存储高速场景的特定参数
 	RRM* m_RRM = nullptr;
 	RRMDRA* m_RRMDRA = nullptr;//用于存储DRA模式的特定参数
 	RRMRR* m_RRMRR = nullptr;//用于存储RR模式的特定参数
+	WT* m_WT = nullptr;
+	TMAC* m_TMAC = nullptr;
 	
 
 	const int m_VeUEId = m_VeUECount++;//车辆ID
@@ -46,6 +50,7 @@ public:
 	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
 
 
+	//类内数据结构定义
 	struct GTAT {
 		int m_RSUId;//RRM_DRA模块需要
 		int m_ClusterIdx;//RRM_DRA模块需要
@@ -93,6 +98,14 @@ public:
 	};
 
 	struct RRMRR {
+
+	};
+
+	struct WT {
+
+	};
+
+	struct TMAC {
 
 	};
 };

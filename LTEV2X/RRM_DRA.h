@@ -343,8 +343,8 @@ int VeUEAdapterDRA::DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAval
 inline
 int RSUAdapterDRA::DRAGetClusterIdxOfVeUE(int VeUEId) {
 	int dex = -1;
-	for (int clusterIdx = 0; clusterIdx < m_HoldObj.m_DRAClusterNum; clusterIdx++) {
-		for (int Id : m_HoldObj.m_DRAClusterVeUEIdList[clusterIdx])
+	for (int clusterIdx = 0; clusterIdx < m_HoldObj.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+		for (int Id : m_HoldObj.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
 			if (Id == VeUEId) return clusterIdx;
 	}
 	throw Exp("cRSU::getClusterIdxOfVeUE(int VeUEId)：该车不在当前RSU中");

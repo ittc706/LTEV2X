@@ -120,9 +120,9 @@ void GTAT_Urban::channelGeneration() {
 	//RSU.m_VeUEIdList是在freshLoc函数内生成的，因此需要在更新位置前清空这个列表
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
-		_RSU.m_VeUEIdList.clear();
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_DRAClusterNum; clusterIdx++) {
-			_RSU.m_DRAClusterVeUEIdList[clusterIdx].clear();
+		_RSU.m_GTAT->m_VeUEIdList.clear();
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+			_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].clear();
 		}
 	}
 	//同时也清除eNB.m_VeUEIdList
@@ -135,9 +135,9 @@ void GTAT_Urban::channelGeneration() {
 	//将更新后的RSU.m_VeUEIdList压入对应的簇中
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
-		for (int VeUEId : _RSU.m_VeUEIdList) {
+		for (int VeUEId : _RSU.m_GTAT->m_VeUEIdList) {
 			int clusterIdx = m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx;
-			_RSU.m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
+			_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].push_back(VeUEId);
 		}
 	}
 
@@ -149,7 +149,7 @@ void GTAT_Urban::channelGeneration() {
 	vector<int> curVeUENum;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		cRSU &_RSU = m_RSUAry[RSUId];
-		curVeUENum.push_back(static_cast<int>(_RSU.m_VeUEIdList.size()));
+		curVeUENum.push_back(static_cast<int>(_RSU.m_GTAT->m_VeUEIdList.size()));
 	}
 	m_VeUENumPerRSU.push_back(curVeUENum);
 
@@ -159,7 +159,7 @@ void GTAT_Urban::channelGeneration() {
 	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
 		ceNB &_eNB = m_eNBAry[eNBId];
 		for (int RSUId : _eNB.m_RSUIdList) {
-			for (int VeUEId : m_RSUAry[RSUId].m_VeUEIdList) {
+			for (int VeUEId : m_RSUAry[RSUId].m_GTAT->m_VeUEIdList) {
 				_eNB.m_VeUEIdList.push_back(VeUEId);
 			}
 		}
@@ -408,7 +408,7 @@ void GTAT_Urban::freshLoc() {
 		}
 		m_VeUEAry[UserIdx1].m_GTAT->m_RSUId = RSUIdx;
 		m_VeUEAry[UserIdx1].m_GTAT->m_ClusterIdx = ClusterID;
-		m_RSUAry[RSUIdx].m_VeUEIdList.push_back(UserIdx1);
+		m_RSUAry[RSUIdx].m_GTAT->m_VeUEIdList.push_back(UserIdx1);
 		location.eType = None;
 		location.fDistance = 0;
 		location.fDistance1 = 0;
@@ -419,8 +419,8 @@ void GTAT_Urban::freshLoc() {
 		{
 		
 			location.eType = Los;// 车辆与所对应的RSU之间均为LOS
-			location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
-			angle = atan2(m_VeUEAry[UserIdx1].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[UserIdx1].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
+			location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsY), 2.0f));
+			angle = atan2(m_VeUEAry[UserIdx1].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsY, m_VeUEAry[UserIdx1].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsX) / c_Degree2PI;
 
 		}
 	
@@ -429,7 +429,7 @@ void GTAT_Urban::freshLoc() {
 		RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTATUrban->m_fantennaAngle;
-		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
+		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATUrban->m_fantennaAngle;
 		antenna.fAntGain = 6;//收发天线各3dbi
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
@@ -523,17 +523,17 @@ void GTAT_Urban::calculateInter(std::vector<int> transimitingVeUEId) {
 			double angle = 0;
 			if (location.bManhattan == true)  //计算location distance
 			{
-				if (abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY) <= 10.5)
+				if (abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsY) <= 10.5)
 				{
 					location.eType = Los;
-					location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY), 2.0f));
-					angle = atan2(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY, m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX) / c_Degree2PI;
+					location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsY), 2.0f));
+					angle = atan2(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsY, m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsX) / c_Degree2PI;
 				}
 				else
 				{
 					location.eType = Nlos;
-					location.fDistance1 = abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_fAbsX);
-					location.fDistance2 = abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_fAbsY);
+					location.fDistance1 = abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsX - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsX);
+					location.fDistance2 = abs(m_VeUEAry[interUserIdx].m_GTATUrban->m_fAbsY - m_RSUAry[RSUIdx].m_GTATUrban->m_fAbsY);
 					location.fDistance = sqrt(pow(location.fDistance1, 2.0f) + pow(location.fDistance2, 2.0f));
 
 				}
@@ -543,7 +543,7 @@ void GTAT_Urban::calculateInter(std::vector<int> transimitingVeUEId) {
 			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTATUrban->m_fantennaAngle;
-			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_fantennaAngle;
+			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTATUrban->m_fantennaAngle;
 			antenna.fAntGain = 6;
 			antenna.byTxAntNum = 1;
 			antenna.byRxAntNum = 2;
