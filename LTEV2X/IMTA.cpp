@@ -93,7 +93,7 @@ const double cIMTA::m_sacfMidPathDelayOffset[m_scbyMidPathNum] =
 {
 	0.0f, 5.0e-9f, 10.0e-9f
 };
-const unsigned char cIMTA::m_sacbyMidPathIndex[m_scbySubPathNum] =
+const int cIMTA::m_sacbyMidPathIndex[m_scbySubPathNum] =
 {
 	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0
 };
@@ -181,12 +181,12 @@ bool cIMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,sLocation &t_eLocation
 	}
 	m_pfRxSlantAngle = new double[m_byRxAntNum];
 
-	for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
+	for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 	{
 		m_pfTxAntSpacing[byTempTxAnt] = t_eAntenna.pfTxAntSpacing[byTempTxAnt] * c_PI2;
 		m_pfTxSlantAngle[byTempTxAnt] = t_eAntenna.pfTxSlantAngle[byTempTxAnt] * c_Degree2PI;
 	}
-	for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
+	for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
 	{
 		m_pfRxAntSpacing[byTempRxAnt] = t_eAntenna.pfRxAntSpacing[byTempRxAnt] * c_PI2;
 		m_pfRxSlantAngle[byTempRxAnt] = t_eAntenna.pfRxSlantAngle[byTempRxAnt] * c_Degree2PI;
@@ -334,9 +334,9 @@ bool cIMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,sLocation &t_eLocation
 	m_fPathShadowSTD /= 10.0f;
 
 	double afTemp[5] = {0.0f};
-	for (unsigned char byTemp = 0; byTemp != 5; ++ byTemp)
+	for (int byTemp = 0; byTemp != 5; ++ byTemp)
 	{
-		for (unsigned char byTempTime = 0; byTempTime != 5; ++ byTempTime)
+		for (int byTempTime = 0; byTempTime != 5; ++ byTempTime)
 		{
 			afTemp[byTemp] += (cpfConstant[byTemp * 5 + byTempTime] * t_eLocation.afPosCor[byTempTime]);
 		}
@@ -397,38 +397,38 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	double fPowerTotal = 0.0f;
 	double *pfAoD = new double[m_byPathNum];
 	double *pfAoA = new double[m_byPathNum];
-//	unsigned char abyIndex[m_scbySubPathNum];
+//	int abyIndex[m_scbySubPathNum];
 	double *pfXAoD = new double[m_byPathNum];
 	double *pfXAoA = new double[m_byPathNum];
 	double fPowerMax;
-	unsigned char byStoreIndex = 0;
+	int byStoreIndex = 0;
 	RandomUniform(pfPathDelay, m_byPathNum, 1.0f, 0.0f, true);
-	for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+	for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 	{
 		pfPathDelay[byTempPath] = m_fDS * log(pfPathDelay[byTempPath]);
 	}
 	SortBubble(pfPathDelay, m_byPathNum, false, false); //从小到大
-	for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+	for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 	{
 		pfPathDelay[m_byPathNum - 1 - byTempPath] -= pfPathDelay[0];
 	}
 
 	RandomGaussian(pfPathPower, m_byPathNum, 0.0f, m_fPathShadowSTD);
-	for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+	for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 	{
 		pfPathPower[byTempPath] = exp((m_fDSRatio - 1.0f) * pfPathDelay[byTempPath] / m_fDS) * pow(10.0f, pfPathPower[byTempPath]);
 		fPowerTotal += pfPathPower[byTempPath];
 	}
-	for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+	for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 	{
 		pfPathPower[byTempPath] /= fPowerTotal;
 	}
 
-	SelectMax(pfPathPower, static_cast<unsigned char>(m_byPathNum), &m_byPathFirst, &m_byPathSecond);
+	SelectMax(pfPathPower, static_cast<int>(m_byPathNum), &m_byPathFirst, &m_byPathSecond);
 
 		if (m_bLoS)
 	{
-		for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+		for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 		{
 			pfPathPower[byTempPath] /= (1.0f + m_fK);
 		}
@@ -446,7 +446,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 		RandomGaussian(pfAoA, m_byPathNum, 0.0f, m_fAoA / 7.0f);
 		
 
-		for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+		for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 		{
 			if (pfXAoD[byTempPath] > 0.0f)
 			{
@@ -472,7 +472,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	if (m_bLoS)
 	{
 		pfPathPower[0] -= (m_fK / (1.0f + m_fK));
-		for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+		for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 		{
 			pfAoD[m_byPathNum - 1 - byTempPath] = pfAoD[m_byPathNum - 1 - byTempPath] - pfAoD[0] + m_fTxAngle;
 			pfAoA[m_byPathNum - 1 - byTempPath] = pfAoA[m_byPathNum - 1 - byTempPath] - pfAoA[0] + m_fRxAngle;
@@ -481,7 +481,7 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	}
 
 
-	for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++byTempPath)
+	for (int byTempPath = 0; byTempPath != m_byPathNum; ++byTempPath)
 	{
 		pfPathPower[byTempPath] /= m_scbySubPathNum;
 		m_pwFFTIndex[byStoreIndex] = (int)floor(pfPathDelay[byTempPath] / m_fFFTTime + 0.5f);
@@ -492,9 +492,9 @@ bool cIMTA::Enable(bool *t_pbEnable)
 		++byStoreIndex;
 	}
 
-		for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+		for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
  		{
-      		for (unsigned char byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
+      		for (int byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
 		    {
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = 0.6f;//m_fAntGain
 				m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath] = pow(10.0f, m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath]);
@@ -528,9 +528,9 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	double *pfSlantVH = new double[m_byTxAntNum * m_byRxAntNum];
 	double *pfSlantHV = new double[m_byTxAntNum * m_byRxAntNum];
 	double *pfSlantHH = new double[m_byTxAntNum * m_byRxAntNum];
-	for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
+	for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 	{
-		for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
+		for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
 		{
 			pfSlantVV[byTempTxAnt * m_byRxAntNum + byTempRxAnt] = sin(m_pfTxSlantAngle[byTempTxAnt]) * sin(m_pfRxSlantAngle[byTempRxAnt]);
 			pfSlantVH[byTempTxAnt * m_byRxAntNum + byTempRxAnt] = sin(m_pfTxSlantAngle[byTempTxAnt]) * cos(m_pfRxSlantAngle[byTempRxAnt]) * m_fXPR;
@@ -540,13 +540,13 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	}
 
 	RandomUniform(pfPhasePol, m_byPathNum * m_scbySubPathNum * 4, c_PI, c_PINeg, false);
-	for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
+	for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 	{
-		for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
+		for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
 		{
-				for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+				for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 				{
-					for (unsigned char byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
+					for (int byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
 					{
 						m_pfPhase[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum * 2 + byTempRxAnt * m_byPathNum * m_scbySubPathNum * 2 + byTempPath * m_scbySubPathNum * 2 + byTempSubPath * 2] =
 							pfSlantVV[byTempTxAnt * m_byRxAntNum + byTempRxAnt] * cos(pfPhasePol[byTempPath * m_scbySubPathNum * 4 + byTempSubPath * 4]) +
@@ -566,9 +566,9 @@ bool cIMTA::Enable(bool *t_pbEnable)
 	if (m_bLoS)
 		{
 			RandomUniform(pfPhasePol, 1, c_PI, c_PINeg, false);
-			for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
+			for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 			{
-				for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
+				for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
 				{
 					m_pfPhaseLoS[byTempTxAnt * m_byRxAntNum * 2 + byTempRxAnt * 2] =
 						(pfSlantVV[byTempTxAnt * m_byRxAntNum + byTempRxAnt] +
@@ -604,13 +604,13 @@ void cIMTA::Calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, 
 
 	memset(t_pfH, 0, m_byTxAntNum * m_byRxAntNum * m_byPathNum * 2 * sizeof(double));
 
-		for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
+		for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
 		{
-			for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
+			for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
 			{
-				for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
+				for (int byTempPath = 0; byTempPath != m_byPathNum; ++ byTempPath)
 				{
-						for (unsigned char byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
+						for (int byTempSubPath = 0; byTempSubPath != m_scbySubPathNum; ++ byTempSubPath)
 						{
 							t_pfTemp[byTempTxAnt * m_byRxAntNum * m_byPathNum * m_scbySubPathNum + byTempRxAnt * m_byPathNum * m_scbySubPathNum + byTempPath * m_scbySubPathNum + byTempSubPath] =
 						            m_pfTxAntSpacing[byTempTxAnt] * m_pfSinAoD[byTempPath * m_scbySubPathNum + byTempSubPath] +
@@ -659,11 +659,11 @@ void cIMTA::Calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, 
 
 		memset(t_pfHFFT, 0, m_byTxAntNum * m_byRxAntNum * 1024 * 2 * sizeof(double));
 
-		for (unsigned char byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++byTempTxAnt)
+		for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++byTempTxAnt)
 		{
-			for (unsigned char byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++byTempRxAnt)
+			for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++byTempRxAnt)
 			{
-				for (unsigned char byTempPath = 0; byTempPath != m_byPathNum; ++byTempPath)
+				for (int byTempPath = 0; byTempPath != m_byPathNum; ++byTempPath)
 				{
 					t_pfHFFT[byTempTxAnt * m_byRxAntNum * m_wFFTNum * 2 + byTempRxAnt * m_wFFTNum * 2 + m_pwFFTIndex[byTempPath] * 2] +=
 						t_pfH[byTempTxAnt * m_byRxAntNum * m_byPathNum * 2 + byTempRxAnt * m_byPathNum * 2 + byTempPath * 2];

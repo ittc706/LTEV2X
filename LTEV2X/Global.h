@@ -33,7 +33,7 @@ extern std::ofstream g_FileRSUThroughput;
 void RandomUniform(double *t_pfArray, unsigned long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero);
 void RandomGaussian(double *t_pfArray, unsigned long t_ulNumber, double t_fMean, double t_fStandardDeviation);
 void SortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
-void SelectMax(double *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyFirst, unsigned char *t_pbySecond);
+void SelectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond);
 
 
 

@@ -99,8 +99,8 @@ struct sAntenna
 	double fTxAngle; // degree
 	double fRxAngle; // degree
 	double fMaxAttenu; // dB
-	unsigned char byTxAntNum;
-	unsigned char byRxAntNum;
+	int byTxAntNum;
+	int byRxAntNum;
 	double *pfTxSlantAngle; // degree
 	double *pfRxSlantAngle; // degree
 	double *pfTxAntSpacing;

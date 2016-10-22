@@ -79,10 +79,10 @@ void SortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_
 {
 	double fTemp;
 	bool bFlagDone;
-	for (unsigned char i1 = 0; i1 != t_wNumber - 1; ++i1)
+	for (int i1 = 0; i1 != t_wNumber - 1; ++i1)
 	{
 		bFlagDone = true;
-		for (unsigned char i2 = 0; i2 != t_wNumber - 1 - i1; ++i2)
+		for (int i2 = 0; i2 != t_wNumber - 1 - i1; ++i2)
 		{
 			if (t_bFlagDirection)
 			{
@@ -140,10 +140,10 @@ void SortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_
 	return;
 }
 
-void SelectMax(double *t_pfArray, unsigned char t_byNumber, unsigned char *t_pbyFirst, unsigned char *t_pbySecond)
+void SelectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond)
 {
-	unsigned char byFisrtIndex;
-	unsigned char bySecondIndex;
+	int byFisrtIndex;
+	int bySecondIndex;
 	if (t_pfArray[0] < t_pfArray[1])
 	{
 		byFisrtIndex = 1;
@@ -154,7 +154,7 @@ void SelectMax(double *t_pfArray, unsigned char t_byNumber, unsigned char *t_pby
 		byFisrtIndex = 0;
 		bySecondIndex = 1;
 	}
-	for (unsigned char byTemp = 2; byTemp != t_byNumber; ++byTemp)
+	for (int byTemp = 2; byTemp != t_byNumber; ++byTemp)
 	{
 		if (t_pfArray[byFisrtIndex] < t_pfArray[byTemp])
 		{

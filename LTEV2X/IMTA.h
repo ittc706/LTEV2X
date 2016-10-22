@@ -13,8 +13,8 @@
 class cIMTA {
 public:
 	//路径数
-	static const unsigned char m_scbySubPathNum = 20;
-	static const unsigned char m_scbyMidPathNum = 3;
+	static const int m_scbySubPathNum = 20;
+	static const int m_scbyMidPathNum = 3;
 	//相关系数矩阵
 	static const double m_sacfConstantInHLoS[25];
 	static const double m_sacfConstantInHNLoS[25];
@@ -30,13 +30,13 @@ public:
 	//角度偏移数组
 	static const double m_sacfAngleOffset[m_scbySubPathNum];
 	static const double m_sacfMidPathDelayOffset[m_scbyMidPathNum];
-	static const unsigned char m_sacbyMidPathIndex[m_scbySubPathNum];
+	static const int m_sacbyMidPathIndex[m_scbySubPathNum];
 
 	//信道所需基本常量
 	double m_fAntGain;
 	double m_fMaxAttenu; // dBm
-	unsigned char m_byTxAntNum;
-	unsigned char m_byRxAntNum;
+	int m_byTxAntNum;
+	int m_byRxAntNum;
 	double * m_pfTxSlantAngle; // degree
 	double * m_pfRxSlantAngle; // degree
 	double * m_pfTxAntSpacing;
@@ -67,8 +67,8 @@ public:
 	bool m_bEnable;
 	double m_fPLSF;
 
-	unsigned char m_byPathFirst;
-	unsigned char m_byPathSecond;
+	int m_byPathFirst;
+	int m_byPathSecond;
 	//信道所需存储常量
 	double *m_pfGain;
 	double *m_pfSinAoD;
@@ -85,7 +85,7 @@ public:
 
 	//FFT所用变量
 	int m_wFFTNum;
-	unsigned char m_byFFTOrder;
+	int m_byFFTOrder;
 	double m_fFFTTime;
 	int m_wHNum;
 	int *m_pwFFTIndex;
