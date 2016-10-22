@@ -52,7 +52,7 @@ void cRSU::initializeHigh(sRSUConfigure &t_RSUConfigure) {
 
 
 void cRSU::initializeElse() {
-	m_RRMDRA = new RRMDRA(m_GTAT);
+	m_RRMDRA = new RRMDRA(this);
 	m_RRMRR = new RRMRR();
 	m_WT = new WT();
 	m_TMAC = new TMAC();
@@ -97,8 +97,8 @@ std::string cRSU::RRMDRA::sDRAScheduleInfo::toScheduleString(int n) {
 
 
 
-cRSU::RRMDRA::RRMDRA(GTAT* t_GTAT) {
-	m_GTAT = t_GTAT;
+cRSU::RRMDRA::RRMDRA(cRSU* t_this) {
+	m_this = t_this;
 
 	/*  EMERGENCY  */
 	m_DRAEmergencyPatternIsAvailable = vector<bool>(gc_DRAEmergencyTotalPatternNum, true);
@@ -106,39 +106,39 @@ cRSU::RRMDRA::RRMDRA(GTAT* t_GTAT) {
 	m_DRAEmergencyTransimitScheduleInfoList = vector<list<sDRAScheduleInfo*>>(gc_DRAEmergencyTotalPatternNum);
 	/*  EMERGENCY  */
 
-	m_DRAPatternIsAvailable = vector<vector<bool>>(m_GTAT->m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum, true));
-	m_DRAScheduleInfoTable = vector<vector<sDRAScheduleInfo*>>(m_GTAT->m_DRAClusterNum, vector<sDRAScheduleInfo*>(gc_DRATotalPatternNum, nullptr));
+	m_DRAPatternIsAvailable = vector<vector<bool>>(m_this->m_GTAT->m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum, true));
+	m_DRAScheduleInfoTable = vector<vector<sDRAScheduleInfo*>>(m_this->m_GTAT->m_DRAClusterNum, vector<sDRAScheduleInfo*>(gc_DRATotalPatternNum, nullptr));
 	m_DRATransimitScheduleInfoList = vector<list<sDRAScheduleInfo*>>(gc_DRATotalPatternNum, list<sDRAScheduleInfo*>(0, nullptr));
 
 }
 
 
-int cRSU::DRAGetClusterIdx(int TTI) {
+int cRSU::RRMDRA::DRAGetClusterIdx(int TTI) {
 	int roundATTI = TTI%gc_DRA_NTTI; //将TTI映射到[0-gc_DRA_NTTI)的范围
-	for (int clusterIdx = 0; clusterIdx < m_GTAT->m_DRAClusterNum; clusterIdx++)
-		if (roundATTI <= get<1>(m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx])) return clusterIdx;
+	for (int clusterIdx = 0; clusterIdx < m_this->m_GTAT->m_DRAClusterNum; clusterIdx++)
+		if (roundATTI <= get<1>(m_DRAClusterTDRInfo[clusterIdx])) return clusterIdx;
 	return -1;
 }
 
 
-string cRSU::toString(int n) {
+string cRSU::RRMDRA::toString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
 
 	ostringstream ss;
 	//主干信息
-	ss << indent << "RSU[" << m_GTAT->m_RSUId << "] :" << endl;
+	ss << indent << "RSU[" << m_this->m_GTAT->m_RSUId << "] :" << endl;
 	ss << indent << "{" << endl;
 
 	//开始打印VeUEIdList
 	ss << indent << "    " << "VeUEIdList :" << endl;
 	ss << indent << "    " << "{" << endl;
-	for (int clusterIdx = 0; clusterIdx < m_GTAT->m_DRAClusterNum; clusterIdx++) {
+	for (int clusterIdx = 0; clusterIdx < m_this->m_GTAT->m_DRAClusterNum; clusterIdx++) {
 		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
 		ss << indent << "        " << "{" << endl;
 		int cnt = 0;
-		for (int RSUId : m_GTAT->m_DRAClusterVeUEIdList[clusterIdx]) {
+		for (int RSUId : m_this->m_GTAT->m_DRAClusterVeUEIdList[clusterIdx]) {
 			if (cnt % 10 == 0)
 				ss << indent << "            [ ";
 			ss << left << setw(3) << RSUId << " , ";
@@ -157,7 +157,7 @@ string cRSU::toString(int n) {
 	ss << indent << "    " << "{" << endl;
 
 	ss << indent << "        ";
-	for (const tuple<int, int, int>&t : m_RRMDRA->m_DRAClusterTDRInfo)
+	for (const tuple<int, int, int>&t : m_this->m_RRMDRA->m_DRAClusterTDRInfo)
 		ss << "[ " << get<0>(t) << " , " << get<1>(t) << " ] ,";
 	ss << endl;
 	ss << indent << "    " << "}" << endl;
