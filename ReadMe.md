@@ -1,3 +1,6 @@
+version_2016_10_22(统一基本数据类型4)
+	unsigned long改为long
+
 version_2016_10_22(统一基本数据类型3)
 	unsigned char改为int(因为unsigned char出现的地方都是用作循环的索引的，因此改为int)
 

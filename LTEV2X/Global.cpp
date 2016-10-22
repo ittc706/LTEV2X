@@ -31,9 +31,9 @@ ofstream g_FileRSUThroughput("Log\\TMACLog\\RSUThroughput.txt");
 /*===========================================
 *               全域函数定义
 * ==========================================*/
-void RandomUniform(double *t_pfArray, unsigned long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero)
+void RandomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero)
 {
-	for (unsigned long ulTemp = 0; ulTemp != t_ulNumber; ++ulTemp)
+	for (long ulTemp = 0; ulTemp != t_ulNumber; ++ulTemp)
 	{
 		do
 		{
@@ -45,16 +45,16 @@ void RandomUniform(double *t_pfArray, unsigned long t_ulNumber, double t_fUpBoun
 }
 
 
-void RandomGaussian(double *t_pfArray, unsigned long t_ulNumber, double t_fMean, double t_fStandardDeviation)
+void RandomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation)
 {
-	unsigned long ulHalfNum = t_ulNumber / 2;
+	long ulHalfNum = t_ulNumber / 2;
 	if (ulHalfNum)
 	{
 		double *pfTemp1 = new double[ulHalfNum];
 		double *pfTemp2 = new double[ulHalfNum];
 		RandomUniform(pfTemp1, ulHalfNum, 1.0f, 0.0f, true);
 		RandomUniform(pfTemp2, ulHalfNum, c_PI, c_PINeg, false);
-		for (unsigned long ulTemp = 0; ulTemp != ulHalfNum; ++ulTemp)
+		for (long ulTemp = 0; ulTemp != ulHalfNum; ++ulTemp)
 		{
 			t_pfArray[ulTemp * 2] = sqrt(log(pfTemp1[ulTemp]) * -2.0f) * cos(pfTemp2[ulTemp]) * t_fStandardDeviation + t_fMean;
 			t_pfArray[ulTemp * 2 + 1] = sqrt(log(pfTemp1[ulTemp]) * -2.0f) * sin(pfTemp2[ulTemp]) * t_fStandardDeviation + t_fMean;
