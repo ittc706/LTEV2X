@@ -19,13 +19,13 @@ VeUE::VeUE() {
 
 void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
 
-	m_GTAT_Urban->m_RoadId = t_UEConfigure.wRoadID;
-	m_GTAT_Urban->m_LocationId = t_UEConfigure.locationID;
-	m_GTAT_Urban->m_X = t_UEConfigure.fX;
-	m_GTAT_Urban->m_Y = t_UEConfigure.fY;
-	m_GTAT_Urban->m_AbsX = t_UEConfigure.fAbsX;
-	m_GTAT_Urban->m_AbsY = t_UEConfigure.fAbsY;
-	m_GTAT_Urban->m_V = t_UEConfigure.fv;
+	m_GTAT_Urban->m_RoadId = t_UEConfigure.roadId;
+	m_GTAT_Urban->m_LocationId = t_UEConfigure.locationId;
+	m_GTAT_Urban->m_X = t_UEConfigure.X;
+	m_GTAT_Urban->m_Y = t_UEConfigure.Y;
+	m_GTAT_Urban->m_AbsX = t_UEConfigure.AbsX;
+	m_GTAT_Urban->m_AbsY = t_UEConfigure.AbsY;
+	m_GTAT_Urban->m_V = t_UEConfigure.V;
 
 	if ((0 < m_GTAT_Urban->m_LocationId) && (m_GTAT_Urban->m_LocationId <= 61))
 		m_GTAT_Urban->m_VAngle = 90;
@@ -47,12 +47,12 @@ void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
 
 
 void VeUE::initializeHighSpeed(VeUEConfigure &t_UEConfigure) {
-	m_GTAT_HighSpeed->m_RoadId = t_UEConfigure.wLaneID;
-	m_GTAT_HighSpeed->m_X = t_UEConfigure.fX;
-	m_GTAT_HighSpeed->m_Y = t_UEConfigure.fY;
-	m_GTAT_HighSpeed->m_AbsX = t_UEConfigure.fAbsX;
-	m_GTAT_HighSpeed->m_AbsY = t_UEConfigure.fAbsY;
-	m_GTAT_HighSpeed->m_V = t_UEConfigure.fv / 3.6f;
+	m_GTAT_HighSpeed->m_RoadId = t_UEConfigure.laneId;
+	m_GTAT_HighSpeed->m_X = t_UEConfigure.X;
+	m_GTAT_HighSpeed->m_Y = t_UEConfigure.Y;
+	m_GTAT_HighSpeed->m_AbsX = t_UEConfigure.AbsX;
+	m_GTAT_HighSpeed->m_AbsY = t_UEConfigure.AbsY;
+	m_GTAT_HighSpeed->m_V = t_UEConfigure.V / 3.6f;
 
 	if (m_GTAT_HighSpeed->m_RoadId <= 2)
 		m_GTAT_HighSpeed->m_VAngle = 0;

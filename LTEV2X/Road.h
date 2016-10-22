@@ -16,7 +16,7 @@ public:
 	Road();
 	~Road();
 
-	void initializeUrban(RoadConfigure &t_RoadConfigure);
+	void initializeUrban(UrbanRoadConfigure &t_RoadConfigure);
 	void initializeHighSpeed(HighSpeedRodeConfigure &t_LaneConfigure);
 
 	struct GTAT_Urban;

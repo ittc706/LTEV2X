@@ -6,12 +6,12 @@ using namespace std;
 
 
 void eNB::initializeUrban(eNBConfigure &t_eNBConfigure){
-	m_RoadId = t_eNBConfigure.wRoadID;
-	m_eNBId = t_eNBConfigure.weNBID;
-	m_X = t_eNBConfigure.fX;
-	m_Y = t_eNBConfigure.fY;
-	m_AbsX = t_eNBConfigure.fAbsX;
-	m_AbsY = t_eNBConfigure.fAbsY;
+	m_RoadId = t_eNBConfigure.roadId;
+	m_eNBId = t_eNBConfigure.eNBId;
+	m_X = t_eNBConfigure.X;
+	m_Y = t_eNBConfigure.Y;
+	m_AbsX = t_eNBConfigure.AbsX;
+	m_AbsY = t_eNBConfigure.AbsY;
 	printf("»ùÕ¾£º");
 	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_AbsX, m_AbsY);
 }
@@ -20,7 +20,7 @@ void eNB::initializeUrban(eNBConfigure &t_eNBConfigure){
 void eNB::initializeHighSpeed(eNBConfigure &t_eNBConfigure)
 {
 	//m_wLaneID = t_eNBConfigure.wLaneID;
-	m_eNBId = t_eNBConfigure.weNBID;
+	m_eNBId = t_eNBConfigure.eNBId;
 	//m_fX = t_eNBConfigure.fX;
 	//m_fY = t_eNBConfigure.fY;
 	m_AbsX = ns_GTAT_HighSpeed::c_eNBTopo[m_eNBId * 2 + 0];

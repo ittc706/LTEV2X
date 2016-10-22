@@ -217,64 +217,64 @@ bool IMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, 
 	double fSFSTD;
 	double fPL1;
 	double fPL2;
-	double fDistanceBP = 4*(t_eLocation.fUEAntH-1)*(t_eLocation.fUEAntH-1)*t_fFrequency/c_C;
+	double fDistanceBP = 4*(t_eLocation.VeUEAntH-1)*(t_eLocation.VeUEAntH-1)*t_fFrequency/c_C;
 	switch (t_eLocation.eType)
 	{
 	case Los:
 		m_bLoS = true;
-		if(3<t_eLocation.fDistance&&t_eLocation.fDistance<fDistanceBP)
+		if(3<t_eLocation.distance&&t_eLocation.distance<fDistanceBP)
 		{
-		m_fPLSF = 22.7f * log10(t_eLocation.fDistance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);//转换为GHz
+		m_fPLSF = 22.7f * log10(t_eLocation.distance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);//转换为GHz
 		}
 		else 
 		{
-			if(fDistanceBP<t_eLocation.fDistance&&t_eLocation.fDistance<5000)
+			if(fDistanceBP<t_eLocation.distance&&t_eLocation.distance<5000)
 		    {
-		     m_fPLSF = 40.0f * log10(t_eLocation.fDistance) + 7.56f - 2 * 17.3f * log10(t_eLocation.fUEAntH-1) + 2.7f *(log10(t_fFrequency) - 9.0f);
+		     m_fPLSF = 40.0f * log10(t_eLocation.distance) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH-1) + 2.7f *(log10(t_fFrequency) - 9.0f);
 		    }
-			else if(t_eLocation.fDistance<3)
+			else if(t_eLocation.distance<3)
 			{
-		     m_fPLSF = 22.7f * log10(t_eLocation.fDistance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
+		     m_fPLSF = 22.7f * log10(t_eLocation.distance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 			}
 		}
 		
 
 		break;
 	case Nlos:
-		fTemp = (2.8f - 0.0024f * t_eLocation.fDistance1) > 1.84f ? (2.8f - 0.0024f * t_eLocation.fDistance1) : 1.84f;
-		if(3<t_eLocation.fDistance1&&t_eLocation.fDistance1<fDistanceBP)
+		fTemp = (2.8f - 0.0024f * t_eLocation.distance1) > 1.84f ? (2.8f - 0.0024f * t_eLocation.distance1) : 1.84f;
+		if(3<t_eLocation.distance1&&t_eLocation.distance1<fDistanceBP)
 		{
-		fPL1 = 22.7f * log10(t_eLocation.fDistance1) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
+		fPL1 = 22.7f * log10(t_eLocation.distance1) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
 		}
 		else 
 		{
-			if(fDistanceBP<t_eLocation.fDistance1&&t_eLocation.fDistance1<5000)
+			if(fDistanceBP<t_eLocation.distance1&&t_eLocation.distance1<5000)
 		    {
-		     fPL1 = 40.0f * log10(t_eLocation.fDistance1) + 7.56f - 2 * 17.3f * log10(t_eLocation.fUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
+		     fPL1 = 40.0f * log10(t_eLocation.distance1) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
 		    }
-			else if(t_eLocation.fDistance1<3)
+			else if(t_eLocation.distance1<3)
 			{
-		     fPL1 = 22.7f * log10(t_eLocation.fDistance1) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
+		     fPL1 = 22.7f * log10(t_eLocation.distance1) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 			}
 		}
-		fPL1=fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.fDistance1) + 3 * (log10(t_fFrequency) - 9.0f);
-		fTemp = (2.8f - 0.0024f * t_eLocation.fDistance2) > 1.84f ? (2.8f - 0.0024f * t_eLocation.fDistance2) : 1.84f;
-		if(3<t_eLocation.fDistance2&&t_eLocation.fDistance2<fDistanceBP)
+		fPL1=fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance1) + 3 * (log10(t_fFrequency) - 9.0f);
+		fTemp = (2.8f - 0.0024f * t_eLocation.distance2) > 1.84f ? (2.8f - 0.0024f * t_eLocation.distance2) : 1.84f;
+		if(3<t_eLocation.distance2&&t_eLocation.distance2<fDistanceBP)
 		{
-		fPL2 = 22.7f * log10(t_eLocation.fDistance2) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
+		fPL2 = 22.7f * log10(t_eLocation.distance2) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 		}
 		else 
 		{
-			if(fDistanceBP<t_eLocation.fDistance2&&t_eLocation.fDistance2<5000)
+			if(fDistanceBP<t_eLocation.distance2&&t_eLocation.distance2<5000)
 		    {
-		     fPL2 = 40.0f * log10(t_eLocation.fDistance2) + 7.56f - 2 * 17.3f * log10(t_eLocation.fUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
+		     fPL2 = 40.0f * log10(t_eLocation.distance2) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
 		    }
-			else if(t_eLocation.fDistance1<3)
+			else if(t_eLocation.distance1<3)
 			{
-		     fPL2 = 22.7f * log10(t_eLocation.fDistance2) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
+		     fPL2 = 22.7f * log10(t_eLocation.distance2) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
 			}
 		}
-		fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.fDistance2) + 3 * (log10(t_fFrequency) - 9.0f);
+		fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance2) + 3 * (log10(t_fFrequency) - 9.0f);
 		m_fPLSF = fPL1 < fPL2 ? fPL1 : fPL2;	
 	default:
 		break;

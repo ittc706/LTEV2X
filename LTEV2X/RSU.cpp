@@ -22,7 +22,7 @@ RSU::RSU() {
 
 
 void RSU::initializeUrban(RSUConfigure &t_RSUConfigure){
-	m_GTAT->m_RSUId = t_RSUConfigure.wRSUID;
+	m_GTAT->m_RSUId = t_RSUConfigure.RSUId;
 	m_GTAT_Urban->m_AbsX = ns_GTAT_Urban::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 0] * ns_GTAT_Urban::c_wide;
 	m_GTAT_Urban->m_AbsY = ns_GTAT_Urban::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 1] * ns_GTAT_Urban::c_length;
 	RandomUniform(&m_GTAT_Urban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
@@ -37,7 +37,7 @@ void RSU::initializeUrban(RSUConfigure &t_RSUConfigure){
 
 
 void RSU::initializeHighSpeed(RSUConfigure &t_RSUConfigure) {
-	m_GTAT->m_RSUId = t_RSUConfigure.wRSUID;
+	m_GTAT->m_RSUId = t_RSUConfigure.RSUId;
 	m_GTAT_HighSpeed->m_AbsX = ns_GTAT_HighSpeed::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 0] * 100;
 	m_GTAT_HighSpeed->m_AbsY = ns_GTAT_HighSpeed::c_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 1];
 	RandomUniform(&m_GTAT_HighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);

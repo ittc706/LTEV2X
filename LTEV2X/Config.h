@@ -26,69 +26,64 @@ struct Configure {
 	double *pueTopo;//一个Road中ue相对坐标
 
 	double fv;//车辆车速
-
 };
 
 /*eNB配置参数*/
-struct eNBConfigure
-{
-	Configure* sys_config;
-	int wRoadID;
-	int weNBID;
-	double fX;
-	double fY;
-	double fAbsX;
-	double fAbsY;
+struct eNBConfigure {
+	Configure* systemConfig;
+	int roadId;
+	int eNBId;
+	double X;
+	double Y;
+	double AbsX;
+	double AbsY;
 };
+
 /*Road配置参数*/
-struct RoadConfigure
-{
-	Configure* sys_config;
-	int wRoadID;
+struct UrbanRoadConfigure {
+	Configure* systemConfig;
+	int roadId;
 	void *peNB;
-	int weNBNum;
-	int weNBOffset;
+	int eNBNum;
+	int eNBOffset;
 	void *pLane;
-	int wLaneNum;
-	int wLaneOffset;
-};
-
-struct HighSpeedRodeConfigure
-{
-	Configure* sys_config;
-	int wLaneID;
+	int laneNum;
+	int laneOffset;
 };
 
 
-/*UE配置参数*/
-struct VeUEConfigure
-{
-	int wRoadID;
-	int wLaneID;
-	int locationID;
-	double fX;
-	double fY;
-	double fAbsX;
-	double fAbsY;
-	double fv;
+struct HighSpeedRodeConfigure {
+	Configure* systemConfig;
+	int roadId;
+};
+
+
+/*VeUE配置参数*/
+struct VeUEConfigure {
+	int roadId;
+	int laneId;
+	int locationId;
+	double X;
+	double Y;
+	double AbsX;
+	double AbsY;
+	double V;
 };
 
 /*RSU配置参数*/
-struct RSUConfigure
-{
-	int wRSUID;
+struct RSUConfigure {
+	int RSUId;
 };
 
 /*地理位置配置参数*/
-struct Location
-{
+struct Location{
 	bool bManhattan;
 	LocationType eType;
-	double fDistance; // m
-	double fDistance1; // m
-	double fDistance2; // m
-	double feNBAntH; // m
-	double fUEAntH; // m
+	double distance; // m
+	double distance1; // m
+	double distance2; // m
+	double eNBAntH; // m
+	double VeUEAntH; // m
 	double afPosCor[5];
 
 };

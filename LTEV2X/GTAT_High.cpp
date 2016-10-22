@@ -49,21 +49,21 @@ void GTAT_HighSpeed::initialize() {
 	eNBConfigure eNBConfigure;
 	for (int temp = 0; temp != m_Config.eNBNum; ++temp)
 	{
-		eNBConfigure.weNBID = temp;
+		eNBConfigure.eNBId = temp;
 		m_eNBAry[temp].initializeHighSpeed(eNBConfigure);
 	}
 
 
 	HighSpeedRodeConfigure laneConfigure;
 	for (int temp = 0; temp != m_Config.HighSpeedRodeNum; ++temp) {
-		laneConfigure.wLaneID = temp;
+		laneConfigure.roadId = temp;
 		m_RoadAry[temp].initializeHighSpeed(laneConfigure);
 	}
 
 	RSUConfigure RSUConfigure;
 	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++) {
 
-		RSUConfigure.wRSUID = RSUIdx;
+		RSUConfigure.RSUId = RSUIdx;
 		m_RSUAry[RSUIdx].initializeHighSpeed(RSUConfigure);
 	}
 
@@ -72,13 +72,13 @@ void GTAT_HighSpeed::initialize() {
 
 	for (int LaneIdx = 0; LaneIdx != m_Config.HighSpeedRodeNum; LaneIdx++) {
 		for (int uprIdx = 0; uprIdx != m_Config.pupr[LaneIdx]; uprIdx++) {
-			ueConfigure.wLaneID = LaneIdx;
+			ueConfigure.laneId = LaneIdx;
 			//ueConfigure.locationID=rand()%conf.ueTopoNum;
-			ueConfigure.fX = -1732 + rand() % 3465;
-			ueConfigure.fY = 0.0f;
-			ueConfigure.fAbsX = m_RoadAry[LaneIdx].m_GTAT_HighSpeed->m_AbsX + ueConfigure.fX;
-			ueConfigure.fAbsY = m_RoadAry[LaneIdx].m_GTAT_HighSpeed->m_AbsY + ueConfigure.fY;
-			ueConfigure.fv = m_Config.fv;
+			ueConfigure.X = -1732 + rand() % 3465;
+			ueConfigure.Y = 0.0f;
+			ueConfigure.AbsX = m_RoadAry[LaneIdx].m_GTAT_HighSpeed->m_AbsX + ueConfigure.X;
+			ueConfigure.AbsY = m_RoadAry[LaneIdx].m_GTAT_HighSpeed->m_AbsY + ueConfigure.Y;
+			ueConfigure.V = m_Config.fv;
 			m_VeUEAry[ueidx++].initializeHighSpeed(ueConfigure);
 		}
 	}
@@ -190,19 +190,19 @@ void GTAT_HighSpeed::freshLoc() {
 		m_VeUEAry[UserIdx1].m_GTAT->m_RSUId = RSUIdx;
 		m_RSUAry[RSUIdx].m_GTAT->m_VeUEIdList.push_back(UserIdx1);
 		location.eType = None;
-		location.fDistance = 0;
-		location.fDistance1 = 0;
-		location.fDistance2 = 0;
+		location.distance = 0;
+		location.distance1 = 0;
+		location.distance2 = 0;
 
 		double angle = 0;
 		location.bManhattan = false;
 
 		location.eType = Los;
-		location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY), 2.0f));
+		location.distance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY), 2.0f));
 		angle = atan2(m_VeUEAry[UserIdx1].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY, m_VeUEAry[UserIdx1].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX) / c_Degree2PI;
 
-		location.feNBAntH = 5;
-		location.fUEAntH = 1.5;
+		location.eNBAntH = 5;
+		location.VeUEAntH = 1.5;
 		RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTAT_HighSpeed->m_FantennaAngle;
@@ -295,19 +295,19 @@ void GTAT_HighSpeed::calculateInterference(std::vector<int> transimitingVeUEId) 
 
 			int RSUIdx = m_VeUEAry[VeUEId].m_GTAT->m_RSUId;
 			location.eType = None;
-			location.fDistance = 0;
-			location.fDistance1 = 0;
-			location.fDistance2 = 0;
+			location.distance = 0;
+			location.distance1 = 0;
+			location.distance2 = 0;
 
 			double angle = 0;
 			location.bManhattan = false;
 
 			location.eType = Los;
-			location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY), 2.0f));
+			location.distance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY), 2.0f));
 			angle = atan2(m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY, m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX) / c_Degree2PI;
 
-			location.feNBAntH = 5;
-			location.fUEAntH = 1.5;
+			location.eNBAntH = 5;
+			location.VeUEAntH = 1.5;
 			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_FantennaAngle;

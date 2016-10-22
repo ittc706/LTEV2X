@@ -68,19 +68,19 @@ void GTAT_Urban::initialize() {
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	m_RSUAry = new RSU[m_Config.RSUNum];
 
-	RoadConfigure roadConfigure;
+	UrbanRoadConfigure roadConfigure;
 	for (int temp = 0; temp != m_Config.UrbanRoadNum; ++temp)
 	{
-		roadConfigure.wRoadID = temp;
+		roadConfigure.roadId = temp;
 		if (temp % 2 == 0)
 		{
-			roadConfigure.weNBNum = 1;
+			roadConfigure.eNBNum = 1;
 			roadConfigure.peNB = m_eNBAry;
-			roadConfigure.weNBOffset = temp / 2;
+			roadConfigure.eNBOffset = temp / 2;
 		}
 		else
 		{
-			roadConfigure.weNBNum = 0;
+			roadConfigure.eNBNum = 0;
 		}
 
 		m_RoadAry[temp].initializeUrban(roadConfigure);
@@ -90,7 +90,7 @@ void GTAT_Urban::initialize() {
 	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++)
 	{
 
-		RSUConfigure.wRSUID = RSUIdx;
+		RSUConfigure.RSUId = RSUIdx;
 		m_RSUAry[RSUIdx].initializeUrban(RSUConfigure);
 	}
 
@@ -102,13 +102,13 @@ void GTAT_Urban::initialize() {
 
 		for (int uprIdx = 0; uprIdx != m_Config.pupr[RoadIdx]; uprIdx++)
 		{
-			ueConfigure.wRoadID = RoadIdx;
-			ueConfigure.locationID = rand() % m_Config.ueTopoNum;
-			ueConfigure.fX = m_Config.pueTopo[ueConfigure.locationID * 2 + 0];
-			ueConfigure.fY = m_Config.pueTopo[ueConfigure.locationID * 2 + 1];
-			ueConfigure.fAbsX = m_RoadAry[RoadIdx].m_GTAT_Urban->m_AbsX + ueConfigure.fX;
-			ueConfigure.fAbsY = m_RoadAry[RoadIdx].m_GTAT_Urban->m_AbsY + ueConfigure.fY;
-			ueConfigure.fv = m_Config.fv;
+			ueConfigure.roadId = RoadIdx;
+			ueConfigure.locationId = rand() % m_Config.ueTopoNum;
+			ueConfigure.X = m_Config.pueTopo[ueConfigure.locationId * 2 + 0];
+			ueConfigure.Y = m_Config.pueTopo[ueConfigure.locationId * 2 + 1];
+			ueConfigure.AbsX = m_RoadAry[RoadIdx].m_GTAT_Urban->m_AbsX + ueConfigure.X;
+			ueConfigure.AbsY = m_RoadAry[RoadIdx].m_GTAT_Urban->m_AbsY + ueConfigure.Y;
+			ueConfigure.V = m_Config.fv;
 			m_VeUEAry[ueidx++].initializeUrban(ueConfigure);
 
 		}
@@ -410,22 +410,22 @@ void GTAT_Urban::freshLoc() {
 		m_VeUEAry[UserIdx1].m_GTAT->m_ClusterIdx = ClusterID;
 		m_RSUAry[RSUIdx].m_GTAT->m_VeUEIdList.push_back(UserIdx1);
 		location.eType = None;
-		location.fDistance = 0;
-		location.fDistance1 = 0;
-		location.fDistance2 = 0;
+		location.distance = 0;
+		location.distance1 = 0;
+		location.distance2 = 0;
 
 		double angle = 0;
 		if (location.bManhattan == true)  //计算location distance
 		{
 		
 			location.eType = Los;// 车辆与所对应的RSU之间均为LOS
-			location.fDistance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY), 2.0f));
+			location.distance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY), 2.0f));
 			angle = atan2(m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY, m_VeUEAry[UserIdx1].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) / c_Degree2PI;
 
 		}
 	
-		location.feNBAntH = 5;
-		location.fUEAntH = 1.5;
+		location.eNBAntH = 5;
+		location.VeUEAntH = 1.5;
 		RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTAT_Urban->m_FantennaAngle;
@@ -516,9 +516,9 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 
 			int RSUIdx = m_VeUEAry[VeUEId].m_GTAT->m_RSUId;
 			location.eType = None;
-			location.fDistance = 0;
-			location.fDistance1 = 0;
-			location.fDistance2 = 0;
+			location.distance = 0;
+			location.distance1 = 0;
+			location.distance2 = 0;
 
 			double angle = 0;
 			if (location.bManhattan == true)  //计算location distance
@@ -526,20 +526,20 @@ void GTAT_Urban::calculateInterference(std::vector<int> transimitingVeUEId) {
 				if (abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY) <= 10.5)
 				{
 					location.eType = Los;
-					location.fDistance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY), 2.0f));
+					location.distance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY), 2.0f));
 					angle = atan2(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) / c_Degree2PI;
 				}
 				else
 				{
 					location.eType = Nlos;
-					location.fDistance1 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX);
-					location.fDistance2 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY);
-					location.fDistance = sqrt(pow(location.fDistance1, 2.0f) + pow(location.fDistance2, 2.0f));
+					location.distance1 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX);
+					location.distance2 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY);
+					location.distance = sqrt(pow(location.distance1, 2.0f) + pow(location.distance2, 2.0f));
 
 				}
 			}
-			location.feNBAntH = 5;
-			location.fUEAntH = 1.5;
+			location.eNBAntH = 5;
+			location.VeUEAntH = 1.5;
 			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTAT_Urban->m_FantennaAngle;
