@@ -198,7 +198,7 @@ void WT_B::initialize() {
 void WT_B::configuration(int VeUEId){
 	m_Nr = m_VeUEAry[VeUEId].m_GTAT->m_Nr;
 	m_Nt = m_VeUEAry[VeUEId].m_GTAT->m_Nt;
-	m_Mol = m_VeUEAry[VeUEId].m_PreModulation;
+	m_Mol = m_VeUEAry[VeUEId].m_RRM->m_PreModulation;
 	m_Ploss = m_VeUEAry[VeUEId].m_GTAT->m_Ploss;
 	m_Pt = pow(10,-4.7);//23dbm-70dbm
 	m_Sigma = pow(10,-17.4);
@@ -222,7 +222,7 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 
 std::vector<Matrix> WT_B::readInterH(int VeUEIdx, int subCarrierIdx) {
 	vector<Matrix> res;
-	for (int interVeUEIdx : m_VeUEAry[VeUEIdx].m_InterVeUEVec) {
+	for (int interVeUEIdx : m_VeUEAry[VeUEIdx].m_RRM->m_InterVeUEVec) {
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {

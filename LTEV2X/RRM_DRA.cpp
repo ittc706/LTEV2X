@@ -27,36 +27,8 @@
 
 using namespace std;
 
-
-
-default_random_engine VeUEAdapterDRA::s_Engine((unsigned)time(NULL));
-
-string VeUEAdapterDRA::toString(int n) {
-	string indent;
-	for (int i = 0; i < n; i++)
-		indent.append("    ");
-
-	ostringstream ss;
-	ss << indent << "{ VeUEId = " << left << setw(3) << m_HoldObj.m_VeUEId;
-	ss << " , RSUId = " << left << setw(3) << m_HoldObj.m_GTAT->m_RSUId;
-	ss << " , ClusterIdx = " << left << setw(3) << m_HoldObj.m_GTAT->m_ClusterIdx;
-	ss << " , ScheduleInterval = [" << left << setw(3) << get<0>(m_ScheduleInterval) << "," << left << setw(3) << get<1>(m_ScheduleInterval) << "] }";
-	return ss.str();
-}
-
-
-
-
-
-
-
-
-
 RRM_DRA::RRM_DRA(int &systemTTI, sConfigure& systemConfig, cRSU* systemRSUAry, cVeUE* systemVeUEAry, std::vector<sEvent>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, eDRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint) :
 	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint) {
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		m_VeUEAdapterVec.push_back(VeUEAdapterDRA(m_VeUEAry[VeUEId]));
-	}
 
 	m_DRAInterferenceVec = vector<list<int>>(gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum);
 }
@@ -178,7 +150,7 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 		//将调度区间写入该RSU内的每一个车辆
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; ++clusterIdx) {
 			for (int VeUEId : _RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
-				m_VeUEAdapterVec[VeUEId].m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]));
+				m_VeUEAry[VeUEId].m_RRMDRA->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRMDRA->m_DRAClusterTDRInfo[clusterIdx]));
 		}
 	}
 	DRAWriteClusterPerformInfo(g_FileClasterPerformInfo);
@@ -215,7 +187,7 @@ void RRM_DRA::DRAProcessEventList() {
 			sEvent event = m_EventVec[eventId];
 			
 			int VeUEId = event.VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//当前事件对应的VeUE不在当前RSU中，跳过即可
+			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//当前事件对应的VeUE不在当前RSU中，跳过即可
 				continue;
 			}
 			else {//当前事件对应的VeUE在当前RSU中
@@ -259,7 +231,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 			else {
 				int eventId = _RSU.m_RRMDRA->m_DRAEmergencyScheduleInfoTable[patternIdx]->eventId;
 				int VeUEId = m_EventVec[eventId].VeUEId;
-				if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
+				if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
 					//压入Switch链表
 					_RSU.m_RRMDRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 
@@ -297,7 +269,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 				else {
 					int eventId = _RSU.m_RRMDRA->m_DRAScheduleInfoTable[clusterIdx][patternIdx]->eventId;
 					int VeUEId = m_EventVec[eventId].VeUEId;
-					if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
+					if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
 						//压入Switch链表
 						_RSU.m_RRMDRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 
@@ -362,7 +334,7 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 		while (it != _RSU.m_RRMDRA->m_DRAEmergencyWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
+			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
                 //将其添加到System级别的RSU切换链表中
 				_RSU.m_RRMDRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 				
@@ -391,7 +363,7 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 		while (it != _RSU.m_RRMDRA->m_DRAWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
+			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
 				//将其添加到System级别的RSU切换链表中
 				_RSU.m_RRMDRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 				
@@ -425,7 +397,7 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 		while (it !=m_DRASwitchEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该切换链表中的事件对应的VeUE，不属于当前簇，跳过即可
+			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该切换链表中的事件对应的VeUE，不属于当前簇，跳过即可
 				it++;
 				continue;
 			}
@@ -491,7 +463,7 @@ void RRM_DRA::DRAProcessWaitEventIdList() {
 		while (it != _RSU.m_RRMDRA->m_DRAWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_ClusterIdx == clusterIdx) {//该事件当前可以进行调度
+			if (m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx == clusterIdx) {//该事件当前可以进行调度
 				_RSU.m_RRMDRA->DRAPushToAdmitEventIdList(eventId);//添加到RSU级别的接纳链表中
 				it = _RSU.m_RRMDRA->m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
 
@@ -537,7 +509,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			int VeUEId = m_EventVec[eventId].VeUEId;
 
 			//为当前用户在可用的EmergencyPattern块中随机选择一个，每个用户自行随机选择可用EmergencyPattern块
-			int patternIdx = m_VeUEAdapterVec[VeUEId].DRARBEmergencySelectBasedOnP2(curAvaliableEmergencyPatternIdx);
+			int patternIdx = m_VeUEAry[VeUEId].m_RRMDRA->DRARBEmergencySelectBasedOnP2(curAvaliableEmergencyPatternIdx);
 
 			if (patternIdx == -1) {//无对应Pattern类型的pattern资源可用
 				_RSU.m_RRMDRA->DRAPushToEmergencyWaitEventIdList(eventId);
@@ -587,7 +559,7 @@ void RRM_DRA::DRASelectBasedOnP123() {
 			int VeUEId = m_EventVec[eventId].VeUEId;
 
 			//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
-			int patternIdx = m_VeUEAdapterVec[VeUEId].DRARBSelectBasedOnP2(curAvaliablePatternIdx, m_EventVec[eventId].message.messageType);
+			int patternIdx = m_VeUEAry[VeUEId].m_RRMDRA->DRARBSelectBasedOnP2(curAvaliablePatternIdx, m_EventVec[eventId].message.messageType);
 
 			if (patternIdx == -1) {//该用户传输的信息类型没有pattern剩余了
 				_RSU.m_RRMDRA->DRAPushToWaitEventIdList(eventId);
@@ -758,13 +730,13 @@ void RRM_DRA::DRATransimitPreparation() {
 		for (int VeUEId : lst) {
 			transmitingVeUEId.push_back(VeUEId);
 
-			m_VeUEAry[VeUEId].m_InterVeUENum = (int)lst.size() - 1;//写入干扰数目
+			m_VeUEAry[VeUEId].m_RRM->m_InterVeUENum = (int)lst.size() - 1;//写入干扰数目
 			set<int> s(lst.begin(), lst.end());
 			s.erase(VeUEId);
-			m_VeUEAry[VeUEId].m_InterVeUEVec.assign(s.begin(), s.end());//写入干扰车辆ID
+			m_VeUEAry[VeUEId].m_RRM->m_InterVeUEVec.assign(s.begin(), s.end());//写入干扰车辆ID
 
 			g_FileTemp << "VeUEId: " << VeUEId << " [";
-			for (auto c : m_VeUEAry[VeUEId].m_InterVeUEVec)
+			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterVeUEVec)
 				g_FileTemp << c << ", ";
 			g_FileTemp << " ]" << endl;
 		}
@@ -1050,8 +1022,8 @@ void RRM_DRA::DRAWriteClusterPerformInfo(std::ofstream &out) {
 	out << "    VUE Info: " << endl;
 	out << "    {" << endl;
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		VeUEAdapterDRA &_VeUE = m_VeUEAdapterVec[VeUEId];
-		out << _VeUE.toString(2) << endl;
+		cVeUE &_VeUE = m_VeUEAry[VeUEId];
+		out << _VeUE.m_RRMDRA->toString(2) << endl;
 	}
 	out << "    }\n" << endl;
 

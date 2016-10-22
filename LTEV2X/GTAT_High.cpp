@@ -112,7 +112,7 @@ void GTAT_High::channelGeneration() {
 
 	//记录并更新每辆车的位置日志
 	for (int VeUEId = 0; VeUEId<m_Config.VeUENum; VeUEId++)
-		m_VeUEAry[VeUEId].m_LocationUpdateLogInfoList.push_back(tuple<int, int>(m_VeUEAry[VeUEId].m_GTAT->m_RSUId, m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx));
+		m_VeUEAry[VeUEId].m_TMAC->m_LocationUpdateLogInfoList.push_back(tuple<int, int>(m_VeUEAry[VeUEId].m_GTAT->m_RSUId, m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx));
 
 	//记录RSU内车辆的数目
 	vector<int> curVeUENum;
@@ -263,7 +263,7 @@ void GTAT_High::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstrea
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		out1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
 		out1 << "{" << endl;
-		for (const tuple<int, int> &t : m_VeUEAry[VeUEId].m_LocationUpdateLogInfoList)
+		for (const tuple<int, int> &t : m_VeUEAry[VeUEId].m_TMAC->m_LocationUpdateLogInfoList)
 			out1 << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
 		out1 << "}" << endl;
 	}
@@ -281,14 +281,14 @@ void GTAT_High::calculateInter(std::vector<int> transimitingVeUEId) {
 		m_VeUEAry[VeUEId].m_GTATHigh->imta = new cIMTA[m_Config.RSUNum];
 	}
 	for (int VeUEId : transimitingVeUEId) {
-		m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss.assign(m_VeUEAry[VeUEId].m_InterVeUENum, 0);
+		m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss.assign(m_VeUEAry[VeUEId].m_RRM->m_InterVeUENum, 0);
 
 		delete[]m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH;
-		m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH = new double[m_VeUEAry[VeUEId].m_InterVeUENum * 2 * 1024 * 2];
+		m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH = new double[m_VeUEAry[VeUEId].m_RRM->m_InterVeUENum * 2 * 1024 * 2];
 
-		for (int count = 0; count != m_VeUEAry[VeUEId].m_InterVeUENum; count++)
+		for (int count = 0; count != m_VeUEAry[VeUEId].m_RRM->m_InterVeUENum; count++)
 		{
-			int interUserIdx = m_VeUEAry[VeUEId].m_InterVeUEVec[count];
+			int interUserIdx = m_VeUEAry[VeUEId].m_RRM->m_InterVeUEVec[count];
 			sLocation location;
 			sAntenna antenna;
 

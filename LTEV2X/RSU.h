@@ -96,7 +96,7 @@ public:
 		};
 
 
-		cRSU* m_this;//RRMDRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个引用
+		cRSU* m_this;//RRMDRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 
 		/*

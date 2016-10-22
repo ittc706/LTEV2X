@@ -52,6 +52,7 @@ void cRSU::initializeHigh(sRSUConfigure &t_RSUConfigure) {
 
 
 void cRSU::initializeElse() {
+	m_RRM = new RRM();
 	m_RRMDRA = new RRMDRA(this);
 	m_RRMRR = new RRMRR();
 	m_WT = new WT();

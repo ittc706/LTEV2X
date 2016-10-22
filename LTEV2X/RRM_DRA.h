@@ -12,9 +12,6 @@
 //RRM_DRA:Radio Resource Management Distributed Resource Allocation
 
 
-
-
-
 /*===========================================
 *        用于该模块的枚举类型定义
 * ==========================================*/
@@ -26,34 +23,6 @@ enum eDRAMode {
 	P23,               //Combination of P2 and P3
 	P123               //Combination of P1 and P2 and P3
 };
-
-
-
-/*===========================================
-*                VeUE适配器
-* ==========================================*/
-class VeUEAdapterDRA {
-public:
-	static std::default_random_engine s_Engine;
-
-	cVeUE& m_HoldObj;//该适配器持有的原VeUE对象
-	VeUEAdapterDRA() = delete;
-	VeUEAdapterDRA(cVeUE& _VeUE) :m_HoldObj(_VeUE) {}
-
-	/*------数据成员(新增用于模块数据成员)--------*/
-
-	std::tuple<int, int> m_ScheduleInterval;//该VeUE所在簇的当前一轮调度区间
-
-
-	/*------------------成员函数------------------*/
-
-	int DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType);
-	int DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
-
-	std::string toString(int n);//用于打印VeUE信息
-};
-
-
 
 
 /*===========================================
@@ -73,9 +42,6 @@ public:
 		WT_Basic* systemWTPoint,
 		GTAT_Basic* systemGTATPoint
 	);
-
-	std::vector<VeUEAdapterDRA> m_VeUEAdapterVec;
-
 
 	/*------------------数据成员------------------*/
 
@@ -136,23 +102,4 @@ private:
 	int DRAGetPatternType(int patternIdx);
 	std::pair<int, int> DRAGetOccupiedSubCarrierRange(eMessageType messageType, int patternIdx);
 };
-
-
-
-inline
-int VeUEAdapterDRA::DRARBSelectBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, eMessageType messageType) {
-	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
-	if (size == 0) return -1;
-	std::uniform_int_distribution<int> u(0, size - 1);
-	return curAvaliablePatternIdx[messageType][u(s_Engine)];
-}
-
-inline
-int VeUEAdapterDRA::DRARBEmergencySelectBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
-	int size = static_cast<int>(curAvaliableEmergencyPatternIdx.size());
-	if (size == 0) return -1;
-	std::uniform_int_distribution<int> u(0, size - 1);
-	return curAvaliableEmergencyPatternIdx[u(s_Engine)];
-}
-
 
