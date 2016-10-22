@@ -196,14 +196,14 @@ void WT_B::initialize() {
 
 
 void WT_B::configuration(int VeUEId){
-	m_Nr = m_VeUEAry[VeUEId].m_Nr;
-	m_Nt = m_VeUEAry[VeUEId].m_Nt;
+	m_Nr = m_VeUEAry[VeUEId].m_GTAT->m_Nr;
+	m_Nt = m_VeUEAry[VeUEId].m_GTAT->m_Nt;
 	m_Mol = m_VeUEAry[VeUEId].m_PreModulation;
-	m_Ploss = m_VeUEAry[VeUEId].m_Ploss;
+	m_Ploss = m_VeUEAry[VeUEId].m_GTAT->m_Ploss;
 	m_Pt = pow(10,-4.7);//23dbm-70dbm
 	m_Sigma = pow(10,-17.4);
 
-	m_PlossInter = m_VeUEAry[VeUEId].m_InterferencePloss;
+	m_PlossInter = m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss;
 }
 
 
@@ -213,7 +213,7 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 	Matrix res(m_Nr, m_Nt);
 	for (int row = 0; row < m_Nr; row++) {
 		for (int col = 0; col < m_Nt; col++) {
-			res[row][col] = Complex(m_VeUEAry[VeUEIdx].m_H[row * subCarrierIdx], m_VeUEAry[VeUEIdx].m_H[row * subCarrierIdx + 1]);
+			res[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTAT->m_H[row * subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTAT->m_H[row * subCarrierIdx + 1]);
 		}
 	}
 	return res;
@@ -226,7 +226,7 @@ std::vector<Matrix> WT_B::readInterH(int VeUEIdx, int subCarrierIdx) {
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {
-				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_InterferenceH[interVeUEIdx*row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_InterferenceH[interVeUEIdx*row*subCarrierIdx + 1]);
+				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTAT->m_InterferenceH[interVeUEIdx*row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTAT->m_InterferenceH[interVeUEIdx*row*subCarrierIdx + 1]);
 			}
 		}
 		res.push_back(m);

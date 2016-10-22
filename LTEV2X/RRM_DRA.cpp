@@ -61,8 +61,8 @@ string VeUEAdapterDRA::toString(int n) {
 
 	ostringstream ss;
 	ss << indent << "{ VeUEId = " << left << setw(3) << m_HoldObj.m_VeUEId;
-	ss << " , RSUId = " << left << setw(3) << m_HoldObj.m_RSUId;
-	ss << " , ClusterIdx = " << left << setw(3) << m_HoldObj.m_ClusterIdx;
+	ss << " , RSUId = " << left << setw(3) << m_HoldObj.m_GTAT->m_RSUId;
+	ss << " , ClusterIdx = " << left << setw(3) << m_HoldObj.m_GTAT->m_ClusterIdx;
 	ss << " , ScheduleInterval = [" << left << setw(3) << get<0>(m_ScheduleInterval) << "," << left << setw(3) << get<1>(m_ScheduleInterval) << "] }";
 	return ss.str();
 }
@@ -309,7 +309,7 @@ void RRM_DRA::DRAProcessEventList() {
 			sEvent event = m_EventVec[eventId];
 			
 			int VeUEId = event.VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//当前事件对应的VeUE不在当前RSU中，跳过即可
+			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//当前事件对应的VeUE不在当前RSU中，跳过即可
 				continue;
 			}
 			else {//当前事件对应的VeUE在当前RSU中
@@ -353,7 +353,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 			else {
 				int eventId = _RSUAdapterDRA.m_DRAEmergencyScheduleInfoTable[patternIdx]->eventId;
 				int VeUEId = m_EventVec[eventId].VeUEId;
-				if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
+				if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
 					//压入Switch链表
 					_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 
@@ -391,7 +391,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 				else {
 					int eventId = _RSUAdapterDRA.m_DRAScheduleInfoTable[clusterIdx][patternIdx]->eventId;
 					int VeUEId = m_EventVec[eventId].VeUEId;
-					if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
+					if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE不在当前RSU中，应将其压入System级别的切换链表
 						//压入Switch链表
 						_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 
@@ -456,7 +456,7 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 		while (it != _RSUAdapterDRA.m_DRAEmergencyWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE已经不在该RSU范围内
+			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE已经不在该RSU范围内
                 //将其添加到System级别的RSU切换链表中
 				_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 				
@@ -485,7 +485,7 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 		while (it != _RSUAdapterDRA.m_DRAWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE已经不在该RSU范围内
+			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该VeUE已经不在该RSU范围内
 				//将其添加到System级别的RSU切换链表中
 				_RSUAdapterDRA.DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 				
@@ -519,7 +519,7 @@ void RRM_DRA::DRAProcessSwitchListWhenLocationUpdate() {
 		while (it !=m_DRASwitchEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该切换链表中的事件对应的VeUE，不属于当前簇，跳过即可
+			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_RSUId != _RSUAdapterDRA.m_HoldObj.m_RSUId) {//该切换链表中的事件对应的VeUE，不属于当前簇，跳过即可
 				it++;
 				continue;
 			}
@@ -585,7 +585,7 @@ void RRM_DRA::DRAProcessWaitEventIdList() {
 		while (it != _RSUAdapterDRA.m_DRAWaitEventIdList.end()) {
 			int eventId = *it;
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_ClusterIdx == clusterIdx) {//该事件当前可以进行调度
+			if (m_VeUEAdapterVec[VeUEId].m_HoldObj.m_GTAT->m_ClusterIdx == clusterIdx) {//该事件当前可以进行调度
 				_RSUAdapterDRA.DRAPushToAdmitEventIdList(eventId);//添加到RSU级别的接纳链表中
 				it = _RSUAdapterDRA.m_DRAWaitEventIdList.erase(it);//将其从等待链表中删除
 

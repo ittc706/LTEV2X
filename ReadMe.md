@@ -1,3 +1,5 @@
+version_2016_10_22(重组了VeUE内部结构)
+
 version_2016_10_22(统一基本数据类型4)
 	unsigned long改为long
 
