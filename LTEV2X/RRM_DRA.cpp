@@ -723,15 +723,22 @@ void RRM_DRA::DRATransimitPreparation() {
 		}
 	}
     
-	//更新每辆车的干扰车辆列表
-	vector<int> transmitingVeUEId;
+	/*
+	* 新每辆车的干扰车辆列表
+	* 为什么要用set而不用vector或者list
+	* 因为，同一辆车可能同时触发了不同的事件，比如同时有PERIOD和DATA发生，那么在不同的patternIdx将会有相同的车辆ID
+	* 但是这相同车辆的ID只能算一次
+	*/
+	set<int> transmitingVeUEId;
+	
 	for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum; patternIdx++) {
 		list<int> &lst = m_DRAInterferenceVec[patternIdx];
 		for (int VeUEId : lst) {
-			transmitingVeUEId.push_back(VeUEId);
+			transmitingVeUEId.insert(VeUEId);
 
 			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum = (int)lst.size() - 1;//写入干扰数目
-			set<int> s(lst.begin(), lst.end());
+			
+			set<int> s(lst.begin(), lst.end());//用于更新干扰列表的
 			s.erase(VeUEId);
 			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec.assign(s.begin(), s.end());//写入干扰车辆ID
 

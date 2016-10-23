@@ -1,8 +1,10 @@
 #include<cmath>
 #include<memory.h>
+#include<iostream>
 #include"IMTA.h"
 #include"Global.h"
 
+using namespace std;
 
 const double IMTA::m_sacfConstantUMiLoS[25] =
 {
@@ -36,7 +38,7 @@ const double IMTA::m_sacfConstantSMaLoS[25] =
 	-0.298912118384658f, -0.280298812206218f, -0.215103894600008f, 0.886461750943879f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double IMTA::m_sacConstantSMaNLoS[25] =
+const double IMTA::m_sacfConstantSMaNLoS[25] =
 {
 	0.888863320019977f, -0.028738390905236f, 0.394136210972923f, -0.231846394000744f, 0.0f,
 	-0.028738390905236f, 0.976874642167262f, 0.011594978528380f, -0.211555181576079f, 0.0f,
@@ -98,59 +100,53 @@ const int IMTA::m_sacbyMidPathIndex[m_scbySubPathNum] =
 	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0
 };
 
-IMTA::IMTA(void)
-{
-	m_pfGain = 0;
-	m_pfSinAoD = 0;
-	m_pfCosAoD = 0;
-	m_pfSinAoA = 0;
-	m_pfCosAoA = 0;
-	m_pfPhase = 0;
+IMTA::IMTA() {
+	m_pfGain = nullptr;
+	m_pfSinAoD = nullptr;
+	m_pfCosAoD = nullptr;
+	m_pfSinAoA = nullptr;
+	m_pfCosAoA = nullptr;
+	m_pfPhase = nullptr;
 	m_fGainLoS = 0;
 	m_fSinAoDLoS = 0;
-	m_pfPhaseLoS = 0;
+	m_pfPhaseLoS = nullptr;
 	m_fAntGain = 0;
-    m_fMaxAttenu = 0; // dBm
+	m_fMaxAttenu = 0; // dBm
 	m_byTxAntNum = 0;
 	m_byRxAntNum = 0;
 	m_bLoS = false;
 	m_bBuilt = false;
 	m_bEnable = false;
 	m_fPLSF = 0.0f;
-	m_pfTxAntSpacing = 0;
-	m_pfTxSlantAngle = 0;
-	m_pfRxAntSpacing = 0;
-	m_pfRxSlantAngle = 0;
+	m_pfTxAntSpacing = nullptr;
+	m_pfTxSlantAngle = nullptr;
+	m_pfRxAntSpacing = nullptr;
+	m_pfRxSlantAngle = nullptr;
 	//FFT参数初始化
-	m_pwFFTIndex = 0;
+	m_pwFFTIndex = nullptr;
 }
 
-IMTA::~IMTA(void)
-{
-	Refresh();
-	if (m_pfTxAntSpacing)
-	{
-		delete []m_pfTxAntSpacing;
-		m_pfTxAntSpacing = 0;
+IMTA::~IMTA() {
+	refresh();
+	if (m_pfTxAntSpacing != nullptr) {
+		delete[] m_pfTxAntSpacing;
+		m_pfTxAntSpacing = nullptr;
 	}
-	if (m_pfRxAntSpacing)
-	{
-		delete []m_pfRxAntSpacing;
-		m_pfRxAntSpacing = 0;
+	if (m_pfRxAntSpacing != nullptr) {
+		delete[] m_pfRxAntSpacing;
+		m_pfRxAntSpacing = nullptr;
 	}
-	if (m_pfTxSlantAngle)
-	{
-		delete []m_pfTxSlantAngle;
-		m_pfTxSlantAngle = 0;
+	if (m_pfTxSlantAngle != nullptr) {
+		delete[] m_pfTxSlantAngle;
+		m_pfTxSlantAngle = nullptr;
 	}
-	if (m_pfRxSlantAngle)
-	{
-		delete []m_pfRxSlantAngle;
-		m_pfRxSlantAngle = 0;
+	if (m_pfRxSlantAngle != nullptr) {
+		delete[] m_pfRxSlantAngle;
+		m_pfRxSlantAngle = nullptr;
 	}
 }
 
-bool IMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/)
+bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/)
 {
 	m_bBuilt = false;
 	m_fAntGain = t_eAntenna.fAntGain * 0.1f;
@@ -159,25 +155,25 @@ bool IMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, 
 	
 	if (m_pfTxAntSpacing)
 	{		
-		delete []m_pfTxAntSpacing;
+		delete[] m_pfTxAntSpacing;
 	}
 	m_pfTxAntSpacing = new double[m_byTxAntNum];
 
 		if (m_pfTxSlantAngle)
 	{
-		delete []m_pfTxSlantAngle;
+		delete[] m_pfTxSlantAngle;
 	}
 	m_pfTxSlantAngle = new double[m_byTxAntNum];
 
 	if (m_pfRxAntSpacing)
 	{
-		delete []m_pfRxAntSpacing;
+		delete[] m_pfRxAntSpacing;
 	}
 	m_pfRxAntSpacing = new double[m_byRxAntNum];
 
 	if (m_pfRxSlantAngle)
 	{
-		delete []m_pfRxSlantAngle;
+		delete[] m_pfRxSlantAngle;
 	}
 	m_pfRxSlantAngle = new double[m_byRxAntNum];
 
@@ -371,13 +367,13 @@ bool IMTA::Build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, 
 	return true;
 }
 
-bool IMTA::Enable(bool *t_pbEnable)
+bool IMTA::enable(bool *t_pbEnable)
 {
 	//if (m_bBuilt == false)
 	//{
 	//	return false;
 	//}
-	Refresh();
+	refresh();
     
 	if (m_bLoS)
 	{
@@ -583,21 +579,21 @@ bool IMTA::Enable(bool *t_pbEnable)
 		}
 
 
-	delete []pfPhasePol;
-	delete []pfSlantVV;
-	delete []pfSlantVH;
-	delete []pfSlantHV;
-	delete []pfSlantHH;
-	delete []pfPathDelay;
-	delete []pfPathPower;
-	delete []pfXAoD;
-	delete []pfXAoA;
-	delete []pfAoD;
-	delete []pfAoA;
+	delete[] pfPhasePol;
+	delete[] pfSlantVV;
+	delete[] pfSlantVH;
+	delete[] pfSlantHV;
+	delete[] pfSlantHH;
+	delete[] pfPathDelay;
+	delete[] pfPathPower;
+	delete[] pfXAoD;
+	delete[] pfXAoA;
+	delete[] pfAoD;
+	delete[] pfAoA;
 	return true;
 }
 
-void IMTA::Calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, double *t_pfSin, double *t_pfCos,double *t_pfH,double *t_pfHFFT)
+void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, double *t_pfSin, double *t_pfCos,double *t_pfH,double *t_pfHFFT)
 {
 	double fCos;
 	double fSin;
@@ -726,47 +722,38 @@ void IMTA::Calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, d
 	return;
 }
 
-void IMTA::Refresh(void)
-{
-	if (m_pfGain)
-	{
-		delete []m_pfGain;
-		m_pfGain = 0;
+void IMTA::refresh(){
+	if (m_pfGain != nullptr) {
+		delete[] m_pfGain;
+		m_pfGain = nullptr;
 	}
-	if (m_pfSinAoD)
-	{
-		delete []m_pfSinAoD;
+	if (m_pfSinAoD != nullptr) {
+		delete[] m_pfSinAoD;
 		m_pfSinAoD = 0;
 	}
-	if (m_pfCosAoD)
-	{
-		delete []m_pfCosAoD;
+	if (m_pfCosAoD != nullptr) {
+		delete[] m_pfCosAoD;
 		m_pfCosAoD = 0;
 	}
-	if (m_pfPhase)
-	{
-		delete []m_pfPhase;
+	if (m_pfPhase != nullptr) {
+		delete[] m_pfPhase;
 		m_pfPhase = 0;
 	}
-	if (m_pfSinAoA)
-	{
-		delete []m_pfSinAoA;
+	if (m_pfSinAoA != nullptr) {
+		delete[] m_pfSinAoA;
 		m_pfSinAoA = 0;
 	}
-	if (m_pfCosAoA)
-	{
-		delete []m_pfCosAoA;
+	if (m_pfCosAoA != nullptr) {
+		delete[] m_pfCosAoA;
 		m_pfCosAoA = 0;
 	}
 
-	if (m_pfPhaseLoS)
-	{
-		delete[]m_pfPhaseLoS ;
+	if (m_pfPhaseLoS != nullptr) {
+		delete[] m_pfPhaseLoS;
 		m_pfPhaseLoS = 0;
 	}
-	if (m_pwFFTIndex)
-	{
-		delete[]m_pwFFTIndex;
+	if (m_pwFFTIndex != nullptr) {
+		delete[] m_pwFFTIndex;
 		m_pwFFTIndex = 0;
 	}
 }

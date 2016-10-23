@@ -59,8 +59,8 @@ void RandomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t
 			t_pfArray[ulTemp * 2] = sqrt(log(pfTemp1[ulTemp]) * -2.0f) * cos(pfTemp2[ulTemp]) * t_fStandardDeviation + t_fMean;
 			t_pfArray[ulTemp * 2 + 1] = sqrt(log(pfTemp1[ulTemp]) * -2.0f) * sin(pfTemp2[ulTemp]) * t_fStandardDeviation + t_fMean;
 		}
-		delete[]pfTemp1;
-		delete[]pfTemp2;
+		delete[] pfTemp1;
+		delete[] pfTemp2;
 	}
 	if (t_ulNumber % 2)
 	{

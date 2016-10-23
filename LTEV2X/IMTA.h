@@ -22,7 +22,7 @@ public:
 	static const double m_sacfConstantUMiNLoS[25];
 	static const double m_sacfConstantUMiO2I[25];
 	static const double m_sacfConstantSMaLoS[25];
-	static const double m_sacConstantSMaNLoS[25];
+	static const double m_sacfConstantSMaNLoS[25];
 	static const double m_sacfConstantUMaLoS[25];
 	static const double m_sacfConstantUMaNLoS[25];
 	static const double m_sacfConstantRMaLoS[25];
@@ -90,18 +90,10 @@ public:
 	int m_wHNum;
 	int *m_pwFFTIndex;
 public:
-	IMTA(void);
-	~IMTA(void);
-	bool Build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/);
-	bool Enable(bool *t_pbEnable);
-	void Calculate(double* t_HAfterFFT, double t_fT/*s*/, double *t_pfTemp, double *t_pfSin, double *t_pfCos, double *t_pfH, double *t_pfHFFT);
-	double GetPLSF(void)
-	{
-		return m_fPLSF;
-	}
-    double GetAntGain(void)
-	{
-		return m_fAntGain;
-	}
-	void Refresh(void);
+	IMTA();
+	~IMTA();
+	bool build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/);
+	bool enable(bool *t_pbEnable);
+	void calculate(double* t_HAfterFFT, double t_fT/*s*/, double *t_pfTemp, double *t_pfSin, double *t_pfCos, double *t_pfH, double *t_pfHFFT);
+	void refresh();
 };

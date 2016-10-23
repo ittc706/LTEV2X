@@ -1,6 +1,7 @@
 #pragma once
 // GTAT Geographical topology and transport
 #include<random>
+#include<set>
 #include"RSU.h"
 #include"VUE.h"
 #include"eNB.h"
@@ -36,5 +37,5 @@ public:
 	virtual void channelGeneration() = 0;//信道产生
 	virtual void freshLoc() = 0;//信道刷新
 	virtual void writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &ou2) = 0; //写入地理位置更新日志
-	virtual void calculateInterference(std::vector<int> transimitingVeUEId) = 0;//计算干扰矩阵
+	virtual void calculateInterference(const std::set<int>& transimitingVeUEId) = 0;//计算干扰矩阵
 };

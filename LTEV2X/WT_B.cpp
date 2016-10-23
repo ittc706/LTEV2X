@@ -62,9 +62,9 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 		//计算干扰项
 		Matrix Interference1(m_Nr, m_Nr);
 
-		/*for (int i = 0; i < (int)m_HInter.size(); i++) {
-			Interference1 = Interference1 + m_Pt*m_PlossInter[i] * m_HInter[i] * m_HInter[i].hermitian();
-		}*/
+		for (int i = 0; i < (int)m_HInterference.size(); i++) {
+			Interference1 = Interference1 + m_Pt*m_PlossInterference[i] * m_HInterference[i] * m_HInterference[i].hermitian();
+		}
 
 		//求逆表达式右边那项
 		Matrix inverseExpRight = m_Sigma*Matrix::eye(m_Nr) + Interference1;//sigma上带曲线
@@ -86,14 +86,13 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 		Matrix IselfHer = Iself.hermitian();
 		Matrix denominatorMiddle = Iself*IselfHer; //SINR运算的分母中的第二项
 
-		///*以下计算公式中的干扰项,即公式中的第三项*/
-		//Matrix denominatorRight(m_Nr, m_Nr);
-		//for (int i = 0; i < (int)m_HInter.size(); i++) {
-		//	denominatorRight = denominatorRight + m_Pt*WHer*m_HInter[i] * m_HInter[i].hermitian()*W;
-		//}
+		/*以下计算公式中的干扰项,即公式中的第三项*/
+		Matrix denominatorRight(m_Nt, m_Nt);
+		for (int i = 0; i < (int)m_HInterference.size(); i++) {
+			denominatorRight = denominatorRight + m_Pt*WHer*m_HInterference[i] * m_HInterference[i].hermitian()*W;
+		}
 
-		//Matrix denominator = denominatorLeft + denominatorMiddle + denominatorRight;//SINR运算的分母
-		Matrix denominator = denominatorLeft + denominatorMiddle;//SINR运算的分母
+		Matrix denominator = denominatorLeft + denominatorMiddle + denominatorRight;//SINR运算的分母
 
 
 		Sinr[relativeSubCarrierIdx] = molecular[0][0] / denominator[0][0];
