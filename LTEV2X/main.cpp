@@ -35,6 +35,9 @@ int main() {
 	g_FileDelayStatistics.close();
     g_FileEmergencyPossion.close();
 
+
+	//int testMain1();
+	//testMain1();
 	system("pause");
 	return 1;
 }

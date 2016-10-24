@@ -153,6 +153,7 @@
     <ClCompile Include="GTAT_High.cpp" />
     <ClCompile Include="GTAT_Urban.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="test.cpp" />
     <ClCompile Include="TMAC_B.cpp" />
     <ClCompile Include="eNB.cpp" />
     <ClCompile Include="Global.cpp" />
