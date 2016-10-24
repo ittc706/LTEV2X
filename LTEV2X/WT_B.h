@@ -25,7 +25,7 @@ public:
 	std::vector<double> m_QAM_MI64;
 
 	WT_B(VeUE* systemVeUEAry);
-	void SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd) override;
+	std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd) override;
 	void testCloest();
 
 private:
@@ -39,4 +39,5 @@ private:
 	int closest2(std::vector<double> v, double target);//线性查找
 
 	double getMutualInformation(std::vector<double> v, int dex);
+	std::tuple<ModulationType, int, double> MCS2ModulationAndRate(int MCSLevel);//将MCS等级映射为[调制方式，该调制方式下一个符号对应的bit数量，码率]
 };

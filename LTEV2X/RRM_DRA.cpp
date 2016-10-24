@@ -750,7 +750,10 @@ void RRM_DRA::DRATransimitPreparation() {
 	}
 
 	//请求地理拓扑单元计算干扰响应矩阵
+	long double start = clock();
 	m_GTATPoint->calculateInterference(transmitingVeUEId);
+	long double end = clock();
+	m_GTATTimeConsume += end - start;
 }
 
 
@@ -765,12 +768,16 @@ void RRM_DRA::DRATransimitStart() {
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
 
 				//计算SINR，获取调制编码方式
+				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
-				m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
+				tuple<ModulationType, int, double>curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
+				double factor = get<1>(curModulationAndRate) / get<2>(curModulationAndRate);
+				long double end = clock();
+				m_WTTimeConsume += end - start;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
-				int maxEquivalentBitNum = gc_DRAEmergencyRBNumPerPattern*gc_BitNumPerRB;
+				int maxEquivalentBitNum = (int)((double)(gc_DRAEmergencyRBNumPerPattern*gc_BitNumPerRB)/ factor);
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
@@ -802,12 +809,16 @@ void RRM_DRA::DRATransimitStart() {
 				int patternType = DRAGetPatternType(patternIdx);
 
 				//计算SINR，获取调制编码方式
+				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "NoEmergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
-				m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
+				tuple<ModulationType, int, double>curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
+				double factor = get<1>(curModulationAndRate) / get<2>(curModulationAndRate);
+				long double end = clock();
+				m_WTTimeConsume += end - start;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
-				int maxEquivalentBitNum = gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB;
+				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB)/ factor);
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;

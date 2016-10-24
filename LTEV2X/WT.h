@@ -1,8 +1,16 @@
 #pragma once
 //WT:Wireless transmission
 #include<vector>
+#include<tuple>
 #include"Matrix.h"
 #include"VUE.h"
+
+
+enum ModulationType {
+	QPSK,
+	_16QAM,
+	_64QAM,
+};
 
 
 class WT_Basic {
@@ -15,5 +23,5 @@ public:
 	VeUE* m_VeUEAry;//VeUEÈÝÆ÷
 
 	//½Ó¿Ú
-	virtual void SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd) = 0;
+	virtual std::tuple<ModulationType,int,double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd) = 0;
 };

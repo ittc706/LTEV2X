@@ -28,6 +28,11 @@ void System::process() {
 		m_TTI++;
 	}
 
+	cout.setf(ios::fixed);
+	cout << "干扰信道计算耗时：" << m_RRMPoint->m_GTATTimeConsume / 1000.0L << " s\n" << endl;
+	cout << "SINR计算耗时：" << m_RRMPoint->m_WTTimeConsume / 1000.0L << " s\n" << endl;
+	cout.unsetf(ios::fixed);
+
 	//处理各项业务时延数据
 	m_TMACPoint->processStatistics(g_FileDelayStatistics, g_FileEmergencyPossion, g_FileDataPossion, g_FileConflictNum, g_FileEventLogInfo);
 

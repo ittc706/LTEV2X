@@ -35,7 +35,7 @@ WT_B::WT_B(VeUE* systemVeUEAry):WT_Basic(systemVeUEAry){
 }
 
 
-void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd) {
+std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd) {
 	//配置本次函数调用的参数
 	configuration(VeUEId);
 
@@ -135,9 +135,9 @@ void WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd)
 		throw Exp("m_Mol Error");
 	}
 
-	int MCS = 0;
-	MCS = searchMCSLevelTable(Sinreff);
+	int MCS = searchMCSLevelTable(Sinreff);
 	g_FileTemp << "MCS: " << MCS << endl;
+	return MCS2ModulationAndRate(MCS);
 }
 
 
@@ -199,7 +199,7 @@ void WT_B::configuration(int VeUEId){
 	m_Nt = m_VeUEAry[VeUEId].m_GTAT->m_Nt;
 	m_Mol = m_VeUEAry[VeUEId].m_RRM->m_PreModulation;
 	m_Ploss = m_VeUEAry[VeUEId].m_GTAT->m_Ploss;
-	m_Pt = pow(10,-4.7);//23dbm-70dbm
+	m_Pt = pow(10,-8.7);//-17dbm-70dbm
 	m_Sigma = pow(10,-17.4);
 
 	m_PlossInterference = m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss;
@@ -293,3 +293,66 @@ double WT_B::getMutualInformation(std::vector<double> v, int dex) {
 }
 
 
+tuple<ModulationType, int, double> WT_B::MCS2ModulationAndRate(int MCSLevel) {
+	//目前对应的是LTE上行的0-27对应于这里的1-28
+	switch (MCSLevel) {
+	case 1:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.0764);
+	case 2:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.1250);
+	case 3:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.1528);
+	case 4:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.1806);
+	case 5:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.2222);
+	case 6:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.2847);
+	case 7:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.3403);
+	case 8:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.4097);
+	case 9:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.4653);
+	case 10:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.5347);
+	case 11:
+		return tuple<ModulationType, int, double>(QPSK, 1, 0.5903);
+	case 12:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.2951);
+	case 13:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.3368);
+	case 14:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.3924);
+	case 15:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.4340);
+	case 16:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.4896);
+	case 17:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.5313);
+	case 18:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.5590);
+	case 19:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.6146);
+	case 20:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.6701);
+	case 21:
+		return tuple<ModulationType, int, double>(_16QAM, 2, 0.7535);
+	case 22:
+		return tuple<ModulationType, int, double>(_64QAM, 3, 0.5023);
+	case 23:
+		return tuple<ModulationType, int, double>(_64QAM, 3, 0.5394);
+	case 24:
+		return tuple<ModulationType, int, double>(_64QAM, 3, 0.5764);
+	case 25:
+		return tuple<ModulationType, int, double>(_64QAM, 3, 0.6227);
+	case 26:
+		return tuple<ModulationType, int, double>(_64QAM, 3, 0.6597);
+	case 27:
+		return tuple<ModulationType, int, double>(_64QAM, 3, 0.6968);
+	case 28:
+		return tuple<ModulationType, int, double>(_64QAM, 3, 0.7338);
+	default:
+		throw Exp("MCSLevel is Wrong!");
+	}
+}
