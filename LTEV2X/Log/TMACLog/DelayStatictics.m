@@ -5,7 +5,7 @@ clc;
 
 separate=0;
 
-
+figId=1;
 
 
 %% 读取时延统计信息
@@ -67,28 +67,32 @@ numberData=numberData./sum(numberData);
 
 %% 等待时延
 if(separate==1)
-    figure(1)
+    figure(figId)
+    figId=figId+1;
     bar(centerPeriod,numberPeriod);
     title('周期事件等待时延统计','LineWidth',2);
     xlabel('等待时延(TTI)','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 
-    figure(2)
+    figure(figId)
+    figId=figId+1;
     bar(centerEmergency,numberEmergency);
     title('紧急事件等待时延统计','LineWidth',2);
     xlabel('等待时延(TTI)','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 
-    figure(3)
+    figure(figId)
+    figId=figId+1;
     bar(centerData,numberData);
     title('数据业务事件等待时延统计','LineWidth',2);
     xlabel('等待时延(TTI)','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 else
-    figure(1)
+    figure(figId)
+    figId=figId+1;
     set(1,'position',[0,0,1800,600]);
     subplot(1,3,1);
     bar(centerPeriod,numberPeriod);
@@ -137,28 +141,32 @@ numberData=numberData./sum(numberData);
 
 
 if(separate==1)
-    figure(4)
+    figure(figId)
+    figId=figId+1;
     bar(centerPeriod,numberPeriod);
     title('周期事件传输时延统计','LineWidth',2);
     xlabel('传输时延(TTI)','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 
-    figure(5)
+    figure(figId)
+    figId=figId+1;
     bar(centerEmergency,numberEmergency);
     title('紧急事件传输时延统计','LineWidth',2);
     xlabel('传输时延(TTI)','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 
-    figure(6)
+    figure(figId)
+    figId=figId+1;
     bar(centerData,numberData);
     title('数据业务事件传输时延统计','LineWidth',2);
     xlabel('传输时延(TTI)','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 else
-    figure(2)
+    figure(figId)
+    figId=figId+1;
     set(2,'position',[0,0,1800,600]);
     subplot(1,3,1);
     bar(centerPeriod,numberPeriod);
@@ -234,28 +242,32 @@ end
 numberData=numberData./sum(numberData);
 
 if(separate==1)
-    figure(7)
+    figure(figId)
+    figId=figId+1;
     bar(centerPeriod,numberPeriod);
     title('周期事件冲突统计','LineWidth',2);
     xlabel('冲突次数','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 
-    figure(8)
+    figure(figId)
+    figId=figId+1;
     bar(centerEmergency,numberEmergency);
     title('紧急事件冲突统计','LineWidth',2);
     xlabel('冲突次数','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 
-    figure(9)
+    figure(figId)
+    figId=figId+1;
     bar(centerData,numberData);
     title('数据业务事件冲突统计','LineWidth',2);
     xlabel('冲突次数','LineWidth',2);
     ylabel('概率','LineWidth',2);
     grid on;
 else
-    figure(3)
+    figure(figId)
+    figId=figId+1;
     set(3,'position',[0,0,1800,600]);
     subplot(1,3,1);
     bar(centerPeriod,numberPeriod);
@@ -294,14 +306,16 @@ for iter=2:length(TTIThroughput)
     accumulatedTTIThroughput(1,iter)=accumulatedTTIThroughput(1,iter-1)+TTIThroughput(1,iter);
 end
 
-figure(10)
+figure(figId)
+figId=figId+1;
 plot(TTIThroughput);
 title('TTI吞吐量','LineWidth',2);
 xlabel('TTI','LineWidth',2);
 ylabel('K bit','LineWidth',2);
 grid on;
 
-figure(11)
+figure(figId)
+figId=figId+1;
 plot(accumulatedTTIThroughput);
 title('累计吞吐量','LineWidth',2);
 xlabel('TTI','LineWidth',2);
@@ -310,7 +324,8 @@ grid on;
 
 
 RSUThroughput=RSUThroughput/1000;
-figure(12)
+figure(figId)
+figId=figId+1;
 bar(RSUThroughput);
 title('吞吐量统计','LineWidth',2);
 xlabel('RSUId','LineWidth',2);
@@ -319,11 +334,55 @@ grid on;
 
 
 VeUENumPerRSULogInfo=mean(VeUENumPerRSULogInfo,1);
-figure(13)
+figure(figId)
+figId=figId+1;
 bar(VeUENumPerRSULogInfo)
 title('车辆分布统计图','LineWidth',2);
 xlabel('车辆数目','LineWidth',2);
 ylabel('RSUId','LineWidth',2);
+grid on;
+
+
+%TTI吞吐量CDF图
+[numberTTIThroughput,centerTTIThroughput]=hist(TTIThroughput,100);
+Tem=zeros(length(centerTTIThroughput),2);
+Tem(:,1)=centerTTIThroughput.';
+Tem(:,2)=numberTTIThroughput.';
+sortrows(Tem,1);%依据中心值进行主值排序
+centerTTIThroughput=Tem(:,1).';
+numberTTIThroughput=Tem(:,2).';
+TotalTTI=length(TTIThroughput);
+accumulateNumberTTIThroughput=cumsum(numberTTIThroughput);%计算累数量
+accumulatePTTIThroughput=accumulateNumberTTIThroughput./TotalTTI;%计算累概率
+
+figure(figId)
+figId=figId+1;
+plot(centerTTIThroughput,accumulatePTTIThroughput,'bo-','LineWidth',2);
+title('TTI吞吐率CDF图','LineWidth',2);
+xlabel('吞吐量(Kbits/TTI)','LineWidth',2);
+ylabel('CDF','LineWidth',2);
+grid on;
+
+
+%RSU吞吐量CDF图
+RSUThroughput=RSUThroughput/length(TTIThroughput);
+[numberRSUThroughput,centerRSUThroughput]=hist(RSUThroughput,length(RSUThroughput));
+Tem=zeros(length(centerRSUThroughput),2);
+Tem(:,1)=centerRSUThroughput.';
+Tem(:,2)=numberRSUThroughput.';
+sortrows(Tem,1);%依据中心值进行主值排序
+centerRSUThroughput=Tem(:,1).';
+numberRSUThroughput=Tem(:,2).';
+TotalRSU=length(RSUThroughput);
+accumulateNumberRSUThroughput=cumsum(numberRSUThroughput);%计算累数量
+accumulatePRSUThroughput=accumulateNumberRSUThroughput./TotalRSU;%计算累概率
+
+figure(figId)
+figId=figId+1;
+plot(centerRSUThroughput,accumulatePRSUThroughput,'bo-','LineWidth',2);
+title('RSU吞吐率CDF图','LineWidth',2);
+xlabel('吞吐量(Kbits/TTI/RSU)','LineWidth',2);
+ylabel('CDF','LineWidth',2);
 grid on;
 
 
@@ -339,7 +398,8 @@ else
 end
 
 
-figure(14)
+figure(figId)
+figId=figId+1;
 bar(centerEmergency,numberEmergency);
 title('紧急事件泊松分布图','LineWidth',2);
 xlabel('在仿真时间内紧急事件生成次数','LineWidth',2);
@@ -352,7 +412,8 @@ else
     [numberData,centerData]=hist(DataPossion,unique(DataPossion));
 end
 
-figure(15)
+figure(figId)
+figId=figId+1;
 bar(centerData,numberData);
 title('数据业务事件泊松分布图','LineWidth',2);
 xlabel('在仿真时间内数据业务事件生成次数','LineWidth',2);
