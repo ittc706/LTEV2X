@@ -288,7 +288,39 @@ void GTAT_Urban::freshLoc() {
 	for (int UserIdx1 = 0; UserIdx1 != m_Config.VeUENum; UserIdx1++)
 	{
 		m_VeUEAry[UserIdx1].m_GTAT_Urban->m_IMTA = new IMTA[m_Config.RSUNum];
-		switch (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId / 10)
+		if (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId <= 30) {
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][3];
+			ClusterID = 0;
+		}
+		else if(m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId >= 175) {
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][3];
+			ClusterID = 1;
+		}
+		else if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId >= 31) && (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId <= 61)) {
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][0];
+			ClusterID = 3;
+		}
+		else if	((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId <= 79) && (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId >=62)){
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][0];
+			ClusterID = 2;
+		}
+		else if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId >= 80) && (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId <= 96)) {
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][1];
+			ClusterID = 5;
+		}
+		else if((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId >= 97) && (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId <= 126)){
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][1];
+			ClusterID = 4;
+		}
+		else if ((m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId >= 127) && (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId <= 157)) {
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][2];
+			ClusterID = 7;
+		}
+		else {
+			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][2];
+			ClusterID = 6;
+	}
+		/*switch (m_VeUEAry[UserIdx1].m_GTAT_Urban->m_LocationId / 10)
 		{
 		case 1:
 			RSUIdx = c_RSUInRoad[m_VeUEAry[UserIdx1].m_GTAT_Urban->m_RoadId][8];
@@ -405,7 +437,7 @@ void GTAT_Urban::freshLoc() {
 			break;
 		default:
 			break;
-		}
+		}*/
 		m_VeUEAry[UserIdx1].m_GTAT->m_RSUId = RSUIdx;
 		m_VeUEAry[UserIdx1].m_GTAT->m_ClusterIdx = ClusterID;
 		m_RSUAry[RSUIdx].m_GTAT->m_VeUEIdList.push_back(UserIdx1);

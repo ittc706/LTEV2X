@@ -105,7 +105,7 @@ std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCa
 	for (int i = 0; i < Sinr.col; i++) {
 		Sinr[i] = 10 * log10(Complex::abs(Sinr[i]));
 	}
-
+	//Sinr.print();
 	if (m_Mol == 2) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
 			sum_MI = sum_MI + getMutualInformation(m_QPSK_MI,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
@@ -137,6 +137,7 @@ std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCa
 
 	int MCS = searchMCSLevelTable(Sinreff);
 	g_FileTemp << "MCS: " << MCS << endl;
+	cout << MCS << endl;
 	return MCS2ModulationAndRate(MCS);
 }
 
@@ -199,7 +200,7 @@ void WT_B::configuration(int VeUEId){
 	m_Nt = m_VeUEAry[VeUEId].m_GTAT->m_Nt;
 	m_Mol = m_VeUEAry[VeUEId].m_RRM->m_PreModulation;
 	m_Ploss = m_VeUEAry[VeUEId].m_GTAT->m_Ploss;
-	m_Pt = pow(10,-8.7);//-17dbm-70dbm
+	m_Pt = pow(10,-4.7);//-17dbm-70dbm
 	m_Sigma = pow(10,-17.4);
 
 	m_PlossInterference = m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss;
