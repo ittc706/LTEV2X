@@ -528,106 +528,113 @@ void GTAT_Urban::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstre
 	}
 }
 
-void GTAT_Urban::calculateInterference(const std::set<int>& transimitingVeUEId) {
-	for (int VeUEId : transimitingVeUEId) {
-		m_VeUEAry[VeUEId].m_GTAT_Urban->m_IMTA = new IMTA[m_Config.RSUNum];
-	}
+void GTAT_Urban::calculateInterference(const std::vector<std::pair<MessageType, std::list<int>>>& RRMInterferenceVec) {
+	for (int absPatternIdx = 0; absPatternIdx < RRMInterferenceVec.size(); absPatternIdx++) {
+		const list<int> &lst = RRMInterferenceVec[absPatternIdx].second;
+		MessageType messageType = RRMInterferenceVec[absPatternIdx].first;
 
-	for (int VeUEId : transimitingVeUEId) {
-		m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss.assign(m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum, 0);
+		for (int VeUEId : lst) {
+			m_VeUEAry[VeUEId].m_GTAT_Urban->m_IMTA = new IMTA[m_Config.RSUNum];
 
-		if (m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH != nullptr) delete[] m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH;
-		m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH = new double[m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum * 2 * 1024 * 2];
-
-		for (int count = 0; count != m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum; count++)
-		{
-			int interUserIdx = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[count];
-			Location location;
-			Antenna antenna;
-			location.bManhattan = true;
-
-			int RSUIdx = m_VeUEAry[VeUEId].m_GTAT->m_RSUId;
-			location.eType = None;
-			location.distance = 0;
-			location.distance1 = 0;
-			location.distance2 = 0;
-
-			double angle = 0;
-			if (location.bManhattan == true)  //计算location distance
-			{
-				if (abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY) <= 10.5)
-				{
-					location.eType = Los;
-					location.distance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY), 2.0f));
-					angle = atan2(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) / c_Degree2PI;
-				}
-				else
-				{
-					location.eType = Nlos;
-					location.distance1 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX);
-					location.distance2 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY);
-					location.distance = sqrt(pow(location.distance1, 2.0f) + pow(location.distance2, 2.0f));
-
-				}
-			}
-			location.eNBAntH = 5;
-			location.VeUEAntH = 1.5;
-			RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
-
-			antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTAT_Urban->m_FantennaAngle;
-			antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTAT_Urban->m_FantennaAngle;
-			antenna.fAntGain = 6;
-			antenna.byTxAntNum = 1;
-			antenna.byRxAntNum = 2;
-			antenna.pfTxSlantAngle = new double[antenna.byTxAntNum];
-			antenna.pfTxAntSpacing = new double[antenna.byTxAntNum];
-			antenna.pfRxSlantAngle = new double[antenna.byRxAntNum];
-			antenna.pfRxAntSpacing = new double[antenna.byRxAntNum];
-			antenna.pfTxSlantAngle[0] = 90.0f;
-			antenna.pfTxAntSpacing[0] = 0.0f;
-			antenna.pfRxSlantAngle[0] = 90.0f;
-			antenna.pfRxSlantAngle[1] = 90.0f;
-			antenna.pfRxAntSpacing[0] = 0.0f;
-			antenna.pfRxAntSpacing[1] = 0.5f;
-
-			double t_Pl = 0;
-			m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_V, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
-			bool *flag = new bool();
-
-
-			m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[count] = t_Pl;
-
-
-			*flag = true;
-			m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].enable(flag);
-			double *H = new double[1 * 2 * 12 * 2];
-			double *FFT = new double[1 * 2 * 1024 * 2];
-			double *ch_buffer = new double[1 * 2 * 12 * 20];
-			double *ch_sin = new double[1 * 2 * 12 * 20];
-			double *ch_cos = new double[1 * 2 * 12 * 20];
-
-			double *t_HAfterFFT = new double[2 * 1024 * 2];
-
-			m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
-
-
-			memcpy(&m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[count * 2 * 1024 * 2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
-
-			delete flag;
-			delete[] H;
-			delete[] ch_buffer;
-			delete[] ch_sin;
-			delete[] ch_cos;
-			delete[] antenna.pfTxSlantAngle;
-			delete[] antenna.pfTxAntSpacing;
-			delete[] antenna.pfRxSlantAngle;
-			delete[] antenna.pfRxAntSpacing;
-			delete[] FFT;
-			delete[] t_HAfterFFT;
 		}
-	}
 
-	for (int VeUEId : transimitingVeUEId) {
-		delete[] m_VeUEAry[VeUEId].m_GTAT_Urban->m_IMTA;
+		for (int VeUEId : lst) {
+			m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[messageType].assign(m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[messageType], 0);
+
+			if (m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[messageType] != nullptr) delete[] m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[messageType];
+			m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[messageType] = new double[m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[messageType] * 2 * 1024 * 2];
+
+			for (int count = 0; count != m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[messageType]; count++)
+			{
+				int interUserIdx = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[messageType][count];
+				Location location;
+				Antenna antenna;
+				location.bManhattan = true;
+
+				int RSUIdx = m_VeUEAry[VeUEId].m_GTAT->m_RSUId;
+				location.eType = None;
+				location.distance = 0;
+				location.distance1 = 0;
+				location.distance2 = 0;
+
+				double angle = 0;
+				if (location.bManhattan == true)  //计算location distance
+				{
+					if (abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) <= 10.5 || abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY) <= 10.5)
+					{
+						location.eType = Los;
+						location.distance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY), 2.0f));
+						angle = atan2(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX) / c_Degree2PI;
+					}
+					else
+					{
+						location.eType = Nlos;
+						location.distance1 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsX);
+						location.distance2 = abs(m_VeUEAry[interUserIdx].m_GTAT_Urban->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_Urban->m_AbsY);
+						location.distance = sqrt(pow(location.distance1, 2.0f) + pow(location.distance2, 2.0f));
+
+					}
+				}
+				location.eNBAntH = 5;
+				location.VeUEAntH = 1.5;
+				RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
+
+				antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTAT_Urban->m_FantennaAngle;
+				antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTAT_Urban->m_FantennaAngle;
+				antenna.fAntGain = 6;
+				antenna.byTxAntNum = 1;
+				antenna.byRxAntNum = 2;
+				antenna.pfTxSlantAngle = new double[antenna.byTxAntNum];
+				antenna.pfTxAntSpacing = new double[antenna.byTxAntNum];
+				antenna.pfRxSlantAngle = new double[antenna.byRxAntNum];
+				antenna.pfRxAntSpacing = new double[antenna.byRxAntNum];
+				antenna.pfTxSlantAngle[0] = 90.0f;
+				antenna.pfTxAntSpacing[0] = 0.0f;
+				antenna.pfRxSlantAngle[0] = 90.0f;
+				antenna.pfRxSlantAngle[1] = 90.0f;
+				antenna.pfRxAntSpacing[0] = 0.0f;
+				antenna.pfRxAntSpacing[1] = 0.5f;
+
+				double t_Pl = 0;
+				m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_V, m_VeUEAry[interUserIdx].m_GTAT_Urban->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
+				bool *flag = new bool();
+
+
+				m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[messageType][count] = t_Pl;
+
+
+				*flag = true;
+				m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].enable(flag);
+				double *H = new double[1 * 2 * 12 * 2];
+				double *FFT = new double[1 * 2 * 1024 * 2];
+				double *ch_buffer = new double[1 * 2 * 12 * 20];
+				double *ch_sin = new double[1 * 2 * 12 * 20];
+				double *ch_cos = new double[1 * 2 * 12 * 20];
+
+				double *t_HAfterFFT = new double[2 * 1024 * 2];
+
+				m_VeUEAry[interUserIdx].m_GTAT_Urban->m_IMTA[RSUIdx].calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
+
+
+				memcpy(&m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[messageType][count * 2 * 1024 * 2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
+
+				delete flag;
+				delete[] H;
+				delete[] ch_buffer;
+				delete[] ch_sin;
+				delete[] ch_cos;
+				delete[] antenna.pfTxSlantAngle;
+				delete[] antenna.pfTxAntSpacing;
+				delete[] antenna.pfRxSlantAngle;
+				delete[] antenna.pfRxAntSpacing;
+				delete[] FFT;
+				delete[] t_HAfterFFT;
+			}
+		}
+
+		for (int VeUEId : lst) {
+			delete[] m_VeUEAry[VeUEId].m_GTAT_Urban->m_IMTA;
+		}
+
 	}
 }

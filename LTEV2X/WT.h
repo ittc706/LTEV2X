@@ -23,5 +23,5 @@ public:
 	VeUE* m_VeUEAry;//VeUEÈÝÆ÷
 
 	//½Ó¿Ú
-	virtual std::tuple<ModulationType,int,double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd) = 0;
+	virtual std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, MessageType messageType) = 0;
 };

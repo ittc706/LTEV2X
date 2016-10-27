@@ -25,14 +25,14 @@ public:
 	std::vector<double> m_QAM_MI64;
 
 	WT_B(VeUE* systemVeUEAry);
-	std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd) override;
+	std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, MessageType messageType) override;
 	void testCloest();
 
 private:
 	void initialize();//模块初始化调用的初始化函数
-	void configuration(int VeUEId);//每次调用SINRCalculate前需要进行参数配置
+	void configuration(int VeUEId, MessageType messageType);//每次调用SINRCalculate前需要进行参数配置
 	Matrix readH(int VeUEIdx, int subCarrierIdx);//读取对应子载波的信道响应矩阵
-	std::vector<Matrix> readInterferenceH(int VeUEIdx, int subCarrierIdx);//读取对应车辆在对应子载波上的干扰矩阵数组
+	std::vector<Matrix> readInterferenceH(int VeUEIdx, int subCarrierIdx, MessageType messageType);//读取对应车辆在对应子载波上的干扰矩阵数组
 
 	int searchMCSLevelTable(double SINR);
 	int closest(std::vector<double> v, double target);//二分法查找算法

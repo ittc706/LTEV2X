@@ -5,6 +5,7 @@
 #include<utility>
 #include<tuple>
 #include<random>
+#include<map>
 #include"Global.h"
 #include"Enumeration.h"
 #include"Config.h"
@@ -53,10 +54,10 @@ public:
 		int m_Nt;//发送天线数目，WT_B模块需要
 		int m_Nr;//接收天线数目，WT_B模块需要
 		double m_Ploss;//路径损耗，WT_B模块需要
-		double *m_H=nullptr;//信道响应矩阵，WT_B模块需要
+		double* m_H;//信道响应矩阵，WT_B模块需要
 
-		std::vector<double> m_InterferencePloss;//干扰路径损耗，WT_B模块需要
-		double *m_InterferenceH = nullptr;//干扰信道响应矩阵，WT_B模块需要
+		std::map<MessageType,std::vector<double>> m_InterferencePloss;//干扰路径损耗，WT_B模块需要
+		std::map<MessageType,double*> m_InterferenceH;//干扰信道响应矩阵，WT_B模块需要
 	};
 
 	struct GTAT_Urban {
@@ -85,9 +86,10 @@ public:
 	};
 
 	struct RRM {
-		int m_InterferenceVeUENum;//同频干扰数量
-		std::vector<int> m_InterferenceVeUEVec;//同频干扰车辆ID，不包含当前车辆
-		int  m_PreModulation = 4;//上一次的调制方式，WT_B模块需要
+		std::map<MessageType,int> m_InterferenceVeUENum;//同频干扰数量
+		std::map<MessageType,std::vector<int>> m_InterferenceVeUEVec;//同频干扰车辆ID，不包含当前车辆，每个类型对应的总数就是m_InterferenceVeUENum[messageType]
+		std::map<MessageType, int>  m_PreModulation;//上一次的调制方式，WT_B模块需要
+		RRM() { m_PreModulation[PERIOD] = 4; m_PreModulation[EMERGENCY] = 4; m_PreModulation[DATA] = 4;}
 	};
 
 	struct RRM_DRA {

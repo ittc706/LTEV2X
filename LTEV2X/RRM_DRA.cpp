@@ -30,7 +30,7 @@ using namespace std;
 RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, DRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint) :
 	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint) {
 
-	m_DRAInterferenceVec = vector<list<int>>(gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum);
+	m_DRAInterferenceVec = vector<std::pair<MessageType, std::list<int>>>(gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum);
 }
 
 
@@ -695,8 +695,8 @@ void RRM_DRA::DRAConflictListener() {
 
 void RRM_DRA::DRATransimitPreparation() {
 	//首先清空上一次干扰信息
-	for (list<int>&lst : m_DRAInterferenceVec) {
-		lst.clear();
+	for (std::pair<MessageType, std::list<int>>&lst : m_DRAInterferenceVec) {
+		lst.second.clear();
 	}
 
 	//统计本次的干扰信息
@@ -708,7 +708,9 @@ void RRM_DRA::DRATransimitPreparation() {
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
-				m_DRAInterferenceVec[patternIdx].push_back(info->VeUEId);
+				MessageType messageType = m_EventVec[info->eventId].message.messageType;
+				m_DRAInterferenceVec[patternIdx].first = messageType;
+				m_DRAInterferenceVec[patternIdx].second.push_back(info->VeUEId);
 			}
 		}
 		/*  EMERGENCY  */
@@ -718,7 +720,9 @@ void RRM_DRA::DRATransimitPreparation() {
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
-				m_DRAInterferenceVec[relativePatternIdx + gc_DRAEmergencyTotalPatternNum].push_back(info->VeUEId);
+				MessageType messageType = m_EventVec[info->eventId].message.messageType;
+				m_DRAInterferenceVec[relativePatternIdx + gc_DRAEmergencyTotalPatternNum].first = messageType;
+				m_DRAInterferenceVec[relativePatternIdx + gc_DRAEmergencyTotalPatternNum].second.push_back(info->VeUEId);
 			}
 		}
 	}
@@ -729,21 +733,22 @@ void RRM_DRA::DRATransimitPreparation() {
 	* 因为，同一辆车可能同时触发了不同的事件，比如同时有PERIOD和DATA发生，那么在不同的patternIdx将会有相同的车辆ID
 	* 但是这相同车辆的ID只能算一次
 	*/
-	set<int> transmitingVeUEId;
 	
 	for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum + gc_DRATotalPatternNum; patternIdx++) {
-		list<int> &lst = m_DRAInterferenceVec[patternIdx];
+		pair<MessageType, list<int>> &p = m_DRAInterferenceVec[patternIdx];
+		MessageType messageType = p.first;
+		list<int>& lst = p.second;
 		for (int VeUEId : lst) {
-			transmitingVeUEId.insert(VeUEId);
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum = (int)lst.size() - 1;//写入干扰数目
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[messageType] = (int)lst.size() - 1;//写入干扰数目
 			
 			set<int> s(lst.begin(), lst.end());//用于更新干扰列表的
 			s.erase(VeUEId);
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec.assign(s.begin(), s.end());//写入干扰车辆ID
+
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[messageType].assign(s.begin(), s.end());//写入干扰车辆ID
 
 			g_FileTemp << "VeUEId: " << VeUEId << " [";
-			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec)
+			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[messageType])
 				g_FileTemp << c << ", ";
 			g_FileTemp << " ]" << endl;
 		}
@@ -751,7 +756,7 @@ void RRM_DRA::DRATransimitPreparation() {
 
 	//请求地理拓扑单元计算干扰响应矩阵
 	long double start = clock();
-	m_GTATPoint->calculateInterference(transmitingVeUEId);
+	m_GTATPoint->calculateInterference(m_DRAInterferenceVec);
 	long double end = clock();
 	m_GTATTimeConsume += end - start;
 }
@@ -770,14 +775,15 @@ void RRM_DRA::DRATransimitStart() {
 				//计算SINR，获取调制编码方式
 				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
-				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
-				tuple<ModulationType, int, double>curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
-				double factor = get<1>(curModulationAndRate) / get<2>(curModulationAndRate);
+				MessageType messageType = m_EventVec[info->eventId].message.messageType;
+				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  "  <<((messageType==-1)?"Emergency":(messageType==0?"Period":"Data"))<< endl;
+				tuple<ModulationType, int, double>curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, messageType);
+				double factor = get<1>(curModulationAndRate) * get<2>(curModulationAndRate);
 				long double end = clock();
 				m_WTTimeConsume += end - start;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
-				int maxEquivalentBitNum = (int)((double)(gc_DRAEmergencyRBNumPerPattern*gc_BitNumPerRB)/ factor);
+				int maxEquivalentBitNum = (int)((double)(gc_DRAEmergencyRBNumPerPattern*gc_BitNumPerRB)* factor);
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
@@ -811,14 +817,15 @@ void RRM_DRA::DRATransimitStart() {
 				//计算SINR，获取调制编码方式
 				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
-				g_FileTemp << "NoEmergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]" << endl;
-				tuple<ModulationType, int, double>curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second);
-				double factor = get<1>(curModulationAndRate) / get<2>(curModulationAndRate);
+				MessageType messageType = m_EventVec[info->eventId].message.messageType;
+				g_FileTemp << "NoEmergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((messageType == -1) ? "Emergency" : (messageType == 0 ? "Period" : "Data")) << endl;
+				tuple<ModulationType, int, double>curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, messageType);
+				double factor = get<1>(curModulationAndRate) * get<2>(curModulationAndRate);
 				long double end = clock();
 				m_WTTimeConsume += end - start;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
-				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB)/ factor);
+				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB)* factor);
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
@@ -1081,6 +1088,7 @@ int RRM_DRA::DRAGetMaxIndex(const std::vector<double>&clusterSize) {
 
 
 int RRM_DRA::DRAGetPatternType(int patternIdx) {
+	//patternIdx仅仅指非紧急事件的序号，从0开始编号
 	for (int patternType = 0; patternType < gc_DRAPatternTypeNum; patternType++) {
 		if (patternIdx >= gc_DRAPatternTypePatternIdxInterval[patternType][0] && patternIdx <= gc_DRAPatternTypePatternIdxInterval[patternType][1])
 			return patternType;

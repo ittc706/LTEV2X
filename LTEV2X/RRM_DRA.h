@@ -51,11 +51,11 @@ public:
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
 	/*
-	* 用于存放指定Pattern的车辆的编号列表，外层代表Pattern编号
-	* 外层下标存放Pattern，注意非紧急事件要加上偏移量，因为非紧急事件的Pattern也是从0开始编号，但是这里要存入的是Pattern编号的绝对值
+	* 用于存放指定Pattern的[事件类型信息,该Pattern的干扰列表]
+	* 外层下标为PatternId，注意非紧急事件要加上偏移量，因为非紧急事件的Pattern也是从0开始编号，但是这里要存入的是Pattern编号的绝对值
 	*/
-	std::vector<std::list<int>> m_DRAInterferenceVec;
-
+	std::vector<std::pair<MessageType, std::list<int>>> m_DRAInterferenceVec;
+	
 	int m_NewCount = 0;//记录动态创建的对象的次数
 
 	int m_DeleteCount = 0;//记录删除动态创建对象的次数

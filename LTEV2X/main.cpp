@@ -38,8 +38,8 @@ int main() {
 
 	//int testMain1();
 	//testMain1();
-	//system("pause");
-	//return 1;
+	system("pause");
+	return 1;
 }
 
 

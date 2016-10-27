@@ -35,9 +35,9 @@ WT_B::WT_B(VeUE* systemVeUEAry):WT_Basic(systemVeUEAry){
 }
 
 
-std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd) {
+std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd, MessageType messageType) {
 	//配置本次函数调用的参数
-	configuration(VeUEId);
+	configuration(VeUEId, messageType);
 
 	//子载波数量
 	int m_SubCarrierNum = subCarrierIdxEnd - subCarrierIdxStart + 1;
@@ -49,7 +49,7 @@ std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCa
 		int relativeSubCarrierIdx = subCarrierIdx - subCarrierIdxStart;//相对的子载波下标
 
 		m_H=readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
-		//m_HInter = readInterH(VeUEId, subCarrierIdx);//读入当前子载波干扰相应矩阵数组
+		m_HInterference = readInterferenceH(VeUEId, subCarrierIdx, messageType);//读入当前子载波干扰相应矩阵数组
 
 
 		/* 下面开始计算W */
@@ -137,7 +137,6 @@ std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCa
 
 	int MCS = searchMCSLevelTable(Sinreff);
 	g_FileTemp << "MCS: " << MCS << endl;
-	cout << MCS << endl;
 	return MCS2ModulationAndRate(MCS);
 }
 
@@ -195,15 +194,15 @@ void WT_B::initialize() {
 }
 
 
-void WT_B::configuration(int VeUEId){
+void WT_B::configuration(int VeUEId, MessageType messageType){
 	m_Nr = m_VeUEAry[VeUEId].m_GTAT->m_Nr;
 	m_Nt = m_VeUEAry[VeUEId].m_GTAT->m_Nt;
-	m_Mol = m_VeUEAry[VeUEId].m_RRM->m_PreModulation;
+	m_Mol = m_VeUEAry[VeUEId].m_RRM->m_PreModulation[messageType];
 	m_Ploss = m_VeUEAry[VeUEId].m_GTAT->m_Ploss;
 	m_Pt = pow(10,-4.7);//-17dbm-70dbm
 	m_Sigma = pow(10,-17.4);
 
-	m_PlossInterference = m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss;
+	m_PlossInterference = m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[messageType];
 }
 
 
@@ -220,13 +219,14 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 }
 
 
-std::vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx) {
+std::vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, MessageType messageType) {
 	vector<Matrix> res;
-	for (int interVeUEIdx : m_VeUEAry[VeUEIdx].m_RRM->m_InterferenceVeUEVec) {
+	for (int iter = 0; iter < m_VeUEAry[VeUEIdx].m_RRM->m_InterferenceVeUENum[messageType];iter++) {
+		int interVeUEIdx = m_VeUEAry[VeUEIdx].m_RRM->m_InterferenceVeUEVec[messageType][iter];
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {
-				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTAT->m_InterferenceH[interVeUEIdx*row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTAT->m_InterferenceH[interVeUEIdx*row*subCarrierIdx + 1]);
+				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTAT->m_InterferenceH[messageType][iter*row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTAT->m_InterferenceH[messageType][iter*row*subCarrierIdx + 1]);
 			}
 		}
 		res.push_back(m);
