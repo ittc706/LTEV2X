@@ -102,14 +102,14 @@ RSU::RRM_DRA::RRM_DRA(RSU* t_this) {
 	m_this = t_this;
 
 	/*  EMERGENCY  */
-	m_DRAEmergencyPatternIsAvailable = vector<bool>(gc_DRAEmergencyTotalPatternNum, true);
-	m_DRAEmergencyScheduleInfoTable = vector<DRAScheduleInfo*>(gc_DRAEmergencyTotalPatternNum);
-	m_DRAEmergencyTransimitScheduleInfoList = vector<list<DRAScheduleInfo*>>(gc_DRAEmergencyTotalPatternNum);
+	m_DRAEmergencyPatternIsAvailable = vector<bool>(gc_DRAPatternNumPerPatternType[EMERGENCY], true);
+	m_DRAEmergencyScheduleInfoTable = vector<DRAScheduleInfo*>(gc_DRAPatternNumPerPatternType[EMERGENCY]);
+	m_DRAEmergencyTransimitScheduleInfoList = vector<list<DRAScheduleInfo*>>(gc_DRAPatternNumPerPatternType[EMERGENCY]);
 	/*  EMERGENCY  */
 
-	m_DRAPatternIsAvailable = vector<vector<bool>>(m_this->m_GTAT->m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum, true));
-	m_DRAScheduleInfoTable = vector<vector<DRAScheduleInfo*>>(m_this->m_GTAT->m_DRAClusterNum, vector<DRAScheduleInfo*>(gc_DRATotalPatternNum, nullptr));
-	m_DRATransimitScheduleInfoList = vector<list<DRAScheduleInfo*>>(gc_DRATotalPatternNum, list<DRAScheduleInfo*>(0, nullptr));
+	m_DRAPatternIsAvailable = vector<vector<bool>>(m_this->m_GTAT->m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum - gc_DRAPatternNumPerPatternType[EMERGENCY], true));
+	m_DRAScheduleInfoTable = vector<vector<DRAScheduleInfo*>>(m_this->m_GTAT->m_DRAClusterNum, vector<DRAScheduleInfo*>(gc_DRATotalPatternNum - gc_DRAPatternNumPerPatternType[EMERGENCY], nullptr));
+	m_DRATransimitScheduleInfoList = vector<list<DRAScheduleInfo*>>(gc_DRATotalPatternNum - gc_DRAPatternNumPerPatternType[EMERGENCY], list<DRAScheduleInfo*>(0, nullptr));
 
 }
 

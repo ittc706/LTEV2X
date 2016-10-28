@@ -1,3 +1,8 @@
+version_2016_10_27(修改Global.h的RRM_DRA部分)
+	将紧急事件与非紧急事件合并
+	注意，RRM_DRA中非紧急事件的数据结构必须采用相对的patternIdx，即relativePatternIdx来作为索引
+	下一步打算在VeUE的RRM数据结构中添加MCS缓存，以及InterferenceVeUEID的缓存，用于降低运算
+
 version_2016_10_27(Debug)
 	修改了干扰信道响应，干扰车辆ID容器，与干扰车辆总数的数据结构，改为跟类型有关
 		因为，一个车辆同时可以有不同类型的事件触发，因此需要分开存储

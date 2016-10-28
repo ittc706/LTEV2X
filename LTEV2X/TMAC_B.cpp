@@ -326,12 +326,12 @@ void TMAC_B::writeEventLogInfo(std::ofstream &out) {
 			s = "DATA";
 			break;
 		}
-		out << "Event[" << eventId << "]";
+		out << "EventId = " << eventId << endl;
 		out << "{" << endl;
 		out << "    " << "VeUEId = " << m_EventVec[eventId].VeUEId << endl;
 		out << "    " << "MessageType = " << s << endl;
-		out << "    " << "sendDelay = " << m_EventVec[eventId].sendDelay << "(TTI)" << endl;
-		out << "    " << "queuingDelay = " << m_EventVec[eventId].queuingDelay << "(TTI)" << endl;
+		out << "    " << "SendDelay = " << m_EventVec[eventId].sendDelay << "(TTI)" << endl;
+		out << "    " << "QueuingDelay = " << m_EventVec[eventId].queuingDelay << "(TTI)" << endl;
 		out << m_EventVec[eventId].toLogString(1);
 		out << "}" << endl;
 	}

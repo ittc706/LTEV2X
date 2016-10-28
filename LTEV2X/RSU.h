@@ -112,7 +112,7 @@ public:
 		/*
 		* Pattern块释是否可用的标记
 		* 外层下标代表簇编号
-		* 内层下标代表Pattern编号
+		* 内层下标代表Pattern编号(相对编号，除去Emergency的Pattern总数)
 		* 若"m_DRAPatternIsAvailable[i][j]==true"代表簇i的Pattern块j可用
 		*/
 		std::vector<std::vector<bool>> m_DRAPatternIsAvailable;
@@ -135,13 +135,13 @@ public:
 		/*
 		* 存放调度调度信息
 		* 外层下标代表簇编号
-		* 内层下标代表Pattern编号
+		* 内层下标代表Pattern编号(相对编号，除去Emergency的Pattern总数)
 		*/
 		std::vector<std::vector<DRAScheduleInfo*>> m_DRAScheduleInfoTable;
 
 		/*
 		* 当前时刻当前RSU内处于传输状态的调度信息链表
-		* 外层下标代表Pattern编号
+		* 外层下标代表Pattern编号(相对编号，除去Emergency的Pattern总数)
 		* 内层用list用于处理冲突
 		*/
 		std::vector<std::list<DRAScheduleInfo*>> m_DRATransimitScheduleInfoList;
@@ -149,7 +149,7 @@ public:
 
 		/*
 		* Pattern块释是否可用的标记
-		* 下标代表Pattern编号
+		* 下标代表Pattern编号(绝对编号)
 		* 若"m_DRAPatternIsAvailable[j]==true"代表Pattern块j可用
 		*/
 		std::vector<bool> m_DRAEmergencyPatternIsAvailable;
@@ -166,12 +166,13 @@ public:
 
 		/*
 		* 当前时刻处于传输状态的紧急事件调度信息列表
-		* 外层下标代表pattern编号
+		* 外层下标代表pattern编号(绝对编号)
 		*/
 		std::vector<std::list<DRAScheduleInfo*>> m_DRAEmergencyTransimitScheduleInfoList;
 
 		/*
 		* 当前时刻处于调度状态的紧急事件调度信息列表
+		* 外层下标代表pattern编号(绝对编号)
 		*/
 		std::vector<DRAScheduleInfo*> m_DRAEmergencyScheduleInfoTable;
 
@@ -345,7 +346,8 @@ void RSU::RRM_DRA::DRAPushToSwitchEventIdList(int VeUEId, std::list<int>& system
 
 inline
 void RSU::RRM_DRA::DRAPushToTransmitScheduleInfoList(RRM_DRA::DRAScheduleInfo* p, int patternIdx) {
-	m_DRATransimitScheduleInfoList[patternIdx].push_back(p);
+	int relativePatternIdx = patternIdx - gc_DRAPatternNumPerPatternType[EMERGENCY];
+	m_DRATransimitScheduleInfoList[relativePatternIdx].push_back(p);
 }
 
 inline
@@ -355,7 +357,8 @@ void RSU::RRM_DRA::DRAPushToEmergencyTransmitScheduleInfoList(RRM_DRA::DRASchedu
 
 inline
 void RSU::RRM_DRA::DRAPushToScheduleInfoTable(int clusterIdx, int patternIdx, RRM_DRA::DRAScheduleInfo*p) {
-	m_DRAScheduleInfoTable[clusterIdx][patternIdx] = p;
+	int relativePatternIdx = patternIdx - gc_DRAPatternNumPerPatternType[EMERGENCY];
+	m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx] = p;
 }
 
 inline
@@ -367,17 +370,18 @@ inline
 void RSU::RRM_DRA::DRAPullFromScheduleInfoTable(int TTI) {
 	int clusterIdx = DRAGetClusterIdx(TTI);
 	/*将处于调度表中当前可以传输的信息压入m_DRATransimitEventIdList*/
-	for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
-		if (m_DRAScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
-			m_DRATransimitScheduleInfoList[patternIdx].push_back(m_DRAScheduleInfoTable[clusterIdx][patternIdx]);
-			m_DRAScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+	for (int patternIdx = gc_DRAPatternNumPerPatternType[EMERGENCY]; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
+		int relativePatternIdx = patternIdx - gc_DRAPatternNumPerPatternType[EMERGENCY];
+		if (m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx] != nullptr) {
+			m_DRATransimitScheduleInfoList[relativePatternIdx].push_back(m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx]);
+			m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx] = nullptr;
 		}
 	}
 }
 
 inline
 void RSU::RRM_DRA::DRAPullFromEmergencyScheduleInfoTable() {
-	for (int patternIdx = 0; patternIdx < gc_DRAEmergencyTotalPatternNum; patternIdx++) {
+	for (int patternIdx = 0; patternIdx < gc_DRAPatternNumPerPatternType[EMERGENCY]; patternIdx++) {
 		if (m_DRAEmergencyScheduleInfoTable[patternIdx] != nullptr) {
 			m_DRAEmergencyTransimitScheduleInfoList[patternIdx].push_back(m_DRAEmergencyScheduleInfoTable[patternIdx]);
 			m_DRAEmergencyScheduleInfoTable[patternIdx] = nullptr;

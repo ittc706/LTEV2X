@@ -2,6 +2,7 @@
 #include<fstream>
 #include<vector>
 
+
 /*===========================================
 *            输出日志文件流声明
 * ==========================================*/
@@ -232,20 +233,23 @@ const int gc_BitNumPerRB=180;  //单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位
 * ==========================================*/
 const int gc_DRA_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
 
-const int gc_DRAEmergencyTotalPatternNum = 3;//传输紧急事件的Pattern数量
-const int gc_DRAEmergencyRBNumPerPattern = 2;//每个紧急事件的Pattern占用的RB数量
 
-const int gc_DRAPatternTypeNum = 2;//非紧急事件的Pattern的类型种类
-const int gc_DRA_RBNumPerPatternType[gc_DRAPatternTypeNum] = { 5,10 };//每个Pattern种类所占的RB数量
-const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 6,2 };//在全频段每个Pattern种类对应的Pattern数量
-const int gc_DRAPatternTypePatternIdxInterval[gc_DRAPatternTypeNum][2] = { { 0,5 },{ 6,7 } };
+const int gc_DRAPatternTypeNum = 3;//事件的Pattern的类型种类
+const int gc_DRA_RBNumPerPatternType[gc_DRAPatternTypeNum] = { 2,5,10 };//每个Pattern种类所占的RB数量
+const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 3,6,2 };//在全频段每个Pattern种类对应的Pattern数量
+
+const int gc_DRAPatternTypePatternIdxInterval[gc_DRAPatternTypeNum][2] = {
+	{0,gc_DRAPatternNumPerPatternType[0] - 1},
+	{gc_DRAPatternNumPerPatternType[0],gc_DRAPatternNumPerPatternType[0] + gc_DRAPatternNumPerPatternType[1] - 1 },
+	{ gc_DRAPatternNumPerPatternType[0] + gc_DRAPatternNumPerPatternType[1],gc_DRAPatternNumPerPatternType[0] + gc_DRAPatternNumPerPatternType[1] + gc_DRAPatternNumPerPatternType[2] - 1 },
+};
 
 const int gc_DRATotalPatternNum = [&]() {
 	int res = 0;
 	for (int num : gc_DRAPatternNumPerPatternType)
 		res += num;
 	return res;
-}();//所有非EmergencyPattern类型的Pattern数量总和
+}();//所有Pattern数量总和(包括Emergency)
 
 
 /*===========================================
