@@ -27,10 +27,18 @@
 
 using namespace std;
 
-RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, DRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint) :
-	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint) {
+RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, DRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint, int threadNum) :
+	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint), m_ThreadNum(threadNum) {
 
 	m_DRAInterferenceVec = std::vector<std::list<int>>(gc_DRATotalPatternNum);
+	//m_Threads;
+	m_ThreadsRSUIdRange = vector<pair<int, int>>(threadNum);
+
+	int num = m_Config.RSUNum / threadNum;
+	for (int threadIdx = 0; threadIdx < threadNum; threadIdx++) {
+		m_ThreadsRSUIdRange[threadIdx] = pair<int, int>(threadIdx*num,(threadIdx+1)*num-1);
+	}
+	m_ThreadsRSUIdRange[threadNum - 1].second = m_Config.RSUNum - 1;//修正最后一个边界
 }
 
 
@@ -791,7 +799,15 @@ void RRM_DRA::DRATransimitPreparation() {
 
 
 void RRM_DRA::DRATransimitStart() {
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+	vector<thread> threads;
+	for (int threadIdx = 0; threadIdx < m_ThreadNum; threadIdx++)
+		threads.push_back(thread(&RRM_DRA::DRATransimitStartThread, &*this, m_ThreadsRSUIdRange[threadIdx].first, m_ThreadsRSUIdRange[threadIdx].second));
+	for (int threadIdx = 0; threadIdx < m_ThreadNum; threadIdx++)
+		threads[threadIdx].join();
+}
+
+void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
+	for (int RSUId = fromRSUId; RSUId <= toRSUId; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
@@ -805,15 +821,15 @@ void RRM_DRA::DRATransimitStart() {
 				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << endl;
-				
-				
-				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx)||!m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
+
+
+				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
 					m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx] = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
 					m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
 					m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx] = true;
 				}
 				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
-				
+
 				long double end = clock();
 				m_WTTimeConsume += end - start;
 
@@ -821,8 +837,8 @@ void RRM_DRA::DRATransimitStart() {
 				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[EMERGENCY] * gc_BitNumPerRB)* factor);
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
-				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
-				
+				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum > maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
+
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSU.m_GTAT->m_RSUId] += realEquivalentBitNum;
 
@@ -843,8 +859,8 @@ void RRM_DRA::DRATransimitStart() {
 
 		int clusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
 		for (int patternIdx = gc_DRAPatternNumPerPatternType[EMERGENCY]; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
-			int relativePatternIdx= patternIdx- gc_DRAPatternNumPerPatternType[EMERGENCY];
-			
+			int relativePatternIdx = patternIdx - gc_DRAPatternNumPerPatternType[EMERGENCY];
+
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
@@ -856,7 +872,7 @@ void RRM_DRA::DRATransimitStart() {
 				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((patternType == 0) ? "Emergency" : (patternType == 1 ? "Period" : "Data")) << endl;
-				
+
 				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
 					m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx] = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
 					m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
@@ -871,7 +887,7 @@ void RRM_DRA::DRATransimitStart() {
 				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB)* factor);
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
-				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum>maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
+				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum > maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
 
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSU.m_GTAT->m_RSUId] += realEquivalentBitNum;
@@ -881,7 +897,7 @@ void RRM_DRA::DRATransimitStart() {
 
 				//更新剩余待传输bit数量
 				m_EventVec[info->eventId].message.remainBitNum -= realEquivalentBitNum;
-	
+
 				//更新调度信息
 				info->transimitBitNum = realEquivalentBitNum;
 				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;

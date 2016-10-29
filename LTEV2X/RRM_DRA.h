@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include<random>
+#include<thread>
 #include"RRM.h"
 #include"RSU.h"
 #include"VUE.h"
@@ -40,7 +41,8 @@ public:
 		std::vector<std::vector<int>>& systemTTIRSUThroughput,
 		DRAMode systemDRAMode,
 		WT_Basic* systemWTPoint,
-		GTAT_Basic* systemGTATPoint
+		GTAT_Basic* systemGTATPoint,
+		int threadNum
 	);
 
 	/*------------------数据成员------------------*/
@@ -60,6 +62,10 @@ public:
 
 	int m_DeleteCount = 0;//记录删除动态创建对象的次数
 
+	//多线程有关参数
+	int m_ThreadNum;
+	//std::vector<std::thread> m_Threads;
+	std::vector<std::pair<int, int>> m_ThreadsRSUIdRange;
 
 	/*------------------成员函数------------------*/
 
@@ -91,6 +97,7 @@ private:
 
 	void DRATransimitPreparation();//统计干扰信息
 	void DRATransimitStart();//模拟传输开始，更新调度信息
+	void DRATransimitStartThread(int fromRSUId,int toRSUId);//模拟传输开始，更新调度信息
 	void DRATransimitEnd();//模拟传输结束，即统计吞吐量
 
 	//日志记录函数
@@ -103,5 +110,10 @@ private:
 	int DRAGetMaxIndex(const std::vector<double>&clusterSize);
 	int DRAGetPatternType(int patternIdx);
 	std::pair<int, int> DRAGetOccupiedSubCarrierRange(MessageType messageType, int patternIdx);
+
+
+	void f() {
+		;
+	}
 };
 
