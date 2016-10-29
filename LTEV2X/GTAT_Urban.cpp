@@ -120,7 +120,9 @@ void GTAT_Urban::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		for (auto &c : m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH) {
 			for (auto &d : c) {
-				d = nullptr;
+				if (d != nullptr) {
+					delete[] d;
+				}
 			}
 		}
 	}
@@ -556,7 +558,6 @@ void GTAT_Urban::calculateInterference(const std::vector<std::list<int>>& RRMInt
 				if (m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId] != nullptr) continue;
 
 				cnt++;
-				
 				m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId] = new double[2 * 1024 * 2];
 
 				Location location;
@@ -628,7 +629,7 @@ void GTAT_Urban::calculateInterference(const std::vector<std::list<int>>& RRMInt
 				m_VeUEAry[interferenceVeUEId].m_GTAT_Urban->m_IMTA[RSUIdx].calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 
 
-				memcpy(&m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId], t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
+				memcpy(m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId], t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
 
 				delete flag;
 				delete[] H;

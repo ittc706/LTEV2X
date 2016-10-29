@@ -103,7 +103,13 @@ public:
 		std::vector<bool> m_SINRCacheIsValid;//下标对应的Pattern下，缓存的调制编码方式是否有效
 		std::vector<int> m_InterferenceVeUENum;//下标对应的Pattern下，同频干扰数量
 		std::vector<std::vector<int>> m_InterferenceVeUEVec;//下标对应的Pattern下，同频干扰车辆ID，不包含当前车辆，每个类型对应的总数就是m_InterferenceVeUENum[patternIdx]
-		std::vector<int> m_PreModulation;//下标对应的Pattern下，上一次的调制方式，WT_B模块需要
+		/*
+		* 下标为Pattern编号
+		* tuple第一个元素：调制方式对应的2的指数，如QPSK为2，16QAM为4 64QAM位6，WT模块需要
+		* tuple第二个元素：调制方式对应的每符号的比特数目(实部或虚部)
+		* tuple第三个元素：编码码率
+		*/
+		std::vector<std::tuple<ModulationType,int,double>> m_PreScheduleInfo;
 	};
 
 	struct RRM_DRA {

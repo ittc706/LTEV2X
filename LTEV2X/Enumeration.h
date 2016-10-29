@@ -48,3 +48,8 @@ enum EventLogType {
 };
 
 
+enum ModulationType {
+	QPSK = 2,
+	_16QAM = 4,
+	_64QAM = 6,
+};

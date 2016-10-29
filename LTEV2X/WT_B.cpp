@@ -205,7 +205,7 @@ void WT_B::initialize() {
 void WT_B::configuration(int VeUEId, int patternIdx){
 	m_Nr = m_VeUEAry[VeUEId].m_GTAT->m_Nr;
 	m_Nt = m_VeUEAry[VeUEId].m_GTAT->m_Nt;
-	m_Mol = m_VeUEAry[VeUEId].m_RRM->m_PreModulation[patternIdx];
+	m_Mol = get<0>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx]);
 	m_Ploss = m_VeUEAry[VeUEId].m_GTAT->m_Ploss;
 	m_Pt = pow(10,-4.7);//-17dbm-70dbm
 	m_Sigma = pow(10,-17.4);

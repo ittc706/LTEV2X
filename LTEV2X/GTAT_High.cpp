@@ -89,7 +89,9 @@ void GTAT_HighSpeed::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		for (auto &c : m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH) {
 			for (auto &d : c) {
-				d = nullptr;
+				if (d != nullptr) {
+					delete[] d;
+				}
 			}
 		}
 	}
@@ -364,7 +366,7 @@ void GTAT_HighSpeed::calculateInterference(const std::vector<std::list<int>>& RR
 				m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_IMTA[RSUIdx].calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 
 
-				memcpy(&m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId], t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
+				memcpy(m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId], t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
 
 				delete flag;
 				delete[] H;

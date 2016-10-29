@@ -5,13 +5,7 @@
 #include"Matrix.h"
 #include"VUE.h"
 #include"RSU.h"
-
-
-enum ModulationType {
-	QPSK,
-	_16QAM,
-	_64QAM,
-};
+#include"Enumeration.h"
 
 
 class WT_Basic {

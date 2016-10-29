@@ -21,8 +21,11 @@ void System::process() {
 	for (int count = 0;count < m_Config.NTTI;count++) {
 		cout << "Current TTI = " << m_TTI << endl;
 		//地理位置更新
-		if (count % m_Config.locationUpdateNTTI == 0)
+		if (count % m_Config.locationUpdateNTTI == 0) {
 			m_GTATPoint->channelGeneration();
+			m_GTATPoint->cleanWhenLocationUpdate();
+			m_RRMPoint->cleanWhenLocationUpdate();
+		}
 		//开始资源分配
 		m_RRMPoint->schedule();
 		m_TTI++;

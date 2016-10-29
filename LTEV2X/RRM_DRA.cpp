@@ -802,19 +802,14 @@ void RRM_DRA::DRATransimitStart() {
 				//计算SINR，获取调制编码方式
 				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
-				MessageType messageType = m_EventVec[info->eventId].message.messageType;
-				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((messageType == 0) ? "Emergency" : (messageType == 1 ? "Period" : "Data")) << endl;
+				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << endl;
 				
-				tuple<ModulationType, int, double>curModulationAndRate;
-				double factor;
-				if (m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx]) {
-					factor = 1;
-				}
-				else {
-					curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
-					factor = get<1>(curModulationAndRate) * get<2>(curModulationAndRate);
-				}
-				 
+				
+				//if (!m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx]) {//调制编码方式需要更新时
+					m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx] = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
+				//}
+				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx]);
+
 				
 				long double end = clock();
 				m_WTTimeConsume += end - start;
@@ -857,18 +852,13 @@ void RRM_DRA::DRATransimitStart() {
 				//计算SINR，获取调制编码方式
 				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
-				MessageType messageType = m_EventVec[info->eventId].message.messageType;
-				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((messageType == 0) ? "Emergency" : (messageType == 1 ? "Period" : "Data")) << endl;
+				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((patternType == 0) ? "Emergency" : (patternType == 1 ? "Period" : "Data")) << endl;
 				
-				tuple<ModulationType, int, double>curModulationAndRate;
-				double factor;
-				if (m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx]) {
-					factor = 1;
-				}
-				else {
-					curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, messageType);
-					factor = get<1>(curModulationAndRate) * get<2>(curModulationAndRate);
-				}
+				//if (!m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx]) {//调制编码方式需要更新时
+					m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx] = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
+				//}
+				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx]);
+
 
 				long double end = clock();
 				m_WTTimeConsume += end - start;

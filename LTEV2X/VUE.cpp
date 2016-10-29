@@ -71,8 +71,9 @@ void VeUE::initializeDRA() {
 	m_RRM->m_SINRCacheIsValid = vector<bool>(gc_DRATotalPatternNum, false);
 	m_RRM->m_InterferenceVeUENum = vector<int>(gc_DRATotalPatternNum);
 	m_RRM->m_InterferenceVeUEVec = vector<vector<int>>(gc_DRATotalPatternNum, vector<int>(0));
-	m_RRM->m_PreModulation = vector<int>(gc_DRATotalPatternNum, 4);
+	m_RRM->m_PreScheduleInfo = vector<tuple<ModulationType,int,double>>(gc_DRATotalPatternNum, tuple<ModulationType, int, double>(_16QAM,0,0));
 
+	//这两个数据比较特殊，必须等到GTAT模块初始化完毕后，车辆的数目才能确定下来
 	m_GTAT->m_InterferencePloss = vector<vector<double>>(gc_DRATotalPatternNum,vector<double>(m_VeUECount));
 	m_GTAT->m_InterferenceH = vector<vector<double*>>(gc_DRATotalPatternNum, vector<double*>(m_VeUECount, nullptr));
 }
