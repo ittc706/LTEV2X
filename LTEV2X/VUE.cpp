@@ -68,14 +68,15 @@ void VeUE::initializeDRA() {
 	m_RRM = new RRM();
 	m_RRM_DRA = new RRM_DRA(this);
 
-	m_RRM->m_SINRCacheIsValid = vector<bool>(gc_DRATotalPatternNum, false);
 	m_RRM->m_InterferenceVeUENum = vector<int>(gc_DRATotalPatternNum);
-	m_RRM->m_InterferenceVeUEVec = vector<vector<int>>(gc_DRATotalPatternNum, vector<int>(0));
-	m_RRM->m_PreScheduleInfo = vector<tuple<ModulationType,int,double>>(gc_DRATotalPatternNum, tuple<ModulationType, int, double>(_16QAM,0,0));
+	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(gc_DRATotalPatternNum);
+	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(gc_DRATotalPatternNum);
+	m_RRM->m_WTInfo = vector<tuple<ModulationType,int,double>>(gc_DRATotalPatternNum, tuple<ModulationType, int, double>(_16QAM,0,0));
+	m_RRM->m_isWTCached = vector<bool>(gc_DRATotalPatternNum, false);
 
 	//这两个数据比较特殊，必须等到GTAT模块初始化完毕后，车辆的数目才能确定下来
-	m_GTAT->m_InterferencePloss = vector<vector<double>>(gc_DRATotalPatternNum,vector<double>(m_VeUECount));
-	m_GTAT->m_InterferenceH = vector<vector<double*>>(gc_DRATotalPatternNum, vector<double*>(m_VeUECount, nullptr));
+	m_GTAT->m_InterferencePloss = vector<double>(m_VeUECount,0);
+	m_GTAT->m_InterferenceH = vector<double*>(m_VeUECount, nullptr);
 }
 
 
@@ -125,4 +126,13 @@ string VeUE::RRM_DRA::toString(int n) {
 	ss << " , ClusterIdx = " << left << setw(3) << m_This->m_GTAT->m_ClusterIdx;
 	ss << " , ScheduleInterval = [" << left << setw(3) << get<0>(m_ScheduleInterval) << "," << left << setw(3) << get<1>(m_ScheduleInterval) << "] }";
 	return ss.str();
+}
+
+
+bool VeUE::RRM::isNeedRecalculateSINR(int patternIdx) {
+	if (m_InterferenceVeUEIdVec[patternIdx].size() != m_PreInterferenceVeUEIdVec[patternIdx].size()) return true;
+	for (int i = 0; i < m_InterferenceVeUEIdVec[patternIdx].size(); i++) {
+		if (m_InterferenceVeUEIdVec[patternIdx][i] != m_PreInterferenceVeUEIdVec[patternIdx][i]) return true;
+	}
+	return false;
 }

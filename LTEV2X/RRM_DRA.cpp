@@ -49,8 +49,10 @@ void RRM_DRA::initialize() {
 
 void RRM_DRA::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		for (auto&c : m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid)
-			c = false;
+		for (vector<int>& preInterferenceVeUEIdVec : m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec)
+			preInterferenceVeUEIdVec.clear();
+
+		m_VeUEAry[VeUEId].m_RRM->m_isWTCached.assign(gc_DRATotalPatternNum, false);
 	}
 }
 
@@ -771,10 +773,10 @@ void RRM_DRA::DRATransimitPreparation() {
 			set<int> s(lst.begin(), lst.end());//用于更新干扰列表的
 			s.erase(VeUEId);
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[patternIdx].assign(s.begin(), s.end());//写入干扰车辆ID
-
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(s.begin(), s.end());//写入干扰车辆ID
+		
 			g_FileTemp << "VeUEId: " << VeUEId << " [";
-			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[patternIdx])
+			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
 				g_FileTemp << c << ", ";
 			g_FileTemp << " ]" << endl;
 		}
@@ -805,11 +807,12 @@ void RRM_DRA::DRATransimitStart() {
 				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << endl;
 				
 				
-				//if (!m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx]) {//调制编码方式需要更新时
-					m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx] = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
-				//}
-				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx]);
-
+				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx)||!m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
+					m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx] = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
+					m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
+					m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx] = true;
+				}
+				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
 				
 				long double end = clock();
 				m_WTTimeConsume += end - start;
@@ -854,11 +857,12 @@ void RRM_DRA::DRATransimitStart() {
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((patternType == 0) ? "Emergency" : (patternType == 1 ? "Period" : "Data")) << endl;
 				
-				//if (!m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx]) {//调制编码方式需要更新时
-					m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx] = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
-				//}
-				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_PreScheduleInfo[patternIdx]);
-
+				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
+					m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx] = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
+					m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
+					m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx] = true;
+				}
+				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
 
 				long double end = clock();
 				m_WTTimeConsume += end - start;

@@ -119,11 +119,8 @@ void GTAT_Urban::initialize() {
 void GTAT_Urban::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		for (auto &c : m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH) {
-			for (auto &d : c) {
-				if (d != nullptr) {
-					delete[] d;
-				}
-			}
+			if (c != nullptr) 
+				delete[] c;
 		}
 	}
 }
@@ -542,23 +539,22 @@ void GTAT_Urban::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstre
 }
 
 void GTAT_Urban::calculateInterference(const std::vector<std::list<int>>& RRMInterferenceVec) {
+	//由于不同的Pattern可能存在相同的干扰车辆，但是对于同一个干扰车辆，对当前车辆的干扰矩阵只算一次
 	for (int patternIdx = 0; patternIdx < RRMInterferenceVec.size(); patternIdx++) {
 		const list<int> &lst = RRMInterferenceVec[patternIdx];//当前Pattern下所有车辆的Id
 
 		for (int VeUEId : lst) {
 			m_VeUEAry[VeUEId].m_GTAT_Urban->m_IMTA = new IMTA[m_Config.RSUNum];
 		}
-
 		
 		for (int VeUEId : lst) {
-			int cnt = 0;
 			for (int interferenceVeUEId: lst){
+
 				if (interferenceVeUEId == VeUEId) continue;
 
-				if (m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId] != nullptr) continue;
+				if (m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[interferenceVeUEId] != nullptr) continue;
 
-				cnt++;
-				m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId] = new double[2 * 1024 * 2];
+				m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[interferenceVeUEId] = new double[2 * 1024 * 2];
 
 				Location location;
 				Antenna antenna;
@@ -613,7 +609,7 @@ void GTAT_Urban::calculateInterference(const std::vector<std::list<int>>& RRMInt
 				bool *flag = new bool();
 
 
-				m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[patternIdx][interferenceVeUEId] = t_Pl;
+				m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[interferenceVeUEId] = t_Pl;
 
 
 				*flag = true;
@@ -629,7 +625,7 @@ void GTAT_Urban::calculateInterference(const std::vector<std::list<int>>& RRMInt
 				m_VeUEAry[interferenceVeUEId].m_GTAT_Urban->m_IMTA[RSUIdx].calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 
 
-				memcpy(m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId], t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
+				memcpy(m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[interferenceVeUEId], t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
 
 				delete flag;
 				delete[] H;
@@ -643,8 +639,6 @@ void GTAT_Urban::calculateInterference(const std::vector<std::list<int>>& RRMInt
 				delete[] FFT;
 				delete[] t_HAfterFFT;
 			}
-			if (cnt == 0) m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx] = true;
-			else m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx] = false;
 		}
 
 		for (int VeUEId : lst) {

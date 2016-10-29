@@ -52,7 +52,7 @@ void System::configure() {//系统仿真参数配置
 	m_Config.locationUpdateNTTI = 1000;
 
 	//地理拓扑与传输模式
-	m_GTATMode = URBAN;
+	m_GTATMode = HIGHSPEED;
 
 	//无线资源管理模式
 	m_RRMMode = DRA;

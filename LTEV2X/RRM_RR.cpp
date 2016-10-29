@@ -45,8 +45,8 @@ void RRM_RR::initialize() {
 
 void RRM_RR::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		for (auto&c : m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid)
-			c = false;
+		for (vector<int>& preInterferenceVeUEIdVec : m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec)
+			preInterferenceVeUEIdVec.clear();
 	}
 }
 
