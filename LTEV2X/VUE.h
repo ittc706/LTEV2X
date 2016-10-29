@@ -60,8 +60,18 @@ public:
 		double m_Ploss;//路径损耗，WT_B模块需要
 		double* m_H;//信道响应矩阵，WT_B模块需要
 
-		std::map<MessageType,std::vector<double>> m_InterferencePloss;//干扰路径损耗，WT_B模块需要
-		std::map<MessageType,double*> m_InterferenceH;//干扰信道响应矩阵，WT_B模块需要
+		/*
+		* 对应Pattern，对应车辆下，对当前车辆的干扰路径损耗，WT_B模块需要
+		* 最外层下标：patternIdx(绝对值)(会在一开始就开辟好所有Pattern的槽位，该层的size不变)
+		* 内层下标：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
+		*/
+		std::vector<std::vector<double>> m_InterferencePloss;
+		/*
+		* 对应Pattern，对应车辆下，对当前车辆的信道响应矩阵，WT_B模块需要
+		* 最外层下标：patternIdx(绝对值)(会在一开始就开辟好所有Pattern的槽位，该层的size不变)
+		* 内层下标：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
+		*/
+		std::vector<std::vector<double*>> m_InterferenceH;//下标对应的Pattern下，干扰信道响应矩阵，WT_B模块需要
 	};
 
 	struct GTAT_Urban {
@@ -90,6 +100,7 @@ public:
 	};
 
 	struct RRM {
+		std::vector<bool> m_SINRCacheIsValid;//下标对应的Pattern下，缓存的调制编码方式是否有效
 		std::vector<int> m_InterferenceVeUENum;//下标对应的Pattern下，同频干扰数量
 		std::vector<std::vector<int>> m_InterferenceVeUEVec;//下标对应的Pattern下，同频干扰车辆ID，不包含当前车辆，每个类型对应的总数就是m_InterferenceVeUENum[patternIdx]
 		std::vector<int> m_PreModulation;//下标对应的Pattern下，上一次的调制方式，WT_B模块需要

@@ -52,9 +52,9 @@ public:
 
 	/*
 	* 用于存放指定Pattern的[事件类型信息,该Pattern的干扰列表]
-	* 外层下标为PatternId，注意非紧急事件要加上偏移量，因为非紧急事件的Pattern也是从0开始编号，但是这里要存入的是Pattern编号的绝对值
+	* 外层下标为PatternId(绝对量)
 	*/
-	std::vector<std::pair<MessageType, std::list<int>>> m_DRAInterferenceVec;
+	std::vector<std::list<int>> m_DRAInterferenceVec;
 	
 	int m_NewCount = 0;//记录动态创建的对象的次数
 
@@ -66,6 +66,7 @@ public:
 public:
 	/*接口函数*/
 	void initialize() override;//初始化RSU VeUE内该单元的内部类
+	void cleanWhenLocationUpdate()override;//当发生位置更新时，清除缓存的调度相关信息
 	void schedule() override;//DRA调度总控，覆盖基类的虚函数
 private:
 	/*实现函数*/

@@ -36,6 +36,7 @@ void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
 	m_GTAT->m_Nt = 1;
 	m_GTAT->m_Nr = 2;
 	m_GTAT->m_H = new double[2 * 1024 * 2];
+
 }
 
 
@@ -67,9 +68,13 @@ void VeUE::initializeDRA() {
 	m_RRM = new RRM();
 	m_RRM_DRA = new RRM_DRA(this);
 
+	m_RRM->m_SINRCacheIsValid = vector<bool>(gc_DRATotalPatternNum, false);
 	m_RRM->m_InterferenceVeUENum = vector<int>(gc_DRATotalPatternNum);
 	m_RRM->m_InterferenceVeUEVec = vector<vector<int>>(gc_DRATotalPatternNum, vector<int>(0));
 	m_RRM->m_PreModulation = vector<int>(gc_DRATotalPatternNum, 4);
+
+	m_GTAT->m_InterferencePloss = vector<vector<double>>(gc_DRATotalPatternNum,vector<double>(m_VeUECount));
+	m_GTAT->m_InterferenceH = vector<vector<double*>>(gc_DRATotalPatternNum, vector<double*>(m_VeUECount, nullptr));
 }
 
 

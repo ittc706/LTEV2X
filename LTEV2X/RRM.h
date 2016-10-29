@@ -30,6 +30,7 @@ public:
 
 	//接口
 	virtual void initialize() = 0;//初始化RSU VeUE内该单元的内部类
+	virtual void cleanWhenLocationUpdate() = 0;//当发生位置更新时，清除缓存的调度相关信息
 	virtual void schedule() = 0;//流程总控函数
 };
 

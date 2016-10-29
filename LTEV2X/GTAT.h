@@ -32,10 +32,11 @@ public:
 
 
 	virtual void configure() = 0;//参数配置
+	virtual void cleanWhenLocationUpdate() = 0;//当发生位置更新时，清除缓存的调度相关信息
 	virtual void initialize() = 0;//初始化
 
 	virtual void channelGeneration() = 0;//信道产生
 	virtual void freshLoc() = 0;//信道刷新
 	virtual void writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &ou2) = 0; //写入地理位置更新日志
-	virtual void calculateInterference(const std::vector<std::pair<MessageType, std::list<int>>>& RRMInterferenceVec) = 0;//计算干扰矩阵
+	virtual void calculateInterference(const std::vector<std::list<int>>& RRMInterferenceVec) = 0;//计算干扰矩阵
 };

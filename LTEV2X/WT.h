@@ -27,5 +27,5 @@ public:
 
 	//接口
 	virtual void initialize() = 0;//初始化RSU VeUE内该单元的内部类
-	virtual std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, MessageType messageType) = 0;
+	virtual std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) = 0;
 };

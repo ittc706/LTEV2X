@@ -20,6 +20,7 @@ public:
 
 	/*------------------成员函数------------------*/
 	void initialize() override;//初始化RSU VeUE内该单元的内部类
+	void cleanWhenLocationUpdate()override;//当发生位置更新时，清除缓存的调度相关信息
 	void schedule() override;//DRA调度总控，覆盖基类的虚函数
 
 	void RRInformationClean();//资源分配信息清空

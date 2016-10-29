@@ -30,7 +30,7 @@ using namespace std;
 RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, DRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint) :
 	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint) {
 
-	m_DRAInterferenceVec = vector<std::pair<MessageType, std::list<int>>>(gc_DRATotalPatternNum);
+	m_DRAInterferenceVec = std::vector<std::list<int>>(gc_DRATotalPatternNum);
 }
 
 
@@ -43,6 +43,14 @@ void RRM_DRA::initialize() {
 	//初始化RSU的该模块参数部分
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		m_RSUAry[RSUId].initializeDRA();
+	}
+}
+
+
+void RRM_DRA::cleanWhenLocationUpdate() {
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		for (auto&c : m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid)
+			c = false;
 	}
 }
 
@@ -715,8 +723,8 @@ void RRM_DRA::DRAConflictListener() {
 
 void RRM_DRA::DRATransimitPreparation() {
 	//首先清空上一次干扰信息
-	for (std::pair<MessageType, std::list<int>>&lst : m_DRAInterferenceVec) {
-		lst.second.clear();
+	for (std::list<int>&lst : m_DRAInterferenceVec) {
+		lst.clear();
 	}
 
 	//统计本次的干扰信息
@@ -728,9 +736,8 @@ void RRM_DRA::DRATransimitPreparation() {
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
-				MessageType messageType = m_EventVec[info->eventId].message.messageType;
-				m_DRAInterferenceVec[patternIdx].first = messageType;
-				m_DRAInterferenceVec[patternIdx].second.push_back(info->VeUEId);
+
+				m_DRAInterferenceVec[patternIdx].push_back(info->VeUEId);
 			}
 		}
 		/*  EMERGENCY  */
@@ -742,9 +749,8 @@ void RRM_DRA::DRATransimitPreparation() {
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
-				MessageType messageType = m_EventVec[info->eventId].message.messageType;
-				m_DRAInterferenceVec[patternIdx].first = messageType;
-				m_DRAInterferenceVec[patternIdx].second.push_back(info->VeUEId);
+
+				m_DRAInterferenceVec[patternIdx].push_back(info->VeUEId);
 			}
 		}
 	}
@@ -757,20 +763,18 @@ void RRM_DRA::DRATransimitPreparation() {
 	*/
 	
 	for (int patternIdx = gc_DRAPatternNumPerPatternType[EMERGENCY]; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
-		pair<MessageType, list<int>> &p = m_DRAInterferenceVec[patternIdx];
-		MessageType messageType = p.first;
-		list<int>& lst = p.second;
+		list<int>& lst = m_DRAInterferenceVec[patternIdx];
 		for (int VeUEId : lst) {
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[messageType] = (int)lst.size() - 1;//写入干扰数目
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)lst.size() - 1;//写入干扰数目
 			
 			set<int> s(lst.begin(), lst.end());//用于更新干扰列表的
 			s.erase(VeUEId);
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[messageType].assign(s.begin(), s.end());//写入干扰车辆ID
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[patternIdx].assign(s.begin(), s.end());//写入干扰车辆ID
 
 			g_FileTemp << "VeUEId: " << VeUEId << " [";
-			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[messageType])
+			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[patternIdx])
 				g_FileTemp << c << ", ";
 			g_FileTemp << " ]" << endl;
 		}
@@ -793,14 +797,25 @@ void RRM_DRA::DRATransimitStart() {
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
+				int VeUEId = info->VeUEId;
 
 				//计算SINR，获取调制编码方式
 				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				MessageType messageType = m_EventVec[info->eventId].message.messageType;
 				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((messageType == 0) ? "Emergency" : (messageType == 1 ? "Period" : "Data")) << endl;
-				tuple<ModulationType, int, double>curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, messageType);
-				double factor = get<1>(curModulationAndRate) * get<2>(curModulationAndRate);
+				
+				tuple<ModulationType, int, double>curModulationAndRate;
+				double factor;
+				if (m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx]) {
+					factor = 1;
+				}
+				else {
+					curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
+					factor = get<1>(curModulationAndRate) * get<2>(curModulationAndRate);
+				}
+				 
+				
 				long double end = clock();
 				m_WTTimeConsume += end - start;
 
@@ -835,6 +850,7 @@ void RRM_DRA::DRATransimitStart() {
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
+				int VeUEId = info->VeUEId;
 
 				int patternType = DRAGetPatternType(patternIdx);
 
@@ -843,8 +859,17 @@ void RRM_DRA::DRATransimitStart() {
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				MessageType messageType = m_EventVec[info->eventId].message.messageType;
 				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((messageType == 0) ? "Emergency" : (messageType == 1 ? "Period" : "Data")) << endl;
-				tuple<ModulationType, int, double>curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, messageType);
-				double factor = get<1>(curModulationAndRate) * get<2>(curModulationAndRate);
+				
+				tuple<ModulationType, int, double>curModulationAndRate;
+				double factor;
+				if (m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx]) {
+					factor = 1;
+				}
+				else {
+					curModulationAndRate = m_WTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, messageType);
+					factor = get<1>(curModulationAndRate) * get<2>(curModulationAndRate);
+				}
+
 				long double end = clock();
 				m_WTTimeConsume += end - start;
 

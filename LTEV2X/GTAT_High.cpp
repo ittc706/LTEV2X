@@ -85,6 +85,17 @@ void GTAT_HighSpeed::initialize() {
 }
 
 
+void GTAT_HighSpeed::cleanWhenLocationUpdate() {
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		for (auto &c : m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH) {
+			for (auto &d : c) {
+				d = nullptr;
+			}
+		}
+	}
+}
+
+
 void GTAT_HighSpeed::channelGeneration() {
 	//RSU.m_VeUEIdList是在freshLoc函数内生成的，因此需要在更新位置前清空这个列表
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
@@ -240,7 +251,7 @@ void GTAT_HighSpeed::freshLoc() {
 		double *t_HAfterFFT = new double[2 * 1024 * 2];
 
 		m_VeUEAry[UserIdx1].m_GTAT_HighSpeed->m_IMTA[RSUIdx].calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
-		memcpy(m_VeUEAry[UserIdx1].m_GTAT->m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
+		memcpy(m_VeUEAry[UserIdx1].m_GTAT->m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
 	
 
 		delete flag;
@@ -276,23 +287,25 @@ void GTAT_HighSpeed::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::of
 }
 
 
-void GTAT_HighSpeed::calculateInterference(const std::vector<std::pair<MessageType, std::list<int>>>& RRMInterferenceVec) {
-	for (int absPatternIdx = 0; absPatternIdx < RRMInterferenceVec.size(); absPatternIdx++) {
-		const list<int> &lst = RRMInterferenceVec[absPatternIdx].second;
-		MessageType messageType = RRMInterferenceVec[absPatternIdx].first;
+void GTAT_HighSpeed::calculateInterference(const std::vector<std::list<int>>& RRMInterferenceVec) {
+	for (int patternIdx = 0; patternIdx < RRMInterferenceVec.size(); patternIdx++) {
+		const list<int> &lst = RRMInterferenceVec[patternIdx];
 
 		for (int VeUEId : lst) {
 			m_VeUEAry[VeUEId].m_GTAT_HighSpeed->m_IMTA = new IMTA[m_Config.RSUNum];
 		}
 		for (int VeUEId : lst) {
-			m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[messageType].assign(m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[messageType], 0);
+			int cnt = 0;
+			for(int interferenceVeUEId: lst){
 
-			if (m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[messageType] != nullptr) delete[] m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[messageType];
-			m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[messageType] = new double[m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[messageType] * 2 * 1024 * 2];
+				if (interferenceVeUEId == VeUEId) continue;
 
-			for (int count = 0; count != m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[messageType]; count++)
-			{
-				int interUserIdx = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEVec[messageType][count];
+				if (m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId] != nullptr) continue;
+
+				cnt++;
+
+				m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId] = new double[2 * 1024 * 2];
+
 				Location location;
 				Antenna antenna;
 
@@ -307,14 +320,14 @@ void GTAT_HighSpeed::calculateInterference(const std::vector<std::pair<MessageTy
 				location.bManhattan = false;
 
 				location.eType = Los;
-				location.distance = sqrt(pow((m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX), 2.0f) + pow((m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY), 2.0f));
-				angle = atan2(m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY, m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX) / c_Degree2PI;
+				location.distance = sqrt(pow((m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX), 2.0f) + pow((m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY), 2.0f));
+				angle = atan2(m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_AbsY - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsY, m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_AbsX - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_AbsX) / c_Degree2PI;
 
 				location.eNBAntH = 5;
 				location.VeUEAntH = 1.5;
 				RandomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
-				antenna.fTxAngle = angle - m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_FantennaAngle;
+				antenna.fTxAngle = angle - m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_FantennaAngle;
 				antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTAT_HighSpeed->m_FantennaAngle;
 				antenna.fAntGain = 6;
 				antenna.byTxAntNum = 1;
@@ -331,15 +344,15 @@ void GTAT_HighSpeed::calculateInterference(const std::vector<std::pair<MessageTy
 				antenna.pfRxAntSpacing[1] = 0.5f;
 
 				double t_Pl = 0;
-				m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_IMTA[RSUIdx].build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_V, m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
+				m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_IMTA[RSUIdx].build(&t_Pl, c_FC, location, antenna, m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_V, m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
 				bool *flag = new bool();
 
 
-				m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[messageType][count] = t_Pl;
+				m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[patternIdx][interferenceVeUEId] = t_Pl;
 
 
 				*flag = true;
-				m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_IMTA[RSUIdx].enable(flag);
+				m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_IMTA[RSUIdx].enable(flag);
 				double *H = new double[1 * 2 * 19 * 2];
 				double *FFT = new double[1 * 2 * 1024 * 2];
 				double *ch_buffer = new double[1 * 2 * 19 * 20];
@@ -348,10 +361,10 @@ void GTAT_HighSpeed::calculateInterference(const std::vector<std::pair<MessageTy
 
 				double *t_HAfterFFT = new double[2 * 1024 * 2];
 
-				m_VeUEAry[interUserIdx].m_GTAT_HighSpeed->m_IMTA[RSUIdx].calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
+				m_VeUEAry[interferenceVeUEId].m_GTAT_HighSpeed->m_IMTA[RSUIdx].calculate(t_HAfterFFT, 0.01f, ch_buffer, ch_sin, ch_cos, H, FFT);
 
 
-				memcpy(&m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[messageType][count * 2 * 1024 * 2], t_HAfterFFT, 2 * 1024 * 2 * sizeof(0.0f));
+				memcpy(&m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH[patternIdx][interferenceVeUEId], t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
 
 				delete flag;
 				delete[] H;
@@ -365,6 +378,8 @@ void GTAT_HighSpeed::calculateInterference(const std::vector<std::pair<MessageTy
 				delete[] FFT;
 				delete[] t_HAfterFFT;
 			}
+			if (cnt == 0) m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx] = true;
+			else m_VeUEAry[VeUEId].m_RRM->m_SINRCacheIsValid[patternIdx] = false;
 		}
 		for (int VeUEId : lst) {
 			delete[] m_VeUEAry[VeUEId].m_GTAT_HighSpeed->m_IMTA;
