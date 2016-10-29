@@ -19,14 +19,18 @@ public:
 
 	Matrix m_H;//每个RB有一个Nr*Nt的信道矩阵
 	std::vector<Matrix> m_HInterference;//下标为干扰源编号
-	std::vector<int> m_MCSLevelTable;//根据有效SINR_EFF和目标误块率(默认为0.1)查找MCS等级
-	std::vector<double> m_QPSK_MI;
-	std::vector<double> m_QAM_MI16;
-	std::vector<double> m_QAM_MI64;
+
+    //以下成员设为指针，用new分配内存，作为多个不同WT_B实例的共享资源，只会在initialize()初始化一次
+	std::vector<int>* m_MCSLevelTable;//根据有效SINR_EFF和目标误块率(默认为0.1)查找MCS等级
+	std::vector<double>* m_QPSK_MI;
+	std::vector<double>* m_QAM_MI16;
+	std::vector<double>* m_QAM_MI64;
 
 	WT_B(Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry);
+	WT_B(const WT_B& t_WT_B);
 
 	void initialize() override;//模块初始化调用的初始化函数,初始化RSU VeUE内该单元的内部类
+	WT_Basic* getCopy()override;//获取该模块的一个拷贝
 	std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) override;
 	void testCloest();
 

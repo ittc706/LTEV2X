@@ -31,6 +31,59 @@ default_random_engine WT_B::s_Engine(0);
 
 WT_B::WT_B(Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry) :WT_Basic(systemConfig, systemRSUAry, systemVeUEAry) {}
 
+WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_VeUEAry) {
+	m_MCSLevelTable = t_WT_B.m_MCSLevelTable;
+	m_QPSK_MI = t_WT_B.m_QPSK_MI;
+	m_QAM_MI16 = t_WT_B.m_QAM_MI16;
+	m_QAM_MI64 = t_WT_B.m_QAM_MI64;
+}
+
+
+void WT_B::initialize() {
+	//读取m_MCSLevelTable
+	m_MCSLevelTable = new vector<int>();
+	std::ifstream in("WT\\MCSLevelTable.md");
+	istream_iterator<int> inIter(in), eof;
+	m_MCSLevelTable->assign(inIter, eof);
+	in.close();
+
+
+	//读入信噪比和互信息的对应表，m_mol=2是QPSK，m_mol=4是16QAM，m_mol=6=64QAM
+	//维度是1*95
+	m_QPSK_MI = new vector<double>();
+	in.open("WT\\QPSK_MI.md");
+	istream_iterator<double> inIter2(in), eof2;
+	m_QPSK_MI->assign(inIter2, eof2);
+	in.close();
+
+	m_QAM_MI16 = new vector<double>();
+	in.open("WT\\QAM_MI16.md");
+	inIter2 = istream_iterator<double>(in);
+	m_QAM_MI16->assign(inIter2, eof2);
+	in.close();
+
+	m_QAM_MI64 = new vector<double>();
+	in.open("WT\\QAM_MI64.md");
+	inIter2 = istream_iterator<double>(in);
+	m_QAM_MI64->assign(inIter2, eof2);
+	in.close();
+
+
+	//初始化VeUE的该模块参数部分
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		m_VeUEAry[VeUEId].initializeWT();
+	}
+
+	//初始化RSU的该模块参数部分
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		m_RSUAry[RSUId].initializeWT();
+	}
+}
+
+
+WT_Basic* WT_B::getCopy() {
+	return new WT_B(*this);
+}
 
 std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd, int patternIdx) {
 	//配置本次函数调用的参数
@@ -102,30 +155,30 @@ std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCa
 	for (int i = 0; i < Sinr.col; i++) {
 		Sinr[i] = 10 * log10(Complex::abs(Sinr[i]));
 	}
-	//Sinr.print();
+
 	if (m_Mol == 2) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
-			sum_MI = sum_MI + getMutualInformation(m_QPSK_MI,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
+			sum_MI = sum_MI + getMutualInformation(*m_QPSK_MI,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
 
-		int SNRIndex = closest(m_QPSK_MI, ave_MI);
+		int SNRIndex = closest(*m_QPSK_MI, ave_MI);
 		Sinreff = 0.5*(SNRIndex - 40);
 	}else if (m_Mol == 4) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
-			sum_MI = sum_MI + getMutualInformation(m_QAM_MI16,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
+			sum_MI = sum_MI + getMutualInformation(*m_QAM_MI16,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
 
-		int SNRIndex = closest(m_QAM_MI16, ave_MI);
+		int SNRIndex = closest(*m_QAM_MI16, ave_MI);
 		Sinreff = 0.5*(SNRIndex - 40);
 	}else if (m_Mol == 6) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
-			sum_MI = sum_MI + getMutualInformation(m_QAM_MI64,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
+			sum_MI = sum_MI + getMutualInformation(*m_QAM_MI64,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
 
-		int SNRIndex = closest(m_QAM_MI64, ave_MI);
+		int SNRIndex = closest(*m_QAM_MI64, ave_MI);
 		Sinreff = 0.5*(SNRIndex - 40);
 	}
 	else {
@@ -145,59 +198,20 @@ void WT_B::testCloest() {
 
 	for (int i = 0; i < 100000; i++) {
 		double d = u(e);
-		int index1 = closest(m_QAM_MI16, d);
-		int index2 = closest2(m_QAM_MI16, d);
+		int index1 = closest(*m_QAM_MI16, d);
+		int index2 = closest2(*m_QAM_MI16, d);
 		if (index1 != index2) {
 
 			cout << "index1: " << index1 << endl;
 			cout << "index2: " << index2 << endl;
 			if (m_QAM_MI16[index1] != m_QAM_MI16[index2]) {
 				cout << "d: " << d << endl;
-				cout << m_QAM_MI16[index1] << " , " << m_QAM_MI16[index2] << endl;
-				cout << abs(d - m_QAM_MI16[index1]) << " , " << abs(d - m_QAM_MI16[index2]) << endl;
+				cout << (*m_QAM_MI16)[index1] << " , " << (*m_QAM_MI16)[index2] << endl;
+				cout << abs(d - (*m_QAM_MI16)[index1]) << " , " << abs(d - (*m_QAM_MI16)[index2]) << endl;
 				throw Exp("hehe");
 			}
 			    
 		}
-	}
-}
-
-
-void WT_B::initialize() {
-	//读取m_MCSLevelTable
-	std::ifstream in("WT\\MCSLevelTable.md");
-	istream_iterator<int> inIter(in), eof;
-	m_MCSLevelTable.assign(inIter, eof);
-	in.close();
-
-
-	//读入信噪比和互信息的对应表，m_mol=2是QPSK，m_mol=4是16QAM，m_mol=6=64QAM
-	//维度是1*95
-
-	in.open("WT\\QPSK_MI.md");
-	istream_iterator<double> inIter2(in), eof2;
-	m_QPSK_MI.assign(inIter2, eof2);
-	in.close();
-
-	in.open("WT\\QAM_MI16.md");
-	inIter2 = istream_iterator<double>(in);
-	m_QAM_MI16.assign(inIter2, eof2);
-	in.close();
-
-	in.open("WT\\QAM_MI64.md");
-	inIter2 = istream_iterator<double>(in);
-	m_QAM_MI64.assign(inIter2, eof2);
-	in.close();
-
-
-	//初始化VeUE的该模块参数部分
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		m_VeUEAry[VeUEId].initializeWT();
-	}
-
-	//初始化RSU的该模块参数部分
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		m_RSUAry[RSUId].initializeWT();
 	}
 }
 
@@ -249,7 +263,7 @@ std::vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, int 
 int WT_B::searchMCSLevelTable(double SINR) {
 	//double SINR_dB = 10 * log10(SINR);
 	if (SINR > -10 && SINR < 30) {
-		return m_MCSLevelTable[static_cast<int>(ceil((SINR +10)*1000))];
+		return (*m_MCSLevelTable)[static_cast<int>(ceil((SINR +10)*1000))];
 	}
 	throw Exp("SINR越界");
 }
