@@ -10,14 +10,9 @@ using namespace std;
 int VeUE::m_VeUECount = 0;
 
 
-VeUE::VeUE() {
+void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
 	m_GTAT = new GTAT();
 	m_GTAT_Urban = new GTAT_Urban();
-    m_GTAT_HighSpeed = new GTAT_HighSpeed();
-}
-
-
-void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
 
 	m_GTAT_Urban->m_RoadId = t_UEConfigure.roadId;
 	m_GTAT_Urban->m_LocationId = t_UEConfigure.locationId;
@@ -41,12 +36,13 @@ void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
 	m_GTAT->m_Nt = 1;
 	m_GTAT->m_Nr = 2;
 	m_GTAT->m_H = new double[2 * 1024 * 2];
-
-	initializeElse();
 }
 
 
 void VeUE::initializeHighSpeed(VeUEConfigure &t_UEConfigure) {
+	m_GTAT = new GTAT();
+	m_GTAT_HighSpeed = new GTAT_HighSpeed();
+
 	m_GTAT_HighSpeed->m_RoadId = t_UEConfigure.laneId;
 	m_GTAT_HighSpeed->m_X = t_UEConfigure.X;
 	m_GTAT_HighSpeed->m_Y = t_UEConfigure.Y;
@@ -64,29 +60,41 @@ void VeUE::initializeHighSpeed(VeUEConfigure &t_UEConfigure) {
 	m_GTAT->m_Nt = 1;
 	m_GTAT->m_Nr = 2;
 	m_GTAT->m_H = new double[2 * 1024 * 2];
-
-	initializeElse();
 }
 
 
-void VeUE::initializeElse() {
+void VeUE::initializeDRA() {
 	m_RRM = new RRM();
 	m_RRM_DRA = new RRM_DRA(this);
+}
+
+
+void VeUE::initializeRR() {
+	m_RRM = new RRM();
 	m_RRM_RR = new RRM_RR();
+}
+
+
+void VeUE::initializeWT() {
 	m_WT = new WT();
+}
+
+
+void VeUE::initializeTMAC() {
 	m_TMAC = new TMAC();
 }
 
 
+
 VeUE::~VeUE() {
-	delete m_GTAT;
-	delete m_GTAT_Urban;
-	delete m_GTAT_HighSpeed;
-	delete m_RRM;
-	delete m_RRM_DRA;
-	delete m_RRM_RR;
-	delete m_WT;
-	delete m_TMAC;
+	if (m_GTAT != nullptr) delete m_GTAT;
+	if (m_GTAT_Urban != nullptr) delete m_GTAT_Urban;
+	if (m_GTAT_HighSpeed != nullptr) delete m_GTAT_HighSpeed;
+	if (m_RRM != nullptr) delete m_RRM;
+	if (m_RRM_DRA != nullptr) delete m_RRM_DRA;
+	if (m_RRM_RR != nullptr) delete m_RRM_RR;
+	if (m_WT != nullptr) delete m_WT;
+	if (m_TMAC != nullptr) delete m_TMAC;
 }
 
 

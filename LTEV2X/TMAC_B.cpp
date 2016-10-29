@@ -42,6 +42,13 @@ TMAC_B::TMAC_B(int &systemTTI,
 }
 
 
+void TMAC_B::initialize() {
+	//初始化VeUE的该模块参数部分
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		m_VeUEAry[VeUEId].initializeTMAC();
+	}
+}
+
 
 void TMAC_B::buildEventList(std::ofstream& out) {
 	/*按时间顺序（事件的Id与时间相关，Id越小，事件发生的时间越小生成事件链表*/

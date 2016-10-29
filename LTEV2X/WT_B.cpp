@@ -29,10 +29,7 @@ using namespace std;
 
 default_random_engine WT_B::s_Engine(0);
 
-
-WT_B::WT_B(VeUE* systemVeUEAry):WT_Basic(systemVeUEAry){
-	initialize();
-}
+WT_B::WT_B(Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry) :WT_Basic(systemConfig, systemRSUAry, systemVeUEAry) {}
 
 
 std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd, MessageType messageType) {
@@ -191,6 +188,11 @@ void WT_B::initialize() {
 	inIter2 = istream_iterator<double>(in);
 	m_QAM_MI64.assign(inIter2, eof2);
 	in.close();
+
+
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		m_VeUEAry[VeUEId].initializeWT();
+	}
 }
 
 

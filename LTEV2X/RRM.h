@@ -29,6 +29,7 @@ public:
 	long double m_WTTimeConsume = 0;
 
 	//接口
+	virtual void initialize() = 0;//初始化RSU VeUE内该单元的内部类
 	virtual void schedule() = 0;//流程总控函数
 };
 

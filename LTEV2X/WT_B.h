@@ -24,12 +24,12 @@ public:
 	std::vector<double> m_QAM_MI16;
 	std::vector<double> m_QAM_MI64;
 
-	WT_B(VeUE* systemVeUEAry);
+	WT_B(Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry);
 	std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, MessageType messageType) override;
 	void testCloest();
 
 private:
-	void initialize();//模块初始化调用的初始化函数
+	void initialize() override;//模块初始化调用的初始化函数,初始化RSU VeUE内该单元的内部类
 	void configuration(int VeUEId, MessageType messageType);//每次调用SINRCalculate前需要进行参数配置
 	Matrix readH(int VeUEIdx, int subCarrierIdx);//读取对应子载波的信道响应矩阵
 	std::vector<Matrix> readInterferenceH(int VeUEIdx, int subCarrierIdx, MessageType messageType);//读取对应车辆在对应子载波上的干扰矩阵数组

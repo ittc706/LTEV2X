@@ -19,6 +19,7 @@ public:
 	int m_DeleteCount = 0;//记录删除动态创建对象的次数
 
 	/*------------------成员函数------------------*/
+	void initialize() override;//初始化RSU VeUE内该单元的内部类
 	void schedule() override;//DRA调度总控，覆盖基类的虚函数
 
 	void RRInformationClean();//资源分配信息清空

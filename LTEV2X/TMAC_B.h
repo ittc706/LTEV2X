@@ -20,7 +20,7 @@ public:
 	std::vector<int> m_TransimitSucceedEventNumPerEventType;//每类事件成功传输的数目，外层下标为事件种类
 
 	/*------------------成员函数------------------*/
-
+	void initialize()override;//初始化RSU VeUE内该单元的内部类
 	void buildEventList(std::ofstream& out) override;
 	void processStatistics(std::ofstream& outDelay, std::ofstream& outEmergencyPossion, std::ofstream& outDataPossion, std::ofstream& outConflict, std::ofstream& outEventLog) override;
 private:

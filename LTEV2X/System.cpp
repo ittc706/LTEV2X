@@ -62,12 +62,6 @@ void System::initialization() {
 	//GTAT模块初始化
 	GTATModuleInitialize();
 
-	//初始化地理拓扑参数
-	m_GTATPoint->configure();
-
-	//初始化eNB、Rode、RSU、VUE等容器
-	m_GTATPoint->initialize();
-
 	//WT模块初始化
 	WTModuleInitialize();
 
@@ -88,10 +82,16 @@ void System::GTATModuleInitialize() {
 		m_GTATPoint = new GTAT_HighSpeed(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
 		break;
 	}
+	//初始化地理拓扑参数
+	m_GTATPoint->configure();
+
+	//初始化eNB、Rode、RSU、VUE等容器
+	m_GTATPoint->initialize();
 }
 
 void System::WTModuleInitialize() {
-	m_WTPoint = new WT_B(m_VeUEAry);
+	m_WTPoint = new WT_B(m_Config, m_RSUAry, m_VeUEAry);
+	m_WTPoint->initialize();//模块初始化
 }
 
 
@@ -106,11 +106,13 @@ void System::RRMModuleInitialize() {
 	default:
 		break;
 	}
+	m_RRMPoint->initialize();//模块初始化
 }
 
 
 void System::TMACModuleInitialize() {
 	m_TMACPoint = new TMAC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
+	m_TMACPoint->initialize();//模块初始化
 }
 
 

@@ -1,4 +1,8 @@
-version_2016_10_27(修改Global.h的RRM_DRA部分)
+version_2016_10_29(修改VUE.h)
+	车辆类中各个模块的参数，其初始化均由相应模块来完成
+
+
+version_2016_10_28(修改Global.h的RRM_DRA部分)
 	将紧急事件与非紧急事件合并
 	注意，RRM_DRA中非紧急事件的数据结构必须采用相对的patternIdx，即relativePatternIdx来作为索引
 	下一步打算在VeUE的RRM数据结构中添加MCS缓存，以及InterferenceVeUEID的缓存，用于降低运算

@@ -28,6 +28,7 @@ public:
 
 
 	/*--------------------接口--------------------*/
+	virtual void initialize() = 0;//初始化RSU VeUE内该单元的内部类
 	virtual void buildEventList(std::ofstream& out)=0;//生成事件链表
 	virtual void processStatistics(std::ofstream& outDelay, std::ofstream& outEmergencyPossion, std::ofstream& outDataPossion, std::ofstream& outConflict, std::ofstream& outEventLog)=0;//仿真结束后统计各种数据
 	

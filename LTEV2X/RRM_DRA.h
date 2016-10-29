@@ -65,8 +65,8 @@ public:
 
 public:
 	/*接口函数*/
+	void initialize() override;//初始化RSU VeUE内该单元的内部类
 	void schedule() override;//DRA调度总控，覆盖基类的虚函数
-
 private:
 	/*实现函数*/
 	void DRAInformationClean();//资源分配信息清空

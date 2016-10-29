@@ -34,6 +34,16 @@ RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeU
 }
 
 
+void RRM_DRA::initialize() {
+	//初始化VeUE的该模块参数部分
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		m_VeUEAry[VeUEId].initializeDRA();
+	}
+
+	//初始化RSU的该模块参数部分
+}
+
+
 void RRM_DRA::schedule() {
 	bool clusterFlag = m_TTI  % m_Config.locationUpdateNTTI == 0;
 
