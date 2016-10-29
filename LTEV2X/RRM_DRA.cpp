@@ -41,6 +41,9 @@ void RRM_DRA::initialize() {
 	}
 
 	//初始化RSU的该模块参数部分
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		m_RSUAry[RSUId].initializeDRA();
+	}
 }
 
 

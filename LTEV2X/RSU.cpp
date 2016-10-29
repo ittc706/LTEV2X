@@ -32,7 +32,6 @@ void RSU::initializeUrban(RSUConfigure &t_RSUConfigure){
 	m_GTAT->m_DRAClusterNum = ns_GTAT_Urban::c_RSUClusterNum[m_GTAT->m_RSUId];
 	m_GTAT->m_DRAClusterVeUEIdList = vector<list<int>>(m_GTAT->m_DRAClusterNum);
 
-	initializeElse();
 }
 
 
@@ -47,17 +46,31 @@ void RSU::initializeHighSpeed(RSUConfigure &t_RSUConfigure) {
 	m_GTAT->m_DRAClusterNum = ns_GTAT_HighSpeed::c_RSUClusterNum;
 	m_GTAT->m_DRAClusterVeUEIdList = vector<list<int>>(m_GTAT->m_DRAClusterNum);
 
-	initializeElse();
 }
 
 
-void RSU::initializeElse() {
+void RSU::initializeDRA() {
 	m_RRM = new RRM();
 	m_RRM_DRA = new RRM_DRA(this);
+}
+
+
+void RSU::initializeRR() {
+	m_RRM = new RRM();
 	m_RRM_RR = new RRM_RR();
+}
+
+
+void RSU::initializeWT() {
 	m_WT = new WT();
+}
+
+
+void RSU::initializeTMAC() {
 	m_TMAC = new TMAC();
 }
+
+
 
 RSU::~RSU() {
 	delete m_GTAT;

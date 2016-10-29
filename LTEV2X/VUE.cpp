@@ -66,6 +66,10 @@ void VeUE::initializeHighSpeed(VeUEConfigure &t_UEConfigure) {
 void VeUE::initializeDRA() {
 	m_RRM = new RRM();
 	m_RRM_DRA = new RRM_DRA(this);
+
+	m_RRM->m_InterferenceVeUENum = vector<int>(gc_DRATotalPatternNum);
+	m_RRM->m_InterferenceVeUEVec = vector<vector<int>>(gc_DRATotalPatternNum, vector<int>(0));
+	m_RRM->m_PreModulation = vector<int>(gc_DRATotalPatternNum, 4);
 }
 
 

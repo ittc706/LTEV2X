@@ -38,7 +38,10 @@ public:
 	RSU();
 	void initializeUrban(RSUConfigure &t_RSUConfigure);
 	void initializeHighSpeed(RSUConfigure &t_RSUConfigure);
-	void initializeElse();//由于其他模块的成员初始化可能依赖于GTAT模块，因此初始化GTAT完毕后，再调用该函数
+	void initializeDRA();
+	void initializeRR();
+	void initializeWT();
+	void initializeTMAC();
 	~RSU();
 
 	//类内数据结构定义

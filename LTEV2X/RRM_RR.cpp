@@ -35,6 +35,11 @@ void RRM_RR::initialize() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId].initializeRR();
 	}
+
+	//初始化RSU的该模块参数部分
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		m_RSUAry[RSUId].initializeRR();
+	}
 }
 
 

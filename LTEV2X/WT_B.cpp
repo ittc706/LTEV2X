@@ -190,8 +190,14 @@ void WT_B::initialize() {
 	in.close();
 
 
+	//初始化VeUE的该模块参数部分
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId].initializeWT();
+	}
+
+	//初始化RSU的该模块参数部分
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		m_RSUAry[RSUId].initializeWT();
 	}
 }
 

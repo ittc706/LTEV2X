@@ -47,6 +47,11 @@ void TMAC_B::initialize() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId].initializeTMAC();
 	}
+
+	//初始化RSU的该模块参数部分
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		m_RSUAry[RSUId].initializeTMAC();
+	}
 }
 
 

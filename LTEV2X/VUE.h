@@ -90,10 +90,9 @@ public:
 	};
 
 	struct RRM {
-		std::map<MessageType,int> m_InterferenceVeUENum;//同频干扰数量
-		std::map<MessageType,std::vector<int>> m_InterferenceVeUEVec;//同频干扰车辆ID，不包含当前车辆，每个类型对应的总数就是m_InterferenceVeUENum[messageType]
-		std::map<MessageType, int>  m_PreModulation;//上一次的调制方式，WT_B模块需要
-		RRM() { m_PreModulation[PERIOD] = 4; m_PreModulation[EMERGENCY] = 4; m_PreModulation[DATA] = 4;}
+		std::vector<int> m_InterferenceVeUENum;//下标对应的Pattern下，同频干扰数量
+		std::vector<std::vector<int>> m_InterferenceVeUEVec;//下标对应的Pattern下，同频干扰车辆ID，不包含当前车辆，每个类型对应的总数就是m_InterferenceVeUENum[patternIdx]
+		std::vector<int> m_PreModulation;//下标对应的Pattern下，上一次的调制方式，WT_B模块需要
 	};
 
 	struct RRM_DRA {
