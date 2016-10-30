@@ -41,7 +41,7 @@ WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT
 
 void WT_B::initialize() {
 	//读取m_MCSLevelTable
-	m_MCSLevelTable = new vector<int>();
+	m_MCSLevelTable = make_shared<vector<int>>();
 	std::ifstream in("WT\\MCSLevelTable.md");
 	istream_iterator<int> inIter(in), eof;
 	m_MCSLevelTable->assign(inIter, eof);
@@ -50,19 +50,19 @@ void WT_B::initialize() {
 
 	//读入信噪比和互信息的对应表，m_mol=2是QPSK，m_mol=4是16QAM，m_mol=6=64QAM
 	//维度是1*95
-	m_QPSK_MI = new vector<double>();
+	m_QPSK_MI = make_shared<vector<double>>();
 	in.open("WT\\QPSK_MI.md");
 	istream_iterator<double> inIter2(in), eof2;
 	m_QPSK_MI->assign(inIter2, eof2);
 	in.close();
 
-	m_QAM_MI16 = new vector<double>();
+	m_QAM_MI16 = make_shared<vector<double>>();
 	in.open("WT\\QAM_MI16.md");
 	inIter2 = istream_iterator<double>(in);
 	m_QAM_MI16->assign(inIter2, eof2);
 	in.close();
 
-	m_QAM_MI64 = new vector<double>();
+	m_QAM_MI64 = make_shared<vector<double>>();
 	in.open("WT\\QAM_MI64.md");
 	inIter2 = istream_iterator<double>(in);
 	m_QAM_MI64->assign(inIter2, eof2);
@@ -204,7 +204,7 @@ void WT_B::testCloest() {
 
 			cout << "index1: " << index1 << endl;
 			cout << "index2: " << index2 << endl;
-			if (m_QAM_MI16[index1] != m_QAM_MI16[index2]) {
+			if ((*m_QAM_MI16)[index1] != (*m_QAM_MI16)[index2]) {
 				cout << "d: " << d << endl;
 				cout << (*m_QAM_MI16)[index1] << " , " << (*m_QAM_MI16)[index2] << endl;
 				cout << abs(d - (*m_QAM_MI16)[index1]) << " , " << abs(d - (*m_QAM_MI16)[index2]) << endl;
