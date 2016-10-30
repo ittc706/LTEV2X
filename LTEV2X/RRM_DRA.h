@@ -78,6 +78,7 @@ private:
 	/*实现函数*/
 	void DRAInformationClean();//资源分配信息清空
 	void DRAGroupSizeBasedTDM(bool clusterFlag);//基于簇大小的时分复用
+	void DRAEqualTDM(bool clusterFlag);//基于簇大小的时分复用
 
 	void DRAUpdateAdmitEventIdList(bool clusterFlag);//更新接纳链表
 	void DRAProcessEventList();

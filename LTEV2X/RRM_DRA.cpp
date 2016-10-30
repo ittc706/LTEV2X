@@ -71,7 +71,8 @@ void RRM_DRA::schedule() {
 	DRAInformationClean();
 
 	//根据簇大小进行时域资源的划分
-	DRAGroupSizeBasedTDM(clusterFlag);
+	//DRAGroupSizeBasedTDM(clusterFlag);
+	DRAEqualTDM(clusterFlag);
 
 	//建立接纳链表
 	DRAUpdateAdmitEventIdList(clusterFlag);
@@ -176,6 +177,38 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 			get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) = get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) + get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) - 1;
 		}
 
+
+		//将调度区间写入该RSU内的每一个车辆
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; ++clusterIdx) {
+			for (int VeUEId : _RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
+				m_VeUEAry[VeUEId].m_RRM_DRA->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]));
+		}
+	}
+	DRAWriteClusterPerformInfo(g_FileClasterPerformInfo);
+}
+
+
+void RRM_DRA::DRAEqualTDM(bool clusterFlag) {
+	if (!clusterFlag)return;
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		RSU &_RSU = m_RSUAry[RSUId];
+
+		//初始化
+		_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_DRAClusterNum, tuple<int, int, int>(0, 0, 0));
+
+		int equalTimeLength = gc_DRA_NTTI / _RSU.m_GTAT->m_DRAClusterNum;
+
+		int lastClusterLength = gc_DRA_NTTI - equalTimeLength*_RSU.m_GTAT->m_DRAClusterNum + equalTimeLength;
+
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+			_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx] = tuple<int, int, int>(equalTimeLength*clusterIdx, equalTimeLength*(clusterIdx + 1) - 1, equalTimeLength);
+		}
+
+		//修复最后一个簇的时域长度，因为平均簇长可能被四舍五入了，因此，平均簇长度*簇数并不等于总调度时间，因此将差异填入最后一个簇
+		get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[_RSU.m_GTAT->m_DRAClusterNum - 1]) = gc_DRA_NTTI - 1;
+		get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[_RSU.m_GTAT->m_DRAClusterNum - 1]) = lastClusterLength;
+
+		
 
 		//将调度区间写入该RSU内的每一个车辆
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; ++clusterIdx) {
