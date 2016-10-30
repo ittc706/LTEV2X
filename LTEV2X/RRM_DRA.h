@@ -64,7 +64,7 @@ public:
 
 	//多线程有关参数
 	int m_ThreadNum;
-	//std::vector<std::thread> m_Threads;
+	std::vector<std::thread> m_Threads;
 	std::vector<std::pair<int, int>> m_ThreadsRSUIdRange;
 
 	/*------------------成员函数------------------*/

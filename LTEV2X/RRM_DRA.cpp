@@ -31,7 +31,6 @@ RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeU
 	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint), m_ThreadNum(threadNum) {
 
 	m_DRAInterferenceVec = std::vector<std::list<int>>(gc_DRATotalPatternNum);
-	//m_Threads;
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(threadNum);
 
 	int num = m_Config.RSUNum / threadNum;
@@ -799,11 +798,14 @@ void RRM_DRA::DRATransimitPreparation() {
 
 
 void RRM_DRA::DRATransimitStart() {
-	vector<thread> threads;
+	long double start = clock();
+	m_Threads.clear();
 	for (int threadIdx = 0; threadIdx < m_ThreadNum; threadIdx++)
-		threads.push_back(thread(&RRM_DRA::DRATransimitStartThread, &*this, m_ThreadsRSUIdRange[threadIdx].first, m_ThreadsRSUIdRange[threadIdx].second));
+		m_Threads.push_back(thread(&RRM_DRA::DRATransimitStartThread, &*this, m_ThreadsRSUIdRange[threadIdx].first, m_ThreadsRSUIdRange[threadIdx].second));
 	for (int threadIdx = 0; threadIdx < m_ThreadNum; threadIdx++)
-		threads[threadIdx].join();
+		m_Threads[threadIdx].join();
+	long double end = clock();
+	m_WTTimeConsume += end - start;
 }
 
 void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
@@ -819,10 +821,8 @@ void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
 				int VeUEId = info->VeUEId;
 
 				//计算SINR，获取调制编码方式
-				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << endl;
-
 
 				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
 					m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx] = copyWTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
@@ -830,9 +830,6 @@ void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
 					m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx] = true;
 				}
 				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
-
-				long double end = clock();
-				m_WTTimeConsume += end - start;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[EMERGENCY] * gc_BitNumPerRB)* factor);
@@ -870,7 +867,6 @@ void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
 				int patternType = DRAGetPatternType(patternIdx);
 
 				//计算SINR，获取调制编码方式
-				long double start = clock();
 				pair<int, int> &subCarrierIdxRange = DRAGetOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((patternType == 0) ? "Emergency" : (patternType == 1 ? "Period" : "Data")) << endl;
 
@@ -880,9 +876,6 @@ void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
 					m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx] = true;
 				}
 				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
-
-				long double end = clock();
-				m_WTTimeConsume += end - start;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB)* factor);
