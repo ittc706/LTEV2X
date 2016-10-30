@@ -264,6 +264,9 @@ Matrix Matrix::hermitian() {
 
 Matrix Matrix::inverse(bool tryPseudoInverse) {
 	if (row <= 0 || col <= 0 || row != col) throw Exp("该矩阵无法求逆");
+
+	if (row < 3) return inverseWhenDimlowerThan3(tryPseudoInverse);
+
 	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::buildDdentityMatrix(row));
 
 	//先变换成下三角矩阵
@@ -309,6 +312,32 @@ Matrix Matrix::inverse(bool tryPseudoInverse) {
 		}
 	}
 	return Matrix::verticalSplit(mergeMatrix, col, col).second;
+}
+
+
+Matrix Matrix::inverseWhenDimlowerThan3(bool tryPseudoInverse) {
+	if (row == 1) {
+		if (Complex::abs(this->operator[](0)[0]) == 0) {
+			if (tryPseudoInverse)
+				return Matrix{ {0,0} };
+			else
+				throw Exp("该矩阵无法求逆");
+		}
+		return Matrix{ {1 / this->operator[](0)[0]} };
+	}
+	else {
+		Matrix res(row, col);
+		Complex denominator = this->operator[](0)[0] * this->operator[](1)[1] - this->operator[](0)[1] * this->operator[](1)[0];
+		if (denominator == 0) {
+			if (tryPseudoInverse) return pseudoInverse();
+			else throw Exp("该矩阵无法求逆");
+		}
+		res[0][0] = this->operator[](1)[1] / denominator;
+		res[0][1] = -(this->operator[](0)[1]) / denominator;
+		res[1][0] = -(this->operator[](1)[0]) / denominator;
+		res[1][1] = this->operator[](0)[0] / denominator;
+		return res;
+	}
 }
 
 

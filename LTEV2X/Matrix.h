@@ -106,6 +106,9 @@ public:
 	static std::pair<Matrix, Matrix> verticalSplit(const Matrix& t_Matrix, int leftCol, int rightCol);
 	static std::pair<Matrix, Matrix> horizonSplit(const Matrix& t_Matrix, int upRow, int downRow);
 	static Matrix eye(const int dim);//生成单位阵
+
+private:
+	Matrix inverseWhenDimlowerThan3(bool tryPseudoInverse);
 };
 
 //单目取反运算符
