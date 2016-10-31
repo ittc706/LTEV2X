@@ -79,9 +79,9 @@ public:
 			int VeUEId;//车辆编号
 			int RSUId;//RSU编号
 			int patternIdx;//频域块编号
+			int currentPackageIdx = -1;//当前传输的数据包的编号
 			int remainBitNum = -1;//剩余待传bit数量(并非实际传输的bit数量，而是等效的真实数据的传输数量，需要除去信道编码的冗余bit)
 			int transimitBitNum = -1;//当前传输的bit数量(并非实际传输的bit数量，而是等效的真实数据的传输数量，需要除去信道编码的冗余bit)
-			int occupiedTTINum = -1;//传输完还需占用的TTI数量
 
 			DRAScheduleInfo() {}
 			DRAScheduleInfo(int eventId, int VeUEId, int RSUId, int patternIdx) {
@@ -240,16 +240,18 @@ public:
 			int VeUEId;//车辆编号
 			int RSUId;//RSU编号
 			int patternIdx;//频域块编号
-			int occupiedNumTTI;//当前VeUE进行传输的实际TTI区间（闭区间）
+			int currentPackageIdx = -1;//当前传输的数据包的编号
+			int remainBitNum = -1;//剩余待传bit数量(并非实际传输的bit数量，而是等效的真实数据的传输数量，需要除去信道编码的冗余bit)
+			int transimitBitNum = -1;//当前传输的bit数量(并非实际传输的bit数量，而是等效的真实数据的传输数量，需要除去信道编码的冗余bit)
+
 
 			RRScheduleInfo() {}
-			RRScheduleInfo(int eventId, MessageType messageType, int VeUEId, int RSUId, int patternIdx, const int &occupiedNumTTI) {
+			RRScheduleInfo(int eventId, MessageType messageType, int VeUEId, int RSUId, int patternIdx) {
 				this->eventId = eventId;
 				this->messageType = messageType;
 				this->VeUEId = VeUEId;
 				this->RSUId = RSUId;
 				this->patternIdx = patternIdx;
-				this->occupiedNumTTI = occupiedNumTTI;
 			}
 
 			std::string toLogString(int n);

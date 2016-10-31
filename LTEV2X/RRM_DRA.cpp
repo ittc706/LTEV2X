@@ -299,7 +299,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 					_RSU.m_RRM_DRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 
 					//将剩余待传bit重置
-					m_EventVec[eventId].message.resetRemainBitNum();
+					m_EventVec[eventId].message.reset();
 
 					//并释放该调度信息的资源
 					delete _RSU.m_RRM_DRA->m_DRAEmergencyScheduleInfoTable[patternIdx];
@@ -338,7 +338,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 						_RSU.m_RRM_DRA->DRAPushToSwitchEventIdList(eventId, m_DRASwitchEventIdList);
 
 						//将剩余待传bit重置
-						m_EventVec[eventId].message.resetRemainBitNum();
+						m_EventVec[eventId].message.reset();
 
 						//并释放该调度信息的资源
 						delete _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx];
@@ -360,7 +360,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 							_RSU.m_RRM_DRA->DRAPushToWaitEventIdList(eventId);
 
 							//将剩余待传bit重置
-							m_EventVec[eventId].message.resetRemainBitNum();
+							m_EventVec[eventId].message.reset();
 
 							//并释放该调度信息的资源
 							delete _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx];
@@ -406,7 +406,7 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 				it = _RSU.m_RRM_DRA->m_DRAEmergencyWaitEventIdList.erase(it);
 
 				//将剩余待传bit重置
-				m_EventVec[eventId].message.resetRemainBitNum();
+				m_EventVec[eventId].message.reset();
 
 				//更新该事件的日志
 				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTAT->m_RSUId, -1, -1, "LocationUpdate");
@@ -435,7 +435,7 @@ void RRM_DRA::DRAProcessWaitEventIdListWhenLocationUpdate() {
 				it = _RSU.m_RRM_DRA->m_DRAWaitEventIdList.erase(it);
 
 				//将剩余待传bit重置
-				m_EventVec[eventId].message.resetRemainBitNum();
+				m_EventVec[eventId].message.reset();
 
 				//更新该事件的日志
 				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTAT->m_RSUId, -1, -1, "LocationUpdate");
@@ -867,22 +867,19 @@ void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[EMERGENCY] * gc_BitNumPerRB)* factor);
 
-				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
-				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum > maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
+				//记录调度信息
+				info->transimitBitNum = maxEquivalentBitNum;
+				info->currentPackageIdx = m_EventVec[info->eventId].message.getCurrentPackageIdx();
+				info->remainBitNum = m_EventVec[info->eventId].message.getRemainBitNum();
+
+				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量，并更新信息状态
+				int realEquivalentBitNum = m_EventVec[info->eventId].message.transimit(maxEquivalentBitNum);
 
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSU.m_GTAT->m_RSUId] += realEquivalentBitNum;
 
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTAT->m_RSUId, -1, patternIdx, "Transimit");
-
-				//更新剩余待传输bit数量
-				m_EventVec[info->eventId].message.remainBitNum -= realEquivalentBitNum;
-
-				//更新调度信息
-				info->transimitBitNum = realEquivalentBitNum;
-				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;
-				info->occupiedTTINum = (int)ceil((double)info->remainBitNum / (double)info->transimitBitNum);
 			}
 		}
 		/*  EMERGENCY  */
@@ -912,23 +909,20 @@ void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = (int)((double)(gc_DRA_RBNumPerPatternType[patternType] * gc_BitNumPerRB)* factor);
+				
+				//记录调度信息
+				info->transimitBitNum = maxEquivalentBitNum;
+				info->currentPackageIdx = m_EventVec[info->eventId].message.getCurrentPackageIdx();
+				info->remainBitNum = m_EventVec[info->eventId].message.getRemainBitNum();
 
-				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量(取决于剩余待传bit数量是否大于maxEquivalentBitNum)
-				int realEquivalentBitNum = m_EventVec[info->eventId].message.remainBitNum > maxEquivalentBitNum ? maxEquivalentBitNum : m_EventVec[info->eventId].message.remainBitNum;
+				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量，并更新信息状态
+				int realEquivalentBitNum = m_EventVec[info->eventId].message.transimit(maxEquivalentBitNum);
 
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSU.m_GTAT->m_RSUId] += realEquivalentBitNum;
 
 				//更新该事件的日志
 				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTAT->m_RSUId, clusterIdx, patternIdx, "Transimit");
-
-				//更新剩余待传输bit数量
-				m_EventVec[info->eventId].message.remainBitNum -= realEquivalentBitNum;
-
-				//更新调度信息
-				info->transimitBitNum = realEquivalentBitNum;
-				info->remainBitNum = m_EventVec[info->eventId].message.remainBitNum;
-				info->occupiedTTINum = (int)ceil((double)info->remainBitNum / (double)info->transimitBitNum);
 			}
 		}
 	}
@@ -990,7 +984,7 @@ void RRM_DRA::DRATransimitEnd() {
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRAEmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
-				if (m_EventVec[info->eventId].message.remainBitNum == 0) {//已经传输完毕，将资源释放
+				if (m_EventVec[info->eventId].message.isFinished()) {//已经传输完毕，将资源释放
 
 					//设置传输成功标记
 					m_EventVec[info->eventId].isSuccessded = true;
@@ -1025,7 +1019,7 @@ void RRM_DRA::DRATransimitEnd() {
 			list<RSU::RRM_DRA::DRAScheduleInfo*> &lst = _RSU.m_RRM_DRA->m_DRATransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 				RSU::RRM_DRA::DRAScheduleInfo *info = *lst.begin();
-				if (m_EventVec[info->eventId].message.remainBitNum == 0) {//说明该数据已经传输完毕
+				if (m_EventVec[info->eventId].message.isFinished()) {//说明该数据已经传输完毕
 
 					//设置传输成功标记
 					m_EventVec[info->eventId].isSuccessded = true;

@@ -12,16 +12,61 @@ Message::Message(MessageType messageType) {
 	this->messageType = messageType;
 	switch (messageType) {
 	case PERIOD:
-		bitNum = gc_PeriodMessageBitNum;
+		packageNum = gc_PeriodMessagePackageNum;
+		bitNumPerPackage = vector<int>(packageNum);
+		for (int i = 0; i < packageNum; i++)
+			bitNumPerPackage[i] = gc_PeriodMessageBitNumPerPackage[i];
+		currentPackageIdx = 0;
+		remainBitNum = bitNumPerPackage[0];
 		break;
 	case EMERGENCY:
-		bitNum = gc_EmergencyMessageBitNum;
+		packageNum = gc_EmergencyMessagePackageNum;
+		bitNumPerPackage = vector<int>(packageNum);
+		for (int i = 0; i < packageNum; i++)
+			bitNumPerPackage[i] = gc_EmergencyMessageBitNumPerPackage[i];
+		currentPackageIdx = 0;
+		remainBitNum = bitNumPerPackage[0];
 		break;
 	case DATA:
-		bitNum = gc_DataMessageBitNum;
+		packageNum = gc_DataMessagePackageNum;
+		bitNumPerPackage = vector<int>(packageNum);
+		for (int i = 0; i < packageNum; i++)
+			bitNumPerPackage[i] = gc_DataMessageBitNumPerPackage[i];
+		currentPackageIdx = 0;
+		remainBitNum = bitNumPerPackage[0];
 		break;
 	}
-	remainBitNum = bitNum;
+	isDone = false;
+}
+
+
+void Message::reset() { 
+	currentPackageIdx = 0;
+	remainBitNum = bitNumPerPackage[0];
+	isDone = false;
+}
+
+
+int Message::transimit(int transimitMaxBitNum) {
+	if (transimitMaxBitNum >= remainBitNum) {//当前package传输完毕
+		int temp = remainBitNum;
+		if (++currentPackageIdx == packageNum) {//若当前package是最后一个package，那么说明传输成功
+			remainBitNum = 0;
+			isDone = true;
+		}
+		else
+			remainBitNum = bitNumPerPackage[currentPackageIdx];
+		return temp;
+	}
+	else {//当前package尚未传输完毕，只需更新remainBitNum
+		remainBitNum -= transimitMaxBitNum;
+		return transimitMaxBitNum;
+	}
+}
+
+
+bool Message::isFinished() {
+	return isDone;
 }
 
 string Message::toString() {
@@ -38,8 +83,10 @@ string Message::toString() {
 		break;
 	}
 	ostringstream ss;
-	ss << "[ byteNum = " << left << setw(3) << bitNum;
-	ss << " , MessageType = " << s << " ]";
+	ss << "[ byteNum = { ";
+	for(int bitNum: bitNumPerPackage)
+		ss << left << setw(3) << bitNum << ", ";
+	ss << "} , MessageType = " << s << " ]";
 	return ss.str();
 }
 

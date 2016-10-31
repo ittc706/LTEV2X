@@ -136,7 +136,7 @@ void RRM_RR::RRProcessWaitEventIdListWhenLocationUpdate() {
 			MessageType messageType = m_EventVec[eventId].message.messageType;
 			if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
 				//将剩余待传bit重置
-				m_EventVec[eventId].message.resetRemainBitNum();
+				m_EventVec[eventId].message.reset();
 
 				//将其添加到System级别的RSU切换链表中
 				_RSU.m_RRM_RR->RRPushToSwitchEventIdList(eventId, m_RRSwitchEventIdList);
@@ -222,9 +222,8 @@ void RRM_RR::RRTransimitBegin() {
 		for (int patternIdx = 0; patternIdx < static_cast<int>(_RSU.m_RRM_RR->m_RRAdmitEventIdList.size()); patternIdx++) {
 			int eventId = _RSU.m_RRM_RR->m_RRAdmitEventIdList[patternIdx];
 			int VeUEId = m_EventVec[eventId].VeUEId;
-			int occupiedNumTTI = (int)ceil((double)m_EventVec[eventId].message.remainBitNum / (double)gc_BitNumPerRB / (double)gc_RRNumRBPerPattern);
 			MessageType messageType = m_EventVec[eventId].message.messageType;
-			_RSU.m_RRM_RR->m_RRScheduleInfoTable[patternIdx] = new RSU::RRM_RR::RRScheduleInfo(eventId, messageType, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx, occupiedNumTTI);
+			_RSU.m_RRM_RR->m_RRScheduleInfoTable[patternIdx] = new RSU::RRM_RR::RRScheduleInfo(eventId, messageType, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx);
 			m_NewCount++;
 		}
 	}
@@ -329,16 +328,20 @@ void RRM_RR::RRTransimitEnd() {
 		for (int patternIdx = 0; patternIdx < gc_RRPatternNum; patternIdx++) {
 			RSU::RRM_RR::RRScheduleInfo* &info = _RSU.m_RRM_RR->m_RRScheduleInfoTable[patternIdx];
 			if (info == nullptr) continue;
-			//累计吞吐率
-			m_TTIRSUThroughput[m_TTI][_RSU.m_GTAT->m_RSUId] += m_EventVec[info->eventId].message.remainBitNum>gc_RRNumRBPerPattern*gc_BitNumPerRB? gc_RRNumRBPerPattern*gc_BitNumPerRB: m_EventVec[info->eventId].message.remainBitNum;
+
+			//UNDONE
+			//这里需要增加SINR计算
+			//这里需要增加message.transimit
+			//UNDONE
+			////累计吞吐率
+			//m_TTIRSUThroughput[m_TTI][_RSU.m_GTAT->m_RSUId] += m_EventVec[info->eventId].message.remainBitNum>gc_RRNumRBPerPattern*gc_BitNumPerRB? gc_RRNumRBPerPattern*gc_BitNumPerRB: m_EventVec[info->eventId].message.remainBitNum;
 
 			//更新该事件的日志
 			m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTAT->m_RSUId, -1, patternIdx, "Transimit");
 
-			//更新剩余待传输bit数量
-			m_EventVec[info->eventId].message.remainBitNum -= gc_RRNumRBPerPattern*gc_BitNumPerRB;
+			
 
-			if (m_EventVec[info->eventId].message.remainBitNum <= 0) {//说明已经传输完毕
+			if (m_EventVec[info->eventId].message.isFinished()) {//说明已经传输完毕
 				//设置传输成功标记
 				m_EventVec[info->eventId].isSuccessded = true;
 

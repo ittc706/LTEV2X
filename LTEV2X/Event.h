@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 #include<list>
 #include<string>
 #include"Global.h"
@@ -7,16 +8,31 @@
 struct Message {//消息类
 	/*数据成员*/
 	MessageType messageType;//该消息的类型
-	int bitNum; //该消息的比特数量
-	int remainBitNum;//剩余待传输的bit数
+	int packageNum;//消息的数据包总数
+	std::vector<int> bitNumPerPackage;
 
+private:
+	bool isDone;
+	int currentPackageIdx;
+	int remainBitNum;//currentPackageIdx所指向的package剩余待传输的bit数
+
+public:
 	/*构造函数*/
 	Message() = delete;
 	Message(MessageType messageType);
 
 	/*功能函数*/
 	std::string toString();
-	void resetRemainBitNum() { remainBitNum = bitNum; }
+	void reset();//重新发送该消息时，重置信息各个状态
+	/*
+	* 更新信息状态
+	* transimitMaxBitNum为本次该时频资源可传输的最大bit数
+	* 但本次传输的实际bit数可以小于该值，并返回实际传输的bit数量
+	*/
+	int transimit(int transimitMaxBitNum);
+	bool isFinished();//判断是否完成事件的传输，并更新事件状态
+	int getRemainBitNum() { return remainBitNum; }
+	int getCurrentPackageIdx() { return currentPackageIdx; }
 };
 
 struct Event {//事件类

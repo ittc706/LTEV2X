@@ -1,3 +1,11 @@
+## version_2016_10_31(修改了Message模型)
+* 将Message改为多个数据包的形式
+* 修改了Message的接口以及数据结构
+* 另外调用reset()需要修改，当发生RSU切换时，全部重置，当发生簇切换时，需要重置吗？，感觉不需要啊
+* RRM_RR模块没有实现SINR计算，等等步骤
+
+
+
 ## version_2016_10_31(Debug)
 * delete后没有赋值为nullptr，导致访问非法指针(根据是否为nullptr来判断是否合法)
 * 尚未解决的问题：Message定义没有细分为package，丢包率没法计算

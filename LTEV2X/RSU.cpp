@@ -126,9 +126,9 @@ std::string RSU::RRM_DRA::DRAScheduleInfo::toScheduleString(int n) {
 	ss << indent << "{ " << endl;
 	ss << indent << " eventId = " << eventId << endl;
 	ss << indent << " VeUEId = " << VeUEId << endl;
+	ss << indent << " currentPackageIdx = " << currentPackageIdx << endl;
 	ss << indent << " remainBitNum = " << remainBitNum << endl;
 	ss << indent << " transimitBitNum = " << transimitBitNum << endl;
-	ss << indent << " occupiedTTINum(exclude current TTI) = " << occupiedTTINum << endl;
 	ss << indent << "}";
 	return ss.str();
 }
@@ -222,11 +222,13 @@ std::string RSU::RRM_RR::RRScheduleInfo::toScheduleString(int n) {
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
 	ostringstream ss;
-	ss << indent << "{ ";
-	ss << "[ eventId = " << left << setw(3) << eventId << " , VeUEId = " << left << setw(3) << VeUEId << " ]";
-	ss << " : occupy Number Of TTI = [";
-	ss << occupiedNumTTI;
-	ss << "] }";
+	ss << indent << "{ " << endl;
+	ss << indent << " eventId = " << eventId << endl;
+	ss << indent << " VeUEId = " << VeUEId << endl;
+	ss << indent << " currentPackageIdx = " << currentPackageIdx << endl;
+	ss << indent << " remainBitNum = " << remainBitNum << endl;
+	ss << indent << " transimitBitNum = " << transimitBitNum << endl;
+	ss << indent << "}";
 	return ss.str();
 }
 
