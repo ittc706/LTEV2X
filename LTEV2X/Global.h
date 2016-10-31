@@ -235,7 +235,7 @@ const int gc_DRA_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of
 
 
 const int gc_DRAPatternTypeNum = 3;//事件的Pattern的类型种类
-const int gc_DRA_RBNumPerPatternType[gc_DRAPatternTypeNum] = { 2,5,10 };//每个Pattern种类所占的RB数量
+const int gc_DRA_RBNumPerPatternType[gc_DRAPatternTypeNum] = { 0,2,0 };//每个Pattern种类所占的RB数量
 const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 3,6,2 };//在全频段每个Pattern种类对应的Pattern数量
 
 const int gc_DRAPatternTypePatternIdxInterval[gc_DRAPatternTypeNum][2] = {

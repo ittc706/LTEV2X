@@ -73,14 +73,38 @@ void RSU::initializeTMAC() {
 
 
 RSU::~RSU() {
-	delete m_GTAT;
-	delete m_GTAT_Urban;
-	delete m_GTAT_HighSpeed;
-	delete m_RRM;
-	delete m_RRM_DRA;
-	delete m_RRM_RR;
-	delete m_WT;
-	delete m_TMAC;
+	if (m_GTAT != nullptr) {
+		delete m_GTAT;
+		m_GTAT = nullptr;
+	}
+	if (m_GTAT_Urban != nullptr) {
+		delete m_GTAT_Urban;
+		m_GTAT_Urban = nullptr;
+	}
+	if (m_GTAT_HighSpeed != nullptr) {
+		delete m_GTAT_HighSpeed;
+		m_GTAT_HighSpeed = nullptr;
+	}
+	if (m_RRM != nullptr) {
+		delete m_RRM;
+		m_RRM = nullptr;
+	}
+	if (m_RRM_DRA != nullptr) {
+		delete m_RRM_DRA;
+		m_RRM_DRA = nullptr;
+	}
+	if (m_RRM_RR != nullptr) {
+		delete m_RRM_RR;
+		m_RRM_RR = nullptr;
+	}
+	if (m_WT != nullptr) {
+		delete m_WT;
+		m_WT = nullptr;
+	}
+	if (m_TMAC != nullptr) {
+		delete m_TMAC;
+		m_TMAC = nullptr;
+	}
 }
 
 

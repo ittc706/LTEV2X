@@ -1,3 +1,8 @@
+## version_2016_10_31(Debug)
+* delete后没有赋值为nullptr，导致访问非法指针(根据是否为nullptr来判断是否合法)
+* 尚未解决的问题：Message定义没有细分为package，丢包率没法计算
+
+
 ## version_2016_10_30(修改RRM_DRA的分簇)
 * 增加了平均分簇的方式，即不基于车辆数目进行时域分配
 

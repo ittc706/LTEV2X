@@ -88,8 +88,10 @@ void GTAT_HighSpeed::initialize() {
 void GTAT_HighSpeed::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		for (auto &c : m_VeUEAry[VeUEId].m_GTAT->m_InterferenceH) {
-			if (c != nullptr)
+			if (c != nullptr){
 				delete[] c;
+				c = nullptr;
+			}
 		}
 	}
 }

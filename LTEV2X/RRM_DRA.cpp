@@ -933,6 +933,7 @@ void RRM_DRA::DRATransimitStartThread(int fromRSUId, int toRSUId) {
 		}
 	}
 	delete copyWTPoint;//getCopy是通过new创建的，因此这里释放资源
+	copyWTPoint = nullptr;
 }
 
 void RRM_DRA::DRAWriteScheduleInfo(std::ofstream& out) {

@@ -7,8 +7,14 @@ Road::Road() {
 }
 
 Road::~Road() {
-	delete m_GTAT_Urban;
-	delete m_GTAT_HighSpeed;
+	if (m_GTAT_Urban != nullptr) {
+		delete m_GTAT_Urban;
+		m_GTAT_Urban = nullptr;
+	}
+	if (m_GTAT_HighSpeed != nullptr) {
+		delete m_GTAT_HighSpeed;
+		m_GTAT_HighSpeed = nullptr;
+	}
 }
 
 void Road::initializeUrban(UrbanRoadConfigure &t_RoadConfigure) {

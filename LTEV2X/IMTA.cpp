@@ -146,43 +146,42 @@ IMTA::~IMTA() {
 	}
 }
 
-bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/)
-{
+bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna, double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/) {
 	m_bBuilt = false;
 	m_fAntGain = t_eAntenna.fAntGain * 0.1f;
-	m_byTxAntNum=t_eAntenna.byTxAntNum;
-	m_byRxAntNum=t_eAntenna.byRxAntNum;
-	
-	if (m_pfTxAntSpacing)
-	{		
+	m_byTxAntNum = t_eAntenna.byTxAntNum;
+	m_byRxAntNum = t_eAntenna.byRxAntNum;
+
+	if (m_pfTxAntSpacing != nullptr) {
 		delete[] m_pfTxAntSpacing;
+		m_pfTxAntSpacing = nullptr;
 	}
 	m_pfTxAntSpacing = new double[m_byTxAntNum];
 
-		if (m_pfTxSlantAngle)
-	{
+	if (m_pfTxSlantAngle != nullptr) {
 		delete[] m_pfTxSlantAngle;
+		m_pfTxSlantAngle = nullptr;
 	}
 	m_pfTxSlantAngle = new double[m_byTxAntNum];
 
-	if (m_pfRxAntSpacing)
-	{
+	if (m_pfRxAntSpacing != nullptr) {
 		delete[] m_pfRxAntSpacing;
+		m_pfRxAntSpacing = nullptr;
 	}
 	m_pfRxAntSpacing = new double[m_byRxAntNum];
 
-	if (m_pfRxSlantAngle)
-	{
+	if (m_pfRxSlantAngle != nullptr) {
 		delete[] m_pfRxSlantAngle;
+		m_pfRxSlantAngle = nullptr;
 	}
 	m_pfRxSlantAngle = new double[m_byRxAntNum];
 
-	for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++ byTempTxAnt)
+	for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++byTempTxAnt)
 	{
 		m_pfTxAntSpacing[byTempTxAnt] = t_eAntenna.pfTxAntSpacing[byTempTxAnt] * c_PI2;
 		m_pfTxSlantAngle[byTempTxAnt] = t_eAntenna.pfTxSlantAngle[byTempTxAnt] * c_Degree2PI;
 	}
-	for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++ byTempRxAnt)
+	for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++byTempRxAnt)
 	{
 		m_pfRxAntSpacing[byTempRxAnt] = t_eAntenna.pfRxAntSpacing[byTempRxAnt] * c_PI2;
 		m_pfRxSlantAngle[byTempRxAnt] = t_eAntenna.pfRxSlantAngle[byTempRxAnt] * c_Degree2PI;
@@ -213,65 +212,65 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, 
 	double fSFSTD;
 	double fPL1;
 	double fPL2;
-	double fDistanceBP = 4*(t_eLocation.VeUEAntH-1)*(t_eLocation.VeUEAntH-1)*t_fFrequency/c_C;
+	double fDistanceBP = 4 * (t_eLocation.VeUEAntH - 1)*(t_eLocation.VeUEAntH - 1)*t_fFrequency / c_C;
 	switch (t_eLocation.eType)
 	{
 	case Los:
 		m_bLoS = true;
-		if(3<t_eLocation.distance&&t_eLocation.distance<fDistanceBP)
+		if (3 < t_eLocation.distance&&t_eLocation.distance < fDistanceBP)
 		{
-		m_fPLSF = 22.7f * log10(t_eLocation.distance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);//转换为GHz
+			m_fPLSF = 22.7f * log10(t_eLocation.distance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);//转换为GHz
 		}
-		else 
+		else
 		{
-			if(fDistanceBP<t_eLocation.distance&&t_eLocation.distance<5000)
-		    {
-		     m_fPLSF = 40.0f * log10(t_eLocation.distance) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH-1) + 2.7f *(log10(t_fFrequency) - 9.0f);
-		    }
-			else if(t_eLocation.distance<3)
+			if (fDistanceBP < t_eLocation.distance&&t_eLocation.distance < 5000)
 			{
-		     m_fPLSF = 22.7f * log10(t_eLocation.distance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
+				m_fPLSF = 40.0f * log10(t_eLocation.distance) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH - 1) + 2.7f *(log10(t_fFrequency) - 9.0f);
+			}
+			else if (t_eLocation.distance<3)
+			{
+				m_fPLSF = 22.7f * log10(t_eLocation.distance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 			}
 		}
-		
+
 
 		break;
 	case Nlos:
 		fTemp = (2.8f - 0.0024f * t_eLocation.distance1) > 1.84f ? (2.8f - 0.0024f * t_eLocation.distance1) : 1.84f;
-		if(3<t_eLocation.distance1&&t_eLocation.distance1<fDistanceBP)
+		if (3 < t_eLocation.distance1&&t_eLocation.distance1 < fDistanceBP)
 		{
-		fPL1 = 22.7f * log10(t_eLocation.distance1) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
+			fPL1 = 22.7f * log10(t_eLocation.distance1) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
 		}
-		else 
+		else
 		{
-			if(fDistanceBP<t_eLocation.distance1&&t_eLocation.distance1<5000)
-		    {
-		     fPL1 = 40.0f * log10(t_eLocation.distance1) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
-		    }
-			else if(t_eLocation.distance1<3)
+			if (fDistanceBP < t_eLocation.distance1&&t_eLocation.distance1 < 5000)
 			{
-		     fPL1 = 22.7f * log10(t_eLocation.distance1) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
+				fPL1 = 40.0f * log10(t_eLocation.distance1) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH - 1) + 2.7f * (log10(t_fFrequency) - 9.0f);
+			}
+			else if (t_eLocation.distance1<3)
+			{
+				fPL1 = 22.7f * log10(t_eLocation.distance1) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 			}
 		}
-		fPL1=fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance1) + 3 * (log10(t_fFrequency) - 9.0f);
+		fPL1 = fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance1) + 3 * (log10(t_fFrequency) - 9.0f);
 		fTemp = (2.8f - 0.0024f * t_eLocation.distance2) > 1.84f ? (2.8f - 0.0024f * t_eLocation.distance2) : 1.84f;
-		if(3<t_eLocation.distance2&&t_eLocation.distance2<fDistanceBP)
+		if (3 < t_eLocation.distance2&&t_eLocation.distance2 < fDistanceBP)
 		{
-		fPL2 = 22.7f * log10(t_eLocation.distance2) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
+			fPL2 = 22.7f * log10(t_eLocation.distance2) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 		}
-		else 
+		else
 		{
-			if(fDistanceBP<t_eLocation.distance2&&t_eLocation.distance2<5000)
-		    {
-		     fPL2 = 40.0f * log10(t_eLocation.distance2) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH-1) + 2.7f * (log10(t_fFrequency) - 9.0f);
-		    }
-			else if(t_eLocation.distance1<3)
+			if (fDistanceBP < t_eLocation.distance2&&t_eLocation.distance2 < 5000)
 			{
-		     fPL2 = 22.7f * log10(t_eLocation.distance2) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
+				fPL2 = 40.0f * log10(t_eLocation.distance2) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH - 1) + 2.7f * (log10(t_fFrequency) - 9.0f);
+			}
+			else if (t_eLocation.distance1 < 3)
+			{
+				fPL2 = 22.7f * log10(t_eLocation.distance2) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
 			}
 		}
 		fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance2) + 3 * (log10(t_fFrequency) - 9.0f);
-		m_fPLSF = fPL1 < fPL2 ? fPL1 : fPL2;	
+		m_fPLSF = fPL1 < fPL2 ? fPL1 : fPL2;
 	default:
 		break;
 	}
@@ -287,52 +286,52 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, 
 	double fKSTD;
 	const double *cpfConstant;
 
-			if (t_eLocation.bManhattan)
-			{
-				fDSMean = -7.19f;
-				fDSSTD = 0.40f;
-				fASDMean = 1.20f;
-				fASDSTD = 0.43f;
-				fASAMean = 1.75f;
-				fASASTD = 0.19f;
-				fKMean = 9.0f;
-				fKSTD = 5.0f;
-				cpfConstant = m_sacfConstantUMiLoS;
-				m_fDSRatio = 3.2f;
-				m_fXPR = 9.0f;
-				m_byPathNum = 12;
-				m_fAoDRatio = 3.0f;
-				m_fAoARatio = 17.0f;
-				m_fPathShadowSTD = 3.0f;
-				m_fC = 1.146f;
-			}
-			else
-			{
-				fDSMean = -6.89f;
-				fDSSTD = 0.54f;
-				fASDMean = 1.41f;
-				fASDSTD = 0.17f;
-				fASAMean = 1.84f;
-				fASASTD = 0.15f;
-				fKMean = 0.0f;
-				fKSTD = 0.0f;
-				cpfConstant = m_sacfConstantUMiNLoS;
-				m_fDSRatio = 3.0f;
-				m_fXPR = 8.0f;
-				m_byPathNum = 19;
-				m_fAoDRatio = 10.0f;
-				m_fAoARatio = 22.0f;
-				m_fPathShadowSTD = 3.0f;
-				m_fC = 1.273f;
-			}
+	if (t_eLocation.bManhattan)
+	{
+		fDSMean = -7.19f;
+		fDSSTD = 0.40f;
+		fASDMean = 1.20f;
+		fASDSTD = 0.43f;
+		fASAMean = 1.75f;
+		fASASTD = 0.19f;
+		fKMean = 9.0f;
+		fKSTD = 5.0f;
+		cpfConstant = m_sacfConstantUMiLoS;
+		m_fDSRatio = 3.2f;
+		m_fXPR = 9.0f;
+		m_byPathNum = 12;
+		m_fAoDRatio = 3.0f;
+		m_fAoARatio = 17.0f;
+		m_fPathShadowSTD = 3.0f;
+		m_fC = 1.146f;
+	}
+	else
+	{
+		fDSMean = -6.89f;
+		fDSSTD = 0.54f;
+		fASDMean = 1.41f;
+		fASDSTD = 0.17f;
+		fASAMean = 1.84f;
+		fASASTD = 0.15f;
+		fKMean = 0.0f;
+		fKSTD = 0.0f;
+		cpfConstant = m_sacfConstantUMiNLoS;
+		m_fDSRatio = 3.0f;
+		m_fXPR = 8.0f;
+		m_byPathNum = 19;
+		m_fAoDRatio = 10.0f;
+		m_fAoARatio = 22.0f;
+		m_fPathShadowSTD = 3.0f;
+		m_fC = 1.273f;
+	}
 
 	m_fXPR = pow(10.0f, m_fXPR * -0.05f);
 	m_fPathShadowSTD /= 10.0f;
 
-	double afTemp[5] = {0.0f};
-	for (int byTemp = 0; byTemp != 5; ++ byTemp)
+	double afTemp[5] = { 0.0f };
+	for (int byTemp = 0; byTemp != 5; ++byTemp)
 	{
-		for (int byTempTime = 0; byTempTime != 5; ++ byTempTime)
+		for (int byTempTime = 0; byTempTime != 5; ++byTempTime)
 		{
 			afTemp[byTemp] += (cpfConstant[byTemp * 5 + byTempTime] * t_eLocation.afPosCor[byTempTime]);
 		}
@@ -344,11 +343,11 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, 
 	m_fAoA = m_fAoA < 104.0f ? m_fAoA : 104.0f;
 	m_fAoD *= c_Degree2PI;
 	m_fAoA *= c_Degree2PI;
-	m_fPLSF+=fSFSTD * afTemp[3];
+	m_fPLSF += fSFSTD * afTemp[3];
 	*t_Pl = pow(10, -m_fPLSF / 10);
 	m_fKDB = fKSTD * afTemp[4] + fKMean;
 	m_fK = pow(10.0f, m_fKDB * 0.1f);
-	m_fDS *= -m_fDSRatio;	
+	m_fDS *= -m_fDSRatio;
 
 	if (m_bLoS)
 	{
@@ -361,7 +360,7 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/,Location &t_eLocation, 
 
 	//m_fSinAoALoS = sin(m_fRxAngle);
 	//m_fCosAoALoS = cos(m_fRxAngle);
-	
+
 	m_bBuilt = true;
 
 	return true;
@@ -729,31 +728,31 @@ void IMTA::refresh(){
 	}
 	if (m_pfSinAoD != nullptr) {
 		delete[] m_pfSinAoD;
-		m_pfSinAoD = 0;
+		m_pfSinAoD = nullptr;
 	}
 	if (m_pfCosAoD != nullptr) {
 		delete[] m_pfCosAoD;
-		m_pfCosAoD = 0;
+		m_pfCosAoD = nullptr;
 	}
 	if (m_pfPhase != nullptr) {
 		delete[] m_pfPhase;
-		m_pfPhase = 0;
+		m_pfPhase = nullptr;
 	}
 	if (m_pfSinAoA != nullptr) {
 		delete[] m_pfSinAoA;
-		m_pfSinAoA = 0;
+		m_pfSinAoA = nullptr;
 	}
 	if (m_pfCosAoA != nullptr) {
 		delete[] m_pfCosAoA;
-		m_pfCosAoA = 0;
+		m_pfCosAoA = nullptr;
 	}
 
 	if (m_pfPhaseLoS != nullptr) {
 		delete[] m_pfPhaseLoS;
-		m_pfPhaseLoS = 0;
+		m_pfPhaseLoS = nullptr;
 	}
 	if (m_pwFFTIndex != nullptr) {
 		delete[] m_pwFFTIndex;
-		m_pwFFTIndex = 0;
+		m_pwFFTIndex = nullptr;
 	}
 }
