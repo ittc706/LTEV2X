@@ -31,13 +31,14 @@ public:
 	void RRProcessSwitchListWhenLocationUpdate();
 	void RRProcessWaitEventIdList();
 
-	void RRTransimitBegin();//开始传输(就是更新ScheduleTable)
-
+	void RRRoundRobin();//轮询调度，分配当前TTI的资源(就是更新ScheduleTable)
+	void RRTransimitPreparation();//统计干扰信息
+	void RRTransimitStart();//模拟传输开始，更新调度信息，累计吞吐量
 	void RRWriteScheduleInfo(std::ofstream& out);//记录调度信息日志
 	void RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventId, int RSUId, int patternIdx);//以时间为单位记录日志
 	void RRDelaystatistics();//时延统计
 
-	void RRTransimitEnd();//传输结束(就是更新ScheduleTable)
+	void RRTransimitEnd();//模拟传输结束，即统计吞吐量(就是更新ScheduleTable)
 };
 
 

@@ -1,3 +1,7 @@
+## version_2016_11_1(修改了RRM_RR)
+* 就加了几个函数名，实现未改
+
+
 ## version_2016_11_1(修改了Matrix的实现2)
 * 赋值运算符要释放资源，还有RowVector的resize方法也需要释放
 

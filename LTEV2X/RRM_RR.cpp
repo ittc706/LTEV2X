@@ -61,10 +61,21 @@ void RRM_RR::schedule() {
 	RRUpdateAdmitEventIdList(clusterFlag);
 
 	//开始本次调度
-	RRTransimitBegin();
+	RRRoundRobin();
+
+    //统计时延信息
+	RRDelaystatistics();
+
+	//统计干扰信息
+	RRTransimitPreparation();
+
+	//模拟传输开始，更新调度信息，累计吞吐量
+	RRTransimitStart();
+
+	//写调度日志
 	RRWriteScheduleInfo(g_FileRRScheduleInfo);
 
-	RRDelaystatistics();
+	//传输结束
 	RRTransimitEnd();
 }
 
@@ -215,7 +226,7 @@ void RRM_RR::RRProcessWaitEventIdList() {
 }
 
 
-void RRM_RR::RRTransimitBegin() {
+void RRM_RR::RRRoundRobin() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
@@ -228,6 +239,34 @@ void RRM_RR::RRTransimitBegin() {
 		}
 	}
 }
+
+
+void RRM_RR::RRDelaystatistics() {
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		RSU &_RSU = m_RSUAry[RSUId];
+
+		//处理等待链表
+		for (int eventId : _RSU.m_RRM_RR->m_RRWaitEventIdList)
+			m_EventVec[eventId].queuingDelay++;
+
+		//处理此刻正在将要传输的调度表
+		for (int patternIdx = 0; patternIdx < gc_RRPatternNum; patternIdx++) {
+			if (_RSU.m_RRM_RR->m_RRScheduleInfoTable[patternIdx] == nullptr)continue;
+			m_EventVec[_RSU.m_RRM_RR->m_RRScheduleInfoTable[patternIdx]->eventId].sendDelay++;
+		}
+	}
+}
+
+
+void RRM_RR::RRTransimitPreparation() {
+
+}
+
+
+void RRM_RR::RRTransimitStart() {
+
+}
+
 
 
 void RRM_RR::RRWriteScheduleInfo(std::ofstream& out) {
@@ -299,24 +338,6 @@ void RRM_RR::RRWriteTTILogInfo(std::ofstream& out, int TTI, int type, int eventI
 		out << "    " << left << setw(13) << "[5]Switch";
 		out << "    " << ss.str() << endl;
 		break;
-	}
-}
-
-
-
-void RRM_RR::RRDelaystatistics() {
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
-
-		//处理等待链表
-		for (int eventId : _RSU.m_RRM_RR->m_RRWaitEventIdList)
-			m_EventVec[eventId].queuingDelay++;
-
-		//处理此刻正在将要传输的调度表
-		for (int patternIdx = 0; patternIdx < gc_RRPatternNum; patternIdx++) {
-			if (_RSU.m_RRM_RR->m_RRScheduleInfoTable[patternIdx] == nullptr)continue;
-			m_EventVec[_RSU.m_RRM_RR->m_RRScheduleInfoTable[patternIdx]->eventId].sendDelay++;
-		}
 	}
 }
 
