@@ -26,11 +26,15 @@
 
 using namespace std;
 
-RowVector::~RowVector() {
+void RowVector::free() {
 	if (rowVector != nullptr) {
 		delete[] rowVector;
 		rowVector = nullptr;
 	}
+}
+
+RowVector::~RowVector() {
+	free();
 }
 
 
@@ -54,11 +58,10 @@ RowVector::RowVector(const RowVector& t_RowVector) :
 }
 
 
-RowVector::RowVector(RowVector&& t_RowVector) {
-    //<UNDONE>：这里需要处理自赋值吗
-	col = t_RowVector.col;
-	rowVector = t_RowVector.rowVector;
-	t_RowVector.rowVector = nullptr;
+RowVector::RowVector(RowVector&& t_RowVector) noexcept
+	:col(t_RowVector.col), rowVector(t_RowVector.rowVector){
+    //在初始化列表接管资源
+	t_RowVector.rowVector = nullptr;//置空指针
 }
 
 
@@ -72,6 +75,7 @@ RowVector::RowVector(const std::initializer_list<Complex> il) {
 
 
 RowVector& RowVector::operator=(const RowVector& t_RowVector) {
+	free();
 	col = t_RowVector.col;
 	rowVector = new Complex[col]();
 	memcpy(rowVector, t_RowVector.rowVector, col*sizeof(Complex));
@@ -79,11 +83,12 @@ RowVector& RowVector::operator=(const RowVector& t_RowVector) {
 }
 
 
-RowVector& RowVector::operator=(RowVector&& t_RowVector) {
-	if (rowVector != t_RowVector.rowVector) {
+RowVector& RowVector::operator=(RowVector&& t_RowVector) noexcept {
+	if (rowVector != t_RowVector.rowVector) {//自赋值检查
+		free();//清理资源
 		col = t_RowVector.col;
-		rowVector = t_RowVector.rowVector;
-		t_RowVector.rowVector = nullptr;
+		rowVector = t_RowVector.rowVector;//接管资源
+		t_RowVector.rowVector = nullptr;//置空指针
 	}
 	return *this;
 }
@@ -103,6 +108,7 @@ void RowVector::resize(int size) {
 	if (size < 0) throw Exp("向量的维度必须是非负的");
 	int preCol = col;
 	Complex* preRowVector = rowVector;
+	free();
 	col = size;
 	rowVector = new Complex[col]();
 	memcpy(rowVector, preRowVector, preCol*sizeof(Complex));
@@ -220,11 +226,16 @@ RowVector elementDivide(const RowVector& t_RowVector1, const RowVector& t_RowVec
 default_random_engine Matrix::s_Engine((unsigned)time(NULL));
 
 
-Matrix:: ~Matrix() {
+void Matrix::free() {
 	if (matrix != nullptr) {
 		delete[] matrix;
 		matrix = nullptr;
 	}
+}
+
+
+Matrix:: ~Matrix() {
+	free();
 }
 
 
@@ -254,16 +265,14 @@ Matrix::Matrix(const Matrix& t_Matrix) :
 }
 
 
-Matrix::Matrix(Matrix&& t_Matrix) {
-	//<UNDONE>：这里需要处理自赋值吗
-	row = t_Matrix.row;
-	col = t_Matrix.col;
-	matrix = t_Matrix.matrix;
-	t_Matrix.matrix = nullptr;
+Matrix::Matrix(Matrix&& t_Matrix) noexcept
+	:row(t_Matrix.row), col(t_Matrix.col), matrix(t_Matrix.matrix) {
+	//在初始化列表中接管资源
+	t_Matrix.matrix = nullptr;//置空指针
 }
 
 
-Matrix::Matrix(const std::initializer_list<RowVector> il) {
+Matrix::Matrix(const std::initializer_list<RowVector>& il) {
 	if (il.size() == 0) {
 		row = 0;
 		col = 0;
@@ -478,6 +487,7 @@ Matrix Matrix::pseudoInverse() {
 
 
 Matrix& Matrix::operator=(const Matrix& t_Matrix) {
+	free();
 	row = t_Matrix.row;
 	col = t_Matrix.col;
 	matrix = t_Matrix.matrix;
@@ -485,12 +495,13 @@ Matrix& Matrix::operator=(const Matrix& t_Matrix) {
 }
 
 
-Matrix& Matrix::operator=(Matrix&& t_Matrix) {
-	if (matrix != t_Matrix.matrix) {
+Matrix& Matrix::operator=(Matrix&& t_Matrix) noexcept {
+	if (matrix != t_Matrix.matrix) {//检查字符值的正确性
+		free();//清理资源
 		row = t_Matrix.row;
 		col = t_Matrix.col;
-		matrix = t_Matrix.matrix;
-		t_Matrix.matrix = nullptr;
+		matrix = t_Matrix.matrix;//接管资源
+		t_Matrix.matrix = nullptr;//置空指针
 	}
 	return *this;
 }
@@ -593,7 +604,7 @@ Matrix Matrix::eye(const int dim) {
 
 
 //单目取反运算符
-Matrix operator-(const Matrix t_Matrix) {
+Matrix operator-(const Matrix& t_Matrix) {
 	Matrix res(t_Matrix.row, t_Matrix.col);
 	for (int r = 0; r < t_Matrix.row; r++) {
 		res[r] = -t_Matrix[r];
@@ -603,7 +614,7 @@ Matrix operator-(const Matrix t_Matrix) {
 
 
 //矩阵间的运算
-Matrix operator+(const Matrix t_Matrix1, const Matrix t_Matrix2) {
+Matrix operator+(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 	if (t_Matrix1.row != t_Matrix2.row || t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不同，无法相加");
 	Matrix res(t_Matrix1.row, t_Matrix1.col);
 	for (int r = 0; r < t_Matrix1.row; r++) {
@@ -615,7 +626,7 @@ Matrix operator+(const Matrix t_Matrix1, const Matrix t_Matrix2) {
 }
 
 
-Matrix operator-(const Matrix t_Matrix1, const Matrix t_Matrix2) {
+Matrix operator-(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 	if (t_Matrix1.row != t_Matrix2.row || t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不同，无法相减");
 	Matrix res(t_Matrix1.row, t_Matrix1.col);
 	for (int r = 0; r < t_Matrix1.row; r++) {
@@ -627,7 +638,7 @@ Matrix operator-(const Matrix t_Matrix1, const Matrix t_Matrix2) {
 }
 
 
-Matrix operator*(const Matrix t_Matrix1, const Matrix t_Matrix2) {
+Matrix operator*(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 	if (t_Matrix1.col != t_Matrix2.row) throw Exp("矩阵维度不匹配，无法相乘");
 
 	Matrix res(t_Matrix1.row, t_Matrix2.col);
@@ -647,43 +658,43 @@ Matrix operator*(const Matrix t_Matrix1, const Matrix t_Matrix2) {
 
 
 //矩阵与复数的运算
-Matrix operator+(const Matrix t_Matrix, const Complex t_Complex) {
+Matrix operator+(const Matrix& t_Matrix, const Complex& t_Complex) {
 	Matrix res(t_Matrix.row, t_Matrix.col);
 	for (int r = 0; r < t_Matrix.row; r++) {
 		res[r] = t_Matrix[r] + t_Complex;
 	}
 	return res;
 }
-Matrix operator+(const Complex t_Complex, const Matrix t_Matrix) {
+Matrix operator+(const Complex& t_Complex, const Matrix& t_Matrix) {
 	return t_Matrix + t_Complex;
 }
 
 
-Matrix operator-(const Matrix t_Matrix, const Complex t_Complex) {
+Matrix operator-(const Matrix& t_Matrix, const Complex& t_Complex) {
 	Matrix res(t_Matrix.row, t_Matrix.col);
 	for (int r = 0; r < t_Matrix.row; r++) {
 		res[r] = t_Matrix[r] - t_Complex;
 	}
 	return res;
 }
-Matrix operator-(const Complex t_Complex, const Matrix t_Matrix) {
+Matrix operator-(const Complex& t_Complex, const Matrix& t_Matrix) {
 	return -t_Matrix + t_Complex;
 }
 
 
-Matrix operator*(const Matrix t_Matrix, const Complex t_Complex) {
+Matrix operator*(const Matrix& t_Matrix, const Complex& t_Complex) {
 	Matrix res(t_Matrix.row, t_Matrix.col);
 	for (int r = 0; r < t_Matrix.row; r++) {
 		res[r] = t_Matrix[r] * t_Complex;
 	}
 	return res;
 }
-Matrix operator*(const Complex t_Complex, const Matrix t_Matrix) {
+Matrix operator*(const Complex& t_Complex, const Matrix& t_Matrix) {
 	return t_Matrix*t_Complex;
 }
 
 
-Matrix operator/(const Matrix t_Matrix, const Complex t_Complex) {
+Matrix operator/(const Matrix& t_Matrix, const Complex& t_Complex) {
 	if (Complex::abs(t_Complex) == 0) throw Exp("除数模值为0，非法！");
 	Matrix res(t_Matrix.row, t_Matrix.col);
 	for (int r = 0; r < t_Matrix.row; r++) {
@@ -691,7 +702,7 @@ Matrix operator/(const Matrix t_Matrix, const Complex t_Complex) {
 	}
 	return res;
 }
-Matrix operator/(const Complex t_Complex, const Matrix t_Matrix) {
+Matrix operator/(const Complex& t_Complex, const Matrix& t_Matrix) {
 	Matrix res(t_Matrix.row, t_Matrix.col);
 	for (int r = 0; r < t_Matrix.row; r++) {
 		res[r] = t_Complex / t_Matrix[r];
@@ -700,7 +711,7 @@ Matrix operator/(const Complex t_Complex, const Matrix t_Matrix) {
 }
 
 
-Matrix elementProduct(const Matrix t_Matrix1, const Matrix t_Matrix2) {
+Matrix elementProduct(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 	if (t_Matrix1.row != t_Matrix2.row ||
 		t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不匹配");
 	Matrix res(t_Matrix1.row, t_Matrix1.col);
@@ -709,7 +720,7 @@ Matrix elementProduct(const Matrix t_Matrix1, const Matrix t_Matrix2) {
 	}
 	return res;
 }
-Matrix elementDivide(const Matrix t_Matrix1, const Matrix t_Matrix2) {
+Matrix elementDivide(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 	if (t_Matrix1.row != t_Matrix2.row ||
 		t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不匹配");
 	Matrix res(t_Matrix1.row, t_Matrix1.col);

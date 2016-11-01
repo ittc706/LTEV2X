@@ -7,40 +7,35 @@
 #include"Matrix.h"
 using namespace std;
 
-//int main() {
-//	long double start = clock();
-//	srand((unsigned)time(NULL));
-//	//try {
-//		System _system;
-//		_system.process();
-//	/*}
-//	catch (Exp e) {
-//		cout << e.what() << endl;
-//	}*/
-//
-//	long double end = clock();
-//
-//	cout.setf(ios::fixed);
-//	cout << "\nRunning Time :" << setprecision(1) << (end - start) / 1000.0L << " s\n" << endl;
-//	cout.unsetf(ios::fixed);
-//
-//	g_FileTemp.close();
-//	g_FileRRScheduleInfo.close();
-//	g_FileDRAScheduleInfo.close();
-//	g_FileClasterPerformInfo.close();
-//	g_FileEventListInfo.close();
-//	g_FileTTILogInfo.close();
-//	g_FileEventLogInfo.close();
-//	g_FileVeUELocationUpdateLogInfo.close();
-//	g_FileDelayStatistics.close();
-//    g_FileEmergencyPossion.close();
-//
-//
-//	//int testMain1();
-//	//testMain1();
-//	system("pause");
-//	return 1;
-//}
+int main() {
+	long double start = clock();
+	srand((unsigned)time(NULL));
+
+	System _system;
+	_system.process();
+
+
+	long double end = clock();
+
+	cout.setf(ios::fixed);
+	cout << "\nRunning Time :" << setprecision(1) << (end - start) / 1000.0L << " s\n" << endl;
+	cout.unsetf(ios::fixed);
+
+	g_FileTemp.close();
+	g_FileRRScheduleInfo.close();
+	g_FileDRAScheduleInfo.close();
+	g_FileClasterPerformInfo.close();
+	g_FileEventListInfo.close();
+	g_FileTTILogInfo.close();
+	g_FileEventLogInfo.close();
+	g_FileVeUELocationUpdateLogInfo.close();
+	g_FileDelayStatistics.close();
+    g_FileEmergencyPossion.close();
+
+
+	system("pause");
+	return 1;
+}
 
 
 //int main() {
@@ -78,18 +73,24 @@ using namespace std;
 
 
 
-int main() {
-	
+//int main() {
+//	
+//
+//	Matrix m{
+//		{{1,2}, },
+//	{ {2,3},{3,4},}
+//	};
+//	Matrix m1 = std::move(-m);
+//	
+//	system("pause");
+//	return 1;
+//}
 
-	Matrix m{
-		{{1,2}, },
-	{ {2,3},{3,4},}
-	};
 
-	(m.inverse()*m).print();
 
-	Matrix m1 = std::move(m);
-	m1.print();
-	system("pause");
-	return 1;
-}
+//int main() {
+//	int testMain1();
+//	testMain1();
+//	system("pause");
+//	return 1;
+//}

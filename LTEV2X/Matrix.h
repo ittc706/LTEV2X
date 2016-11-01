@@ -23,12 +23,12 @@ public:
 	RowVector();
 	explicit RowVector(int t_Col);
 	RowVector(const RowVector& t_RowVector);
-	RowVector(RowVector&& t_RowVector);
+	RowVector(RowVector&& t_RowVector) noexcept;
 	RowVector(const std::initializer_list<Complex> il);
 
 	/*成员运算符重载*/
 	RowVector& operator=(const RowVector& t_RowVector);
-	RowVector& operator=(RowVector&& t_RowVector);
+	RowVector& operator=(RowVector&& t_RowVector) noexcept;
 	Complex& operator[](int pos);
 	const Complex& operator[](int pos) const;
 
@@ -36,6 +36,9 @@ public:
 	void resize(int size);
 	std::string toString();
 	void print(std::ostream&out = std::cout);
+
+private:
+	void free();
 };
 //行向量单目取反运算符
 RowVector operator-(const RowVector& t_RowVector);
@@ -77,8 +80,8 @@ public:
 	Matrix();
 	Matrix(int t_Row, int t_Col);
 	Matrix(const Matrix& t_Matrix);
-	Matrix(Matrix&& t_Matrix);
-	Matrix(const std::initializer_list<RowVector> il);
+	Matrix(Matrix&& t_Matrix) noexcept;
+	Matrix(const std::initializer_list<RowVector>& il);
 	
 
 	/*矩阵功能函数*/
@@ -94,7 +97,7 @@ public:
 
 	/*成员运算符重载*/
 	Matrix& operator=(const Matrix& t_Matrix);//赋值运算符
-	Matrix& operator=(Matrix&& t_Matrix);//赋值运算符
+	Matrix& operator=(Matrix&& t_Matrix) noexcept;//赋值运算符
 	RowVector& operator[](int pos);//下标运算符(非常量版本)
 	const RowVector& operator[](int pos) const;//下标运算符(常量版本)
 
@@ -115,30 +118,31 @@ public:
 
 private:
 	Matrix inverseWhenDimlowerThan3(bool tryPseudoInverse);
+	void free();
 };
 
 //单目取反运算符
-Matrix operator-(const Matrix t_Matrix);
+Matrix operator-(const Matrix& t_Matrix);
 
 //矩阵间的运算
-Matrix operator+(const Matrix t_Matrix1, const Matrix t_Matrix2);
-Matrix operator-(const Matrix t_Matrix1, const Matrix t_Matrix2);
-Matrix operator*(const Matrix t_Matrix1, const Matrix t_Matrix2);
+Matrix operator+(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
+Matrix operator-(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
+Matrix operator*(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
 
 //矩阵与复数的运算
-Matrix operator+(const Matrix t_Matrix, const Complex t_Complex);
-Matrix operator+(const Complex t_Complex, const Matrix t_Matrix);
+Matrix operator+(const Matrix& t_Matrix, const Complex& t_Complex);
+Matrix operator+(const Complex& t_Complex, const Matrix& t_Matrix);
 
-Matrix operator-(const Matrix t_Matrix, const Complex t_Complex);
-Matrix operator-(const Complex t_Complex, const Matrix t_Matrix);
+Matrix operator-(const Matrix& t_Matrix, const Complex& t_Complex);
+Matrix operator-(const Complex& t_Complex, const Matrix& t_Matrix);
 
-Matrix operator*(const Matrix t_Matrix, const Complex t_Complex);
-Matrix operator*(const Complex t_Complex, const Matrix t_Matrix);
+Matrix operator*(const Matrix& t_Matrix, const Complex& t_Complex);
+Matrix operator*(const Complex& t_Complex, const Matrix& t_Matrix);
 
-Matrix operator/(const Matrix t_Matrix, const Complex t_Complex);
-Matrix operator/(const Complex t_Complex, const Matrix t_Matrix);
+Matrix operator/(const Matrix& t_Matrix, const Complex& t_Complex);
+Matrix operator/(const Complex& t_Complex, const Matrix& t_Matrix);
 
 
 //对应位置元素计算
-Matrix elementProduct(const Matrix t_Matrix1, const Matrix t_Matrix2);
-Matrix elementDivide(const Matrix t_Matrix1, const Matrix t_Matrix2);
+Matrix elementProduct(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
+Matrix elementDivide(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
