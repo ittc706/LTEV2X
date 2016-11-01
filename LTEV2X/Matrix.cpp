@@ -26,51 +26,86 @@
 
 using namespace std;
 
+RowVector::~RowVector() {
+	if (rowVector != nullptr) {
+		delete[] rowVector;
+		rowVector = nullptr;
+	}
+}
+
 
 RowVector::RowVector() :
-	col(0) {}
+	col(0) {
+	rowVector = nullptr;
+}
 
 
 RowVector::RowVector(int t_Col) :
 	col(t_Col) {
 	if (col < 0) throw Exp("向量的维度必须是非负的");
-	rowVector = vector<Complex>(col, Complex(0, 0));
+	rowVector = new Complex[col]();
 }
 
 
 RowVector::RowVector(const RowVector& t_RowVector) :
-	col(t_RowVector.col), rowVector(t_RowVector.rowVector) {}
+	col(t_RowVector.col) {
+	rowVector = new Complex[col]();
+	memcpy(rowVector, t_RowVector.rowVector, col*sizeof(Complex));
+}
 
+
+RowVector::RowVector(RowVector&& t_RowVector) {
+    //<UNDONE>：这里需要处理自赋值吗
+	col = t_RowVector.col;
+	rowVector = t_RowVector.rowVector;
+	t_RowVector.rowVector = nullptr;
+}
 
 
 RowVector::RowVector(const std::initializer_list<Complex> il) {
 	col = static_cast<int>(il.size());
+	rowVector = new Complex[col]();
+	int iter = 0;
 	for (const Complex&c : il)
-		rowVector.push_back(c);
+		rowVector[iter++]=c;
 }
 
 
 RowVector& RowVector::operator=(const RowVector& t_RowVector) {
 	col = t_RowVector.col;
-	rowVector = t_RowVector.rowVector;
+	rowVector = new Complex[col]();
+	memcpy(rowVector, t_RowVector.rowVector, col*sizeof(Complex));
+	return *this;
+}
+
+
+RowVector& RowVector::operator=(RowVector&& t_RowVector) {
+	if (rowVector != t_RowVector.rowVector) {
+		col = t_RowVector.col;
+		rowVector = t_RowVector.rowVector;
+		t_RowVector.rowVector = nullptr;
+	}
 	return *this;
 }
 
 
 Complex& RowVector::operator[](int pos) {
-	return rowVector.at(pos);
+	return rowVector[pos];
 }
 
 
 const Complex& RowVector::operator[](int pos) const {
-	return rowVector.at(pos);
+	return rowVector[pos];
 }
 
 
 void RowVector::resize(int size) {
 	if (size < 0) throw Exp("向量的维度必须是非负的");
-	rowVector.resize(size, Complex(0, 0));
+	int preCol = col;
+	Complex* preRowVector = rowVector;
 	col = size;
+	rowVector = new Complex[col]();
+	memcpy(rowVector, preRowVector, preCol*sizeof(Complex));
 }
 
 
@@ -185,38 +220,67 @@ RowVector elementDivide(const RowVector& t_RowVector1, const RowVector& t_RowVec
 default_random_engine Matrix::s_Engine((unsigned)time(NULL));
 
 
+Matrix:: ~Matrix() {
+	if (matrix != nullptr) {
+		delete[] matrix;
+		matrix = nullptr;
+	}
+}
+
+
 Matrix::Matrix() :
-	row(0), col(0) {}
+	row(0), col(0) {
+	matrix = nullptr;
+}
 
 
 
 Matrix::Matrix(int t_Row, int t_Col) :
 	row(t_Row), col(t_Col) {
 	if (t_Row < 0 || t_Col < 0) throw Exp("矩阵的维度必须是非负的");
-	matrix = vector<RowVector>(row, RowVector(col));
+	matrix = new RowVector[row];
+	for (int iter = 0; iter < row; iter++) {
+		matrix[iter] = RowVector(col);
+	}
 }
 
 
 Matrix::Matrix(const Matrix& t_Matrix) :
-	row(t_Matrix.row), col(t_Matrix.col), matrix(t_Matrix.matrix) {}
+	row(t_Matrix.row), col(t_Matrix.col) {
+	matrix=new RowVector[row];
+	for (int iter = 0; iter < row; iter++) {
+		matrix[iter] = t_Matrix[iter];
+	}
+}
+
+
+Matrix::Matrix(Matrix&& t_Matrix) {
+	//<UNDONE>：这里需要处理自赋值吗
+	row = t_Matrix.row;
+	col = t_Matrix.col;
+	matrix = t_Matrix.matrix;
+	t_Matrix.matrix = nullptr;
+}
 
 
 Matrix::Matrix(const std::initializer_list<RowVector> il) {
 	if (il.size() == 0) {
 		row = 0;
 		col = 0;
-		matrix = vector<RowVector>(row, RowVector(col));
+		matrix = nullptr;
 	}
 	else {
 		col = 0;
 		row = static_cast<int>(il.size());
-		for (const RowVector rv : il) {
+		matrix = new RowVector[row];
+		for (const RowVector& rv : il) {
 			if (col < rv.col) col = rv.col;
 		}
-		for (const RowVector rv : il) {
+		int iter = 0;
+		for (const RowVector& rv : il) {
 			RowVector rvTmp(rv);
 			rvTmp.resize(col);
-			matrix.push_back(rvTmp);
+			matrix[iter++]=std::move(rvTmp);
 		}
 	}
 }
@@ -421,13 +485,24 @@ Matrix& Matrix::operator=(const Matrix& t_Matrix) {
 }
 
 
+Matrix& Matrix::operator=(Matrix&& t_Matrix) {
+	if (matrix != t_Matrix.matrix) {
+		row = t_Matrix.row;
+		col = t_Matrix.col;
+		matrix = t_Matrix.matrix;
+		t_Matrix.matrix = nullptr;
+	}
+	return *this;
+}
+
+
 RowVector& Matrix::operator[](int pos) {
-	return matrix.at(pos);
+	return matrix[pos];
 }
 
 
 const RowVector& Matrix::operator[](int pos) const {
-	return  matrix.at(pos);
+	return  matrix[pos];
 }
 
 

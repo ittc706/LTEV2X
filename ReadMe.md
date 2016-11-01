@@ -1,3 +1,5 @@
+## version_2016_11_1(修改了Matrix的实现)
+
 ## version_2016_10_31(修正了Period的部分参数)
 * 改为3个190byte的数据包，一个300byte的数据包
 * 另外，RRM_DRA部分计算SINR地方简化了，下次改回来

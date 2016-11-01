@@ -13,19 +13,22 @@
 */
 class RowVector {
 	/*数据成员*/
-	std::vector<Complex> rowVector;//底层容器，设为私有禁止直接访问
+	Complex* rowVector;//底层容器，设为私有禁止直接访问
 public:
 	/*数据成员*/
 	int col;//向量长度，由于是行向量，这里称为列数
 
 	/*构造函数*/
+	~RowVector();
 	RowVector();
 	explicit RowVector(int t_Col);
 	RowVector(const RowVector& t_RowVector);
+	RowVector(RowVector&& t_RowVector);
 	RowVector(const std::initializer_list<Complex> il);
 
 	/*成员运算符重载*/
 	RowVector& operator=(const RowVector& t_RowVector);
+	RowVector& operator=(RowVector&& t_RowVector);
 	Complex& operator[](int pos);
 	const Complex& operator[](int pos) const;
 
@@ -59,7 +62,7 @@ RowVector elementDivide(const RowVector& t_RowVector1, const RowVector& t_RowVec
 
 class Matrix {
 	/*数据成员*/
-	std::vector<RowVector> matrix;//底层多维容器，设为私有禁止直接访问
+	RowVector* matrix;//底层多维容器，设为私有禁止直接访问
 public:
 	/*静态数据成员*/
 	static std::default_random_engine s_Engine;
@@ -70,9 +73,11 @@ public:
 
 
 	/*构造函数*/
+	~Matrix();
 	Matrix();
 	Matrix(int t_Row, int t_Col);
 	Matrix(const Matrix& t_Matrix);
+	Matrix(Matrix&& t_Matrix);
 	Matrix(const std::initializer_list<RowVector> il);
 	
 
@@ -89,6 +94,7 @@ public:
 
 	/*成员运算符重载*/
 	Matrix& operator=(const Matrix& t_Matrix);//赋值运算符
+	Matrix& operator=(Matrix&& t_Matrix);//赋值运算符
 	RowVector& operator[](int pos);//下标运算符(非常量版本)
 	const RowVector& operator[](int pos) const;//下标运算符(常量版本)
 
