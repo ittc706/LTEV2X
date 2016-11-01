@@ -3,10 +3,8 @@ close all;
 clc;
 
 
-separate=0;
-
-figId=1;
-
+separate=0;%控制作图合并还是分开
+figId=1;%图的Id
 
 %% 读取时延统计信息
 

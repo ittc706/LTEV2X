@@ -235,8 +235,8 @@ const int gc_DRA_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of
 
 
 const int gc_DRAPatternTypeNum = 3;//事件的Pattern的类型种类
-const int gc_DRA_RBNumPerPatternType[gc_DRAPatternTypeNum] = { 2,5,10 };//每个Pattern种类所占的RB数量
-const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 0,3,0 };//在全频段每个Pattern种类对应的Pattern数量
+const int gc_DRA_RBNumPerPatternType[gc_DRAPatternTypeNum] = { 2,10,10 };//每个Pattern种类所占的RB数量
+const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 0,5,0 };//在全频段每个Pattern种类对应的Pattern数量
 
 const int gc_DRAPatternTypePatternIdxInterval[gc_DRAPatternTypeNum][2] = {
 	{0,gc_DRAPatternNumPerPatternType[0] - 1},
@@ -264,7 +264,7 @@ const int gc_RRPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPer
 *          数据业务与统计单元常量
 * ==========================================*/
 const int gc_PeriodMessagePackageNum = 4;
-const int gc_PeriodMessageBitNumPerPackage[gc_PeriodMessagePackageNum] = { 1500,1500,1500,2000 };
+const int gc_PeriodMessageBitNumPerPackage[gc_PeriodMessagePackageNum] = { 1520,1520,1520,2400 };
 
 const int gc_EmergencyMessagePackageNum = 4;
 const int gc_EmergencyMessageBitNumPerPackage[gc_EmergencyMessagePackageNum] = { 1500,1500,1500,2000 };
