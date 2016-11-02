@@ -55,7 +55,7 @@ void System::configure() {//系统仿真参数配置
 	m_GTATMode = HIGHSPEED;
 
 	//无线资源管理模式
-	m_RRMMode = RR;
+	m_RRMMode = DRA;
 }
 
 

@@ -76,7 +76,7 @@ struct RSUConfigure {
 };
 
 /*地理位置配置参数*/
-struct Location{
+struct Location {
 	bool bManhattan;
 	LocationType eType;
 	double distance; // m
@@ -89,8 +89,7 @@ struct Location{
 };
 
 /*天线配置参数*/
-struct Antenna
-{
+struct Antenna {
 	double fTxAngle; // degree
 	double fRxAngle; // degree
 	double fMaxAttenu; // dB

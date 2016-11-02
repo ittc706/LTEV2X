@@ -293,7 +293,6 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 
 				//并释放该调度信息的资源
 				delete _RSU.m_RRM_DRA->m_DRAEmergencyScheduleInfoTable[patternIdx];
-				m_DeleteCount++;
 				_RSU.m_RRM_DRA->m_DRAEmergencyScheduleInfoTable[patternIdx] = nullptr;
 
 				//释放Pattern资源
@@ -326,7 +325,6 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 
 					//并释放该调度信息的资源
 					delete _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx];
-					m_DeleteCount++;
 					_RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx] = nullptr;
 
 					//释放Pattern资源
@@ -348,7 +346,6 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 
 						//并释放该调度信息的资源
 						delete _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx];
-						m_DeleteCount++;
 						_RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx] = nullptr;
 
 						//释放Pattern资源
@@ -562,7 +559,6 @@ void RRM_DRA::DRASelectBasedOnP123() {
 
 			//将调度信息压入m_DRAEmergencyTransimitEventIdList中
 			_RSU.m_RRM_DRA->DRAPushToEmergencyTransmitScheduleInfoList(new RSU::RRM_DRA::DRAScheduleInfo(eventId, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx), patternIdx);
-			m_NewCount++;
 		}
 		_RSU.m_RRM_DRA->DRAPullFromEmergencyScheduleInfoTable();
 		/*  EMERGENCY  */
@@ -613,7 +609,6 @@ void RRM_DRA::DRASelectBasedOnP123() {
 
 			//将调度信息压入m_DRATransimitEventIdList中
 			_RSU.m_RRM_DRA->DRAPushToTransmitScheduleInfoList(new RSU::RRM_DRA::DRAScheduleInfo(eventId, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx), patternIdx);
-			m_NewCount++;
 		}
 
 		//将调度表中当前可以继续传输的用户压入传输链表中
@@ -688,7 +683,6 @@ void RRM_DRA::DRAConflictListener() {
 					//释放调度信息对象的内存资源
 					delete info;
 					info = nullptr;
-					m_DeleteCount++;
 				}
 
 				//释放Pattern资源
@@ -722,7 +716,6 @@ void RRM_DRA::DRAConflictListener() {
 					//释放调度信息对象的内存资源
 					delete info;
 					info = nullptr;
-					m_DeleteCount++;
 				}
 				//释放Pattern资源
 				_RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][relativePatternIdx] = true;
@@ -964,7 +957,6 @@ void RRM_DRA::DRATransimitEnd() {
 
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
-					m_DeleteCount++;
 					*lst.begin() = nullptr;
 
 					//释放Pattern资源
@@ -1000,7 +992,6 @@ void RRM_DRA::DRATransimitEnd() {
 
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
-					m_DeleteCount++;
 					*lst.begin() = nullptr;
 
 					//释放Pattern资源

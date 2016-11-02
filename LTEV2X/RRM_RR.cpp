@@ -250,7 +250,6 @@ void RRM_RR::RRRoundRobin() {
 				int VeUEId = m_EventVec[eventId].VeUEId;
 				MessageType messageType = m_EventVec[eventId].message.messageType;
 				_RSU.m_RRM_RR->m_RRScheduleInfoTable[clusterIdx][patternIdx] = new RSU::RRM_RR::RRScheduleInfo(eventId, messageType, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx);
-				m_NewCount++;
 			}
 		}
 	}
@@ -488,7 +487,6 @@ void RRM_RR::RRTransimitEnd() {
 					//释放调度信息对象的内存资源
 					delete info;
 					info = nullptr;
-					m_DeleteCount++;
 				}
 				else {//没有传输完毕，转到Wait链表，等待下一次调度
 					_RSU.m_RRM_RR->RRPushToWaitEventIdList(clusterIdx, info->eventId, m_EventVec[info->eventId].message.messageType);
@@ -502,7 +500,6 @@ void RRM_RR::RRTransimitEnd() {
 					//释放调度信息对象的内存资源
 					delete info;
 					info = nullptr;
-					m_DeleteCount++;
 				}
 			}
 		}

@@ -53,6 +53,7 @@ const double c_C = 299792458.0f;
 const double c_FC = 2e9f;
 
 namespace ns_GTAT_Urban {//城镇模块常量设置
+
 	const int c_eNBNumber = 7;
 	const int c_roadNumber = 14;
 	const int c_RSUNumber = 24;//只有路口有RSU
@@ -60,8 +61,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 	const int c_length = 433;
 	const double c_lane_wide = 3.5;
 
-	const double c_roadTopoRatio[c_roadNumber * 2] =
-	{
+	const double c_roadTopoRatio[c_roadNumber * 2] = {
 		-1.5f, 1.0f,
 		-0.5f, 1.0f,
 		0.5f, 1.0f,
@@ -77,8 +77,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		0.5f,-1.0f,
 		1.5f,-1.0f
 	};
-	const int c_WrapAroundRoad[c_roadNumber][9] =
-	{
+	const int c_WrapAroundRoad[c_roadNumber][9] = {
 		{ 0,1,6,5,4,13,8,9,10 },
 		{ 1,2,7,6,5,0,9,10,11 },
 		{ 2,3,8,7,6,1,10,11,12 },
@@ -93,17 +92,13 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		{ 11,12,3,2,1,10,5,6,7 },
 		{ 12,13,4,3,2,11,6,7,8 },
 		{ 13,0,5,4,3,12,7,8,9 }
-
 	};
 
 	const int c_RSUClusterNum[c_RSUNumber] = {
 		8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-
 	};
 
-	const double c_RSUTopoRatio[c_RSUNumber * 2] =
-	{
-
+	const double c_RSUTopoRatio[c_RSUNumber * 2] = {
 		-2.0f, 1.5f,
 		-1.0f, 1.5f,
 		0.0f, 1.5f,
@@ -130,39 +125,37 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		2.0f,-1.5f,
 	};
 
-	const int c_RSUInRoad[c_roadNumber][4] =
-	{
-		{ 0,1,7,6},
-		{ 1,2,8,7},
-		{ 2,3,9,8},
-		{ 3,4,10,9},
-		{ 5,6,13,12},
-		{ 6,7,14,13},
-		{ 7,8,15,14},
-		{ 8,9,16,15},
-		{ 9,10,17,16},
-		{ 10,11,18,17},
-		{ 13,14,20,19},
-		{ 14,15,21,20},
-		{ 15,16,22,21},
-		{ 16,17,23,22}
+	const int c_RSUInRoad[c_roadNumber][4] = {
+		{ 0,1,7,6 },
+		{ 1,2,8,7 },
+		{ 2,3,9,8 },
+		{ 3,4,10,9 },
+		{ 5,6,13,12 },
+		{ 6,7,14,13 },
+		{ 7,8,15,14 },
+		{ 8,9,16,15 },
+		{ 9,10,17,16 },
+		{ 10,11,18,17 },
+		{ 13,14,20,19 },
+		{ 14,15,21,20 },
+		{ 15,16,22,21 },
+		{ 16,17,23,22 }
 	};
 }
 
 
 namespace ns_GTAT_HighSpeed {
+
 	const int c_eNBNumber = 2;
 	const int c_laneNumber = 6;
 	const int c_RSUNumber = 35;
-	//const int c_wide=24;
 	const int c_length = 3464;
 	const double c_lane_wide = 4.0f;
 	const double Fresh_time = 0.1f;
 	const double c_ISD = 1732.0f;
 	const int c_v = 140;
 
-	const double c_laneTopoRatio[c_laneNumber * 2] =
-	{
+	const double c_laneTopoRatio[c_laneNumber * 2] = {
 		0.0f, -2.5f,
 		0.0f, -1.5f,
 		0.0f, -0.5f,
@@ -173,8 +166,7 @@ namespace ns_GTAT_HighSpeed {
 
 	const int c_RSUClusterNum = 2;//每个RSU都只有2个簇
 
-	const double c_RSUTopoRatio[c_RSUNumber * 2] =
-	{
+	const double c_RSUTopoRatio[c_RSUNumber * 2] = {
 		17.0f, 0.0f,
 		16.0f, 0.0f,
 		15.0f, 0.0f,
@@ -211,8 +203,7 @@ namespace ns_GTAT_HighSpeed {
 		-16.0f, 0.0f,
 		-17.0f, 0.0f,
 	};
-	const double c_eNBTopo[c_eNBNumber * 2] =
-	{
+	const double c_eNBTopo[c_eNBNumber * 2] = {
 		-0.5f*c_ISD,35,
 		0.5f*c_ISD,35,
 	};
@@ -225,7 +216,6 @@ namespace ns_GTAT_HighSpeed {
 * ==========================================*/
 const int gc_TotalBandwidth =10 * 1000 * 1000;//10MHz
 const int gc_BandwidthOfRB = 12 * 1000 * 15;//180kHZ
-const int gc_RBNum = gc_TotalBandwidth/ gc_BandwidthOfRB;   //RB数量(111)
 const int gc_BitNumPerRB=180;  //单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
 
 /*===========================================
@@ -255,7 +245,7 @@ const int gc_DRATotalPatternNum = [&]() {
 /*===========================================
 *          RRM_RR模块常量定义
 * ==========================================*/
-const int gc_RRNumRBPerPattern = 11;//每个Pattern的RB数量
+const int gc_RRNumRBPerPattern = 10;//每个Pattern的RB数量
 const int gc_RRTotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
 
 
@@ -267,10 +257,10 @@ const int gc_PeriodMessagePackageNum = 4;
 const int gc_PeriodMessageBitNumPerPackage[gc_PeriodMessagePackageNum] = { 1520,1520,1520,2400 };
 
 const int gc_EmergencyMessagePackageNum = 4;
-const int gc_EmergencyMessageBitNumPerPackage[gc_EmergencyMessagePackageNum] = { 1500,1500,1500,2000 };
+const int gc_EmergencyMessageBitNumPerPackage[gc_EmergencyMessagePackageNum] = { 1520,1520,1520,2400 };
 
 const int gc_DataMessagePackageNum = 4;
-const int gc_DataMessageBitNumPerPackage[gc_DataMessagePackageNum] = { 1500,1500,1500,2000 };
+const int gc_DataMessageBitNumPerPackage[gc_DataMessagePackageNum] = { 1520,1520,1520,2400 };
 
 
 

@@ -36,9 +36,6 @@ public:
 	*/
 	std::vector<std::list<int>> m_RRInterferenceVec;
 
-	int m_NewCount = 0;//记录动态创建的对象的次数
-
-	int m_DeleteCount = 0;//记录删除动态创建对象的次数
 
 	//多线程有关参数
 	int m_ThreadNum;
