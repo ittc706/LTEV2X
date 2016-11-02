@@ -256,7 +256,7 @@ const int gc_DRATotalPatternNum = [&]() {
 *          RRM_RR模块常量定义
 * ==========================================*/
 const int gc_RRNumRBPerPattern = 11;//每个Pattern的RB数量
-const int gc_RRPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
+const int gc_RRTotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
 
 
 

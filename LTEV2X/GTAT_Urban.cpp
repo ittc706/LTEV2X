@@ -133,7 +133,7 @@ void GTAT_Urban::channelGeneration() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 		_RSU.m_GTAT->m_VeUEIdList.clear();
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
 			_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].clear();
 		}
 	}

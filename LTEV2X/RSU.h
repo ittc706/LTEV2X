@@ -48,7 +48,7 @@ public:
 	struct GTAT {
 		int m_RSUId;
 		std::list<int> m_VeUEIdList;//当前RSU范围内的VeUEId编号容器,RRM_DRA模块需要
-		int m_DRAClusterNum;//一个RSU覆盖范围内的簇的个数,RRM_DRA模块需要
+		int m_ClusterNum;//一个RSU覆盖范围内的簇的个数,RRM_DRA模块需要
 		std::vector<std::list<int>> m_DRAClusterVeUEIdList;//存放每个簇的VeUE的Id的容器,下标代表簇的编号
 	};
 
@@ -101,7 +101,7 @@ public:
 		};
 
 
-		RSU* m_this;//RRM_DRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+		RSU* m_This;//RRM_DRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 
 		/*
@@ -263,42 +263,49 @@ public:
 			std::string toScheduleString(int n);
 		};
 
-		std::vector<int> m_RRAdmitEventIdList;//当前TTI接入列表，最大长度不超过Pattern数量
+		RSU* m_This;//RRM_DRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+
+		/*
+		* 当前TTI接入列表
+		* 外层下标为簇编号
+		* 内层list最大长度不超过Pattern数量
+		*/
+		std::vector<std::vector<int>> m_RRAdmitEventIdList;
 
 		/*
 		* RSU级别的等待列表
-		* 存放的是VeUEId
+		* 外层下标为簇编号
+		* 内层list存放的是处于等待接入状态的VeUEId
 		* 其来源有：
 		*		1、分簇后，由System级的切换链表转入该RSU级别的等待链表
 		*		2、事件链表中当前的事件触发，转入等待链表
 		*/
-		std::list<int> m_RRWaitEventIdList;
+		std::vector<std::list<int>> m_RRWaitEventIdList;
 
 		/*
-		* 存放调度调度信息
+		* 存放调度调度信息，本次进行传输
 		* 外层代表Pattern号
 		*/
-		std::vector<RRScheduleInfo*> m_RRScheduleInfoTable;
+		std::vector<std::vector<RRScheduleInfo*>> m_RRScheduleInfoTable;
 
 
+		RRM_RR(RSU* t_this);//构造函数
 		/*------------------成员函数------------------*/
 
 		/*
 		* 将AdmitEventIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void RRPushToAdmitEventIdList(int eventId);
+		void RRPushToAdmitEventIdList(int clusterIdx, int eventId);
 
 		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void RRPushToWaitEventIdList(int eventId, MessageType messageType);
+		void RRPushToWaitEventIdList(int clusterIdx, int eventId, MessageType messageType);
 
 		/*
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
 		void RRPushToSwitchEventIdList(int eventId, std::list<int>& systemRRSwitchVeUEIdList);
-
-		RRM_RR();
 	};
 
 	struct WT {
@@ -316,8 +323,8 @@ public:
 inline
 int RSU::RRM_DRA::DRAGetClusterIdxOfVeUE(int VeUEId) {
 	int dex = -1;
-	for (int clusterIdx = 0; clusterIdx < m_this->m_GTAT->m_DRAClusterNum; clusterIdx++) {
-		for (int Id : m_this->m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTAT->m_ClusterNum; clusterIdx++) {
+		for (int Id : m_This->m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
 			if (Id == VeUEId) return clusterIdx;
 	}
 	throw Exp("cRSU::getClusterIdxOfVeUE(int VeUEId)：该车不在当前RSU中");
@@ -405,17 +412,17 @@ void RSU::RRM_DRA::DRAPullFromEmergencyScheduleInfoTable() {
 
 
 inline
-void RSU::RRM_RR::RRPushToAdmitEventIdList(int eventId) {
-	m_RRAdmitEventIdList.push_back(eventId);
+void RSU::RRM_RR::RRPushToAdmitEventIdList(int clusterIdx, int eventId) {
+	m_RRAdmitEventIdList[clusterIdx].push_back(eventId);
 }
 
 inline
-void RSU::RRM_RR::RRPushToWaitEventIdList(int eventId, MessageType messageType) {
+void RSU::RRM_RR::RRPushToWaitEventIdList(int clusterIdx, int eventId, MessageType messageType) {
 	if (messageType == EMERGENCY) {
-		m_RRWaitEventIdList.insert(m_RRWaitEventIdList.begin(), eventId);
+		m_RRWaitEventIdList[clusterIdx].insert(m_RRWaitEventIdList[clusterIdx].begin(), eventId);
 	}
 	else {
-		m_RRWaitEventIdList.push_back(eventId);
+		m_RRWaitEventIdList[clusterIdx].push_back(eventId);
 	}
 }
 

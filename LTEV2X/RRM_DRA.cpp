@@ -27,8 +27,8 @@
 
 using namespace std;
 
-RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, DRAMode systemDRAMode, WT_Basic* systemWTPoint, GTAT_Basic* systemGTATPoint, int threadNum) :
-	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_WTPoint(systemWTPoint), m_GTATPoint(systemGTATPoint), m_ThreadNum(threadNum) {
+RRM_DRA::RRM_DRA(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, DRAMode systemDRAMode, GTAT_Basic* systemGTATPoint, WT_Basic* systemWTPoint, int threadNum) :
+	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_DRAMode(systemDRAMode), m_GTATPoint(systemGTATPoint), m_WTPoint(systemWTPoint), m_ThreadNum(threadNum) {
 
 	m_DRAInterferenceVec = std::vector<std::list<int>>(gc_DRATotalPatternNum);
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(threadNum);
@@ -129,26 +129,26 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 			* 若赋值为(0,-1,0)会导致获取当前簇编号失败，导致其他地方需要讨论
 			* 因此直接给每个簇都赋值为整个区间，反正也没有任何作用，免得其他部分讨论
 			*------------------------ATTENTION-----------------------*/
-			_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_DRAClusterNum, tuple<int, int, int>(0, gc_DRA_NTTI - 1, gc_DRA_NTTI));
+			_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_ClusterNum, tuple<int, int, int>(0, gc_DRA_NTTI - 1, gc_DRA_NTTI));
 			continue;
 		}
 
 		//初始化
-		_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_DRAClusterNum, tuple<int, int, int>(0, 0, 0));
+		_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_ClusterNum, tuple<int, int, int>(0, 0, 0));
 
 		//计算每个TTI时隙对应的VeUE数目(double)，!!!浮点数!!！
 		double VeUESizePerTTI = static_cast<double>(_RSU.m_GTAT->m_VeUEIdList.size()) / static_cast<double>(gc_DRA_NTTI);
 
 		//clusterSize存储每个簇的VeUE数目(double)，!!!浮点数!!！
-		std::vector<double> clusterSize(_RSU.m_GTAT->m_DRAClusterNum, 0);
+		std::vector<double> clusterSize(_RSU.m_GTAT->m_ClusterNum, 0);
 
 		//初始化clusterSize
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++)
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++)
 			clusterSize[clusterIdx] = static_cast<double>(_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].size());
 
 		//首先给至少有一辆车的簇分配一份TTI
 		int basicNTTI = 0;
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
 			//如果该簇内至少有一辆VeUE，直接分配给一个单位的时域资源
 			if (_RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx].size() != 0) {
 				get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) = 1;
@@ -172,14 +172,14 @@ void RRM_DRA::DRAGroupSizeBasedTDM(bool clusterFlag) {
 		//开始生成区间范围，闭区间
 		get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[0]) = 0;
 		get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[0]) = get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[0]) + get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[0]) - 1;
-		for (int clusterIdx = 1; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+		for (int clusterIdx = 1; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
 			get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) = get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx - 1]) + 1;
 			get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) = get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) + get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]) - 1;
 		}
 
 
 		//将调度区间写入该RSU内的每一个车辆
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; ++clusterIdx) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; ++clusterIdx) {
 			for (int VeUEId : _RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
 				m_VeUEAry[VeUEId].m_RRM_DRA->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]));
 		}
@@ -194,24 +194,24 @@ void RRM_DRA::DRAEqualTDM(bool clusterFlag) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
 		//初始化
-		_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_DRAClusterNum, tuple<int, int, int>(0, 0, 0));
+		_RSU.m_RRM_DRA->m_DRAClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTAT->m_ClusterNum, tuple<int, int, int>(0, 0, 0));
 
-		int equalTimeLength = gc_DRA_NTTI / _RSU.m_GTAT->m_DRAClusterNum;
+		int equalTimeLength = gc_DRA_NTTI / _RSU.m_GTAT->m_ClusterNum;
 
-		int lastClusterLength = gc_DRA_NTTI - equalTimeLength*_RSU.m_GTAT->m_DRAClusterNum + equalTimeLength;
+		int lastClusterLength = gc_DRA_NTTI - equalTimeLength*_RSU.m_GTAT->m_ClusterNum + equalTimeLength;
 
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
 			_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx] = tuple<int, int, int>(equalTimeLength*clusterIdx, equalTimeLength*(clusterIdx + 1) - 1, equalTimeLength);
 		}
 
 		//修复最后一个簇的时域长度，因为平均簇长可能被四舍五入了，因此，平均簇长度*簇数并不等于总调度时间，因此将差异填入最后一个簇
-		get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[_RSU.m_GTAT->m_DRAClusterNum - 1]) = gc_DRA_NTTI - 1;
-		get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[_RSU.m_GTAT->m_DRAClusterNum - 1]) = lastClusterLength;
+		get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[_RSU.m_GTAT->m_ClusterNum - 1]) = gc_DRA_NTTI - 1;
+		get<2>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[_RSU.m_GTAT->m_ClusterNum - 1]) = lastClusterLength;
 
 		
 
 		//将调度区间写入该RSU内的每一个车辆
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; ++clusterIdx) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; ++clusterIdx) {
 			for (int VeUEId : _RSU.m_GTAT->m_DRAClusterVeUEIdList[clusterIdx])
 				m_VeUEAry[VeUEId].m_RRM_DRA->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRM_DRA->m_DRAClusterTDRInfo[clusterIdx]));
 		}
@@ -324,7 +324,7 @@ void RRM_DRA::DRAProcessScheduleInfoTableWhenLocationUpdate() {
 		/*  EMERGENCY  */
 
 		//开始处理 m_DRAScheduleInfoTable
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = gc_DRAPatternNumPerPatternType[EMERGENCY]; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
 				int relativePatternIdx = patternIdx - gc_DRAPatternNumPerPatternType[EMERGENCY];
 				if (_RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx][relativePatternIdx] == nullptr) {//当前Pattern块无事件在传输
@@ -683,7 +683,7 @@ void RRM_DRA::DRADelaystatistics() {
 
 		//处理此刻位于调度表中，但不属于当前簇的事件
 		int curClusterIdx = _RSU.m_RRM_DRA->DRAGetClusterIdx(m_TTI);
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_DRAClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
 			if (clusterIdx == curClusterIdx) continue;
 			for (RSU::RRM_DRA::DRAScheduleInfo *p : _RSU.m_RRM_DRA->m_DRAScheduleInfoTable[clusterIdx]) {
 				if (p == nullptr) continue;
@@ -797,14 +797,8 @@ void RRM_DRA::DRATransimitPreparation() {
 		}
 	}
     
-	/*
-	* 新每辆车的干扰车辆列表
-	* 为什么要用set而不用vector或者list
-	* 因为，同一辆车可能同时触发了不同的事件，比如同时有PERIOD和DATA发生，那么在不同的patternIdx将会有相同的车辆ID
-	* 但是这相同车辆的ID只能算一次
-	*/
-	
-	for (int patternIdx = gc_DRAPatternNumPerPatternType[EMERGENCY]; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
+	//更新每辆车的干扰车辆列表	
+	for (int patternIdx = 0; patternIdx < gc_DRATotalPatternNum; patternIdx++) {
 		list<int>& lst = m_DRAInterferenceVec[patternIdx];
 		for (int VeUEId : lst) {
 
@@ -1000,6 +994,7 @@ void RRM_DRA::DRATransimitEnd() {
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
 					m_DeleteCount++;
+					*lst.begin() = nullptr;
 
 					//释放Pattern资源
 					_RSU.m_RRM_DRA->m_DRAEmergencyPatternIsAvailable[patternIdx] = true;
@@ -1035,6 +1030,7 @@ void RRM_DRA::DRATransimitEnd() {
 					//释放调度信息对象的内存资源
 					delete *lst.begin();
 					m_DeleteCount++;
+					*lst.begin() = nullptr;
 
 					//释放Pattern资源
 					_RSU.m_RRM_DRA->m_DRAPatternIsAvailable[clusterIdx][relativePatternIdx] = true;

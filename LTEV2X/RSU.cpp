@@ -29,8 +29,8 @@ void RSU::initializeUrban(RSUConfigure &t_RSUConfigure){
 	printf("RSU：");
 	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT->m_RSUId, m_GTAT_Urban->m_AbsX, m_GTAT_Urban->m_AbsY);
 
-	m_GTAT->m_DRAClusterNum = ns_GTAT_Urban::c_RSUClusterNum[m_GTAT->m_RSUId];
-	m_GTAT->m_DRAClusterVeUEIdList = vector<list<int>>(m_GTAT->m_DRAClusterNum);
+	m_GTAT->m_ClusterNum = ns_GTAT_Urban::c_RSUClusterNum[m_GTAT->m_RSUId];
+	m_GTAT->m_DRAClusterVeUEIdList = vector<list<int>>(m_GTAT->m_ClusterNum);
 
 }
 
@@ -43,8 +43,8 @@ void RSU::initializeHighSpeed(RSUConfigure &t_RSUConfigure) {
 	printf("RSU：");
 	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT->m_RSUId, m_GTAT_HighSpeed->m_AbsX, m_GTAT_HighSpeed->m_AbsY);
 
-	m_GTAT->m_DRAClusterNum = ns_GTAT_HighSpeed::c_RSUClusterNum;
-	m_GTAT->m_DRAClusterVeUEIdList = vector<list<int>>(m_GTAT->m_DRAClusterNum);
+	m_GTAT->m_ClusterNum = ns_GTAT_HighSpeed::c_RSUClusterNum;
+	m_GTAT->m_DRAClusterVeUEIdList = vector<list<int>>(m_GTAT->m_ClusterNum);
 
 }
 
@@ -57,7 +57,7 @@ void RSU::initializeDRA() {
 
 void RSU::initializeRR() {
 	m_RRM = new RRM();
-	m_RRM_RR = new RRM_RR();
+	m_RRM_RR = new RRM_RR(this);
 }
 
 
@@ -136,7 +136,7 @@ std::string RSU::RRM_DRA::DRAScheduleInfo::toScheduleString(int n) {
 
 
 RSU::RRM_DRA::RRM_DRA(RSU* t_this) {
-	m_this = t_this;
+	m_This = t_this;
 
 	/*  EMERGENCY  */
 	m_DRAEmergencyPatternIsAvailable = vector<bool>(gc_DRAPatternNumPerPatternType[EMERGENCY], true);
@@ -144,8 +144,8 @@ RSU::RRM_DRA::RRM_DRA(RSU* t_this) {
 	m_DRAEmergencyTransimitScheduleInfoList = vector<list<DRAScheduleInfo*>>(gc_DRAPatternNumPerPatternType[EMERGENCY]);
 	/*  EMERGENCY  */
 
-	m_DRAPatternIsAvailable = vector<vector<bool>>(m_this->m_GTAT->m_DRAClusterNum, vector<bool>(gc_DRATotalPatternNum - gc_DRAPatternNumPerPatternType[EMERGENCY], true));
-	m_DRAScheduleInfoTable = vector<vector<DRAScheduleInfo*>>(m_this->m_GTAT->m_DRAClusterNum, vector<DRAScheduleInfo*>(gc_DRATotalPatternNum - gc_DRAPatternNumPerPatternType[EMERGENCY], nullptr));
+	m_DRAPatternIsAvailable = vector<vector<bool>>(m_This->m_GTAT->m_ClusterNum, vector<bool>(gc_DRATotalPatternNum - gc_DRAPatternNumPerPatternType[EMERGENCY], true));
+	m_DRAScheduleInfoTable = vector<vector<DRAScheduleInfo*>>(m_This->m_GTAT->m_ClusterNum, vector<DRAScheduleInfo*>(gc_DRATotalPatternNum - gc_DRAPatternNumPerPatternType[EMERGENCY], nullptr));
 	m_DRATransimitScheduleInfoList = vector<list<DRAScheduleInfo*>>(gc_DRATotalPatternNum - gc_DRAPatternNumPerPatternType[EMERGENCY], list<DRAScheduleInfo*>(0, nullptr));
 
 }
@@ -153,7 +153,7 @@ RSU::RRM_DRA::RRM_DRA(RSU* t_this) {
 
 int RSU::RRM_DRA::DRAGetClusterIdx(int TTI) {
 	int roundATTI = TTI%gc_DRA_NTTI; //将TTI映射到[0-gc_DRA_NTTI)的范围
-	for (int clusterIdx = 0; clusterIdx < m_this->m_GTAT->m_DRAClusterNum; clusterIdx++)
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTAT->m_ClusterNum; clusterIdx++)
 		if (roundATTI <= get<1>(m_DRAClusterTDRInfo[clusterIdx])) return clusterIdx;
 	return -1;
 }
@@ -166,17 +166,17 @@ string RSU::RRM_DRA::toString(int n) {
 
 	ostringstream ss;
 	//主干信息
-	ss << indent << "RSU[" << m_this->m_GTAT->m_RSUId << "] :" << endl;
+	ss << indent << "RSU[" << m_This->m_GTAT->m_RSUId << "] :" << endl;
 	ss << indent << "{" << endl;
 
 	//开始打印VeUEIdList
 	ss << indent << "    " << "VeUEIdList :" << endl;
 	ss << indent << "    " << "{" << endl;
-	for (int clusterIdx = 0; clusterIdx < m_this->m_GTAT->m_DRAClusterNum; clusterIdx++) {
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTAT->m_ClusterNum; clusterIdx++) {
 		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
 		ss << indent << "        " << "{" << endl;
 		int cnt = 0;
-		for (int RSUId : m_this->m_GTAT->m_DRAClusterVeUEIdList[clusterIdx]) {
+		for (int RSUId : m_This->m_GTAT->m_DRAClusterVeUEIdList[clusterIdx]) {
 			if (cnt % 10 == 0)
 				ss << indent << "            [ ";
 			ss << left << setw(3) << RSUId << " , ";
@@ -195,7 +195,7 @@ string RSU::RRM_DRA::toString(int n) {
 	ss << indent << "    " << "{" << endl;
 
 	ss << indent << "        ";
-	for (const tuple<int, int, int>&t : m_this->m_RRM_DRA->m_DRAClusterTDRInfo)
+	for (const tuple<int, int, int>&t : m_This->m_RRM_DRA->m_DRAClusterTDRInfo)
 		ss << "[ " << get<0>(t) << " , " << get<1>(t) << " ] ,";
 	ss << endl;
 	ss << indent << "    " << "}" << endl;
@@ -235,6 +235,9 @@ std::string RSU::RRM_RR::RRScheduleInfo::toScheduleString(int n) {
 
 
 
-RSU::RRM_RR::RRM_RR() {
-	m_RRScheduleInfoTable = vector<RRScheduleInfo*>(gc_RRPatternNum);
+RSU::RRM_RR::RRM_RR(RSU* t_this) {
+	m_This = t_this;
+	m_RRAdmitEventIdList = vector<vector<int>>(m_This->m_GTAT->m_ClusterNum);
+	m_RRWaitEventIdList= vector<list<int>>(m_This->m_GTAT->m_ClusterNum);
+	m_RRScheduleInfoTable = vector<vector<RRScheduleInfo*>>(m_This->m_GTAT->m_ClusterNum, vector<RRScheduleInfo*>(gc_RRTotalPatternNum, nullptr));
 }

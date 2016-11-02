@@ -83,6 +83,16 @@ void VeUE::initializeDRA() {
 void VeUE::initializeRR() {
 	m_RRM = new RRM();
 	m_RRM_RR = new RRM_RR();
+
+	m_RRM->m_InterferenceVeUENum = vector<int>(gc_RRTotalPatternNum);
+	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(gc_RRTotalPatternNum);
+	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(gc_RRTotalPatternNum);
+	m_RRM->m_WTInfo = vector<tuple<ModulationType, int, double>>(gc_RRTotalPatternNum, tuple<ModulationType, int, double>(_16QAM, 0, 0));
+	m_RRM->m_isWTCached = vector<bool>(gc_RRTotalPatternNum, false);
+
+	//这两个数据比较特殊，必须等到GTAT模块初始化完毕后，车辆的数目才能确定下来
+	m_GTAT->m_InterferencePloss = vector<double>(m_VeUECount, 0);
+	m_GTAT->m_InterferenceH = vector<double*>(m_VeUECount, nullptr);
 }
 
 

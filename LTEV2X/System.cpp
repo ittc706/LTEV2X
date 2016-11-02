@@ -52,7 +52,7 @@ void System::configure() {//系统仿真参数配置
 	m_Config.locationUpdateNTTI = 1000;
 
 	//地理拓扑与传输模式
-	m_GTATMode = URBAN;
+	m_GTATMode = HIGHSPEED;
 
 	//无线资源管理模式
 	m_RRMMode = DRA;
@@ -101,10 +101,10 @@ void System::WTModuleInitialize() {
 void System::RRMModuleInitialize() {
 	switch (m_RRMMode) {
 	case RR:
-		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
+		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTATPoint, m_WTPoint, 4);
 		break;
 	case DRA:
-		m_RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, P123, m_WTPoint, m_GTATPoint, 4);
+		m_RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, P123, m_GTATPoint, m_WTPoint, 4);
 		break;
 	default:
 		break;

@@ -146,6 +146,9 @@ void Event::addEventLog(int TTI, EventLogType type, int RSUId, int clusterIdx, i
 	case WAIT_TO_ADMIT:
 		ss << "{ TTI: " << left << setw(3) << TTI << " - Description : <" << left << setw(10) << description + ">" << " - From: RSU[" << RSUId << "]'s WaitEventIdList - To: RSU[" << RSUId << "]'s AdmitEventIdList }";
 		break;
+	case WAIT_TO_WAIT:
+		ss << "{ TTI: " << left << setw(3) << TTI << " - Description : <" << left << setw(10) << description + ">" << " - From: RSU[" << RSUId << "]'s WaitEventIdList - To: RSU[" << RSUId << "]'s WaitEventIdList }";
+		break;
 	case SWITCH_TO_WAIT:
 		ss << "{ TTI: " << left << setw(3) << TTI << " - Description : <" << left << setw(10) << description + ">" << " - From: SwitchList - To: RSU[" << RSUId << "]'s WaitEventIdList }";
 		break;

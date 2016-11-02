@@ -32,18 +32,18 @@ enum DRAMode {
 class RRM_DRA :public RRM_Basic {
 public:
 	RRM_DRA() = delete;
-	RRM_DRA(int &systemTTI, 
-		Configure& systemConfig, 
-		RSU* systemRSUAry, 
-		VeUE* systemVeUEAry, 
-		std::vector<Event>& systemEventVec, 
+	RRM_DRA(int &systemTTI,
+		Configure& systemConfig,
+		RSU* systemRSUAry,
+		VeUE* systemVeUEAry,
+		std::vector<Event>& systemEventVec,
 		std::vector<std::list<int>>& systemEventTTIList,
 		std::vector<std::vector<int>>& systemTTIRSUThroughput,
 		DRAMode systemDRAMode,
-		WT_Basic* systemWTPoint,
 		GTAT_Basic* systemGTATPoint,
+		WT_Basic* systemWTPoint,
 		int threadNum
-	);
+		);
 
 	/*------------------数据成员------------------*/
 
@@ -53,7 +53,7 @@ public:
 	std::list<int> m_DRASwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
 	/*
-	* 用于存放指定Pattern的[事件类型信息,该Pattern的干扰列表]
+	* 用于存放指定Pattern的干扰列表
 	* 外层下标为PatternId(绝对量)
 	*/
 	std::vector<std::list<int>> m_DRAInterferenceVec;
@@ -112,9 +112,5 @@ private:
 	int DRAGetPatternType(int patternIdx);
 	std::pair<int, int> DRAGetOccupiedSubCarrierRange(MessageType messageType, int patternIdx);
 
-
-	void f() {
-		;
-	}
 };
 
