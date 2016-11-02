@@ -45,7 +45,7 @@ void System::process() {
 
 void System::configure() {//系统仿真参数配置
 
-	m_Config.NTTI = 200;//仿真TTI时间
+	m_Config.NTTI = 2000;//仿真TTI时间
 	m_Config.periodicEventNTTI = 500;
 	m_Config.emergencyLambda = 0;// 0.001;
 	m_Config.dataLambda = 0;
@@ -55,7 +55,7 @@ void System::configure() {//系统仿真参数配置
 	m_GTATMode = HIGHSPEED;
 
 	//无线资源管理模式
-	m_RRMMode = DRA;
+	m_RRMMode = RR;
 }
 
 

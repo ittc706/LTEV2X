@@ -111,7 +111,7 @@ RSU::~RSU() {
 
 string RSU::RRM_DRA::DRAScheduleInfo::toLogString(int n) {
 	ostringstream ss;
-	ss << "[ eventId = ";
+	ss << "[ EventId = ";
 	ss << left << setw(3) << eventId;
 	ss << " , PatternIdx = " << left << setw(3) << patternIdx << " ] ";
 	return ss.str();
@@ -124,7 +124,7 @@ std::string RSU::RRM_DRA::DRAScheduleInfo::toScheduleString(int n) {
 		indent.append("    ");
 	ostringstream ss;
 	ss << indent << "{ " << endl;
-	ss << indent << " eventId = " << eventId << endl;
+	ss << indent << " EventId = " << eventId << endl;
 	ss << indent << " VeUEId = " << VeUEId << endl;
 	ss << indent << " currentPackageIdx = " << currentPackageIdx << endl;
 	ss << indent << " remainBitNum = " << remainBitNum << endl;
@@ -210,7 +210,7 @@ string RSU::RRM_DRA::toString(int n) {
 
 std::string RSU::RRM_RR::RRScheduleInfo::toLogString(int n) {
 	ostringstream ss;
-	ss << "[ eventId = ";
+	ss << "[ EventId = ";
 	ss << left << setw(3) << eventId;
 	ss << " , PatternIdx = " << left << setw(3) << patternIdx << " ] ";
 	return ss.str();
@@ -223,7 +223,7 @@ std::string RSU::RRM_RR::RRScheduleInfo::toScheduleString(int n) {
 		indent.append("    ");
 	ostringstream ss;
 	ss << indent << "{ " << endl;
-	ss << indent << " eventId = " << eventId << endl;
+	ss << indent << " EventId = " << eventId << endl;
 	ss << indent << " VeUEId = " << VeUEId << endl;
 	ss << indent << " currentPackageIdx = " << currentPackageIdx << endl;
 	ss << indent << " remainBitNum = " << remainBitNum << endl;
