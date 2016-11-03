@@ -12,7 +12,7 @@ extern std::ofstream g_FileVeUELocationUpdateLogInfo;
 extern std::ofstream g_FileVeUENumPerRSULogInfo;
 //RRM_RR模块
 extern std::ofstream g_FileRRScheduleInfo;
-//RRM_DRA模块
+//RRM_TDM_DRA模块
 extern std::ofstream g_FileDRAScheduleInfo;
 extern std::ofstream g_FileClasterPerformInfo;
 extern std::ofstream g_FileEventListInfo;
@@ -31,10 +31,10 @@ extern std::ofstream g_FileRSUThroughput;
 *               全域函数声明
 * ==========================================*/
 //产生特定分布随机数
-void RandomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero);
-void RandomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation);
-void SortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
-void SelectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond);
+void randomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero);
+void randomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation);
+void sortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
+void selectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond);
 
 
 
@@ -42,26 +42,26 @@ void SelectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySec
 *             地理拓扑单元常量
 * ==========================================*/
 //数值常量设置
-const double c_PI = 3.1415926535897932384626433832795f;
-const double c_PINeg = -3.1415926535897932384626433832795f;
-const double c_PI2 = 6.283185307179586476925286766559f;
-const double c_PIHalf = 1.5707963267948966192313216916398f;
-const double c_Degree2PI = 0.01745329251994329576923690768489f;
-const double c_SqrtHalf = 0.70710678118654752440084436210485f;
-const double c_SqrtThree = 1.73205080756887729f;
-const double c_C = 299792458.0f;
-const double c_FC = 2e9f;
+const double gc_PI = 3.1415926535897932384626433832795f;
+const double gc_PINeg = -3.1415926535897932384626433832795f;
+const double gc_PI2 = 6.283185307179586476925286766559f;
+const double gc_PIHalf = 1.5707963267948966192313216916398f;
+const double gc_Degree2PI = 0.01745329251994329576923690768489f;
+const double gc_SqrtHalf = 0.70710678118654752440084436210485f;
+const double gc_SqrtThree = 1.73205080756887729f;
+const double gc_C = 299792458.0f;
+const double gc_FC = 2e9f;
 
 namespace ns_GTAT_Urban {//城镇模块常量设置
 
-	const int c_eNBNumber = 7;
-	const int c_roadNumber = 14;
-	const int c_RSUNumber = 24;//只有路口有RSU
-	const int c_wide = 250;
-	const int c_length = 433;
-	const double c_lane_wide = 3.5;
+	const int gc_eNBNumber = 7;
+	const int gc_RoadNumber = 14;
+	const int gc_RSUNumber = 24;//只有路口有RSU
+	const int gc_Width = 250;
+	const int gc_Length = 433;
+	const double gc_LaneWidth = 3.5;
 
-	const double c_roadTopoRatio[c_roadNumber * 2] = {
+	const double gc_RoadTopoRatio[gc_RoadNumber * 2] = {
 		-1.5f, 1.0f,
 		-0.5f, 1.0f,
 		0.5f, 1.0f,
@@ -77,7 +77,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		0.5f,-1.0f,
 		1.5f,-1.0f
 	};
-	const int c_WrapAroundRoad[c_roadNumber][9] = {
+	const int gc_WrapAroundRoad[gc_RoadNumber][9] = {
 		{ 0,1,6,5,4,13,8,9,10 },
 		{ 1,2,7,6,5,0,9,10,11 },
 		{ 2,3,8,7,6,1,10,11,12 },
@@ -94,11 +94,11 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		{ 13,0,5,4,3,12,7,8,9 }
 	};
 
-	const int c_RSUClusterNum[c_RSUNumber] = {
+	const int gc_RSUClusterNum[gc_RSUNumber] = {
 		8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
 	};
 
-	const double c_RSUTopoRatio[c_RSUNumber * 2] = {
+	const double gc_RSUTopoRatio[gc_RSUNumber * 2] = {
 		-2.0f, 1.5f,
 		-1.0f, 1.5f,
 		0.0f, 1.5f,
@@ -125,7 +125,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 		2.0f,-1.5f,
 	};
 
-	const int c_RSUInRoad[c_roadNumber][4] = {
+	const int gc_RSUInRoad[gc_RoadNumber][4] = {
 		{ 0,1,7,6 },
 		{ 1,2,8,7 },
 		{ 2,3,9,8 },
@@ -146,16 +146,16 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 
 namespace ns_GTAT_HighSpeed {
 
-	const int c_eNBNumber = 2;
-	const int c_laneNumber = 6;
-	const int c_RSUNumber = 35;
-	const int c_length = 3464;
-	const double c_lane_wide = 4.0f;
-	const double Fresh_time = 0.1f;
-	const double c_ISD = 1732.0f;
-	const int c_v = 140;
+	const int gc_eNBNumber = 2;
+	const int gc_LaneNumber = 6;
+	const int gc_RSUNumber = 35;
+	const int gc_Length = 3464;
+	const double gc_LaneWidth = 4.0f;
+	const double gc_FreshTime = 0.1f;
+	const double gc_ISD = 1732.0f;
+	const int gc_v = 140;
 
-	const double c_laneTopoRatio[c_laneNumber * 2] = {
+	const double gc_LaneTopoRatio[gc_LaneNumber * 2] = {
 		0.0f, -2.5f,
 		0.0f, -1.5f,
 		0.0f, -0.5f,
@@ -164,9 +164,9 @@ namespace ns_GTAT_HighSpeed {
 		0.0f, 2.5f,
 	};
 
-	const int c_RSUClusterNum = 2;//每个RSU都只有2个簇
+	const int gc_RSUClusterNum = 2;//每个RSU都只有2个簇
 
-	const double c_RSUTopoRatio[c_RSUNumber * 2] = {
+	const double gc_RSUTopoRatio[gc_RSUNumber * 2] = {
 		17.0f, 0.0f,
 		16.0f, 0.0f,
 		15.0f, 0.0f,
@@ -203,9 +203,9 @@ namespace ns_GTAT_HighSpeed {
 		-16.0f, 0.0f,
 		-17.0f, 0.0f,
 	};
-	const double c_eNBTopo[c_eNBNumber * 2] = {
-		-0.5f*c_ISD,35,
-		0.5f*c_ISD,35,
+	const double gc_eNBTopo[gc_eNBNumber * 2] = {
+		-0.5f*gc_ISD,35,
+		0.5f*gc_ISD,35,
 	};
 }
 
@@ -219,34 +219,37 @@ const int gc_BandwidthOfRB = 12 * 1000 * 15;//180kHZ
 const int gc_BitNumPerRB=180;  //单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
 
 /*===========================================
-*          RRM_DRA模块常量定义
+*          RRM_TDM_DRA模块常量定义
 * ==========================================*/
-const int gc_DRA_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
+namespace ns_RRM_TDM_DRA {
+	const int gc_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
 
 
-const int gc_DRAPatternTypeNum = 3;//事件的Pattern的类型种类
-const int gc_DRA_RBNumPerPatternType[gc_DRAPatternTypeNum] = { 2,10,10 };//每个Pattern种类所占的RB数量
-const int gc_DRAPatternNumPerPatternType[gc_DRAPatternTypeNum] = { 0,5,0 };//在全频段每个Pattern种类对应的Pattern数量
+	const int gc_PatternTypeNum = 3;//事件的Pattern的类型种类
+	const int gc_RBNumPerPatternType[gc_PatternTypeNum] = { 2,10,10 };//每个Pattern种类所占的RB数量
+	const int gc_PatternNumPerPatternType[gc_PatternTypeNum] = { 0,5,0 };//在全频段每个Pattern种类对应的Pattern数量
 
-const int gc_DRAPatternTypePatternIdxInterval[gc_DRAPatternTypeNum][2] = {
-	{0,gc_DRAPatternNumPerPatternType[0] - 1},
-	{gc_DRAPatternNumPerPatternType[0],gc_DRAPatternNumPerPatternType[0] + gc_DRAPatternNumPerPatternType[1] - 1 },
-	{ gc_DRAPatternNumPerPatternType[0] + gc_DRAPatternNumPerPatternType[1],gc_DRAPatternNumPerPatternType[0] + gc_DRAPatternNumPerPatternType[1] + gc_DRAPatternNumPerPatternType[2] - 1 },
-};
-
-const int gc_DRATotalPatternNum = [&]() {
-	int res = 0;
-	for (int num : gc_DRAPatternNumPerPatternType)
-		res += num;
-	return res;
-}();//所有Pattern数量总和(包括Emergency)
+	const int gc_PatternTypePatternIdxInterval[gc_PatternTypeNum][2] = {
+		{ 0,gc_PatternNumPerPatternType[0] - 1 },
+		{ gc_PatternNumPerPatternType[0],gc_PatternNumPerPatternType[0] + gc_PatternNumPerPatternType[1] - 1 },
+		{ gc_PatternNumPerPatternType[0] + gc_PatternNumPerPatternType[1],gc_PatternNumPerPatternType[0] + gc_PatternNumPerPatternType[1] + gc_PatternNumPerPatternType[2] - 1 },
+	};
+	const int gc_TotalPatternNum = [&]() {
+		int res = 0;
+		for (int num : gc_PatternNumPerPatternType)
+			res += num;
+		return res;
+	}();//所有Pattern数量总和(包括Emergency)
+}
 
 
 /*===========================================
 *          RRM_RR模块常量定义
 * ==========================================*/
-const int gc_RRNumRBPerPattern = 10;//每个Pattern的RB数量
-const int gc_RRTotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
+namespace ns_RRM_RR {
+	const int gc_RRNumRBPerPattern = 10;//每个Pattern的RB数量
+	const int gc_RRTotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
+}
 
 
 

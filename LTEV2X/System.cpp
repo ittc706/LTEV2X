@@ -55,7 +55,7 @@ void System::configure() {//系统仿真参数配置
 	m_GTATMode = HIGHSPEED;
 
 	//无线资源管理模式
-	m_RRMMode = DRA;
+	m_RRMMode = TDM_DRA;
 }
 
 
@@ -63,20 +63,20 @@ void System::initialization() {
 	m_TTI = 0;	
 
 	//GTAT模块初始化
-	GTATModuleInitialize();
+	initializeGTATModule();
 
 	//WT模块初始化
-	WTModuleInitialize();
+	initializeWTModule();
 
 	//RRM模块初始化
-	RRMModuleInitialize();
+	initializeRRMModule();
 
 	//TMAC模块初始化
-	TMACModuleInitialize();
+	initializeTMACModule();
 }
 
 
-void System::GTATModuleInitialize() {
+void System::initializeGTATModule() {
 	switch (m_GTATMode) {
 	case URBAN:
 		m_GTATPoint = new GTAT_Urban(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
@@ -92,19 +92,19 @@ void System::GTATModuleInitialize() {
 	m_GTATPoint->initialize();
 }
 
-void System::WTModuleInitialize() {
+void System::initializeWTModule() {
 	m_WTPoint = new WT_B(m_Config, m_RSUAry, m_VeUEAry);
 	m_WTPoint->initialize();//模块初始化
 }
 
 
-void System::RRMModuleInitialize() {
+void System::initializeRRMModule() {
 	switch (m_RRMMode) {
 	case RR:
 		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTATPoint, m_WTPoint, 4);
 		break;
-	case DRA:
-		m_RRMPoint = new RRM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, P123, m_GTATPoint, m_WTPoint, 4);
+	case TDM_DRA:
+		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTATPoint, m_WTPoint, 4);
 		break;
 	default:
 		break;
@@ -113,7 +113,7 @@ void System::RRMModuleInitialize() {
 }
 
 
-void System::TMACModuleInitialize() {
+void System::initializeTMACModule() {
 	m_TMACPoint = new TMAC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
 	m_TMACPoint->initialize();//模块初始化
 }

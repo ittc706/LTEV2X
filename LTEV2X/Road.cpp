@@ -19,8 +19,8 @@ Road::~Road() {
 
 void Road::initializeUrban(UrbanRoadConfigure &t_RoadConfigure) {
 	m_GTAT_Urban->m_RoadId = t_RoadConfigure.roadId;
-	m_GTAT_Urban->m_AbsX = ns_GTAT_Urban::c_roadTopoRatio[m_GTAT_Urban->m_RoadId * 2 + 0] * ns_GTAT_Urban::c_wide;
-	m_GTAT_Urban->m_AbsY = ns_GTAT_Urban::c_roadTopoRatio[m_GTAT_Urban->m_RoadId * 2 + 1] * ns_GTAT_Urban::c_length;
+	m_GTAT_Urban->m_AbsX = ns_GTAT_Urban::gc_RoadTopoRatio[m_GTAT_Urban->m_RoadId * 2 + 0] * ns_GTAT_Urban::gc_Width;
+	m_GTAT_Urban->m_AbsY = ns_GTAT_Urban::gc_RoadTopoRatio[m_GTAT_Urban->m_RoadId * 2 + 1] * ns_GTAT_Urban::gc_Length;
 	printf("Road£º");
 	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT_Urban->m_AbsX, m_GTAT_Urban->m_AbsY);
 
@@ -43,5 +43,5 @@ void Road::initializeUrban(UrbanRoadConfigure &t_RoadConfigure) {
 void Road::initializeHighSpeed(HighSpeedRodeConfigure &t_RoadHighSpeedConfigure) {
 	m_GTAT_HighSpeed->m_RoadId = t_RoadHighSpeedConfigure.roadId;
 	m_GTAT_HighSpeed->m_AbsX = 0.0f;
-	m_GTAT_HighSpeed->m_AbsY = ns_GTAT_HighSpeed::c_laneTopoRatio[m_GTAT_HighSpeed->m_RoadId * 2 + 1] * ns_GTAT_HighSpeed::c_lane_wide;
+	m_GTAT_HighSpeed->m_AbsY = ns_GTAT_HighSpeed::gc_LaneTopoRatio[m_GTAT_HighSpeed->m_RoadId * 2 + 1] * ns_GTAT_HighSpeed::gc_LaneWidth;
 }

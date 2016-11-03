@@ -138,7 +138,7 @@
     <ClInclude Include="IMTA.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="RRM.h" />
-    <ClInclude Include="RRM_DRA.h" />
+    <ClInclude Include="RRM_TDM_DRA.h" />
     <ClInclude Include="RRM_RR.h" />
     <ClInclude Include="RSU.h" />
     <ClInclude Include="System.h" />
@@ -160,7 +160,7 @@
     <ClCompile Include="IMTA.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Road.cpp" />
-    <ClCompile Include="RRM_DRA.cpp" />
+    <ClCompile Include="RRM_TDM_DRA.cpp" />
     <ClCompile Include="RRM_RR.cpp" />
     <ClCompile Include="RSU.cpp" />
     <ClCompile Include="System.cpp" />

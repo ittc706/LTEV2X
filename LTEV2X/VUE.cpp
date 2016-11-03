@@ -10,7 +10,7 @@ using namespace std;
 int VeUE::m_VeUECount = 0;
 
 
-void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
+void VeUE::initializeGTAT_Urban(VeUEConfigure &t_UEConfigure) {
 	m_GTAT = new GTAT();
 	m_GTAT_Urban = new GTAT_Urban();
 
@@ -31,7 +31,7 @@ void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
 	else
 		m_GTAT_Urban->m_VAngle = -180;
 
-	RandomUniform(&m_GTAT_Urban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
+	randomUniform(&m_GTAT_Urban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 
 	m_GTAT->m_Nt = 1;
 	m_GTAT->m_Nr = 2;
@@ -40,7 +40,7 @@ void VeUE::initializeUrban(VeUEConfigure &t_UEConfigure) {
 }
 
 
-void VeUE::initializeHighSpeed(VeUEConfigure &t_UEConfigure) {
+void VeUE::initializeGTAT_HighSpeed(VeUEConfigure &t_UEConfigure) {
 	m_GTAT = new GTAT();
 	m_GTAT_HighSpeed = new GTAT_HighSpeed();
 
@@ -56,7 +56,7 @@ void VeUE::initializeHighSpeed(VeUEConfigure &t_UEConfigure) {
 	else
 		m_GTAT_HighSpeed->m_VAngle = 180;
 
-	RandomUniform(&m_GTAT_HighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);
+	randomUniform(&m_GTAT_HighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 
 	m_GTAT->m_Nt = 1;
 	m_GTAT->m_Nr = 2;
@@ -64,15 +64,15 @@ void VeUE::initializeHighSpeed(VeUEConfigure &t_UEConfigure) {
 }
 
 
-void VeUE::initializeDRA() {
+void VeUE::initializeRRM_TDM_DRA() {
 	m_RRM = new RRM();
-	m_RRM_DRA = new RRM_DRA(this);
+	m_RRM_TDM_DRA = new RRM_TDM_DRA(this);
 
-	m_RRM->m_InterferenceVeUENum = vector<int>(gc_DRATotalPatternNum);
-	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(gc_DRATotalPatternNum);
-	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(gc_DRATotalPatternNum);
-	m_RRM->m_WTInfo = vector<tuple<ModulationType,int,double>>(gc_DRATotalPatternNum, tuple<ModulationType, int, double>(_16QAM,0,0));
-	m_RRM->m_isWTCached = vector<bool>(gc_DRATotalPatternNum, false);
+	m_RRM->m_InterferenceVeUENum = vector<int>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
+	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
+	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
+	m_RRM->m_WTInfo = vector<tuple<ModulationType,int,double>>(ns_RRM_TDM_DRA::gc_TotalPatternNum, tuple<ModulationType, int, double>(_16QAM,0,0));
+	m_RRM->m_isWTCached = vector<bool>(ns_RRM_TDM_DRA::gc_TotalPatternNum, false);
 
 	//这两个数据比较特殊，必须等到GTAT模块初始化完毕后，车辆的数目才能确定下来
 	m_GTAT->m_InterferencePloss = vector<double>(m_VeUECount,0);
@@ -80,15 +80,15 @@ void VeUE::initializeDRA() {
 }
 
 
-void VeUE::initializeRR() {
+void VeUE::initializeRRM_RR() {
 	m_RRM = new RRM();
 	m_RRM_RR = new RRM_RR();
 
-	m_RRM->m_InterferenceVeUENum = vector<int>(gc_RRTotalPatternNum);
-	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(gc_RRTotalPatternNum);
-	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(gc_RRTotalPatternNum);
-	m_RRM->m_WTInfo = vector<tuple<ModulationType, int, double>>(gc_RRTotalPatternNum, tuple<ModulationType, int, double>(_16QAM, 0, 0));
-	m_RRM->m_isWTCached = vector<bool>(gc_RRTotalPatternNum, false);
+	m_RRM->m_InterferenceVeUENum = vector<int>(ns_RRM_RR::gc_RRTotalPatternNum);
+	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_RR::gc_RRTotalPatternNum);
+	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_RR::gc_RRTotalPatternNum);
+	m_RRM->m_WTInfo = vector<tuple<ModulationType, int, double>>(ns_RRM_RR::gc_RRTotalPatternNum, tuple<ModulationType, int, double>(_16QAM, 0, 0));
+	m_RRM->m_isWTCached = vector<bool>(ns_RRM_RR::gc_RRTotalPatternNum, false);
 
 	//这两个数据比较特殊，必须等到GTAT模块初始化完毕后，车辆的数目才能确定下来
 	m_GTAT->m_InterferencePloss = vector<double>(m_VeUECount, 0);
@@ -124,9 +124,9 @@ VeUE::~VeUE() {
 		delete m_RRM;
 		m_RRM = nullptr;
 	}
-	if (m_RRM_DRA != nullptr) {
-		delete m_RRM_DRA;
-		m_RRM_DRA = nullptr;
+	if (m_RRM_TDM_DRA != nullptr) {
+		delete m_RRM_TDM_DRA;
+		m_RRM_TDM_DRA = nullptr;
 	}
 	if (m_RRM_RR != nullptr) {
 		delete m_RRM_RR;
@@ -143,13 +143,13 @@ VeUE::~VeUE() {
 }
 
 
-default_random_engine VeUE::RRM_DRA::s_Engine((unsigned)time(NULL));
+default_random_engine VeUE::RRM_TDM_DRA::s_Engine((unsigned)time(NULL));
 
-VeUE::RRM_DRA::RRM_DRA(VeUE* t_this) {
+VeUE::RRM_TDM_DRA::RRM_TDM_DRA(VeUE* t_this) {
 	m_This = t_this;
 }
 
-string VeUE::RRM_DRA::toString(int n) {
+string VeUE::RRM_TDM_DRA::toString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");

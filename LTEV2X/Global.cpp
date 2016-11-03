@@ -13,7 +13,7 @@ ofstream g_FileVeUELocationUpdateLogInfo("Log\\RRMLog\\VeUELocationUpdateLogInfo
 ofstream g_FileVeUENumPerRSULogInfo("Log\\TMACLog\\VeUENumPerRSULogInfo.txt");
 //RRM_RR模块
 ofstream g_FileRRScheduleInfo("Log\\RRMLog\\RRScheduleInfo.txt");
-//RRM_DRA模块
+//RRM_TDM_DRA模块
 ofstream g_FileDRAScheduleInfo("Log\\RRMLog\\DRAScheduleInfo.txt");
 ofstream g_FileClasterPerformInfo("Log\\RRMLog\\ClasterPerformInfo.txt");
 ofstream g_FileEventListInfo("Log\\RRMLog\\EventListInfo.txt");
@@ -31,7 +31,7 @@ ofstream g_FileRSUThroughput("Log\\TMACLog\\RSUThroughput.txt");
 /*===========================================
 *               全域函数定义
 * ==========================================*/
-void RandomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero)
+void randomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero)
 {
 	for (long ulTemp = 0; ulTemp != t_ulNumber; ++ulTemp)
 	{
@@ -45,15 +45,15 @@ void RandomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double
 }
 
 
-void RandomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation)
+void randomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation)
 {
 	long ulHalfNum = t_ulNumber / 2;
 	if (ulHalfNum)
 	{
 		double *pfTemp1 = new double[ulHalfNum];
 		double *pfTemp2 = new double[ulHalfNum];
-		RandomUniform(pfTemp1, ulHalfNum, 1.0f, 0.0f, true);
-		RandomUniform(pfTemp2, ulHalfNum, c_PI, c_PINeg, false);
+		randomUniform(pfTemp1, ulHalfNum, 1.0f, 0.0f, true);
+		randomUniform(pfTemp2, ulHalfNum, gc_PI, gc_PINeg, false);
 		for (long ulTemp = 0; ulTemp != ulHalfNum; ++ulTemp)
 		{
 			t_pfArray[ulTemp * 2] = sqrt(log(pfTemp1[ulTemp]) * -2.0f) * cos(pfTemp2[ulTemp]) * t_fStandardDeviation + t_fMean;
@@ -66,8 +66,8 @@ void RandomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t
 	{
 		double fTemp1;
 		double fTemp2;
-		RandomUniform(&fTemp1, 1, 1.0f, 0.0f, true);
-		RandomUniform(&fTemp2, 1, c_PI, c_PINeg, false);
+		randomUniform(&fTemp1, 1, 1.0f, 0.0f, true);
+		randomUniform(&fTemp2, 1, gc_PI, gc_PINeg, false);
 		t_pfArray[t_ulNumber - 1] = sqrt(log(fTemp1) * -2.0f) * cos(fTemp2) * t_fStandardDeviation + t_fMean;
 	}
 
@@ -75,7 +75,7 @@ void RandomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t
 }
 
 
-void SortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
+void sortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
 {
 	double fTemp;
 	bool bFlagDone;
@@ -140,7 +140,7 @@ void SortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_
 	return;
 }
 
-void SelectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond)
+void selectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond)
 {
 	int byFisrtIndex;
 	int bySecondIndex;

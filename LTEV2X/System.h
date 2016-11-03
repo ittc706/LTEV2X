@@ -13,7 +13,7 @@
 #include"WT.h"
 #include"WT_B.h"
 #include"RRM.h"
-#include"RRM_DRA.h"
+#include"RRM_TDM_DRA.h"
 #include"RRM_RR.h"
 #include"TMAC.h"
 #include"TMAC_B.h"
@@ -55,10 +55,10 @@ public:
 private:
 	void configure();//系统仿真参数配置
 	void initialization();//系统参数配置，完成系统初始化
-	void GTATModuleInitialize();//GTAT模块对象初始化
-	void WTModuleInitialize();//WT模块对象初始化
-	void RRMModuleInitialize();//RRM模块对象初始化
-	void TMACModuleInitialize();//TMAC模块对象初始化
+	void initializeGTATModule();//GTAT模块对象初始化
+	void initializeWTModule();//WT模块对象初始化
+	void initializeRRMModule();//RRM模块对象初始化
+	void initializeTMACModule();//TMAC模块对象初始化
 	void dispose();//内存清理
 };
 

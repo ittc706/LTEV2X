@@ -15,7 +15,7 @@ enum GTATMode {
 enum RRMMode {
 	PF=1,       //基于比例公平的调度
 	RR=2,       //Round-Robin,轮询
-	DRA         //Distributed Resource Allocation,分布式
+	TDM_DRA         //Distributed Resource Allocation,分布式
 };
 
 

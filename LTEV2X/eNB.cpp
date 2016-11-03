@@ -23,8 +23,8 @@ void eNB::initializeHighSpeed(eNBConfigure &t_eNBConfigure)
 	m_eNBId = t_eNBConfigure.eNBId;
 	//m_fX = t_eNBConfigure.fX;
 	//m_fY = t_eNBConfigure.fY;
-	m_AbsX = ns_GTAT_HighSpeed::c_eNBTopo[m_eNBId * 2 + 0];
-	m_AbsY = ns_GTAT_HighSpeed::c_eNBTopo[m_eNBId * 2 + 1];
+	m_AbsX = ns_GTAT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 0];
+	m_AbsY = ns_GTAT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 1];
 	printf("»ùÕ¾£º");
 	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_AbsX, m_AbsY);
 }
