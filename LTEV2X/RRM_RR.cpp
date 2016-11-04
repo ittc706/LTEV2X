@@ -26,18 +26,18 @@
 using namespace std;
 
 
-RRM_RR::RRM_RR(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, GTT_Basic* systemGTTPoint, WT_Basic* systemWTPoint, int threadNum) :
-	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_GTTPoint(systemGTTPoint), m_WTPoint(systemWTPoint), m_ThreadNum(threadNum) {
+RRM_RR::RRM_RR(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
+	RRM_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 	
 	m_InterferenceVec = std::vector<std::list<int>>(ns_RRM_RR::gc_RRTotalPatternNum);
 
-	m_ThreadsRSUIdRange = vector<pair<int, int>>(threadNum);
+	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
-	int num = m_Config.RSUNum / threadNum;
-	for (int threadIdx = 0; threadIdx < threadNum; threadIdx++) {
+	int num = m_Config.RSUNum / m_ThreadNum;
+	for (int threadIdx = 0; threadIdx < m_ThreadNum; threadIdx++) {
 		m_ThreadsRSUIdRange[threadIdx] = pair<int, int>(threadIdx*num, (threadIdx + 1)*num - 1);
 	}
-	m_ThreadsRSUIdRange[threadNum - 1].second = m_Config.RSUNum - 1;//修正最后一个边界
+	m_ThreadsRSUIdRange[m_ThreadNum - 1].second = m_Config.RSUNum - 1;//修正最后一个边界
 }
 
 

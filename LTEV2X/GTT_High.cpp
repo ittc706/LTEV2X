@@ -9,8 +9,8 @@ using namespace ns_GTT_HighSpeed;
 
 default_random_engine GTT_HighSpeed::s_Engine((unsigned)time(NULL));
 
-GTT_HighSpeed::GTT_HighSpeed(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry) :
-	GTT_Basic(systemTTI, systemConfig, systemeNBAry, systemRoadAry, systemRSUAry, systemVeUEAry) {}
+GTT_HighSpeed::GTT_HighSpeed(int &t_TTI, Configure& t_Config, eNB* &t_NBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
+	GTT_Basic(t_TTI, t_Config, t_NBAry, t_RoadAry, t_RSUAry, t_VeUEAry) {}
 
 
 void GTT_HighSpeed::configure() {

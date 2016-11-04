@@ -7,13 +7,13 @@
 class TMC_B :public TMC_Basic {
 public:
 	TMC_B() = delete;
-	TMC_B(int &systemTTI, 
-		Configure& systemConfig, 
-		RSU* systemRSUAry, 
-		VeUE* systemVeUEAry, 
-		std::vector<Event>& systemEventVec, 
-		std::vector<std::list<int>>& systemEventTTIList, 
-		std::vector<std::vector<int>>& systemTTIRSUThroughput);
+	TMC_B(int &t_TTI, 
+		Configure& t_Config, 
+		RSU* t_RSUAry, 
+		VeUE* t_VeUEAry, 
+		std::vector<Event>& t_EventVec, 
+		std::vector<std::list<int>>& t_EventTTIList, 
+		std::vector<std::vector<int>>& t_TTIRSUThroughput);
 
 	/*------------------数据成员------------------*/
 

@@ -20,16 +20,16 @@
 class RRM_TDM_DRA :public RRM_Basic {
 public:
 	RRM_TDM_DRA() = delete;
-	RRM_TDM_DRA(int &systemTTI,
-		Configure& systemConfig,
-		RSU* systemRSUAry,
-		VeUE* systemVeUEAry,
-		std::vector<Event>& systemEventVec,
-		std::vector<std::list<int>>& systemEventTTIList,
-		std::vector<std::vector<int>>& systemTTIRSUThroughput,
-		GTT_Basic* systemGTTPoint,
-		WT_Basic* systemWTPoint,
-		int threadNum
+	RRM_TDM_DRA(int &t_TTI,
+		Configure& t_Config,
+		RSU* t_RSUAry,
+		VeUE* t_VeUEAry,
+		std::vector<Event>& t_EventVec,
+		std::vector<std::list<int>>& t_EventTTIList,
+		std::vector<std::vector<int>>& t_TTIRSUThroughput,
+		GTT_Basic* t_GTTPoint,
+		WT_Basic* t_WTPoint,
+		int t_ThreadNum
 		);
 
 	/*------------------数据成员------------------*/

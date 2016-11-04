@@ -9,8 +9,8 @@ using namespace ns_GTT_Urban;
 
 default_random_engine GTT_Urban::s_Engine((unsigned)time(NULL));
 
-GTT_Urban::GTT_Urban(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry) :
-	GTT_Basic(systemTTI, systemConfig, systemeNBAry, systemRoadAry, systemRSUAry, systemVeUEAry) {}
+GTT_Urban::GTT_Urban(int &t_TTI, Configure& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
+	GTT_Basic(t_TTI, t_Config, t_eNBAry, t_RoadAry, t_RSUAry, t_VeUEAry) {}
 
 
 void GTT_Urban::configure() {

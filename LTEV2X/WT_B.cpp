@@ -29,7 +29,7 @@ using namespace std;
 
 default_random_engine WT_B::s_Engine(0);
 
-WT_B::WT_B(Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry) :WT_Basic(systemConfig, systemRSUAry, systemVeUEAry) {}
+WT_B::WT_B(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry) :WT_Basic(t_Config, t_RSUAry, t_VeUEAry) {}
 
 WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_VeUEAry) {
 	m_MCSLevelTable = t_WT_B.m_MCSLevelTable;

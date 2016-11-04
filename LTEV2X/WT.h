@@ -11,8 +11,8 @@
 class WT_Basic {
 public:
 
-	WT_Basic(Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry) :
-		m_Config(systemConfig), m_RSUAry(systemRSUAry), m_VeUEAry(systemVeUEAry) {}
+	WT_Basic(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry) :
+		m_Config(t_Config), m_RSUAry(t_RSUAry), m_VeUEAry(t_VeUEAry) {}
 
 	//数据成员
 	Configure& m_Config;//系统参数配置

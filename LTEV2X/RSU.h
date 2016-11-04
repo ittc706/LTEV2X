@@ -209,7 +209,7 @@ public:
 		/*
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void pushToSwitchEventIdList(int eventId, std::list<int>& systemDRASwitchVeUEIdList);
+		void pushToSwitchEventIdList(int eventId, std::list<int>& t_SwitchVeUEIdList);
 
 		/*
 		* 将TransimitScheduleInfo的添加封装起来，便于查看哪里调用，利于调试
@@ -305,7 +305,7 @@ public:
 		/*
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void pushToSwitchEventIdList(int eventId, std::list<int>& systemRRSwitchVeUEIdList);
+		void pushToSwitchEventIdList(int eventId, std::list<int>& t_SwitchVeUEIdList);
 	};
 
 	struct WT {
@@ -352,8 +352,8 @@ void RSU::RRM_TDM_DRA::pushToEmergencyWaitEventIdList(int eventId) {
 }
 
 inline
-void RSU::RRM_TDM_DRA::pushToSwitchEventIdList(int VeUEId, std::list<int>& systemDRASwitchVeUEIdList) {
-	systemDRASwitchVeUEIdList.push_back(VeUEId);
+void RSU::RRM_TDM_DRA::pushToSwitchEventIdList(int VeUEId, std::list<int>& t_SwitchVeUEIdList) {
+	t_SwitchVeUEIdList.push_back(VeUEId);
 }
 
 inline
@@ -427,6 +427,6 @@ void RSU::RRM_RR::pushToWaitEventIdList(int clusterIdx, int eventId, MessageType
 }
 
 inline
-void RSU::RRM_RR::pushToSwitchEventIdList(int eventId, std::list<int>& systemRRSwitchVeUEIdList) {
-	systemRRSwitchVeUEIdList.push_back(eventId);
+void RSU::RRM_RR::pushToSwitchEventIdList(int eventId, std::list<int>& t_SwitchVeUEIdList) {
+	t_SwitchVeUEIdList.push_back(eventId);
 }

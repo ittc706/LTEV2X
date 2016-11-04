@@ -7,7 +7,7 @@ class GTT_HighSpeed :public GTT_Basic {
 public:
 	static std::default_random_engine s_Engine;
 	GTT_HighSpeed() = delete;
-	GTT_HighSpeed(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry);
+	GTT_HighSpeed(int &t_TTI, Configure& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry);
 
 	std::vector<std::vector<int>> m_VeUENumPerRSU;//统计每个RSU下的车辆数目，外层下标代表第几次位置更新(从0开始)，内层下标代表RSU编号
 

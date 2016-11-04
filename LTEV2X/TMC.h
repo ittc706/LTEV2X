@@ -7,14 +7,14 @@
 class TMC_Basic {
 public:
 	TMC_Basic() = delete;
-	TMC_Basic(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput) :
-		m_TTI(systemTTI),
-		m_Config(systemConfig),
-		m_RSUAry(systemRSUAry),
-		m_VeUEAry(systemVeUEAry),
-		m_EventVec(systemEventVec),
-		m_EventTTIList(systemEventTTIList),
-		m_TTIRSUThroughput(systemTTIRSUThroughput) {}
+	TMC_Basic(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
+		m_TTI(t_TTI),
+		m_Config(t_Config),
+		m_RSUAry(t_RSUAry),
+		m_VeUEAry(t_VeUEAry),
+		m_EventVec(t_EventVec),
+		m_EventTTIList(t_EventTTIList),
+		m_TTIRSUThroughput(t_TTIRSUThroughput) {}
 
 	/*------------------数据成员------------------*/
 

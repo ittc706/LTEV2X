@@ -29,7 +29,7 @@ public:
 	std::shared_ptr<std::vector<double>> m_QAM_MI16;
 	std::shared_ptr<std::vector<double>> m_QAM_MI64;
 
-	WT_B(Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry);
+	WT_B(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry);
 	WT_B(const WT_B& t_WT_B);
 
 	void initialize() override;//模块初始化调用的初始化函数,初始化RSU VeUE内该单元的内部类

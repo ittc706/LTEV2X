@@ -25,14 +25,14 @@
 
 using namespace std;
 
-TMC_B::TMC_B(int &systemTTI, 
-	Configure& systemConfig, 
-	RSU* systemRSUAry, 
-	VeUE* systemVeUEAry, 
-	std::vector<Event>& systemEventVec, 
-	std::vector<std::list<int>>& systemEventTTIList, 
-	std::vector<std::vector<int>>& systemTTIRSUThroughput) :
-	TMC_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput) {
+TMC_B::TMC_B(int &t_TTI, 
+	Configure& t_Config, 
+	RSU* t_RSUAry, 
+	VeUE* t_VeUEAry, 
+	std::vector<Event>& t_EventVec, 
+	std::vector<std::list<int>>& t_EventTTIList, 
+	std::vector<std::vector<int>>& t_TTIRSUThroughput) :
+	TMC_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput) {
 	
 	//事件链表容器初始化
 	m_EventTTIList = std::vector<list<int>>(m_Config.NTTI);
