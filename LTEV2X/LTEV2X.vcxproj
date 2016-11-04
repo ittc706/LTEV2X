@@ -125,8 +125,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Complex.h" />
-    <ClInclude Include="GTAT.h" />
-    <ClInclude Include="GTAT_Urban.h" />
+    <ClInclude Include="GTT.h" />
+    <ClInclude Include="GTT_Urban.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="RRM_ICC_DRA.h" />
     <ClInclude Include="TMC.h" />
@@ -147,12 +147,12 @@
     <ClInclude Include="VUE.h" />
     <ClInclude Include="WT.h" />
     <ClInclude Include="WT_B.h" />
-    <ClInclude Include="GTAT_HighSpeed.h" />
+    <ClInclude Include="GTT_HighSpeed.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Complex.cpp" />
-    <ClCompile Include="GTAT_High.cpp" />
-    <ClCompile Include="GTAT_Urban.cpp" />
+    <ClCompile Include="GTT_High.cpp" />
+    <ClCompile Include="GTT_Urban.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="TMC_B.cpp" />

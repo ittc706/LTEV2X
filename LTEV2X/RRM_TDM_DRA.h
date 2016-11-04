@@ -8,7 +8,7 @@
 #include"Enumeration.h"
 #include"Exception.h"
 #include"WT.h"
-#include"GTAT.h"
+#include"GTT.h"
 
 //<RRM_TDM_DRA> :Radio Resource Management Time Division Dultiplexing based Distributed Resource Allocation
 
@@ -27,14 +27,14 @@ public:
 		std::vector<Event>& systemEventVec,
 		std::vector<std::list<int>>& systemEventTTIList,
 		std::vector<std::vector<int>>& systemTTIRSUThroughput,
-		GTAT_Basic* systemGTATPoint,
+		GTT_Basic* systemGTTPoint,
 		WT_Basic* systemWTPoint,
 		int threadNum
 		);
 
 	/*------------------数据成员------------------*/
 
-	GTAT_Basic* m_GTATPoint;//地理拓扑单元模块指针
+	GTT_Basic* m_GTTPoint;//地理拓扑单元模块指针
 	WT_Basic* m_WTPoint;//无线传输单元模块指针
 	std::list<int> m_SwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 

@@ -1,5 +1,4 @@
 #pragma once
-// <GTAT>: Geographical Topology and Transport
 #include<random>
 #include<set>
 #include"RSU.h"
@@ -8,19 +7,12 @@
 #include"Road.h"
 #include"Config.h"
 
+// <GTT>: Geographical Topology and Transport
 
-struct Mobility {
-	int tmp;
-};
-struct Geography {
-	int tmp;
-};
-
-
-class GTAT_Basic {
+class GTT_Basic {
 public:
-	GTAT_Basic() = delete;
-	GTAT_Basic(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry) :
+	GTT_Basic() = delete;
+	GTT_Basic(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry) :
 		m_TTI(systemTTI), m_Config(systemConfig), m_eNBAry(systemeNBAry), m_RoadAry(systemRoadAry), m_RSUAry(systemRSUAry), m_VeUEAry(systemVeUEAry) {}
 	
 	int& m_TTI;//当前的TTI时刻

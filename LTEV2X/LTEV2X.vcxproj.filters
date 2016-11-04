@@ -66,15 +66,6 @@
     <ClInclude Include="Matrix.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GTAT.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GTAT_Urban.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GTAT_HighSpeed.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="RRM_TDM_DRA.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -85,6 +76,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="RRM_ICC_DRA.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GTT.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GTT_HighSpeed.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GTT_Urban.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -128,12 +128,6 @@
     <ClCompile Include="Matrix.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GTAT_Urban.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GTAT_High.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -141,6 +135,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TMC_B.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GTT_High.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GTT_Urban.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

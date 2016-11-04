@@ -7,7 +7,7 @@
 *            输出日志文件流声明
 * ==========================================*/
 extern std::ofstream g_FileTemp;
-//GTAT_Urban模块
+//GTT_Urban模块
 extern std::ofstream g_FileVeUELocationUpdateLogInfo;
 extern std::ofstream g_FileVeUENumPerRSULogInfo;
 //RRM_RR模块
@@ -52,7 +52,7 @@ const double gc_SqrtThree = 1.73205080756887729f;
 const double gc_C = 299792458.0f;
 const double gc_FC = 2e9f;
 
-namespace ns_GTAT_Urban {//城镇模块常量设置
+namespace ns_GTT_Urban {//城镇模块常量设置
 
 	const int gc_eNBNumber = 7;
 	const int gc_RoadNumber = 14;
@@ -144,7 +144,7 @@ namespace ns_GTAT_Urban {//城镇模块常量设置
 }
 
 
-namespace ns_GTAT_HighSpeed {
+namespace ns_GTT_HighSpeed {
 
 	const int gc_eNBNumber = 2;
 	const int gc_LaneNumber = 6;

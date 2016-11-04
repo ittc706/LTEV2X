@@ -217,16 +217,16 @@ void WT_B::testCloest() {
 
 
 void WT_B::configuration(int VeUEId, int patternIdx){
-	m_Nr = m_VeUEAry[VeUEId].m_GTAT->m_Nr;
-	m_Nt = m_VeUEAry[VeUEId].m_GTAT->m_Nt;
+	m_Nr = m_VeUEAry[VeUEId].m_GTT->m_Nr;
+	m_Nt = m_VeUEAry[VeUEId].m_GTT->m_Nt;
 	m_Mol = get<0>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
-	m_Ploss = m_VeUEAry[VeUEId].m_GTAT->m_Ploss;
+	m_Ploss = m_VeUEAry[VeUEId].m_GTT->m_Ploss;
 	m_Pt = pow(10,-4.7);//-17dbm-70dbm
 	m_Sigma = pow(10,-17.4);
 
 	m_PlossInterference.clear();
 	for (int interferenceVeUEId : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx]) {
-		m_PlossInterference .push_back(m_VeUEAry[VeUEId].m_GTAT->m_InterferencePloss[interferenceVeUEId]);
+		m_PlossInterference .push_back(m_VeUEAry[VeUEId].m_GTT->m_InterferencePloss[interferenceVeUEId]);
 	}
 }
 
@@ -237,7 +237,7 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 	Matrix res(m_Nr, m_Nt);
 	for (int row = 0; row < m_Nr; row++) {
 		for (int col = 0; col < m_Nt; col++) {
-			res[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTAT->m_H[row * subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTAT->m_H[row * subCarrierIdx + 1]);
+			res[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTT->m_H[row * subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTT->m_H[row * subCarrierIdx + 1]);
 		}
 	}
 	return res;
@@ -250,7 +250,7 @@ std::vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, int 
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {
-				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTAT->m_InterferenceH[interferenceVeUEId][row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTAT->m_InterferenceH[interferenceVeUEId][row*subCarrierIdx + 1]);
+				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row*subCarrierIdx + 1]);
 			}
 		}
 		res.push_back(m);

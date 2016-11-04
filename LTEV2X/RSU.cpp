@@ -15,36 +15,36 @@ using namespace std;
 
 
 RSU::RSU() {
-	m_GTAT = new GTAT();
-	m_GTAT_Urban = new GTAT_Urban();
-	m_GTAT_HighSpeed = new GTAT_HighSpeed();
+	m_GTT = new GTT();
+	m_GTT_Urban = new GTT_Urban();
+	m_GTT_HighSpeed = new GTT_HighSpeed();
 }
 
 
-void RSU::initializeGTAT_Urban(RSUConfigure &t_RSUConfigure){
-	m_GTAT->m_RSUId = t_RSUConfigure.RSUId;
-	m_GTAT_Urban->m_AbsX = ns_GTAT_Urban::gc_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 0] * ns_GTAT_Urban::gc_Width;
-	m_GTAT_Urban->m_AbsY = ns_GTAT_Urban::gc_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 1] * ns_GTAT_Urban::gc_Length;
-	randomUniform(&m_GTAT_Urban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
+void RSU::initializeGTT_Urban(RSUConfigure &t_RSUConfigure){
+	m_GTT->m_RSUId = t_RSUConfigure.RSUId;
+	m_GTT_Urban->m_AbsX = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * ns_GTT_Urban::gc_Width;
+	m_GTT_Urban->m_AbsY = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1] * ns_GTT_Urban::gc_Length;
+	randomUniform(&m_GTT_Urban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 	printf("RSU：");
-	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT->m_RSUId, m_GTAT_Urban->m_AbsX, m_GTAT_Urban->m_AbsY);
+	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTT->m_RSUId, m_GTT_Urban->m_AbsX, m_GTT_Urban->m_AbsY);
 
-	m_GTAT->m_ClusterNum = ns_GTAT_Urban::gc_RSUClusterNum[m_GTAT->m_RSUId];
-	m_GTAT->m_ClusterVeUEIdList = vector<list<int>>(m_GTAT->m_ClusterNum);
+	m_GTT->m_ClusterNum = ns_GTT_Urban::gc_RSUClusterNum[m_GTT->m_RSUId];
+	m_GTT->m_ClusterVeUEIdList = vector<list<int>>(m_GTT->m_ClusterNum);
 
 }
 
 
-void RSU::initializeGTAT_HighSpeed(RSUConfigure &t_RSUConfigure) {
-	m_GTAT->m_RSUId = t_RSUConfigure.RSUId;
-	m_GTAT_HighSpeed->m_AbsX = ns_GTAT_HighSpeed::gc_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 0] * 100;
-	m_GTAT_HighSpeed->m_AbsY = ns_GTAT_HighSpeed::gc_RSUTopoRatio[m_GTAT->m_RSUId * 2 + 1];
-	randomUniform(&m_GTAT_HighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);
+void RSU::initializeGTT_HighSpeed(RSUConfigure &t_RSUConfigure) {
+	m_GTT->m_RSUId = t_RSUConfigure.RSUId;
+	m_GTT_HighSpeed->m_AbsX = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * 100;
+	m_GTT_HighSpeed->m_AbsY = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1];
+	randomUniform(&m_GTT_HighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 	printf("RSU：");
-	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTAT->m_RSUId, m_GTAT_HighSpeed->m_AbsX, m_GTAT_HighSpeed->m_AbsY);
+	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTT->m_RSUId, m_GTT_HighSpeed->m_AbsX, m_GTT_HighSpeed->m_AbsY);
 
-	m_GTAT->m_ClusterNum = ns_GTAT_HighSpeed::gc_RSUClusterNum;
-	m_GTAT->m_ClusterVeUEIdList = vector<list<int>>(m_GTAT->m_ClusterNum);
+	m_GTT->m_ClusterNum = ns_GTT_HighSpeed::gc_RSUClusterNum;
+	m_GTT->m_ClusterVeUEIdList = vector<list<int>>(m_GTT->m_ClusterNum);
 
 }
 
@@ -73,17 +73,17 @@ void RSU::initializeTMC() {
 
 
 RSU::~RSU() {
-	if (m_GTAT != nullptr) {
-		delete m_GTAT;
-		m_GTAT = nullptr;
+	if (m_GTT != nullptr) {
+		delete m_GTT;
+		m_GTT = nullptr;
 	}
-	if (m_GTAT_Urban != nullptr) {
-		delete m_GTAT_Urban;
-		m_GTAT_Urban = nullptr;
+	if (m_GTT_Urban != nullptr) {
+		delete m_GTT_Urban;
+		m_GTT_Urban = nullptr;
 	}
-	if (m_GTAT_HighSpeed != nullptr) {
-		delete m_GTAT_HighSpeed;
-		m_GTAT_HighSpeed = nullptr;
+	if (m_GTT_HighSpeed != nullptr) {
+		delete m_GTT_HighSpeed;
+		m_GTT_HighSpeed = nullptr;
 	}
 	if (m_RRM != nullptr) {
 		delete m_RRM;
@@ -144,8 +144,8 @@ RSU::RRM_TDM_DRA::RRM_TDM_DRA(RSU* t_this) {
 	m_EmergencyTransimitScheduleInfoList = vector<list<ScheduleInfo*>>(ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]);
 	/*  EMERGENCY  */
 
-	m_PatternIsAvailable = vector<vector<bool>>(m_This->m_GTAT->m_ClusterNum, vector<bool>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], true));
-	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(m_This->m_GTAT->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], nullptr));
+	m_PatternIsAvailable = vector<vector<bool>>(m_This->m_GTT->m_ClusterNum, vector<bool>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], true));
+	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], nullptr));
 	m_TransimitScheduleInfoList = vector<list<ScheduleInfo*>>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], list<ScheduleInfo*>(0, nullptr));
 
 }
@@ -153,7 +153,7 @@ RSU::RRM_TDM_DRA::RRM_TDM_DRA(RSU* t_this) {
 
 int RSU::RRM_TDM_DRA::getClusterIdx(int TTI) {
 	int roundATTI = TTI%ns_RRM_TDM_DRA::gc_NTTI; //将TTI映射到[0-gc_DRA_NTTI)的范围
-	for (int clusterIdx = 0; clusterIdx < m_This->m_GTAT->m_ClusterNum; clusterIdx++)
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTT->m_ClusterNum; clusterIdx++)
 		if (roundATTI <= get<1>(m_ClusterTDRInfo[clusterIdx])) return clusterIdx;
 	return -1;
 }
@@ -166,17 +166,17 @@ string RSU::RRM_TDM_DRA::toString(int n) {
 
 	ostringstream ss;
 	//主干信息
-	ss << indent << "RSU[" << m_This->m_GTAT->m_RSUId << "] :" << endl;
+	ss << indent << "RSU[" << m_This->m_GTT->m_RSUId << "] :" << endl;
 	ss << indent << "{" << endl;
 
 	//开始打印VeUEIdList
 	ss << indent << "    " << "VeUEIdList :" << endl;
 	ss << indent << "    " << "{" << endl;
-	for (int clusterIdx = 0; clusterIdx < m_This->m_GTAT->m_ClusterNum; clusterIdx++) {
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTT->m_ClusterNum; clusterIdx++) {
 		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
 		ss << indent << "        " << "{" << endl;
 		int cnt = 0;
-		for (int RSUId : m_This->m_GTAT->m_ClusterVeUEIdList[clusterIdx]) {
+		for (int RSUId : m_This->m_GTT->m_ClusterVeUEIdList[clusterIdx]) {
 			if (cnt % 10 == 0)
 				ss << indent << "            [ ";
 			ss << left << setw(3) << RSUId << " , ";
@@ -237,7 +237,7 @@ std::string RSU::RRM_RR::ScheduleInfo::toScheduleString(int n) {
 
 RSU::RRM_RR::RRM_RR(RSU* t_this) {
 	m_This = t_this;
-	m_AdmitEventIdList = vector<vector<int>>(m_This->m_GTAT->m_ClusterNum);
-	m_WaitEventIdList= vector<list<int>>(m_This->m_GTAT->m_ClusterNum);
-	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(m_This->m_GTAT->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_RR::gc_RRTotalPatternNum, nullptr));
+	m_AdmitEventIdList = vector<vector<int>>(m_This->m_GTT->m_ClusterNum);
+	m_WaitEventIdList= vector<list<int>>(m_This->m_GTT->m_ClusterNum);
+	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_RR::gc_RRTotalPatternNum, nullptr));
 }

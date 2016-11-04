@@ -19,13 +19,13 @@ public:
 	void initializeUrban(UrbanRoadConfigure &t_RoadConfigure);
 	void initializeHighSpeed(HighSpeedRodeConfigure &t_LaneConfigure);
 
-	struct GTAT_Urban;
-	struct GTAT_HighSpeed;
+	struct GTT_Urban;
+	struct GTT_HighSpeed;
 
-	GTAT_Urban* m_GTAT_Urban = nullptr;//用于存储城镇场景的特定参数
-	GTAT_HighSpeed* m_GTAT_HighSpeed = nullptr;//用于存储高速场景的特定参数
+	GTT_Urban* m_GTT_Urban = nullptr;//用于存储城镇场景的特定参数
+	GTT_HighSpeed* m_GTT_HighSpeed = nullptr;//用于存储高速场景的特定参数
 
-	struct GTAT_Urban {
+	struct GTT_Urban {
 		int m_RoadId;
 		int m_eNBNum;
 		int m_eNBId;
@@ -35,7 +35,7 @@ public:
 		int  m_upr;
 	};
 
-	struct GTAT_HighSpeed {
+	struct GTT_HighSpeed {
 		int m_RoadId;
 		double m_AbsX;
 		double m_AbsY;

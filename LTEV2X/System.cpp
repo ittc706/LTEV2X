@@ -22,8 +22,8 @@ void System::process() {
 		cout << "Current TTI = " << m_TTI << endl;
 		//地理位置更新
 		if (count % m_Config.locationUpdateNTTI == 0) {
-			m_GTATPoint->channelGeneration();
-			m_GTATPoint->cleanWhenLocationUpdate();
+			m_GTTPoint->channelGeneration();
+			m_GTTPoint->cleanWhenLocationUpdate();
 			m_RRMPoint->cleanWhenLocationUpdate();
 		}
 		//开始资源分配
@@ -32,7 +32,7 @@ void System::process() {
 	}
 
 	cout.setf(ios::fixed);
-	cout << "干扰信道计算耗时：" << m_RRMPoint->m_GTATTimeConsume / 1000.0L << " s\n" << endl;
+	cout << "干扰信道计算耗时：" << m_RRMPoint->m_GTTTimeConsume / 1000.0L << " s\n" << endl;
 	cout << "SINR计算耗时：" << m_RRMPoint->m_WTTimeConsume / 1000.0L << " s\n" << endl;
 	cout.unsetf(ios::fixed);
 
@@ -40,7 +40,7 @@ void System::process() {
 	m_TMCPoint->processStatistics(g_FileDelayStatistics, g_FileEmergencyPossion, g_FileDataPossion, g_FileConflictNum, g_FileEventLogInfo);
 
 	//打印车辆地理位置更新日志信息
-	m_GTATPoint->writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo, g_FileVeUENumPerRSULogInfo);
+	m_GTTPoint->writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo, g_FileVeUENumPerRSULogInfo);
 }
 
 void System::configure() {//系统仿真参数配置
@@ -52,7 +52,7 @@ void System::configure() {//系统仿真参数配置
 	m_Config.locationUpdateNTTI = 1000;
 
 	//地理拓扑与传输模式
-	m_GTATMode = HIGHSPEED;
+	m_GTTMode = HIGHSPEED;
 
 	//无线资源管理模式
 	m_RRMMode = TDM_DRA;
@@ -62,8 +62,8 @@ void System::configure() {//系统仿真参数配置
 void System::initialization() {
 	m_TTI = 0;	
 
-	//GTAT模块初始化
-	initializeGTATModule();
+	//GTT模块初始化
+	initializeGTTModule();
 
 	//WT模块初始化
 	initializeWTModule();
@@ -76,20 +76,20 @@ void System::initialization() {
 }
 
 
-void System::initializeGTATModule() {
-	switch (m_GTATMode) {
+void System::initializeGTTModule() {
+	switch (m_GTTMode) {
 	case URBAN:
-		m_GTATPoint = new GTAT_Urban(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
+		m_GTTPoint = new GTT_Urban(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
 		break;
 	case HIGHSPEED:
-		m_GTATPoint = new GTAT_HighSpeed(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
+		m_GTTPoint = new GTT_HighSpeed(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
 		break;
 	}
 	//初始化地理拓扑参数
-	m_GTATPoint->configure();
+	m_GTTPoint->configure();
 
 	//初始化eNB、Rode、RSU、VUE等容器
-	m_GTATPoint->initialize();
+	m_GTTPoint->initialize();
 }
 
 void System::initializeWTModule() {
@@ -101,10 +101,10 @@ void System::initializeWTModule() {
 void System::initializeRRMModule() {
 	switch (m_RRMMode) {
 	case RR:
-		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTATPoint, m_WTPoint, 4);
+		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);
 		break;
 	case TDM_DRA:
-		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTATPoint, m_WTPoint, 4);
+		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);
 		break;
 	default:
 		break;
@@ -128,9 +128,9 @@ void System::dispose() {
 		delete m_RRMPoint;
 		m_RRMPoint = nullptr;
 	}
-	if (m_GTATPoint != nullptr) {
-		delete m_GTATPoint;
-		m_GTATPoint = nullptr;
+	if (m_GTTPoint != nullptr) {
+		delete m_GTTPoint;
+		m_GTTPoint = nullptr;
 	}
 	if (m_WTPoint != nullptr) {
 		delete m_WTPoint;

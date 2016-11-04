@@ -7,9 +7,9 @@
 #include"VUE.h"
 #include"Event.h"
 #include"Road.h"
-#include"GTAT.h"
-#include"GTAT_Urban.h"
-#include"GTAT_HighSpeed.h"
+#include"GTT.h"
+#include"GTT_Urban.h"
+#include"GTT_HighSpeed.h"
 #include"WT.h"
 #include"WT_B.h"
 #include"RRM.h"
@@ -35,8 +35,8 @@ public:
 
 	/*-----------------模块控制器-----------------*/
 	//地理拓扑与传输单元
-	GTATMode m_GTATMode;//地理拓扑模式选择
-	GTAT_Basic* m_GTATPoint;
+	GTTMode m_GTTMode;//地理拓扑模式选择
+	GTT_Basic* m_GTTPoint;
 
     //无线传输单元
 	WT_Basic* m_WTPoint;
@@ -55,7 +55,7 @@ public:
 private:
 	void configure();//系统仿真参数配置
 	void initialization();//系统参数配置，完成系统初始化
-	void initializeGTATModule();//GTAT模块对象初始化
+	void initializeGTTModule();//GTT模块对象初始化
 	void initializeWTModule();//WT模块对象初始化
 	void initializeRRMModule();//RRM模块对象初始化
 	void initializeTMCModule();//TMC模块对象初始化

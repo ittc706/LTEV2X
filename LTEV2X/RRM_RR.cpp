@@ -26,8 +26,8 @@
 using namespace std;
 
 
-RRM_RR::RRM_RR(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, GTAT_Basic* systemGTATPoint, WT_Basic* systemWTPoint, int threadNum) :
-	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_GTATPoint(systemGTATPoint), m_WTPoint(systemWTPoint), m_ThreadNum(threadNum) {
+RRM_RR::RRM_RR(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput, GTT_Basic* systemGTTPoint, WT_Basic* systemWTPoint, int threadNum) :
+	RRM_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput), m_GTTPoint(systemGTTPoint), m_WTPoint(systemWTPoint), m_ThreadNum(threadNum) {
 	
 	m_InterferenceVec = std::vector<std::list<int>>(ns_RRM_RR::gc_RRTotalPatternNum);
 
@@ -96,7 +96,7 @@ void RRM_RR::schedule() {
 void RRM_RR::informationClean() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++)
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++)
 			_RSU.m_RRM_RR->m_AdmitEventIdList[clusterIdx].clear();
 	}
 }
@@ -127,8 +127,8 @@ void RRM_RR::processEventList() {
 	for (int eventId : m_EventTTIList[m_TTI]) {
 		Event event = m_EventVec[eventId];
 		int VeUEId = event.VeUEId;
-		int RSUId = m_VeUEAry[VeUEId].m_GTAT->m_RSUId;
-		int clusterIdx = m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx;
+		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
+		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
 		RSU &_RSU = m_RSUAry[RSUId];
 		//将事件压入等待链表
 		_RSU.m_RRM_RR->pushToWaitEventIdList(clusterIdx,eventId, m_EventVec[eventId].message.messageType);
@@ -146,14 +146,14 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 
 			list<int>::iterator it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].begin();
 			while (it != _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end()) {
 				int eventId = *it;
 				int VeUEId = m_EventVec[eventId].VeUEId;
 				MessageType messageType = m_EventVec[eventId].message.messageType;
-				if (m_VeUEAry[VeUEId].m_GTAT->m_RSUId != _RSU.m_GTAT->m_RSUId) {//该VeUE已经不在该RSU范围内
+				if (m_VeUEAry[VeUEId].m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {//该VeUE已经不在该RSU范围内
 					//将剩余待传bit重置
 					m_EventVec[eventId].message.reset();
 
@@ -164,22 +164,22 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 					it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTAT->m_RSUId, -1, -1, "LocationUpdate");
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTT->m_RSUId, -1, -1, "LocationUpdate");
 
 					//记录TTI日志
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU.m_GTAT->m_RSUId, -1);
-				}else if(m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx!= clusterIdx){//仍然处于当前RSU范围内，但是位于不同的簇
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, -1);
+				}else if(m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx!= clusterIdx){//仍然处于当前RSU范围内，但是位于不同的簇
 					//将其转移到当前RSU的其他簇内
-					_RSU.m_RRM_RR->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx, eventId, messageType);
+					_RSU.m_RRM_RR->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId, messageType);
 
 					//将其从等待链表中删除
 					it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
 
 					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTAT->m_RSUId, -1, -1, "LocationUpdate");
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTT->m_RSUId, -1, -1, "LocationUpdate");
 
 					//记录TTI日志
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTAT->m_RSUId, -1);
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, -1);
 				}else {
 					it++;
 					continue; //继续留在当前RSU当前簇的等待链表
@@ -195,8 +195,8 @@ void RRM_RR::processSwitchListWhenLocationUpdate() {
 	while (it != m_SwitchEventIdList.end()) {
 		int eventId = *it;
 		int VeUEId = m_EventVec[eventId].VeUEId;
-		int clusterIdx = m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx;
-		int RSUId = m_VeUEAry[VeUEId].m_GTAT->m_RSUId;
+		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
+		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
 		RSU &_RSU = m_RSUAry[RSUId];
 
 		_RSU.m_RRM_RR->pushToWaitEventIdList(clusterIdx, eventId, m_EventVec[eventId].message.messageType);
@@ -217,7 +217,7 @@ void RRM_RR::processSwitchListWhenLocationUpdate() {
 void RRM_RR::processWaitEventIdList() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			int count = 0;
 			list<int>::iterator it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].begin();
 			while (it != _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end() && count++ < ns_RRM_RR::gc_RRTotalPatternNum) {
@@ -244,12 +244,12 @@ void RRM_RR::processWaitEventIdList() {
 void RRM_RR::roundRobin() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < _RSU.m_RRM_RR->m_AdmitEventIdList[clusterIdx].size(); patternIdx++) {
 				int eventId = _RSU.m_RRM_RR->m_AdmitEventIdList[clusterIdx][patternIdx];
 				int VeUEId = m_EventVec[eventId].VeUEId;
 				MessageType messageType = m_EventVec[eventId].message.messageType;
-				_RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx] = new RSU::RRM_RR::ScheduleInfo(eventId, messageType, VeUEId, _RSU.m_GTAT->m_RSUId, patternIdx);
+				_RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx] = new RSU::RRM_RR::ScheduleInfo(eventId, messageType, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx);
 			}
 		}
 	}
@@ -260,7 +260,7 @@ void RRM_RR::delaystatistics() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			//处理等待链表
 			for (int eventId : _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx])
 				m_EventVec[eventId].queuingDelay++;
@@ -282,7 +282,7 @@ void RRM_RR::transimitPreparation() {
 
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_RRTotalPatternNum; patternIdx++) {
 				RSU::RRM_RR::ScheduleInfo *&info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
@@ -314,9 +314,9 @@ void RRM_RR::transimitPreparation() {
 
 	//请求地理拓扑单元计算干扰响应矩阵
 	long double start = clock();
-	m_GTATPoint->calculateInterference(m_InterferenceVec);
+	m_GTTPoint->calculateInterference(m_InterferenceVec);
 	long double end = clock();
-	m_GTATTimeConsume += end - start;
+	m_GTTTimeConsume += end - start;
 }
 
 
@@ -336,7 +336,7 @@ void RRM_RR::transimitStartThread(int fromRSUId, int toRSUId) {
 	WT_Basic* copyWTPoint = m_WTPoint->getCopy();//由于每个线程的该模块会有不同的状态且无法共享，因此这里拷贝该模块用于本次计算
 	for (int RSUId = fromRSUId; RSUId <= toRSUId; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_RRTotalPatternNum; patternIdx++) {
 				RSU::RRM_RR::ScheduleInfo *&info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
 
@@ -366,10 +366,10 @@ void RRM_RR::transimitStartThread(int fromRSUId, int toRSUId) {
 				int realEquivalentBitNum = m_EventVec[info->eventId].message.transimit(maxEquivalentBitNum);
 
 				//累计吞吐率
-				m_TTIRSUThroughput[m_TTI][_RSU.m_GTAT->m_RSUId] += realEquivalentBitNum;
+				m_TTIRSUThroughput[m_TTI][_RSU.m_GTT->m_RSUId] += realEquivalentBitNum;
 
 				//更新该事件的日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTAT->m_RSUId, -1, patternIdx, "Transimit");
+				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTT->m_RSUId, -1, patternIdx, "Transimit");
 			}
 		}
 	}
@@ -382,8 +382,8 @@ void RRM_RR::writeScheduleInfo(std::ofstream& out) {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 
 		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
-			out << "    RSU[" << _RSU.m_GTAT->m_RSUId << "] :" << endl;
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+			out << "    RSU[" << _RSU.m_GTT->m_RSUId << "] :" << endl;
 			out << "    {" << endl;
 			out << "        Cluster[" << clusterIdx << "] :" << endl;
 			out << "        {" << endl;
@@ -467,7 +467,7 @@ void RRM_RR::transimitEnd() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTAT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_RRTotalPatternNum; patternIdx++) {
 
@@ -479,10 +479,10 @@ void RRM_RR::transimitEnd() {
 					m_EventVec[info->eventId].isSuccessded = true;
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTAT->m_RSUId, -1, patternIdx, "Succeed");
+					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTT->m_RSUId, -1, patternIdx, "Succeed");
 
 					//记录TTI日志
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTAT->m_RSUId, patternIdx);
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, patternIdx);
 
 					//释放调度信息对象的内存资源
 					delete info;
@@ -492,10 +492,10 @@ void RRM_RR::transimitEnd() {
 					_RSU.m_RRM_RR->pushToWaitEventIdList(clusterIdx, info->eventId, m_EventVec[info->eventId].message.messageType);
 
 					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSU.m_GTAT->m_RSUId, -1, patternIdx, "WaitNextTurn");
+					m_EventVec[info->eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSU.m_GTT->m_RSUId, -1, patternIdx, "WaitNextTurn");
 
 					//记录TTI日志
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, info->eventId, _RSU.m_GTAT->m_RSUId, patternIdx);
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, patternIdx);
 
 					//释放调度信息对象的内存资源
 					delete info;

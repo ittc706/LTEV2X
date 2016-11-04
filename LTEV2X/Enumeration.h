@@ -7,7 +7,7 @@ enum LocationType { //位置类型
 	None 
 }; 
 
-enum GTATMode {
+enum GTTMode {
 	URBAN,      //城市
 	HIGHSPEED   //高速
 };

@@ -18,8 +18,8 @@ public:
 
 	~VeUE();
 	//每个类内结构体均由相应模块来完成初始化
-	void initializeGTAT_Urban(VeUEConfigure &t_UEConfigure);
-	void initializeGTAT_HighSpeed(VeUEConfigure &t_UEConfigure);
+	void initializeGTT_Urban(VeUEConfigure &t_UEConfigure);
+	void initializeGTT_HighSpeed(VeUEConfigure &t_UEConfigure);
 	void initializeRRM_TDM_DRA();
 	void initializeRRM_RR();
 	void initializeWT();
@@ -27,9 +27,9 @@ public:
 
 
 	//类内嵌套结构体前置声明
-	struct GTAT;
-	struct GTAT_Urban;
-	struct GTAT_HighSpeed;
+	struct GTT;
+	struct GTT_Urban;
+	struct GTT_HighSpeed;
 	struct RRM;
 	struct RRM_TDM_DRA;
 	struct RRM_RR;
@@ -37,9 +37,9 @@ public:
 	struct TMC;
 
 	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
-	GTAT* m_GTAT = nullptr;//用于存储供其他模块使用的参数
-	GTAT_Urban* m_GTAT_Urban = nullptr;//用于存储城镇场景的特定参数
-	GTAT_HighSpeed* m_GTAT_HighSpeed = nullptr;//用于存储高速场景的特定参数
+	GTT* m_GTT = nullptr;//用于存储供其他模块使用的参数
+	GTT_Urban* m_GTT_Urban = nullptr;//用于存储城镇场景的特定参数
+	GTT_HighSpeed* m_GTT_HighSpeed = nullptr;//用于存储高速场景的特定参数
 	RRM* m_RRM = nullptr;
 	RRM_TDM_DRA* m_RRM_TDM_DRA = nullptr;//用于存储RRM_TDM_DRA模式的特定参数
 	RRM_RR* m_RRM_RR = nullptr;//用于存储RR模式的特定参数
@@ -51,7 +51,7 @@ public:
 	
 
 	//类内数据结构定义
-	struct GTAT {
+	struct GTT {
 		int m_RSUId;//RRM_TDM_DRA模块需要
 		int m_ClusterIdx;//RRM_TDM_DRA模块需要
 
@@ -72,7 +72,7 @@ public:
 		std::vector<double*> m_InterferenceH;//下标对应的Pattern下，干扰信道响应矩阵，WT_B模块需要
 	};
 
-	struct GTAT_Urban {
+	struct GTT_Urban {
 		int m_RoadId;
 		int m_LocationId;
 		double m_X;//相对横坐标
@@ -85,7 +85,7 @@ public:
 		IMTA *m_IMTA=nullptr;
 	};
 
-	struct GTAT_HighSpeed {
+	struct GTT_HighSpeed {
 		int m_RoadId;
 		double m_X;//相对横坐标
 		double m_Y;
@@ -116,7 +116,7 @@ public:
 	struct RRM_TDM_DRA {
 		static std::default_random_engine s_Engine;
 
-		VeUE* m_This;//RRM_TDM_DRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+		VeUE* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 		
 		std::tuple<int, int> m_ScheduleInterval;//该VeUE所在簇的当前一轮调度区间
 

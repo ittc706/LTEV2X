@@ -1,13 +1,13 @@
 #pragma once
-#include"GTAT.h"
+#include"GTT.h"
 
+// <GTT_Urban>: Geographical Topology and Transport Urban
 
-
-class GTAT_Urban :public GTAT_Basic {
+class GTT_Urban :public GTT_Basic {
 public:
 	static std::default_random_engine s_Engine;
-	GTAT_Urban() = delete;
-	GTAT_Urban(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry);
+	GTT_Urban() = delete;
+	GTT_Urban(int &systemTTI, Configure& systemConfig, eNB* &systemeNBAry, Road* &systemRoadAry, RSU* &systemRSUAry, VeUE* &systemVeUEAry);
 
 	std::vector<std::vector<int>> m_VeUENumPerRSU;//统计每个RSU下的车辆数目，外层下标代表第几次位置更新(从0开始)，内层下标代表RSU编号
 

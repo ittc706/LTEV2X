@@ -26,7 +26,7 @@ public:
 	std::vector<std::vector<int>>& m_TTIRSUThroughput;//吞吐率，外层下标为TTI，内层下标为RSUId
 
 	//第三方模块时间统计
-	long double m_GTATTimeConsume = 0;
+	long double m_GTTTimeConsume = 0;
 	long double m_WTTimeConsume = 0;
 
 	//接口

@@ -14,9 +14,9 @@
 class RSU {
 public:
 	//类内嵌套结构体前置声明
-	struct GTAT;
-	struct GTAT_Urban;
-	struct GTAT_HighSpeed;
+	struct GTT;
+	struct GTT_Urban;
+	struct GTT_HighSpeed;
 	struct RRM;
 	struct RRM_TDM_DRA;
 	struct RRM_RR;
@@ -25,9 +25,9 @@ public:
 
 
 	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
-	GTAT* m_GTAT = nullptr;//用于存储供其他模块使用的参数
-	GTAT_Urban* m_GTAT_Urban = nullptr;//用于存储城镇场景的特定参数
-	GTAT_HighSpeed* m_GTAT_HighSpeed = nullptr;//用于存储高速场景的特定参数
+	GTT* m_GTT = nullptr;//用于存储供其他模块使用的参数
+	GTT_Urban* m_GTT_Urban = nullptr;//用于存储城镇场景的特定参数
+	GTT_HighSpeed* m_GTT_HighSpeed = nullptr;//用于存储高速场景的特定参数
 	RRM* m_RRM = nullptr;
 	RRM_TDM_DRA* m_RRM_TDM_DRA = nullptr;//用于存储RRM_TDM_DRA模式的特定参数
 	RRM_RR* m_RRM_RR = nullptr;//用于存储RR模式的特定参数
@@ -36,8 +36,8 @@ public:
 
 
 	RSU();
-	void initializeGTAT_Urban(RSUConfigure &t_RSUConfigure);
-	void initializeGTAT_HighSpeed(RSUConfigure &t_RSUConfigure);
+	void initializeGTT_Urban(RSUConfigure &t_RSUConfigure);
+	void initializeGTT_HighSpeed(RSUConfigure &t_RSUConfigure);
 	void initializeRRM_TDM_DRA();
 	void initializeRRM_RR();
 	void initializeWT();
@@ -45,21 +45,21 @@ public:
 	~RSU();
 
 	//类内数据结构定义
-	struct GTAT {
+	struct GTT {
 		int m_RSUId;
 		std::list<int> m_VeUEIdList;//当前RSU范围内的VeUEId编号容器,RRM_TDM_DRA模块需要
 		int m_ClusterNum;//一个RSU覆盖范围内的簇的个数,RRM_TDM_DRA模块需要
 		std::vector<std::list<int>> m_ClusterVeUEIdList;//存放每个簇的VeUE的Id的容器,下标代表簇的编号
 	};
 
-	struct GTAT_Urban {
+	struct GTT_Urban {
 		double m_AbsX;
 		double m_AbsY;
 		IMTA *m_IMTA;
 		double m_FantennaAngle;
 	};
 
-	struct GTAT_HighSpeed {
+	struct GTT_HighSpeed {
 		double m_AbsX;
 		double m_AbsY;
 		IMTA *m_IMTA;
@@ -101,7 +101,7 @@ public:
 		};
 
 
-		RSU* m_This;//RRM_TDM_DRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+		RSU* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 
 		/*
@@ -263,7 +263,7 @@ public:
 			std::string toScheduleString(int n);
 		};
 
-		RSU* m_This;//RRM_TDM_DRA会用到GTAT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+		RSU* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 		/*
 		* 当前TTI接入列表
@@ -323,8 +323,8 @@ public:
 inline
 int RSU::RRM_TDM_DRA::getClusterIdxOfVeUE(int VeUEId) {
 	int dex = -1;
-	for (int clusterIdx = 0; clusterIdx < m_This->m_GTAT->m_ClusterNum; clusterIdx++) {
-		for (int Id : m_This->m_GTAT->m_ClusterVeUEIdList[clusterIdx])
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int Id : m_This->m_GTT->m_ClusterVeUEIdList[clusterIdx])
 			if (Id == VeUEId) return clusterIdx;
 	}
 	throw Exp("cRSU::getClusterIdxOfVeUE(int VeUEId)：该车不在当前RSU中");
