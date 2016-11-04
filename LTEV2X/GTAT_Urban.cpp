@@ -155,7 +155,7 @@ void GTAT_Urban::channelGeneration() {
 
 	//记录并更新每辆车的位置日志
 	for (int VeUEId = 0; VeUEId<m_Config.VeUENum; VeUEId++)
-		m_VeUEAry[VeUEId].m_TMAC->m_LocationUpdateLogInfoList.push_back(tuple<int, int>(m_VeUEAry[VeUEId].m_GTAT->m_RSUId, m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx));
+		m_VeUEAry[VeUEId].m_TMC->m_LocationUpdateLogInfoList.push_back(tuple<int, int>(m_VeUEAry[VeUEId].m_GTAT->m_RSUId, m_VeUEAry[VeUEId].m_GTAT->m_ClusterIdx));
 	
 	//记录RSU内车辆的数目
 	vector<int> curVeUENum;
@@ -528,7 +528,7 @@ void GTAT_Urban::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstre
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		out1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
 		out1 << "{" << endl;
-		for (const tuple<int, int> &t : m_VeUEAry[VeUEId].m_TMAC->m_LocationUpdateLogInfoList)
+		for (const tuple<int, int> &t : m_VeUEAry[VeUEId].m_TMC->m_LocationUpdateLogInfoList)
 			out1 << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
 		out1 << "}" << endl;
 	}

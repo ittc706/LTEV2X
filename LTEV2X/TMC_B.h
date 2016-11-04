@@ -1,11 +1,13 @@
 #pragma once
 #include<vector>
-#include"TMAC.h"
+#include"TMC.h"
 
-class TMAC_B :public TMAC_Basic {
+//<TMC_B>: Traffic Model and Control Base
+
+class TMC_B :public TMC_Basic {
 public:
-	TMAC_B() = delete;
-	TMAC_B(int &systemTTI, 
+	TMC_B() = delete;
+	TMC_B(int &systemTTI, 
 		Configure& systemConfig, 
 		RSU* systemRSUAry, 
 		VeUE* systemVeUEAry, 

@@ -1,7 +1,8 @@
 #pragma once
 #include"VUE.h"
 #include"RSU.h"
-//RRM:radio resource management
+
+//<RRM>: Radio Resource Management
 
 class RRM_Basic {
 public:

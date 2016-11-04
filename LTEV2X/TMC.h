@@ -2,12 +2,12 @@
 #include"VUE.h"
 #include"RSU.h"
 
-//TMAC:traffic model and control
+//<TMC>: Traffic Model and Control
 
-class TMAC_Basic {
+class TMC_Basic {
 public:
-	TMAC_Basic() = delete;
-	TMAC_Basic(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput) :
+	TMC_Basic() = delete;
+	TMC_Basic(int &systemTTI, Configure& systemConfig, RSU* systemRSUAry, VeUE* systemVeUEAry, std::vector<Event>& systemEventVec, std::vector<std::list<int>>& systemEventTTIList, std::vector<std::vector<int>>& systemTTIRSUThroughput) :
 		m_TTI(systemTTI),
 		m_Config(systemConfig),
 		m_RSUAry(systemRSUAry),

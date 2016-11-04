@@ -10,7 +10,7 @@
 #include"WT.h"
 #include"GTAT.h"
 
-//RRM_TDM_DRA:Radio Resource Management Distributed Resource Allocation
+//<RRM_TDM_DRA> :Radio Resource Management Time Division Dultiplexing based Distributed Resource Allocation
 
 
 

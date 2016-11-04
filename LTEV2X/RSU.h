@@ -21,7 +21,7 @@ public:
 	struct RRM_TDM_DRA;
 	struct RRM_RR;
 	struct WT;
-	struct TMAC;
+	struct TMC;
 
 
 	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
@@ -32,7 +32,7 @@ public:
 	RRM_TDM_DRA* m_RRM_TDM_DRA = nullptr;//用于存储RRM_TDM_DRA模式的特定参数
 	RRM_RR* m_RRM_RR = nullptr;//用于存储RR模式的特定参数
 	WT* m_WT = nullptr;
-	TMAC* m_TMAC = nullptr;
+	TMC* m_TMC = nullptr;
 
 
 	RSU();
@@ -41,7 +41,7 @@ public:
 	void initializeRRM_TDM_DRA();
 	void initializeRRM_RR();
 	void initializeWT();
-	void initializeTMAC();
+	void initializeTMC();
 	~RSU();
 
 	//类内数据结构定义
@@ -312,7 +312,7 @@ public:
 
 	};
 
-	struct TMAC {
+	struct TMC {
 
 	};
 

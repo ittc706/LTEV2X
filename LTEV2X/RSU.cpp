@@ -66,8 +66,8 @@ void RSU::initializeWT() {
 }
 
 
-void RSU::initializeTMAC() {
-	m_TMAC = new TMAC();
+void RSU::initializeTMC() {
+	m_TMC = new TMC();
 }
 
 
@@ -101,9 +101,9 @@ RSU::~RSU() {
 		delete m_WT;
 		m_WT = nullptr;
 	}
-	if (m_TMAC != nullptr) {
-		delete m_TMAC;
-		m_TMAC = nullptr;
+	if (m_TMC != nullptr) {
+		delete m_TMC;
+		m_TMC = nullptr;
 	}
 }
 

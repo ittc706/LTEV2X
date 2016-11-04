@@ -1,5 +1,4 @@
 #pragma once
-//WT:Wireless transmission
 #include<vector>
 #include<tuple>
 #include"Matrix.h"
@@ -7,6 +6,7 @@
 #include"RSU.h"
 #include"Enumeration.h"
 
+//<WT>: Wireless Transmission
 
 class WT_Basic {
 public:

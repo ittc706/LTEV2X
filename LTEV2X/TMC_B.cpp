@@ -1,9 +1,9 @@
 /*
 * =====================================================================================
 *
-*       Filename:  TMAC_B.cpp
+*       Filename:  TMC_B.cpp
 *
-*    Description:  TMAC模块
+*    Description:  TMC模块
 *
 *        Version:  1.0
 *        Created:
@@ -21,18 +21,18 @@
 #include<random>
 #include<sstream>
 #include"Exception.h"
-#include"TMAC_B.h"
+#include"TMC_B.h"
 
 using namespace std;
 
-TMAC_B::TMAC_B(int &systemTTI, 
+TMC_B::TMC_B(int &systemTTI, 
 	Configure& systemConfig, 
 	RSU* systemRSUAry, 
 	VeUE* systemVeUEAry, 
 	std::vector<Event>& systemEventVec, 
 	std::vector<std::list<int>>& systemEventTTIList, 
 	std::vector<std::vector<int>>& systemTTIRSUThroughput) :
-	TMAC_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput) {
+	TMC_Basic(systemTTI, systemConfig, systemRSUAry, systemVeUEAry, systemEventVec, systemEventTTIList, systemTTIRSUThroughput) {
 	
 	//事件链表容器初始化
 	m_EventTTIList = std::vector<list<int>>(m_Config.NTTI);
@@ -42,20 +42,20 @@ TMAC_B::TMAC_B(int &systemTTI,
 }
 
 
-void TMAC_B::initialize() {
+void TMC_B::initialize() {
 	//初始化VeUE的该模块参数部分
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		m_VeUEAry[VeUEId].initializeTMAC();
+		m_VeUEAry[VeUEId].initializeTMC();
 	}
 
 	//初始化RSU的该模块参数部分
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		m_RSUAry[RSUId].initializeTMAC();
+		m_RSUAry[RSUId].initializeTMC();
 	}
 }
 
 
-void TMAC_B::buildEventList(std::ofstream& out) {
+void TMC_B::buildEventList(std::ofstream& out) {
 	/*按时间顺序（事件的Id与时间相关，Id越小，事件发生的时间越小生成事件链表*/
 
 	default_random_engine dre;//随机数引擎
@@ -178,7 +178,7 @@ void TMAC_B::buildEventList(std::ofstream& out) {
 	writeEventListInfo(out);
 }
 
-void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmergencyPossion, std::ofstream& outDataPossion, std::ofstream& outConflict, std::ofstream& outEventLog) {
+void TMC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmergencyPossion, std::ofstream& outDataPossion, std::ofstream& outConflict, std::ofstream& outEventLog) {
 	stringstream ssPeriod;
 	stringstream ssEmergency;
 	stringstream ssData;
@@ -313,7 +313,7 @@ void TMAC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmerge
 	g_FileRSUThroughput << endl;
 }
 
-void TMAC_B::writeEventListInfo(std::ofstream &out) {
+void TMC_B::writeEventListInfo(std::ofstream &out) {
 	for (int i = 0; i < m_Config.NTTI; i++) {
 		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
 		out << "{" << endl;
@@ -324,7 +324,7 @@ void TMAC_B::writeEventListInfo(std::ofstream &out) {
 		out << "}\n\n" << endl;
 	}
 }
-void TMAC_B::writeEventLogInfo(std::ofstream &out) {
+void TMC_B::writeEventLogInfo(std::ofstream &out) {
 	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
 		string s;
 		switch (m_EventVec[eventId].message.messageType) {

@@ -10,7 +10,7 @@ using namespace std;
 ofstream g_FileTemp("Log\\Temp.txt");
 //GTAT_Urban模块
 ofstream g_FileVeUELocationUpdateLogInfo("Log\\RRMLog\\VeUELocationUpdateLogInfo.txt");
-ofstream g_FileVeUENumPerRSULogInfo("Log\\TMACLog\\VeUENumPerRSULogInfo.txt");
+ofstream g_FileVeUENumPerRSULogInfo("Log\\TMCLog\\VeUENumPerRSULogInfo.txt");
 //RRM_RR模块
 ofstream g_FileRRScheduleInfo("Log\\RRMLog\\RRScheduleInfo.txt");
 //RRM_TDM_DRA模块
@@ -19,13 +19,13 @@ ofstream g_FileClasterPerformInfo("Log\\RRMLog\\ClasterPerformInfo.txt");
 ofstream g_FileEventListInfo("Log\\RRMLog\\EventListInfo.txt");
 ofstream g_FileTTILogInfo("Log\\RRMLog\\TTILogInfo.txt");
 ofstream g_FileEventLogInfo("Log\\RRMLog\\EventLogInfo.txt");
-//TMAC_B模块
-ofstream g_FileDelayStatistics("Log\\TMACLog\\DelayStatistics.txt");
-ofstream g_FileEmergencyPossion("Log\\TMACLog\\EmergencyPossion.txt");
-ofstream g_FileDataPossion("Log\\TMACLog\\DataPossion.txt");
-ofstream g_FileConflictNum("Log\\TMACLog\\ConflictNum.txt");
-ofstream g_FileTTIThroughput("Log\\TMACLog\\TTIThroughput.txt");
-ofstream g_FileRSUThroughput("Log\\TMACLog\\RSUThroughput.txt");
+//TMC_B模块
+ofstream g_FileDelayStatistics("Log\\TMCLog\\DelayStatistics.txt");
+ofstream g_FileEmergencyPossion("Log\\TMCLog\\EmergencyPossion.txt");
+ofstream g_FileDataPossion("Log\\TMCLog\\DataPossion.txt");
+ofstream g_FileConflictNum("Log\\TMCLog\\ConflictNum.txt");
+ofstream g_FileTTIThroughput("Log\\TMCLog\\TTIThroughput.txt");
+ofstream g_FileRSUThroughput("Log\\TMCLog\\RSUThroughput.txt");
 
 
 /*===========================================

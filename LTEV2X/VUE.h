@@ -23,7 +23,7 @@ public:
 	void initializeRRM_TDM_DRA();
 	void initializeRRM_RR();
 	void initializeWT();
-	void initializeTMAC();
+	void initializeTMC();
 
 
 	//类内嵌套结构体前置声明
@@ -34,7 +34,7 @@ public:
 	struct RRM_TDM_DRA;
 	struct RRM_RR;
 	struct WT;
-	struct TMAC;
+	struct TMC;
 
 	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
 	GTAT* m_GTAT = nullptr;//用于存储供其他模块使用的参数
@@ -44,7 +44,7 @@ public:
 	RRM_TDM_DRA* m_RRM_TDM_DRA = nullptr;//用于存储RRM_TDM_DRA模式的特定参数
 	RRM_RR* m_RRM_RR = nullptr;//用于存储RR模式的特定参数
 	WT* m_WT = nullptr;
-	TMAC* m_TMAC = nullptr;
+	TMC* m_TMC = nullptr;
 	
 
 	const int m_VeUEId = m_VeUECount++;//车辆ID
@@ -136,7 +136,7 @@ public:
 
 	};
 
-	struct TMAC {
+	struct TMC {
 		std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
 	};
 };

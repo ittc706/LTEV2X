@@ -7,7 +7,8 @@
 #include"WT.h"
 #include"Exception.h"
 #include"Global.h"
-//RRM_TDM_DRA:Radio Resource Management Round-Robin
+
+//<RRM_RR>: Radio Resource Management Round-Robin
 
 class RRM_RR :public RRM_Basic {
 public:

@@ -4,6 +4,8 @@
 #include<memory>
 #include "WT.h"
 
+//<WT_B>: Wireless Transmission Base
+
 class WT_B :public WT_Basic {
 public:
 	static std::default_random_engine s_Engine;

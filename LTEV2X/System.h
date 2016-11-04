@@ -15,8 +15,8 @@
 #include"RRM.h"
 #include"RRM_TDM_DRA.h"
 #include"RRM_RR.h"
-#include"TMAC.h"
-#include"TMAC_B.h"
+#include"TMC.h"
+#include"TMC_B.h"
 
 class System{
 public:
@@ -42,7 +42,7 @@ public:
 	WT_Basic* m_WTPoint;
 
 	//业务模型与控制单元
-	TMAC_Basic* m_TMACPoint;
+	TMC_Basic* m_TMCPoint;
 
 	//无限资源管理单元
 	RRMMode m_RRMMode;//调度模式选择
@@ -58,7 +58,7 @@ private:
 	void initializeGTATModule();//GTAT模块对象初始化
 	void initializeWTModule();//WT模块对象初始化
 	void initializeRRMModule();//RRM模块对象初始化
-	void initializeTMACModule();//TMAC模块对象初始化
+	void initializeTMCModule();//TMC模块对象初始化
 	void dispose();//内存清理
 };
 

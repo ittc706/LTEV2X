@@ -101,8 +101,8 @@ void VeUE::initializeWT() {
 }
 
 
-void VeUE::initializeTMAC() {
-	m_TMAC = new TMAC();
+void VeUE::initializeTMC() {
+	m_TMC = new TMC();
 }
 
 
@@ -136,9 +136,9 @@ VeUE::~VeUE() {
 		delete m_WT;
 		m_WT = nullptr;
 	}
-	if (m_TMAC != nullptr) {
-		delete m_TMAC;
-		m_TMAC = nullptr;
+	if (m_TMC != nullptr) {
+		delete m_TMC;
+		m_TMC = nullptr;
 	}
 }
 

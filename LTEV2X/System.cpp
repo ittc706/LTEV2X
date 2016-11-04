@@ -15,7 +15,7 @@ void System::process() {
 	initialization();
 
 	//创建事件链表
-	m_TMACPoint->buildEventList(g_FileEventListInfo);
+	m_TMCPoint->buildEventList(g_FileEventListInfo);
 
 	//开始仿真
 	for (int count = 0;count < m_Config.NTTI;count++) {
@@ -37,7 +37,7 @@ void System::process() {
 	cout.unsetf(ios::fixed);
 
 	//处理各项业务时延数据
-	m_TMACPoint->processStatistics(g_FileDelayStatistics, g_FileEmergencyPossion, g_FileDataPossion, g_FileConflictNum, g_FileEventLogInfo);
+	m_TMCPoint->processStatistics(g_FileDelayStatistics, g_FileEmergencyPossion, g_FileDataPossion, g_FileConflictNum, g_FileEventLogInfo);
 
 	//打印车辆地理位置更新日志信息
 	m_GTATPoint->writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo, g_FileVeUENumPerRSULogInfo);
@@ -71,8 +71,8 @@ void System::initialization() {
 	//RRM模块初始化
 	initializeRRMModule();
 
-	//TMAC模块初始化
-	initializeTMACModule();
+	//TMC模块初始化
+	initializeTMCModule();
 }
 
 
@@ -113,16 +113,16 @@ void System::initializeRRMModule() {
 }
 
 
-void System::initializeTMACModule() {
-	m_TMACPoint = new TMAC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
-	m_TMACPoint->initialize();//模块初始化
+void System::initializeTMCModule() {
+	m_TMCPoint = new TMC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
+	m_TMCPoint->initialize();//模块初始化
 }
 
 
 void System::dispose() {
-	if (m_TMACPoint != nullptr) {
-		delete m_TMACPoint;
-		m_TMACPoint = nullptr;
+	if (m_TMCPoint != nullptr) {
+		delete m_TMCPoint;
+		m_TMCPoint = nullptr;
 	}
 	if (m_RRMPoint != nullptr) {
 		delete m_RRMPoint;

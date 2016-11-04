@@ -1,5 +1,5 @@
 #pragma once
-// GTAT Geographical topology and transport
+// <GTAT>: Geographical Topology and Transport
 #include<random>
 #include<set>
 #include"RSU.h"
