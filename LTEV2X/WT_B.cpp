@@ -42,7 +42,7 @@ WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT
 void WT_B::initialize() {
 	//读取m_MCSLevelTable
 	m_MCSLevelTable = make_shared<vector<int>>();
-	std::ifstream in("WT\\MCSLevelTable.md");
+	ifstream in("WT\\MCSLevelTable.md");
 	istream_iterator<int> inIter(in), eof;
 	m_MCSLevelTable->assign(inIter, eof);
 	in.close();
@@ -85,7 +85,7 @@ WT_Basic* WT_B::getCopy() {
 	return new WT_B(*this);
 }
 
-std::tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd, int patternIdx) {
+tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd, int patternIdx) {
 	//配置本次函数调用的参数
 	configuration(VeUEId, patternIdx);
 
@@ -244,7 +244,7 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 }
 
 
-std::vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, int patternIdx) {
+vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, int patternIdx) {
 	vector<Matrix> res;
 	for (int interferenceVeUEId : m_VeUEAry[VeUEIdx].m_RRM->m_InterferenceVeUEIdVec[patternIdx]) {
 		Matrix m(m_Nr, m_Nt);
@@ -269,7 +269,7 @@ int WT_B::searchMCSLevelTable(double SINR) {
 }
 
 
-int WT_B::closest(std::vector<double> v, double target) {
+int WT_B::closest(vector<double> v, double target) {
 	int leftIndex = 0;
 	int rightIndex = static_cast<int>(v.size() - 1);
 	double leftDiff = v[leftIndex] - target;
@@ -297,7 +297,7 @@ int WT_B::closest(std::vector<double> v, double target) {
 }
 
 
-int WT_B::closest2(std::vector<double> v, double target) {
+int WT_B::closest2(vector<double> v, double target) {
 	int res = -1;
 	double minimum = (numeric_limits<double>::max)();
 	for (int i = 0; i < static_cast<int>(v.size()); i++) {
@@ -311,7 +311,7 @@ int WT_B::closest2(std::vector<double> v, double target) {
 
 
 
-double WT_B::getMutualInformation(std::vector<double> v, int dex) {
+double WT_B::getMutualInformation(vector<double> v, int dex) {
 	if (dex < 0) return v[0];
 	if (dex >= (int)v.size()) return v[v.size() - 1];
 	return v[dex];

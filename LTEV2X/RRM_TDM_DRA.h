@@ -12,11 +12,6 @@
 
 //<RRM_TDM_DRA> :Radio Resource Management Time Division Dultiplexing based Distributed Resource Allocation
 
-
-
-/*===========================================
-*                RRM_TDM_DRAÄ£¿é
-* ==========================================*/
 class RRM_TDM_DRA :public RRM_Basic {
 public:
 	RRM_TDM_DRA() = delete;

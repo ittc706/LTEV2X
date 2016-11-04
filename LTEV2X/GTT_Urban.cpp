@@ -524,7 +524,7 @@ void GTT_Urban::freshLoc() {
 }
 
 
-void GTT_Urban::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &out2) {
+void GTT_Urban::writeVeUELocationUpdateLogInfo(ofstream &out1, ofstream &out2) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		out1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
 		out1 << "{" << endl;
@@ -540,7 +540,7 @@ void GTT_Urban::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstrea
 	}
 }
 
-void GTT_Urban::calculateInterference(const std::vector<std::list<int>>& RRMInterferenceVec) {
+void GTT_Urban::calculateInterference(const vector<list<int>>& RRMInterferenceVec) {
 	//由于不同的Pattern可能存在相同的干扰车辆，但是对于同一个干扰车辆，对当前车辆的干扰矩阵只算一次
 	for (int patternIdx = 0; patternIdx < RRMInterferenceVec.size(); patternIdx++) {
 		const list<int> &lst = RRMInterferenceVec[patternIdx];//当前Pattern下所有车辆的Id

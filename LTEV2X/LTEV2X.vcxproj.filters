@@ -143,5 +143,8 @@
     <ClCompile Include="GTT_Urban.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="RRM_ICC_DRA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

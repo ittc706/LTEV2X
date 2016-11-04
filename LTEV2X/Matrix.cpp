@@ -65,7 +65,7 @@ RowVector::RowVector(RowVector&& t_RowVector) noexcept
 }
 
 
-RowVector::RowVector(const std::initializer_list<Complex> il) {
+RowVector::RowVector(const initializer_list<Complex> il) {
 	col = static_cast<int>(il.size());
 	rowVector = new Complex[col]();
 	int iter = 0;
@@ -115,7 +115,7 @@ void RowVector::resize(int size) {
 }
 
 
-std::string RowVector::toString() {
+string RowVector::toString() {
 	ostringstream ss;
 	for (int c = 0; c < col; c++) {
 		ss << this->operator[](c).toString() << "  ";
@@ -124,7 +124,7 @@ std::string RowVector::toString() {
 }
 
 
-void RowVector::print(std::ostream&out) {
+void RowVector::print(ostream&out) {
 	out << toString();
 }
 
@@ -272,7 +272,7 @@ Matrix::Matrix(Matrix&& t_Matrix) noexcept
 }
 
 
-Matrix::Matrix(const std::initializer_list<RowVector>& il) {
+Matrix::Matrix(const initializer_list<RowVector>& il) {
 	if (il.size() == 0) {
 		row = 0;
 		col = 0;
@@ -424,7 +424,7 @@ Matrix Matrix::diag() {
 }
 
 
-std::pair<Matrix, Matrix>  Matrix::fullRankDecomposition() {
+pair<Matrix, Matrix>  Matrix::fullRankDecomposition() {
 	//设矩阵的维度为m*n，秩为r，r至少为1
 	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::buildDdentityMatrix(row));
 
@@ -517,7 +517,7 @@ const RowVector& Matrix::operator[](int pos) const {
 }
 
 
-std::string Matrix::toString() {
+string Matrix::toString() {
 	ostringstream ss;
 	for (int r = 0; r < row; r++) {
 		ss << this->operator[](r).toString() << endl;
@@ -526,7 +526,7 @@ std::string Matrix::toString() {
 }
 
 
-void Matrix::print(std::ostream&out, int numEnter) {
+void Matrix::print(ostream&out, int numEnter) {
 	out << toString();
 	for (int i = 0; i < numEnter; i++)
 		cout << endl;
@@ -558,7 +558,7 @@ Matrix Matrix::verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 }
 
 
-std::pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix,int leftCol,int rightCol) {
+pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix,int leftCol,int rightCol) {
 	if (t_Matrix.col != leftCol+ rightCol) throw Exp("该矩阵无法分裂成指定维度");
 	Matrix left(t_Matrix.row, leftCol), right(t_Matrix.row, rightCol);
 	for (int r = 0; r < left.row; r++) {
@@ -576,7 +576,7 @@ std::pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix,int leftC
 }
 
 
-std::pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int upRow, int downRow) {
+pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int upRow, int downRow) {
 	if (t_Matrix.row != upRow + downRow) throw Exp("该矩阵无法分裂成指定维度");
 	Matrix up(upRow, t_Matrix.col), down(downRow, t_Matrix.col);
 	for (int r = 0; r < up.row; r++) {

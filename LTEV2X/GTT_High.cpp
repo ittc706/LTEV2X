@@ -271,7 +271,7 @@ void GTT_HighSpeed::freshLoc() {
 }
 
 
-void GTT_HighSpeed::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &out2) {
+void GTT_HighSpeed::writeVeUELocationUpdateLogInfo(ofstream &out1, ofstream &out2) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		out1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
 		out1 << "{" << endl;
@@ -288,7 +288,7 @@ void GTT_HighSpeed::writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofs
 }
 
 
-void GTT_HighSpeed::calculateInterference(const std::vector<std::list<int>>& RRMInterferenceVec) {
+void GTT_HighSpeed::calculateInterference(const vector<list<int>>& RRMInterferenceVec) {
 	for (int patternIdx = 0; patternIdx < RRMInterferenceVec.size(); patternIdx++) {
 		const list<int> &lst = RRMInterferenceVec[patternIdx];
 

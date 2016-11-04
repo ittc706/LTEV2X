@@ -48,7 +48,7 @@ Complex::Complex(const Complex& c) :
 	real(c.real), imag(c.imag) {}
 
 
-Complex::Complex(const std::initializer_list<double> il) {
+Complex::Complex(const initializer_list<double> il) {
 	if (il.size() > 2) throw Exp("Complex初始化列表元素数目错误：应该为两个double类型的元素");
 	initializer_list<double>::iterator it = il.begin();
 	switch (il.size()) {
@@ -100,7 +100,7 @@ string Complex::toString() {
 	return ss.str();
 }
 
-void Complex::print(std::ostream&out) {
+void Complex::print(ostream&out) {
 	out << toString() << endl;
 }
 

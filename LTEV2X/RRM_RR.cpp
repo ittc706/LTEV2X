@@ -26,10 +26,10 @@
 using namespace std;
 
 
-RRM_RR::RRM_RR(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
+RRM_RR::RRM_RR(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
 	RRM_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 	
-	m_InterferenceVec = std::vector<std::list<int>>(ns_RRM_RR::gc_RRTotalPatternNum);
+	m_InterferenceVec = vector<list<int>>(ns_RRM_RR::gc_RRTotalPatternNum);
 
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
@@ -376,7 +376,7 @@ void RRM_RR::transimitStartThread(int fromRSUId, int toRSUId) {
 }
 
 
-void RRM_RR::writeScheduleInfo(std::ofstream& out) {
+void RRM_RR::writeScheduleInfo(ofstream& out) {
 	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	out << "{" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
@@ -403,7 +403,7 @@ void RRM_RR::writeScheduleInfo(std::ofstream& out) {
 }
 
 
-void RRM_RR::writeTTILogInfo(std::ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int patternIdx) {
+void RRM_RR::writeTTILogInfo(ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int patternIdx) {
 	stringstream ss;
 	switch (type) {
 	case SUCCEED:
@@ -507,7 +507,7 @@ void RRM_RR::transimitEnd() {
 }
 
 
-std::pair<int, int> RRM_RR::getOccupiedSubCarrierRange(int patternIdx) {
+pair<int, int> RRM_RR::getOccupiedSubCarrierRange(int patternIdx) {
 	pair<int, int> res;
 
 	res.first = ns_RRM_RR::gc_RRNumRBPerPattern * patternIdx;

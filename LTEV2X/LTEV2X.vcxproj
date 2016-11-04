@@ -154,6 +154,7 @@
     <ClCompile Include="GTT_High.cpp" />
     <ClCompile Include="GTT_Urban.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="RRM_ICC_DRA.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="TMC_B.cpp" />
     <ClCompile Include="eNB.cpp" />

@@ -125,7 +125,7 @@ string Event::toLogString(int n) {
 }
 
 
-void Event::addEventLog(int TTI, EventLogType type, int RSUId, int clusterIdx, int patternIdx,std::string description) {
+void Event::addEventLog(int TTI, EventLogType type, int RSUId, int clusterIdx, int patternIdx,string description) {
 	stringstream ss;
 	switch (type) {
 	case SUCCEED:

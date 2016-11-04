@@ -27,10 +27,10 @@
 
 using namespace std;
 
-RRM_TDM_DRA::RRM_TDM_DRA(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
+RRM_TDM_DRA::RRM_TDM_DRA(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
 	RRM_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 
-	m_InterferenceVec = std::vector<std::list<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
+	m_InterferenceVec = vector<list<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
 	int num = m_Config.RSUNum / m_ThreadNum;
@@ -131,7 +131,7 @@ void RRM_TDM_DRA::groupSizeBasedTDM(bool clusterFlag) {
 		double VeUESizePerTTI = static_cast<double>(_RSU.m_GTT->m_VeUEIdList.size()) / static_cast<double>(ns_RRM_TDM_DRA::gc_NTTI);
 
 		//clusterSize存储每个簇的VeUE数目(double)，!!!浮点数!!！
-		std::vector<double> clusterSize(_RSU.m_GTT->m_ClusterNum, 0);
+		vector<double> clusterSize(_RSU.m_GTT->m_ClusterNum, 0);
 
 		//初始化clusterSize
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++)
@@ -710,7 +710,7 @@ void RRM_TDM_DRA::conflictListener() {
 
 void RRM_TDM_DRA::transimitPreparation() {
 	//首先清空上一次干扰信息
-	for (std::list<int>&lst : m_InterferenceVec) {
+	for (list<int>&lst : m_InterferenceVec) {
 		lst.clear();
 	}
 
@@ -871,7 +871,7 @@ void RRM_TDM_DRA::transimitStartThread(int fromRSUId, int toRSUId) {
 	copyWTPoint = nullptr;
 }
 
-void RRM_TDM_DRA::writeScheduleInfo(std::ofstream& out) {
+void RRM_TDM_DRA::writeScheduleInfo(ofstream& out) {
 	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	out << "{" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
@@ -990,7 +990,7 @@ void RRM_TDM_DRA::transimitEnd() {
 }
 
 
-void RRM_TDM_DRA::writeTTILogInfo(std::ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx) {
+void RRM_TDM_DRA::writeTTILogInfo(ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx) {
 	stringstream ss;
 	switch (type) {
 	case SUCCEED:
@@ -1066,7 +1066,7 @@ void RRM_TDM_DRA::writeTTILogInfo(std::ofstream& out, int TTI, EventLogType type
 }
 
 
-void RRM_TDM_DRA::writeClusterPerformInfo(std::ofstream &out) {
+void RRM_TDM_DRA::writeClusterPerformInfo(ofstream &out) {
 	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	out << "{" << endl;
 
@@ -1101,7 +1101,7 @@ void RRM_TDM_DRA::writeClusterPerformInfo(std::ofstream &out) {
 }
 
 
-int RRM_TDM_DRA::getMaxIndex(const std::vector<double>&clusterSize) {
+int RRM_TDM_DRA::getMaxIndex(const vector<double>&clusterSize) {
 	double max = 0;
 	int dex = -1;
 	for (int i = 0; i < static_cast<int>(clusterSize.size()); i++) {

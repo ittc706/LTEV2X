@@ -118,7 +118,7 @@ string RSU::RRM_TDM_DRA::ScheduleInfo::toLogString(int n) {
 }
 
 
-std::string RSU::RRM_TDM_DRA::ScheduleInfo::toScheduleString(int n) {
+string RSU::RRM_TDM_DRA::ScheduleInfo::toScheduleString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");
@@ -208,7 +208,7 @@ string RSU::RRM_TDM_DRA::toString(int n) {
 
 
 
-std::string RSU::RRM_RR::ScheduleInfo::toLogString(int n) {
+string RSU::RRM_RR::ScheduleInfo::toLogString(int n) {
 	ostringstream ss;
 	ss << "[ EventId = ";
 	ss << left << setw(3) << eventId;
@@ -217,7 +217,7 @@ std::string RSU::RRM_RR::ScheduleInfo::toLogString(int n) {
 }
 
 
-std::string RSU::RRM_RR::ScheduleInfo::toScheduleString(int n) {
+string RSU::RRM_RR::ScheduleInfo::toScheduleString(int n) {
 	string indent;
 	for (int i = 0; i < n; i++)
 		indent.append("    ");

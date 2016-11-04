@@ -29,16 +29,16 @@ TMC_B::TMC_B(int &t_TTI,
 	Configure& t_Config, 
 	RSU* t_RSUAry, 
 	VeUE* t_VeUEAry, 
-	std::vector<Event>& t_EventVec, 
-	std::vector<std::list<int>>& t_EventTTIList, 
-	std::vector<std::vector<int>>& t_TTIRSUThroughput) :
+	vector<Event>& t_EventVec, 
+	vector<list<int>>& t_EventTTIList, 
+	vector<vector<int>>& t_TTIRSUThroughput) :
 	TMC_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput) {
 	
 	//事件链表容器初始化
-	m_EventTTIList = std::vector<list<int>>(m_Config.NTTI);
+	m_EventTTIList = vector<list<int>>(m_Config.NTTI);
 
 	//吞吐率容器初始化
-	m_TTIRSUThroughput = std::vector<std::vector<int>>(m_Config.NTTI, std::vector<int>(m_Config.RSUNum));
+	m_TTIRSUThroughput = vector<vector<int>>(m_Config.NTTI, vector<int>(m_Config.RSUNum));
 }
 
 
@@ -55,7 +55,7 @@ void TMC_B::initialize() {
 }
 
 
-void TMC_B::buildEventList(std::ofstream& out) {
+void TMC_B::buildEventList(ofstream& out) {
 	/*按时间顺序（事件的Id与时间相关，Id越小，事件发生的时间越小生成事件链表*/
 
 	default_random_engine dre;//随机数引擎
@@ -178,7 +178,7 @@ void TMC_B::buildEventList(std::ofstream& out) {
 	writeEventListInfo(out);
 }
 
-void TMC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmergencyPossion, std::ofstream& outDataPossion, std::ofstream& outConflict, std::ofstream& outEventLog) {
+void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion, ofstream& outDataPossion, ofstream& outConflict, ofstream& outEventLog) {
 	stringstream ssPeriod;
 	stringstream ssEmergency;
 	stringstream ssData;
@@ -313,7 +313,7 @@ void TMC_B::processStatistics(std::ofstream& outDelay, std::ofstream& outEmergen
 	g_FileRSUThroughput << endl;
 }
 
-void TMC_B::writeEventListInfo(std::ofstream &out) {
+void TMC_B::writeEventListInfo(ofstream &out) {
 	for (int i = 0; i < m_Config.NTTI; i++) {
 		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
 		out << "{" << endl;
@@ -324,7 +324,7 @@ void TMC_B::writeEventListInfo(std::ofstream &out) {
 		out << "}\n\n" << endl;
 	}
 }
-void TMC_B::writeEventLogInfo(std::ofstream &out) {
+void TMC_B::writeEventLogInfo(ofstream &out) {
 	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
 		string s;
 		switch (m_EventVec[eventId].message.messageType) {
