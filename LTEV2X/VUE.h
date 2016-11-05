@@ -14,24 +14,13 @@
 
 class VeUE {
 public:
-	static int m_VeUECount;
-
-	~VeUE();
-	//每个类内结构体均由相应模块来完成初始化
-	void initializeGTT_Urban(VeUEConfigure &t_UEConfigure);
-	void initializeGTT_HighSpeed(VeUEConfigure &t_UEConfigure);
-	void initializeRRM_TDM_DRA();
-	void initializeRRM_RR();
-	void initializeWT();
-	void initializeTMC();
-
-
 	//类内嵌套结构体前置声明
 	struct GTT;
 	struct GTT_Urban;
 	struct GTT_HighSpeed;
 	struct RRM;
 	struct RRM_TDM_DRA;
+	struct RRM_ICC_DRA;
 	struct RRM_RR;
 	struct WT;
 	struct TMC;
@@ -42,10 +31,23 @@ public:
 	GTT_HighSpeed* m_GTT_HighSpeed = nullptr;//用于存储高速场景的特定参数
 	RRM* m_RRM = nullptr;
 	RRM_TDM_DRA* m_RRM_TDM_DRA = nullptr;//用于存储RRM_TDM_DRA模式的特定参数
+	RRM_ICC_DRA* m_RRM_ICC_DRA = nullptr;//用于存储RRM_ICC_DRA模式的特定参数
 	RRM_RR* m_RRM_RR = nullptr;//用于存储RR模式的特定参数
 	WT* m_WT = nullptr;
 	TMC* m_TMC = nullptr;
+
 	
+	~VeUE();
+	//每个类内结构体均由相应模块来完成初始化
+	void initializeGTT_Urban(VeUEConfigure &t_UEConfigure);
+	void initializeGTT_HighSpeed(VeUEConfigure &t_UEConfigure);
+	void initializeRRM_TDM_DRA();
+	void initializeRRM_ICC_DRA();
+	void initializeRRM_RR();
+	void initializeWT();
+	void initializeTMC();
+
+	static int m_VeUECount;
 
 	const int m_VeUEId = m_VeUECount++;//车辆ID
 	
@@ -126,6 +128,10 @@ public:
 		int selectEmergencyRBBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
 
 		std::string toString(int n);//用于打印VeUE信息
+	};
+
+	struct RRM_ICC_DRA {
+
 	};
 
 	struct RRM_RR {

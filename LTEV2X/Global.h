@@ -247,8 +247,17 @@ namespace ns_RRM_TDM_DRA {
 *          RRM_RR模块常量定义
 * ==========================================*/
 namespace ns_RRM_RR {
-	const int gc_RRNumRBPerPattern = 10;//每个Pattern的RB数量
-	const int gc_RRTotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RRNumRBPerPattern;//总的Pattern数量
+	const int gc_RBNumPerPattern = 10;//每个Pattern的RB数量
+	const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;//总的Pattern数量
+}
+
+
+/*===========================================
+*          RRM_ICC_DRA模块常量定义
+* ==========================================*/
+namespace ns_RRM_ICC_DRA {
+	const int gc_RBNumPerPattern = 10;//每个Pattern的RB数量
+	const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;//总的Pattern数量
 }
 
 

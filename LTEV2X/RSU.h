@@ -19,6 +19,7 @@ public:
 	struct GTT_HighSpeed;
 	struct RRM;
 	struct RRM_TDM_DRA;
+	struct RRM_ICC_DRA;
 	struct RRM_RR;
 	struct WT;
 	struct TMC;
@@ -30,6 +31,7 @@ public:
 	GTT_HighSpeed* m_GTT_HighSpeed = nullptr;//用于存储高速场景的特定参数
 	RRM* m_RRM = nullptr;
 	RRM_TDM_DRA* m_RRM_TDM_DRA = nullptr;//用于存储RRM_TDM_DRA模式的特定参数
+	RRM_ICC_DRA* m_RRM_ICC_DRA = nullptr;//用于存储RRM_ICC_DRA模式的特定参数
 	RRM_RR* m_RRM_RR = nullptr;//用于存储RR模式的特定参数
 	WT* m_WT = nullptr;
 	TMC* m_TMC = nullptr;
@@ -39,6 +41,7 @@ public:
 	void initializeGTT_Urban(RSUConfigure &t_RSUConfigure);
 	void initializeGTT_HighSpeed(RSUConfigure &t_RSUConfigure);
 	void initializeRRM_TDM_DRA();
+	void initializeRRM_ICC_DRA();
 	void initializeRRM_RR();
 	void initializeWT();
 	void initializeTMC();
@@ -100,9 +103,7 @@ public:
 			std::string toScheduleString(int n);
 		};
 
-
 		RSU* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
-
 
 		/*
 		* TDR:Time Domain Resource
@@ -179,7 +180,7 @@ public:
 		*/
 		std::vector<ScheduleInfo*> m_EmergencyScheduleInfoTable;
 
-		RRM_TDM_DRA(RSU* t_this);//构造函数
+		RRM_TDM_DRA(RSU* t_This);//构造函数
 
 		/*------------------成员函数------------------*/
 
@@ -228,6 +229,19 @@ public:
 		*/
 		void pullFromScheduleInfoTable(int TTI);
 		void pullFromEmergencyScheduleInfoTable();
+	};
+
+	struct RRM_ICC_DRA {
+		RSU* m_This;
+
+		RRM_ICC_DRA(RSU* t_This);//构造函数
+
+		/*
+		* 用于存放当前TTI的接纳事件链表
+		* 外层下标是簇编号
+		*/
+		std::vector<std::list<int>> m_AdmitEventIdList;
+
 	};
 
 	struct RRM_RR {

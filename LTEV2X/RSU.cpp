@@ -55,6 +55,12 @@ void RSU::initializeRRM_TDM_DRA() {
 }
 
 
+void RSU::initializeRRM_ICC_DRA() {
+	m_RRM = new RRM();
+	m_RRM_ICC_DRA = new RRM_ICC_DRA(this);
+}
+
+
 void RSU::initializeRRM_RR() {
 	m_RRM = new RRM();
 	m_RRM_RR = new RRM_RR(this);
@@ -92,6 +98,10 @@ RSU::~RSU() {
 	if (m_RRM_TDM_DRA != nullptr) {
 		delete m_RRM_TDM_DRA;
 		m_RRM_TDM_DRA = nullptr;
+	}
+	if (m_RRM_ICC_DRA != nullptr) {
+		delete m_RRM_ICC_DRA;
+		m_RRM_ICC_DRA = nullptr;
 	}
 	if (m_RRM_RR != nullptr) {
 		delete m_RRM_RR;
@@ -135,8 +145,8 @@ string RSU::RRM_TDM_DRA::ScheduleInfo::toScheduleString(int n) {
 
 
 
-RSU::RRM_TDM_DRA::RRM_TDM_DRA(RSU* t_this) {
-	m_This = t_this;
+RSU::RRM_TDM_DRA::RRM_TDM_DRA(RSU* t_This) {
+	m_This = t_This;
 
 	/*  EMERGENCY  */
 	m_EmergencyPatternIsAvailable = vector<bool>(ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], true);
@@ -207,6 +217,11 @@ string RSU::RRM_TDM_DRA::toString(int n) {
 }
 
 
+RSU::RRM_ICC_DRA::RRM_ICC_DRA(RSU* t_This) {
+	m_This = t_This;
+	//<UNDOWN>:尚未初始化其他成员
+}
+
 
 string RSU::RRM_RR::ScheduleInfo::toLogString(int n) {
 	ostringstream ss;
@@ -239,5 +254,5 @@ RSU::RRM_RR::RRM_RR(RSU* t_this) {
 	m_This = t_this;
 	m_AdmitEventIdList = vector<vector<int>>(m_This->m_GTT->m_ClusterNum);
 	m_WaitEventIdList= vector<list<int>>(m_This->m_GTT->m_ClusterNum);
-	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_RR::gc_RRTotalPatternNum, nullptr));
+	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_RR::gc_TotalPatternNum, nullptr));
 }

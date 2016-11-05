@@ -36,22 +36,66 @@ RRM_ICC_DRA::RRM_ICC_DRA(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t
 
 
 void RRM_ICC_DRA::initialize() {
+	//初始化VeUE的该模块参数部分
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		m_VeUEAry[VeUEId].initializeRRM_ICC_DRA();
+	}
 
+	//初始化RSU的该模块参数部分
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		m_RSUAry[RSUId].initializeRRM_ICC_DRA();
+	}
 }
 
 
 void RRM_ICC_DRA::cleanWhenLocationUpdate() {
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		for (vector<int>& preInterferenceVeUEIdVec : m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec)
+			preInterferenceVeUEIdVec.clear();
 
+		m_VeUEAry[VeUEId].m_RRM->m_isWTCached.assign(ns_RRM_ICC_DRA::gc_TotalPatternNum, false);
+	}
 }
 
 
 void RRM_ICC_DRA::schedule() {
+	bool clusterFlag = m_TTI  % m_Config.locationUpdateNTTI == 0;
 
+	//资源分配信息清空:包括每个RSU内的接入链表等
+	informationClean();
+
+	//建立接纳链表
+	updateAdmitEventIdList(clusterFlag);
+
+	//资源选择
+	selectBasedOnP123();
+
+	//统计时延信息
+	delaystatistics();
+
+	//帧听冲突
+	conflictListener();
+
+	//请求地理拓扑单元计算干扰响应矩阵
+	transimitPreparation();
+
+	//模拟传输开始，更新调度信息
+	transimitStart();
+
+	//写入调度信息
+	writeScheduleInfo(g_FileDRAScheduleInfo);
+
+	//模拟传输结束，统计吞吐量
+	transimitEnd();
 }
 
 
 void RRM_ICC_DRA::informationClean() {
-
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		RSU &_RSU = m_RSUAry[RSUId];
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++)
+			_RSU.m_RRM_ICC_DRA->m_AdmitEventIdList[clusterIdx].clear();
+	}
 }
 
 
