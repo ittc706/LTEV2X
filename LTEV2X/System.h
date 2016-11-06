@@ -20,6 +20,7 @@
 
 class System{
 public:
+	~System();
 	/*------------------数据成员------------------*/
 	int m_TTI;//当前的TTI时刻
 	Configure m_Config;//系统参数配置
@@ -59,7 +60,6 @@ private:
 	void initializeWTModule();//WT模块对象初始化
 	void initializeRRMModule();//RRM模块对象初始化
 	void initializeTMCModule();//TMC模块对象初始化
-	void dispose();//内存清理
 };
 
 

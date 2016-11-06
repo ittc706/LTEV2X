@@ -11,8 +11,8 @@ int main() {
 	long double start = clock();
 	srand((unsigned)time(NULL));
 
-	System _system;
-	_system.process();
+	System* _system = new System();;
+	_system->process();
 
 
 	long double end = clock();
@@ -32,7 +32,7 @@ int main() {
 	g_FileDelayStatistics.close();
     g_FileEmergencyPossion.close();
 
-
+	//delete _system;
 	system("pause");
 	return 1;
 }

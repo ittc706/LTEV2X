@@ -83,12 +83,12 @@ public:
 
 	/*构造函数*/
 	Event() = delete;
-	Event(int VeUEId, int TTI, MessageType messageType);
+	Event(int t_VeUEId, int t_TTI, MessageType t_MessageType);
 
 	/*功能函数*/
 	std::string toString();//输出string类型的事件消息
 	std::string toLogString(int n);
-	void addEventLog(int TTI, EventLogType type, int RSUId, int clusterIdx, int patternIdx, std::string description);//压入新的日志
+	void addEventLog(int t_TTI, EventLogType t_EventLogType, int t_RSUId, int t_ClusterIdx, int t_PatternIdx, std::string t_Description);//压入新的日志
 };
 
 

@@ -1,5 +1,6 @@
 #include<vector>
 #include<iomanip>
+#include<iostream>
 #include<sstream>
 #include<math.h>
 #include"VUE.h"
@@ -112,6 +113,35 @@ void VeUE::initializeTMC() {
 	m_TMC = new TMC();
 }
 
+
+VeUE::GTT::~GTT() {
+	if (m_H != nullptr) {
+		delete[] m_H;
+		m_H = nullptr;
+	}
+	for (double*& p : m_InterferenceH) {
+		if (p != nullptr) {
+			delete[] p;
+			p = nullptr;
+		}
+	}
+}
+
+
+VeUE::GTT_Urban::~GTT_Urban() {
+	if (m_IMTA != nullptr) {
+		delete[] m_IMTA;
+		m_IMTA = nullptr;
+	}
+}
+
+
+VeUE::GTT_HighSpeed::~GTT_HighSpeed() {
+	if (m_IMTA != nullptr) {
+		delete[] m_IMTA;
+		m_IMTA = nullptr;
+	}
+}
 
 
 VeUE::~VeUE() {

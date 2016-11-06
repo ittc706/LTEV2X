@@ -1,4 +1,8 @@
-## version_2016_11_4(RRM_ICC_DRA_1)
+## version_2016_11_6(RRM_ICC_DRA_2)
+* IMTA内存释放有问题
+* AdmitEventId是否有存在的必要
+
+## version_2016_11_5(RRM_ICC_DRA_1)
 
 
 ## version_2016_11_4(RRM_ICC_DRA初步结构)

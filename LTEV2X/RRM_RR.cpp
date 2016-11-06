@@ -249,7 +249,7 @@ void RRM_RR::roundRobin() {
 				int eventId = _RSU.m_RRM_RR->m_AdmitEventIdList[clusterIdx][patternIdx];
 				int VeUEId = m_EventVec[eventId].VeUEId;
 				MessageType messageType = m_EventVec[eventId].message.messageType;
-				_RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx] = new RSU::RRM_RR::ScheduleInfo(eventId, messageType, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx);
+				_RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx] = new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx);
 			}
 		}
 	}
@@ -284,7 +284,7 @@ void RRM_RR::transimitPreparation() {
 		RSU &_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
-				RSU::RRM_RR::ScheduleInfo *&info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
+				RSU::RRM::ScheduleInfo *&info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
 				m_InterferenceVec[patternIdx].push_back(info->VeUEId);
 			}
@@ -338,7 +338,7 @@ void RRM_RR::transimitStartThread(int fromRSUId, int toRSUId) {
 		RSU &_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
-				RSU::RRM_RR::ScheduleInfo *&info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
+				RSU::RRM::ScheduleInfo *&info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
 
 				if (info == nullptr) continue;
 				int VeUEId = info->VeUEId;
@@ -389,7 +389,7 @@ void RRM_RR::writeScheduleInfo(ofstream& out) {
 			out << "        {" << endl;
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
 				out << "            Pattern[ " << left << setw(3) << patternIdx << "] : " << endl;
-				RSU::RRM_RR::ScheduleInfo* &info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
+				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
 				out << info->toScheduleString(3) << endl;
 			}
@@ -471,7 +471,7 @@ void RRM_RR::transimitEnd() {
 
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
 
-				RSU::RRM_RR::ScheduleInfo* &info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
+				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
 
 				if (m_EventVec[info->eventId].message.isFinished()) {//说明已经传输完毕

@@ -54,6 +54,8 @@ public:
 
 	//类内数据结构定义
 	struct GTT {
+		~GTT();
+
 		int m_RSUId;//RRM_TDM_DRA模块需要
 		int m_ClusterIdx;//RRM_TDM_DRA模块需要
 
@@ -75,6 +77,7 @@ public:
 	};
 
 	struct GTT_Urban {
+		~GTT_Urban();
 		int m_RoadId;
 		int m_LocationId;
 		double m_X;//相对横坐标
@@ -88,6 +91,7 @@ public:
 	};
 
 	struct GTT_HighSpeed {
+		~GTT_HighSpeed();
 		int m_RoadId;
 		double m_X;//相对横坐标
 		double m_Y;

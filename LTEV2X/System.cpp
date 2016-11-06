@@ -45,14 +45,14 @@ void System::process() {
 
 void System::configure() {//系统仿真参数配置
 
-	m_Config.NTTI = 200;//仿真TTI时间
+	m_Config.NTTI = 20;//仿真TTI时间
 	m_Config.periodicEventNTTI = 500;
 	m_Config.emergencyLambda = 0;// 0.001;
 	m_Config.dataLambda = 0;
 	m_Config.locationUpdateNTTI = 1000;
 
 	//地理拓扑与传输模式
-	m_GTTMode = URBAN;
+	m_GTTMode = HIGHSPEED;
 
 	//无线资源管理模式
 	m_RRMMode = RR;
@@ -119,7 +119,8 @@ void System::initializeTMCModule() {
 }
 
 
-void System::dispose() {
+System::~System() {
+	//清理模块指针
 	if (m_TMCPoint != nullptr) {
 		delete m_TMCPoint;
 		m_TMCPoint = nullptr;
@@ -136,5 +137,24 @@ void System::dispose() {
 		delete m_WTPoint;
 		m_WTPoint = nullptr;
 	}
+
+	//清理各实体类数组
+	if (m_eNBAry != nullptr) {
+		delete[] m_eNBAry;
+		m_eNBAry = nullptr;
+	}
+	if (m_RSUAry != nullptr) {
+		delete[] m_RSUAry;
+		m_RSUAry = nullptr;
+	}
+	if (m_VeUEAry != nullptr) {
+		delete[] m_VeUEAry;
+		m_VeUEAry = nullptr;
+	}
+	if (m_RoadAry != nullptr) {
+		delete[] m_RoadAry;
+		m_RoadAry = nullptr;
+	}
+	
 }
 

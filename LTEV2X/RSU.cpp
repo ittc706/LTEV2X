@@ -77,6 +77,21 @@ void RSU::initializeTMC() {
 }
 
 
+RSU::GTT_Urban::~GTT_Urban() {
+	if (m_IMTA != nullptr) {
+		delete[] m_IMTA;
+		m_IMTA = nullptr;
+	}
+}
+
+
+RSU::GTT_HighSpeed::~GTT_HighSpeed() {
+	if (m_IMTA != nullptr) {
+		delete[] m_IMTA;
+		m_IMTA = nullptr;
+	}
+}
+
 
 RSU::~RSU() {
 	if (m_GTT != nullptr) {
@@ -119,7 +134,7 @@ RSU::~RSU() {
 
 
 
-string RSU::RRM_TDM_DRA::ScheduleInfo::toLogString(int n) {
+string RSU::RRM::ScheduleInfo::toLogString() {
 	ostringstream ss;
 	ss << "[ EventId = ";
 	ss << left << setw(3) << eventId;
@@ -128,9 +143,9 @@ string RSU::RRM_TDM_DRA::ScheduleInfo::toLogString(int n) {
 }
 
 
-string RSU::RRM_TDM_DRA::ScheduleInfo::toScheduleString(int n) {
+string RSU::RRM::ScheduleInfo::toScheduleString(int t_NumTab) {
 	string indent;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < t_NumTab; i++)
 		indent.append("    ");
 	ostringstream ss;
 	ss << indent << "{ " << endl;
@@ -150,28 +165,28 @@ RSU::RRM_TDM_DRA::RRM_TDM_DRA(RSU* t_This) {
 
 	/*  EMERGENCY  */
 	m_EmergencyPatternIsAvailable = vector<bool>(ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], true);
-	m_EmergencyScheduleInfoTable = vector<ScheduleInfo*>(ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]);
-	m_EmergencyTransimitScheduleInfoList = vector<list<ScheduleInfo*>>(ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]);
+	m_EmergencyScheduleInfoTable = vector<RSU::RRM::ScheduleInfo*>(ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]);
+	m_EmergencyTransimitScheduleInfoList = vector<list<RSU::RRM::ScheduleInfo*>>(ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]);
 	/*  EMERGENCY  */
 
 	m_PatternIsAvailable = vector<vector<bool>>(m_This->m_GTT->m_ClusterNum, vector<bool>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], true));
-	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], nullptr));
-	m_TransimitScheduleInfoList = vector<list<ScheduleInfo*>>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], list<ScheduleInfo*>(0, nullptr));
+	m_ScheduleInfoTable = vector<vector<RSU::RRM::ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<RSU::RRM::ScheduleInfo*>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], nullptr));
+	m_TransimitScheduleInfoList = vector<list<RSU::RRM::ScheduleInfo*>>(ns_RRM_TDM_DRA::gc_TotalPatternNum - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY], list<RSU::RRM::ScheduleInfo*>(0, nullptr));
 
 }
 
 
-int RSU::RRM_TDM_DRA::getClusterIdx(int TTI) {
-	int roundATTI = TTI%ns_RRM_TDM_DRA::gc_NTTI; //将TTI映射到[0-gc_DRA_NTTI)的范围
+int RSU::RRM_TDM_DRA::getClusterIdx(int t_TTI) {
+	int roundATTI = t_TTI%ns_RRM_TDM_DRA::gc_NTTI; //将TTI映射到[0-gc_DRA_NTTI)的范围
 	for (int clusterIdx = 0; clusterIdx < m_This->m_GTT->m_ClusterNum; clusterIdx++)
 		if (roundATTI <= get<1>(m_ClusterTDRInfo[clusterIdx])) return clusterIdx;
 	return -1;
 }
 
 
-string RSU::RRM_TDM_DRA::toString(int n) {
+string RSU::RRM_TDM_DRA::toString(int t_NumTab) {
 	string indent;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < t_NumTab; i++)
 		indent.append("    ");
 
 	ostringstream ss;
@@ -223,36 +238,11 @@ RSU::RRM_ICC_DRA::RRM_ICC_DRA(RSU* t_This) {
 }
 
 
-string RSU::RRM_RR::ScheduleInfo::toLogString(int n) {
-	ostringstream ss;
-	ss << "[ EventId = ";
-	ss << left << setw(3) << eventId;
-	ss << " , PatternIdx = " << left << setw(3) << patternIdx << " ] ";
-	return ss.str();
-}
 
 
-string RSU::RRM_RR::ScheduleInfo::toScheduleString(int n) {
-	string indent;
-	for (int i = 0; i < n; i++)
-		indent.append("    ");
-	ostringstream ss;
-	ss << indent << "{ " << endl;
-	ss << indent << " EventId = " << eventId << endl;
-	ss << indent << " VeUEId = " << VeUEId << endl;
-	ss << indent << " currentPackageIdx = " << currentPackageIdx << endl;
-	ss << indent << " remainBitNum = " << remainBitNum << endl;
-	ss << indent << " transimitBitNum = " << transimitBitNum << endl;
-	ss << indent << "}";
-	return ss.str();
-}
-
-
-
-
-RSU::RRM_RR::RRM_RR(RSU* t_this) {
-	m_This = t_this;
+RSU::RRM_RR::RRM_RR(RSU* t_This) {
+	m_This = t_This;
 	m_AdmitEventIdList = vector<vector<int>>(m_This->m_GTT->m_ClusterNum);
 	m_WaitEventIdList= vector<list<int>>(m_This->m_GTT->m_ClusterNum);
-	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_RR::gc_TotalPatternNum, nullptr));
+	m_ScheduleInfoTable = vector<vector<RSU::RRM::ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<RSU::RRM::ScheduleInfo*>(ns_RRM_RR::gc_TotalPatternNum, nullptr));
 }

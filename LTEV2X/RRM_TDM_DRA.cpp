@@ -234,7 +234,7 @@ void RRM_TDM_DRA::updateAdmitEventIdList(bool clusterFlag) {
 
 void RRM_TDM_DRA::processEventList() {
 	for (int eventId : m_EventTTIList[m_TTI]) {
-		Event event = m_EventVec[eventId];
+		Event &event = m_EventVec[eventId];
 		int VeUEId = event.VeUEId;
 		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
 		RSU &_RSU = m_RSUAry[RSUId];
@@ -328,7 +328,7 @@ void RRM_TDM_DRA::processScheduleInfoTableWhenLocationUpdate() {
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, relativePatternIdx);
 				}
 				else {
-					if (_RSU.m_RRM_TDM_DRA->getClusterIdxOfVeUE(VeUEId) != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
+					if (m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
 						//压入该RSU的等待链表
 						_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(eventId);
 
@@ -426,8 +426,6 @@ void RRM_TDM_DRA::processSwitchListWhenLocationUpdate() {
 		int VeUEId = m_EventVec[eventId].VeUEId;
 		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
 		RSU &_RSU = m_RSUAry[RSUId];
-		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);//当前可传输数据的簇编号
-
 																
 		if (m_EventVec[eventId].message.messageType == EMERGENCY) {//属于紧急事件
 			/*  EMERGENCY  */
@@ -539,7 +537,7 @@ void RRM_TDM_DRA::selectBasedOnP123() {
 			_RSU.m_RRM_TDM_DRA->m_EmergencyPatternIsAvailable[patternIdx] = false;
 
 			//将调度信息压入m_EmergencyTransimitEventIdList中
-			_RSU.m_RRM_TDM_DRA->pushToEmergencyTransmitScheduleInfoList(new RSU::RRM_TDM_DRA::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx), patternIdx);
+			_RSU.m_RRM_TDM_DRA->pushToEmergencyTransmitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx), patternIdx);
 		}
 		_RSU.m_RRM_TDM_DRA->pullFromEmergencyScheduleInfoTable();
 		/*  EMERGENCY  */
@@ -589,7 +587,7 @@ void RRM_TDM_DRA::selectBasedOnP123() {
 			_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][relativePatternIdx] = false;
 
 			//将调度信息压入m_TransimitEventIdList中
-			_RSU.m_RRM_TDM_DRA->pushToTransmitScheduleInfoList(new RSU::RRM_TDM_DRA::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx), patternIdx);
+			_RSU.m_RRM_TDM_DRA->pushToTransmitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx), patternIdx);
 		}
 
 		//将调度表中当前可以继续传输的用户压入传输链表中
@@ -618,13 +616,13 @@ void RRM_TDM_DRA::delaystatistics() {
 		//处理此刻正在将要传输的传输链表
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++)
-			for (RSU::RRM_TDM_DRA::ScheduleInfo* &p : _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx])
+			for (RSU::RRM::ScheduleInfo* &p : _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx])
 				m_EventVec[p->eventId].sendDelay++;
 		/*  EMERGENCY  */
 
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
 			int relativePatternIdx = patternIdx - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY];
-			for (RSU::RRM_TDM_DRA::ScheduleInfo* &p : _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx])
+			for (RSU::RRM::ScheduleInfo* &p : _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx])
 				m_EventVec[p->eventId].sendDelay++;
 		}
 
@@ -632,7 +630,7 @@ void RRM_TDM_DRA::delaystatistics() {
 		int curClusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			if (clusterIdx == curClusterIdx) continue;
-			for (RSU::RRM_TDM_DRA::ScheduleInfo *p : _RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx]) {
+			for (RSU::RRM::ScheduleInfo *p : _RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx]) {
 				if (p == nullptr) continue;
 				m_EventVec[p->eventId].queuingDelay++;
 			}
@@ -646,9 +644,9 @@ void RRM_TDM_DRA::conflictListener() {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-			list<RSU::RRM_TDM_DRA::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
-				for (RSU::RRM_TDM_DRA::ScheduleInfo* &info : lst) {
+				for (RSU::RRM::ScheduleInfo* &info : lst) {
 					//更新该事件的日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTT->m_RSUId, -1, patternIdx, "Transimit");
 
@@ -679,9 +677,9 @@ void RRM_TDM_DRA::conflictListener() {
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
 			int relativePatternIdx = patternIdx - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY];
 			
-			list<RSU::RRM_TDM_DRA::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx];
+			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
-				for (RSU::RRM_TDM_DRA::ScheduleInfo* &info : lst) {
+				for (RSU::RRM::ScheduleInfo* &info : lst) {
 					//更新该事件的日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, "Transimit");
 
@@ -720,9 +718,9 @@ void RRM_TDM_DRA::transimitPreparation() {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-			list<RSU::RRM_TDM_DRA::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *lst.begin();
+				RSU::RRM::ScheduleInfo *info = *lst.begin();
 
 				m_InterferenceVec[patternIdx].push_back(info->VeUEId);
 			}
@@ -733,9 +731,9 @@ void RRM_TDM_DRA::transimitPreparation() {
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
 			int relativePatternIdx = patternIdx - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY];
 			
-			list<RSU::RRM_TDM_DRA::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx];
+			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *lst.begin();
+				RSU::RRM::ScheduleInfo *info = *lst.begin();
 
 				m_InterferenceVec[patternIdx].push_back(info->VeUEId);
 			}
@@ -787,9 +785,9 @@ void RRM_TDM_DRA::transimitStartThread(int fromRSUId, int toRSUId) {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-			list<RSU::RRM_TDM_DRA::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *lst.begin();
+				RSU::RRM::ScheduleInfo *info = *lst.begin();
 				int VeUEId = info->VeUEId;
 
 				//计算SINR，获取调制编码方式
@@ -829,9 +827,9 @@ void RRM_TDM_DRA::transimitStartThread(int fromRSUId, int toRSUId) {
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
 			int relativePatternIdx = patternIdx - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY];
 
-			list<RSU::RRM_TDM_DRA::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx];
+			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *lst.begin();
+				RSU::RRM::ScheduleInfo *info = *lst.begin();
 				int VeUEId = info->VeUEId;
 
 				int patternType = getPatternType(patternIdx);
@@ -885,7 +883,7 @@ void RRM_TDM_DRA::writeScheduleInfo(ofstream& out) {
 			bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_EmergencyPatternIsAvailable[patternIdx];
 			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx].begin());
+				RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx].begin());
 				out << info->toScheduleString(3) << endl;
 			}
 		}
@@ -895,7 +893,7 @@ void RRM_TDM_DRA::writeScheduleInfo(ofstream& out) {
 			bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][relativePatternIdx];
 			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx].begin());
+				RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx].begin());
 				out << info->toScheduleString(3) << endl;
 			}
 		}
@@ -905,7 +903,7 @@ void RRM_TDM_DRA::writeScheduleInfo(ofstream& out) {
 			bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][relativePatternIdx];
 			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx].begin());
+				RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx].begin());
 				out << info->toScheduleString(3) << endl;
 			}
 		}
@@ -922,9 +920,9 @@ void RRM_TDM_DRA::transimitEnd() {
 
 		/*  EMERGENCY  */
 		for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-			list<RSU::RRM_TDM_DRA::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx];
+			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx];
 			if (lst.size() == 1) {
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *lst.begin();
+				RSU::RRM::ScheduleInfo *info = *lst.begin();
 				if (m_EventVec[info->eventId].message.isFinished()) {//已经传输完毕，将资源释放
 
 					//设置传输成功标记
@@ -957,9 +955,9 @@ void RRM_TDM_DRA::transimitEnd() {
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
 			int relativePatternIdx= patternIdx- ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY];
 
-			list<RSU::RRM_TDM_DRA::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx];
+			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRM_TDM_DRA::ScheduleInfo *info = *lst.begin();
+				RSU::RRM::ScheduleInfo *info = *lst.begin();
 				if (m_EventVec[info->eventId].message.isFinished()) {//说明该数据已经传输完毕
 
 					//设置传输成功标记

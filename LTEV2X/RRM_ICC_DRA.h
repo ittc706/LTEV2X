@@ -56,12 +56,11 @@ private:
 	/*实现函数*/
 	void informationClean();//资源分配信息清空
 
-	void updateAdmitEventIdList(bool clusterFlag);//更新接纳链表
+	void updateWaitEventIdList(bool t_ClusterFlag);//更新接纳链表
 	void processEventList();
 	void processScheduleInfoTableWhenLocationUpdate();
 	void processWaitEventIdListWhenLocationUpdate();
 	void processSwitchListWhenLocationUpdate();
-	void processWaitEventIdList();
 
 	void selectBasedOnP123();//基于P1、P2和P3的资源分配
 
@@ -70,18 +69,16 @@ private:
 
 	void transimitPreparation();//统计干扰信息
 	void transimitStart();//模拟传输开始，更新调度信息，累计吞吐量
-	void transimitStartThread(int fromRSUId, int toRSUId);//模拟传输开始，更新调度信息
+	void transimitStartThread(int t_FromRSUId, int t_ToRSUId);//模拟传输开始，更新调度信息
 	void transimitEnd();//模拟传输结束
 
 						//日志记录函数
-	void writeScheduleInfo(std::ofstream& out);//记录调度信息日志
-	void writeTTILogInfo(std::ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx);
-	void writeClusterPerformInfo(std::ofstream &out);//写入分簇信息的日志
+	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
+	void writeTTILogInfo(std::ofstream& t_File, int TTI, EventLogType t_EventLogType, int t_EventId, int t_RSUId, int t_ClusterIdx, int t_PatternIdx);
+	void writeClusterPerformInfo(std::ofstream& t_File);//写入分簇信息的日志
 
 
-													 //工具函数
-	int getMaxIndex(const std::vector<double>&clusterSize);
-	int getPatternType(int patternIdx);
-	std::pair<int, int> getOccupiedSubCarrierRange(MessageType messageType, int patternIdx);
+	//工具函数
+	std::pair<int, int> getOccupiedSubCarrierRange(MessageType t_MessageType, int t_PatternIdx);
 
 };
