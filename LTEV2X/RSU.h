@@ -59,7 +59,7 @@ public:
 		~GTT_Urban();
 		double m_AbsX;
 		double m_AbsY;
-		IMTA *m_IMTA;
+		IMTA *m_IMTA = nullptr;
 		double m_FantennaAngle;
 	};
 
@@ -67,7 +67,7 @@ public:
 		~GTT_HighSpeed();
 		double m_AbsX;
 		double m_AbsY;
-		IMTA *m_IMTA;
+		IMTA *m_IMTA = nullptr;
 		double m_FantennaAngle;
 	};
 

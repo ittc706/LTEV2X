@@ -265,6 +265,7 @@ void GTT_HighSpeed::freshLoc() {
 		delete[] antenna.pfRxSlantAngle;
 		delete[] antenna.pfRxAntSpacing;
 		delete[] m_VeUEAry[UserIdx1].m_GTT_HighSpeed->m_IMTA;
+		m_VeUEAry[UserIdx1].m_GTT_HighSpeed->m_IMTA = nullptr;
 		delete[] FFT;
 		delete[] t_HAfterFFT;
 	}
@@ -380,6 +381,7 @@ void GTT_HighSpeed::calculateInterference(const vector<list<int>>& RRMInterferen
 		}
 		for (int VeUEId : lst) {
 			delete[] m_VeUEAry[VeUEId].m_GTT_HighSpeed->m_IMTA;
+			m_VeUEAry[VeUEId].m_GTT_HighSpeed->m_IMTA = nullptr;
 		}
 	}
 }

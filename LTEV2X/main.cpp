@@ -32,7 +32,7 @@ int main() {
 	g_FileDelayStatistics.close();
     g_FileEmergencyPossion.close();
 
-	//delete _system;
+	delete _system;
 	system("pause");
 	return 1;
 }

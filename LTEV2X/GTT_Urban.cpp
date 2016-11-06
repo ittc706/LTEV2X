@@ -518,6 +518,7 @@ void GTT_Urban::freshLoc() {
 		delete[] antenna.pfRxSlantAngle;
 		delete[] antenna.pfRxAntSpacing;
 		delete[] m_VeUEAry[UserIdx1].m_GTT_Urban->m_IMTA;
+		m_VeUEAry[UserIdx1].m_GTT_Urban->m_IMTA = nullptr;
 		delete[] FFT;
 		delete[] t_HAfterFFT;
 	}
@@ -645,6 +646,7 @@ void GTT_Urban::calculateInterference(const vector<list<int>>& RRMInterferenceVe
 
 		for (int VeUEId : lst) {
 			delete[] m_VeUEAry[VeUEId].m_GTT_Urban->m_IMTA;
+			m_VeUEAry[VeUEId].m_GTT_Urban->m_IMTA = nullptr;
 		}
 
 	}

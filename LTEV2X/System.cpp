@@ -155,6 +155,5 @@ System::~System() {
 		delete[] m_RoadAry;
 		m_RoadAry = nullptr;
 	}
-	
 }
 

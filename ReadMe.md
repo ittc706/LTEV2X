@@ -1,3 +1,8 @@
+## version_2016_11_6(修复释放内存时的异常)
+* 由于delete后没有置空指针
+* 还有有2.5M的内存泄漏
+
+
 ## version_2016_11_6(RRM_ICC_DRA_2)
 * IMTA内存释放有问题
 * AdmitEventId是否有存在的必要

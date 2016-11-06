@@ -87,7 +87,7 @@ public:
 		double m_V;//速度
 		double m_VAngle;
 		double m_FantennaAngle;
-		IMTA *m_IMTA=nullptr;
+		IMTA *m_IMTA = nullptr;
 	};
 
 	struct GTT_HighSpeed {
@@ -100,7 +100,7 @@ public:
 		double m_V;//速度
 		double m_VAngle;
 		double m_FantennaAngle;
-		IMTA *m_IMTA=nullptr;
+		IMTA *m_IMTA = nullptr;
 	};
 
 	struct RRM {
