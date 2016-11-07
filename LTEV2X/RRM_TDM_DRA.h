@@ -34,7 +34,7 @@ public:
 	std::list<int> m_SwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
 	/*
-	* 用于存放指定Pattern的干扰列表
+	* 用于存放指定Pattern的干扰列表(RSU间干扰)
 	* 外层下标为PatternId(绝对量)
 	*/
 	std::vector<std::list<int>> m_InterferenceVec;
@@ -76,9 +76,9 @@ private:
 	void transimitEnd();//模拟传输结束
 
 	//日志记录函数
-	void writeScheduleInfo(std::ofstream& out);//记录调度信息日志
-	void writeTTILogInfo(std::ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx);
-	void writeClusterPerformInfo(std::ofstream &out);//写入分簇信息的日志
+	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
+	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_RSUId, int t_ClusterIdx, int t_PatternIdx);
+	void writeClusterPerformInfo(std::ofstream &t_File);//写入分簇信息的日志
 
 
 	//工具函数

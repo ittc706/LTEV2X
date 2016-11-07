@@ -151,6 +151,7 @@ string RSU::RRM::ScheduleInfo::toScheduleString(int t_NumTab) {
 	ss << indent << "{ " << endl;
 	ss << indent << " EventId = " << eventId << endl;
 	ss << indent << " VeUEId = " << VeUEId << endl;
+	ss << indent << " ClusterIdx = " << clusterIdx << endl;
 	ss << indent << " currentPackageIdx = " << currentPackageIdx << endl;
 	ss << indent << " remainBitNum = " << remainBitNum << endl;
 	ss << indent << " transimitBitNum = " << transimitBitNum << endl;
@@ -234,9 +235,51 @@ string RSU::RRM_TDM_DRA::toString(int t_NumTab) {
 
 RSU::RRM_ICC_DRA::RRM_ICC_DRA(RSU* t_This) {
 	m_This = t_This;
-	//<UNDOWN>:尚未初始化其他成员
+	
+	m_WaitEventIdList = vector<list<int>>(m_This->m_GTT->m_ClusterNum);
+	m_PatternIsAvailable = vector<vector<bool>>(m_This->m_GTT->m_ClusterNum, vector<bool>(ns_RRM_ICC_DRA::gc_TotalPatternNum, true));
+	m_ScheduleInfoTable = vector<vector<RSU::RRM::ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<RSU::RRM::ScheduleInfo*>(ns_RRM_ICC_DRA::gc_TotalPatternNum, nullptr));
+	m_TransimitScheduleInfoList = vector<vector<list<RSU::RRM::ScheduleInfo*>>>(m_This->m_GTT->m_ClusterNum, vector<list<RSU::RRM::ScheduleInfo*>>(ns_RRM_ICC_DRA::gc_TotalPatternNum));
+
 }
 
+
+string RSU::RRM_ICC_DRA::toString(int t_NumTab) {
+	string indent;
+	for (int i = 0; i < t_NumTab; i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	//主干信息
+	ss << indent << "RSU[" << m_This->m_GTT->m_RSUId << "] :" << endl;
+	ss << indent << "{" << endl;
+
+	//开始打印VeUEIdList
+	ss << indent << "    " << "VeUEIdList :" << endl;
+	ss << indent << "    " << "{" << endl;
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTT->m_ClusterNum; clusterIdx++) {
+		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
+		ss << indent << "        " << "{" << endl;
+		int cnt = 0;
+		for (int RSUId : m_This->m_GTT->m_ClusterVeUEIdList[clusterIdx]) {
+			if (cnt % 10 == 0)
+				ss << indent << "            [ ";
+			ss << left << setw(3) << RSUId << " , ";
+			if (cnt % 10 == 9)
+				ss << " ]" << endl;
+			cnt++;
+		}
+		if (cnt != 0 && cnt % 10 != 0)
+			ss << " ]" << endl;
+		ss << indent << "        " << "}" << endl;
+	}
+	ss << indent << "    " << "}" << endl;
+
+
+	//主干信息
+	ss << indent << "}" << endl;
+	return ss.str();
+}
 
 
 

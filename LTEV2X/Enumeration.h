@@ -13,9 +13,9 @@ enum GTTMode {
 };
 
 enum RRMMode {
-	PF=1,       //基于比例公平的调度
-	RR=2,       //Round-Robin,轮询
-	TDM_DRA         //Distributed Resource Allocation,分布式
+	RR,       //Round-Robin,轮询
+	TDM_DRA,        //Distributed Resource Allocation,分布式
+	ICC_DRA
 };
 
 
@@ -36,6 +36,7 @@ enum RSUType {
 
 enum EventLogType {
 	SUCCEED = 0,
+	CONFLICT=1,
 	EVENT_TO_WAIT = 2,
 	SCHEDULETABLE_TO_SWITCH = 3,
 	SCHEDULETABLE_TO_WAIT = 4,

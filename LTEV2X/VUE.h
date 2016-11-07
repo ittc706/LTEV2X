@@ -126,16 +126,24 @@ public:
 		
 		std::tuple<int, int> m_ScheduleInterval;//该VeUE所在簇的当前一轮调度区间
 
-		RRM_TDM_DRA(VeUE* t_this);
+		RRM_TDM_DRA(VeUE* t_This) :m_This(t_This) {}
 		//成员函数
-		int selectRBBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, MessageType messageType);
-		int selectEmergencyRBBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx);
+		int selectRBBasedOnP2(const std::vector<std::vector<int>>&t_CurAvaliablePatternIdx, MessageType t_MessageType);
+		int selectEmergencyRBBasedOnP2(const std::vector<int>&t_CurAvaliableEmergencyPatternIdx);
 
-		std::string toString(int n);//用于打印VeUE信息
+		std::string toString(int t_NumTab);//用于打印VeUE信息
 	};
 
 	struct RRM_ICC_DRA {
+		static std::default_random_engine s_Engine;
 
+		VeUE* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+
+		RRM_ICC_DRA(VeUE* t_This) :m_This(t_This) {}
+
+		int selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx);//随机选择资源块
+
+		std::string toString(int t_NumTab);//用于打印VeUE信息
 	};
 
 	struct RRM_RR {
@@ -153,19 +161,26 @@ public:
 
 
 inline
-int VeUE::RRM_TDM_DRA::selectRBBasedOnP2(const std::vector<std::vector<int>>&curAvaliablePatternIdx, MessageType messageType) {
-	int size = static_cast<int>(curAvaliablePatternIdx[messageType].size());
+int VeUE::RRM_TDM_DRA::selectRBBasedOnP2(const std::vector<std::vector<int>>&t_CurAvaliablePatternIdx, MessageType t_MessageType) {
+	int size = static_cast<int>(t_CurAvaliablePatternIdx[t_MessageType].size());
 	if (size == 0) return -1;
 	std::uniform_int_distribution<int> u(0, size - 1);
-	return curAvaliablePatternIdx[messageType][u(s_Engine)];
+	return t_CurAvaliablePatternIdx[t_MessageType][u(s_Engine)];
 }
 
 inline
-int VeUE::RRM_TDM_DRA::selectEmergencyRBBasedOnP2(const std::vector<int>&curAvaliableEmergencyPatternIdx) {
-	int size = static_cast<int>(curAvaliableEmergencyPatternIdx.size());
+int VeUE::RRM_TDM_DRA::selectEmergencyRBBasedOnP2(const std::vector<int>&t_CurAvaliableEmergencyPatternIdx) {
+	int size = static_cast<int>(t_CurAvaliableEmergencyPatternIdx.size());
 	if (size == 0) return -1;
 	std::uniform_int_distribution<int> u(0, size - 1);
-	return curAvaliableEmergencyPatternIdx[u(s_Engine)];
+	return t_CurAvaliableEmergencyPatternIdx[u(s_Engine)];
 }
 
 
+inline
+int VeUE::RRM_ICC_DRA::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx) {
+	int size = static_cast<int>(t_CurAvaliablePatternIdx.size());
+	if (size == 0) return -1;
+	std::uniform_int_distribution<int> u(0, size - 1);
+	return t_CurAvaliablePatternIdx[u(s_Engine)];
+}

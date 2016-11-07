@@ -45,17 +45,17 @@ void System::process() {
 
 void System::configure() {//系统仿真参数配置
 
-	m_Config.NTTI = 20;//仿真TTI时间
+	m_Config.NTTI = 200;//仿真TTI时间
 	m_Config.periodicEventNTTI = 500;
 	m_Config.emergencyLambda = 0;// 0.001;
 	m_Config.dataLambda = 0;
 	m_Config.locationUpdateNTTI = 1000;
 
 	//地理拓扑与传输模式
-	m_GTTMode = HIGHSPEED;
+	m_GTTMode = URBAN;
 
 	//无线资源管理模式
-	m_RRMMode = RR;
+	m_RRMMode = ICC_DRA;
 }
 
 
@@ -105,6 +105,9 @@ void System::initializeRRMModule() {
 		break;
 	case TDM_DRA:
 		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);
+		break;
+	case ICC_DRA:
+		m_RRMPoint = new RRM_ICC_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);
 		break;
 	default:
 		break;

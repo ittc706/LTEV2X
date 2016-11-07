@@ -11,9 +11,9 @@ extern std::ofstream g_FileTemp;
 extern std::ofstream g_FileVeUELocationUpdateLogInfo;
 extern std::ofstream g_FileVeUENumPerRSULogInfo;
 //RRM_RRÄ£¿é
-extern std::ofstream g_FileRRScheduleInfo;
+extern std::ofstream g_FileScheduleInfo;
 //RRM_TDM_DRAÄ£¿é
-extern std::ofstream g_FileDRAScheduleInfo;
+extern std::ofstream g_FileScheduleInfo;
 extern std::ofstream g_FileClasterPerformInfo;
 extern std::ofstream g_FileEventListInfo;
 extern std::ofstream g_FileTTILogInfo;

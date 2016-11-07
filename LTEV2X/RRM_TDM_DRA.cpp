@@ -93,7 +93,7 @@ void RRM_TDM_DRA::schedule() {
 	transimitStart();
 
 	//写入调度信息
-	writeScheduleInfo(g_FileDRAScheduleInfo);
+	writeScheduleInfo(g_FileScheduleInfo);
 
 	//模拟传输结束，统计吞吐量
 	transimitEnd();
@@ -537,7 +537,7 @@ void RRM_TDM_DRA::selectBasedOnP123() {
 			_RSU.m_RRM_TDM_DRA->m_EmergencyPatternIsAvailable[patternIdx] = false;
 
 			//将调度信息压入m_EmergencyTransimitEventIdList中
-			_RSU.m_RRM_TDM_DRA->pushToEmergencyTransmitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx), patternIdx);
+			_RSU.m_RRM_TDM_DRA->pushToEmergencyTransmitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, -1, patternIdx), patternIdx);
 		}
 		_RSU.m_RRM_TDM_DRA->pullFromEmergencyScheduleInfoTable();
 		/*  EMERGENCY  */
@@ -587,7 +587,7 @@ void RRM_TDM_DRA::selectBasedOnP123() {
 			_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][relativePatternIdx] = false;
 
 			//将调度信息压入m_TransimitEventIdList中
-			_RSU.m_RRM_TDM_DRA->pushToTransmitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, patternIdx), patternIdx);
+			_RSU.m_RRM_TDM_DRA->pushToTransmitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx), patternIdx);
 		}
 
 		//将调度表中当前可以继续传输的用户压入传输链表中
@@ -791,7 +791,7 @@ void RRM_TDM_DRA::transimitStartThread(int fromRSUId, int toRSUId) {
 				int VeUEId = info->VeUEId;
 
 				//计算SINR，获取调制编码方式
-				pair<int, int> &subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
+				pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << endl;
 
 				//if (!m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
@@ -835,7 +835,7 @@ void RRM_TDM_DRA::transimitStartThread(int fromRSUId, int toRSUId) {
 				int patternType = getPatternType(patternIdx);
 
 				//计算SINR，获取调制编码方式
-				pair<int, int> &subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
+				pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((patternType == 0) ? "Emergency" : (patternType == 1 ? "Period" : "Data")) << endl;
 
 				//if ( !m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
@@ -869,49 +869,49 @@ void RRM_TDM_DRA::transimitStartThread(int fromRSUId, int toRSUId) {
 	copyWTPoint = nullptr;
 }
 
-void RRM_TDM_DRA::writeScheduleInfo(ofstream& out) {
-	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
-	out << "{" << endl;
+void RRM_TDM_DRA::writeScheduleInfo(ofstream& t_File) {
+	t_File << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
+	t_File << "{" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
 		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
-		out << "    RSU[" << _RSU.m_GTT->m_RSUId << "][TTI = " << m_TTI << "]" << endl;
-		out << "    {" << endl;
-		out << "    EMERGENCY:" << endl;
+		t_File << "    RSU[" << _RSU.m_GTT->m_RSUId << "][TTI = " << m_TTI << "]" << endl;
+		t_File << "    {" << endl;
+		t_File << "    EMERGENCY:" << endl;
 		for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
 			bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_EmergencyPatternIsAvailable[patternIdx];
-			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
+			t_File << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
 				RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_EmergencyTransimitScheduleInfoList[patternIdx].begin());
-				out << info->toScheduleString(3) << endl;
+				t_File << info->toScheduleString(3) << endl;
 			}
 		}
-		out << "    PERIOD:" << endl;
+		t_File << "    PERIOD:" << endl;
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[PERIOD][0]; patternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[PERIOD][1]; patternIdx++) {
 			int relativePatternIdx = patternIdx - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY];
 			bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][relativePatternIdx];
-			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
+			t_File << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
 				RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx].begin());
-				out << info->toScheduleString(3) << endl;
+				t_File << info->toScheduleString(3) << endl;
 			}
 		}
-		out << "    DATA:" << endl;
+		t_File << "    DATA:" << endl;
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[DATA][0]; patternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[DATA][1]; patternIdx++) {
 			int relativePatternIdx = patternIdx - ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY];
 			bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][relativePatternIdx];
-			out << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
+			t_File << "        Pattern[ " << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 			if (!isAvaliable) {
 				RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[relativePatternIdx].begin());
-				out << info->toScheduleString(3) << endl;
+				t_File << info->toScheduleString(3) << endl;
 			}
 		}
-		out << "    }" << endl;
+		t_File << "    }" << endl;
 
 	}
-	out << "}" << endl;
-	out << "\n\n" << endl;
+	t_File << "}" << endl;
+	t_File << "\n\n" << endl;
 }
 
 void RRM_TDM_DRA::transimitEnd() {
@@ -988,94 +988,94 @@ void RRM_TDM_DRA::transimitEnd() {
 }
 
 
-void RRM_TDM_DRA::writeTTILogInfo(ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int clusterIdx, int patternIdx) {
+void RRM_TDM_DRA::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_RSUId, int t_ClusterIdx, int t_PatternIdx) {
 	stringstream ss;
-	switch (type) {
+	switch (t_EventLogType) {
 	case SUCCEED:
 		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ RSU[" << RSUId << "]   ClusterIdx[" << clusterIdx << "]    PatternIdx[" << patternIdx << "] }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[0]Succeed";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ RSU[" << t_RSUId << "]   ClusterIdx[" << t_ClusterIdx << "]    PatternIdx[" << t_PatternIdx << "] }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[0]Succeed";
+		t_File << "    " << ss.str() << endl;
 		break;
 	case EVENT_TO_WAIT:
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: EventList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[2]Switch";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ From: EventList ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[2]Switch";
+		t_File << "    " << ss.str() << endl;
 		break;
 	case SCHEDULETABLE_TO_SWITCH:
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: SwitchList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[3]Switch";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ From: RSU[" << t_RSUId << "]'s ScheduleTable[" << t_ClusterIdx << "][" << t_PatternIdx << "] ; To: SwitchList }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[3]Switch";
+		t_File << "    " << ss.str() << endl;
 		break;
 	case SCHEDULETABLE_TO_WAIT:
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: RSU[" << RSUId << "]'s ScheduleTable[" << clusterIdx << "][" << patternIdx << "] ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[4]Switch";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ From: RSU[" << t_RSUId << "]'s ScheduleTable[" << t_ClusterIdx << "][" << t_PatternIdx << "] ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[4]Switch";
+		t_File << "    " << ss.str() << endl;
 		break;
 	case WAIT_TO_SWITCH:
 		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: RSU[" << RSUId << "]'s WaitEventIdList ; To: SwitchList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[5]Switch";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ From: RSU[" << t_RSUId << "]'s WaitEventIdList ; To: SwitchList }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[5]Switch";
+		t_File << "    " << ss.str() << endl;
 		break;
 	case WAIT_TO_ADMIT:
 		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: RSU[" << RSUId << "]'s WaitEventIdList ; To: RSU[" << RSUId << "]'s AdmitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[6]Switch";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ From: RSU[" << t_RSUId << "]'s WaitEventIdList ; To: RSU[" << t_RSUId << "]'s AdmitEventIdList }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[6]Switch";
+		t_File << "    " << ss.str() << endl;
 		break;
 	case SWITCH_TO_WAIT:
 		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ From: SwitchList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[8]Switch";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ From: SwitchList ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[8]Switch";
+		t_File << "    " << ss.str() << endl;
 		break;
 	case TRANSIMIT_TO_WAIT:
 		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ RSU[" << RSUId << "]'s TransimitScheduleInfoList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[9]Conflict";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ RSU[" << t_RSUId << "]'s TransimitScheduleInfoList ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[9]Conflict";
+		t_File << "    " << ss.str() << endl;
 		break;
 	case ADMIT_TO_WAIT:
 		ss.str("");
-		ss << "Event[ " << left << setw(3) << eventId << "]: ";
-		ss << "{ RSU[" << RSUId << "]'s AdmitEventIdList ; To: RSU[" << RSUId << "]'s WaitEventIdList }";
-		out << "[ TTI = " << left << setw(3) << TTI << "]";
-		out << "    " << left << setw(13) << "[11]Conflict";
-		out << "    " << ss.str() << endl;
+		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
+		ss << "{ RSU[" << t_RSUId << "]'s AdmitEventIdList ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
+		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
+		t_File << "    " << left << setw(13) << "[11]Conflict";
+		t_File << "    " << ss.str() << endl;
 		break;
 	}
 }
 
 
-void RRM_TDM_DRA::writeClusterPerformInfo(ofstream &out) {
-	out << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
-	out << "{" << endl;
+void RRM_TDM_DRA::writeClusterPerformInfo(ofstream &t_File) {
+	t_File << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
+	t_File << "{" << endl;
 
 	//打印VeUE信息
-	out << "    VUE Info: " << endl;
-	out << "    {" << endl;
+	t_File << "    VUE Info: " << endl;
+	t_File << "    {" << endl;
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		VeUE &_VeUE = m_VeUEAry[VeUEId];
-		out << _VeUE.m_RRM_TDM_DRA->toString(2) << endl;
+		t_File << _VeUE.m_RRM_TDM_DRA->toString(2) << endl;
 	}
-	out << "    }\n" << endl;
+	t_File << "    }\n" << endl;
 
 	////打印基站信息
 	//out << "    eNB Info: " << endl;
@@ -1087,15 +1087,15 @@ void RRM_TDM_DRA::writeClusterPerformInfo(ofstream &out) {
 	//out << "    }\n" << endl;
 
 	//打印RSU信息
-	out << "    RSU Info: " << endl;
-	out << "    {" << endl;
+	t_File << "    RSU Info: " << endl;
+	t_File << "    {" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
-		out << _RSU.m_RRM_TDM_DRA->toString(2) << endl;
+		t_File << _RSU.m_RRM_TDM_DRA->toString(2) << endl;
 	}
-	out << "    }" << endl;
+	t_File << "    }" << endl;
 
-	out << "}\n\n";
+	t_File << "}\n\n";
 }
 
 

@@ -11,10 +11,8 @@ ofstream g_FileTemp("Log\\Temp.txt");
 //GTT_Urban模块
 ofstream g_FileVeUELocationUpdateLogInfo("Log\\RRMLog\\VeUELocationUpdateLogInfo.txt");
 ofstream g_FileVeUENumPerRSULogInfo("Log\\TMCLog\\VeUENumPerRSULogInfo.txt");
-//RRM_RR模块
-ofstream g_FileRRScheduleInfo("Log\\RRMLog\\RRScheduleInfo.txt");
-//RRM_TDM_DRA模块
-ofstream g_FileDRAScheduleInfo("Log\\RRMLog\\DRAScheduleInfo.txt");
+//RRM模块
+ofstream g_FileScheduleInfo("Log\\RRMLog\\ScheduleInfo.txt");
 ofstream g_FileClasterPerformInfo("Log\\RRMLog\\ClasterPerformInfo.txt");
 ofstream g_FileEventListInfo("Log\\RRMLog\\EventListInfo.txt");
 ofstream g_FileTTILogInfo("Log\\RRMLog\\TTILogInfo.txt");

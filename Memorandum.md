@@ -1,0 +1,5 @@
+* RRM_TDM_DRA中transimiting日志写了两次，一次在冲突侦听处，一次在transimitThread处
+* RRM_TDM_DRA中pushToSwitchEventIdList参数位置调换一下
+* EventLogType枚举类型需要修改，首先要把AdmitEventIdList从RRM_TDM_DRA以及RRM_RR中删除，并且修改RRM_TDM_DRA下Listener中的日志
+* 修改传给GTT模块中的数据结构，改成每辆车的干扰列表，而不传对应Pattern的干扰列表，因为有些干扰根本不用计算
+* 增加delete的封装形式

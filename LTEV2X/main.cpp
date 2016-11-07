@@ -22,8 +22,8 @@ int main() {
 	cout.unsetf(ios::fixed);
 
 	g_FileTemp.close();
-	g_FileRRScheduleInfo.close();
-	g_FileDRAScheduleInfo.close();
+	g_FileScheduleInfo.close();
+	g_FileScheduleInfo.close();
 	g_FileClasterPerformInfo.close();
 	g_FileEventListInfo.close();
 	g_FileTTILogInfo.close();

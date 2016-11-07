@@ -14,6 +14,7 @@
 #include"WT_B.h"
 #include"RRM.h"
 #include"RRM_TDM_DRA.h"
+#include"RRM_ICC_DRA.h"
 #include"RRM_RR.h"
 #include"TMC.h"
 #include"TMC_B.h"

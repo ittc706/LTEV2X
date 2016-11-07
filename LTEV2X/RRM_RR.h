@@ -32,7 +32,7 @@ public:
 	std::list<int> m_SwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
 	/*
-	* 用于存放指定Pattern的干扰列表
+	* 用于存放指定Pattern的干扰列表(同RSU下的簇间干扰或者RSU间干扰)
 	* 外层下标为PatternId(绝对量)
 	*/
 	std::vector<std::list<int>> m_InterferenceVec;
@@ -50,7 +50,7 @@ public:
 
 	void informationClean();//资源分配信息清空
 
-	void updateAdmitEventIdList(bool clusterFlag);//更新接入表
+	void updateAdmitEventIdList(bool t_ClusterFlag);//更新接入表
 	void processEventList();
 	void processWaitEventIdListWhenLocationUpdate();
 	void processSwitchListWhenLocationUpdate();
@@ -59,16 +59,16 @@ public:
 	void roundRobin();//轮询调度，分配当前TTI的资源(就是更新ScheduleTable)
 	void transimitPreparation();//统计干扰信息
 	void transimitStart();//模拟传输开始，更新调度信息，累计吞吐量
-	void transimitStartThread(int fromRSUId, int toRSUId);//模拟传输开始，更新调度信息
-	void writeScheduleInfo(std::ofstream& out);//记录调度信息日志
-	void writeTTILogInfo(std::ofstream& out, int TTI, EventLogType type, int eventId, int RSUId, int patternIdx);//以时间为单位记录日志
+	void transimitStartThread(int t_FromRSUId, int t_ToRSUId);//模拟传输开始，更新调度信息
+	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
+	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_RSUId, int t_PatternIdx);//以时间为单位记录日志
 	void delaystatistics();//时延统计
 
 	void transimitEnd();//模拟传输结束，即统计吞吐量(就是更新ScheduleTable)
 
 
 private:
-	std::pair<int, int> getOccupiedSubCarrierRange(int patternIdx);
+	std::pair<int, int> getOccupiedSubCarrierRange(int t_PatternIdx);
 };
 
 

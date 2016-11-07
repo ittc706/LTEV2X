@@ -81,7 +81,14 @@ void VeUE::initializeRRM_TDM_DRA() {
 }
 
 void VeUE::initializeRRM_ICC_DRA() {
-	//<UNDOWN>：初始化RRM的必要变量
+	m_RRM = new RRM();
+	m_RRM_TDM_DRA = new RRM_TDM_DRA(this);
+
+	m_RRM->m_InterferenceVeUENum = vector<int>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
+	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
+	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
+	m_RRM->m_WTInfo = vector<tuple<ModulationType, int, double>>(ns_RRM_ICC_DRA::gc_TotalPatternNum, tuple<ModulationType, int, double>(_16QAM, 0, 0));
+	m_RRM->m_isWTCached = vector<bool>(ns_RRM_ICC_DRA::gc_TotalPatternNum, false);
 
 	//这两个数据比较特殊，必须等到GTT模块初始化完毕后，车辆的数目才能确定下来
 	m_GTT->m_InterferencePloss = vector<double>(m_VeUECount, 0);
@@ -184,15 +191,22 @@ VeUE::~VeUE() {
 }
 
 
-default_random_engine VeUE::RRM_TDM_DRA::s_Engine((unsigned)time(NULL));
-
-VeUE::RRM_TDM_DRA::RRM_TDM_DRA(VeUE* t_this) {
-	m_This = t_this;
+bool VeUE::RRM::isNeedRecalculateSINR(int patternIdx) {
+	if (m_InterferenceVeUEIdVec[patternIdx].size() != m_PreInterferenceVeUEIdVec[patternIdx].size()) return true;
+	for (int i = 0; i < m_InterferenceVeUEIdVec[patternIdx].size(); i++) {
+		if (m_InterferenceVeUEIdVec[patternIdx][i] != m_PreInterferenceVeUEIdVec[patternIdx][i]) return true;
+	}
+	return false;
 }
 
-string VeUE::RRM_TDM_DRA::toString(int n) {
+
+
+default_random_engine VeUE::RRM_TDM_DRA::s_Engine((unsigned)time(NULL));
+
+
+string VeUE::RRM_TDM_DRA::toString(int t_NumTab) {
 	string indent;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < t_NumTab; i++)
 		indent.append("    ");
 
 	ostringstream ss;
@@ -204,10 +218,19 @@ string VeUE::RRM_TDM_DRA::toString(int n) {
 }
 
 
-bool VeUE::RRM::isNeedRecalculateSINR(int patternIdx) {
-	if (m_InterferenceVeUEIdVec[patternIdx].size() != m_PreInterferenceVeUEIdVec[patternIdx].size()) return true;
-	for (int i = 0; i < m_InterferenceVeUEIdVec[patternIdx].size(); i++) {
-		if (m_InterferenceVeUEIdVec[patternIdx][i] != m_PreInterferenceVeUEIdVec[patternIdx][i]) return true;
-	}
-	return false;
+default_random_engine VeUE::RRM_ICC_DRA::s_Engine((unsigned)time(NULL));
+
+std::string VeUE::RRM_ICC_DRA::toString(int t_NumTab) {
+	string indent;
+	for (int i = 0; i < t_NumTab; i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	ss << indent << "{ VeUEId = " << left << setw(3) << m_This->m_VeUEId;
+	ss << " , RSUId = " << left << setw(3) << m_This->m_GTT->m_RSUId;
+	ss << " , ClusterIdx = " << left << setw(3) << m_This->m_GTT->m_ClusterIdx << " }";
+	return ss.str();
 }
+
+
+
