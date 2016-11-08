@@ -128,7 +128,7 @@ string Event::toLogString(int n) {
 void Event::addEventLog(int t_TTI, EventLogType t_EventLogType, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx,string t_Description) {
 	stringstream ss;
 	switch (t_EventLogType) {
-	case IS_TRANSIMITTING:
+	case TRANSIMITTING:
 		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - Transimit At: RSU[" << t_FromRSUId << "] - Cluster[" << t_FromClusterIdx << "] - Pattern[" << t_FromPatternIdx << "] }";
 		break;
 	case SUCCEED:
