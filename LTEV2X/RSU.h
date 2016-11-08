@@ -130,12 +130,10 @@ public:
 		/*
 		* 等待列表
 		* 存放的是VeUEId
-		* 其来源有：
-		*		1、分簇后，由System级的切换链表转入该RSU级别的等待链表
-		*		2、事件链表中当前的事件触发，但VeUE未在可发送消息的时段，转入等待链表
-		*		3、VeUE在传输消息后，发生冲突，解决冲突后，转入等待链表
+		* 外层下标代表簇编号
+		* 内层first代表Emergency，second代表非Emergency
 		*/
-		std::vector<std::list<int>> m_WaitEventIdList;
+		std::vector<std::pair<std::list<int>,std::list<int>>> m_WaitEventIdList;
 
 		/*
 		* 存放调度调度信息(已经成功接入，但尚未传输完毕，在其传输完毕之前会一直占用该资源块)
@@ -169,7 +167,7 @@ public:
 		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void pushToWaitEventIdList(int t_ClusterIdx, int t_EventId);
+		void pushToWaitEventIdList(bool isEmergency, int t_ClusterIdx, int t_EventId);
 
 		/*
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
@@ -310,8 +308,11 @@ public:
 
 
 inline
-void RSU::RRM_TDM_DRA::pushToWaitEventIdList(int t_ClusterIdx, int t_EventId) {
-	m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
+void RSU::RRM_TDM_DRA::pushToWaitEventIdList(bool isEmergency, int t_ClusterIdx, int t_EventId) {
+	if (isEmergency)
+		m_WaitEventIdList[t_ClusterIdx].first.push_back(t_EventId);
+	else
+		m_WaitEventIdList[t_ClusterIdx].second.push_back(t_EventId);
 }
 
 

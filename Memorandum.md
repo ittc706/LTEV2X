@@ -8,3 +8,4 @@
 * RRM_RR的writeScheduleInfo，把RUS放到clusterIdx循环的外面
 * 修改日志
 * selectBasedOnP123()中当没有pattern剩余的时候，处理逻辑错误，应该不管当前，而不是压入等待表
+* Event的addLog需要修改

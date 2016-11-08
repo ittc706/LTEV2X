@@ -47,6 +47,7 @@ enum EventLogType {
 	TRANSIMIT_TO_WAIT = 9,
 	IS_TRANSIMITTING=10,
 	ADMIT_TO_WAIT = 11,
+	ALL_BUSY=12,
 };
 
 

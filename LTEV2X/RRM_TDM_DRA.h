@@ -57,7 +57,7 @@ private:
 	void groupSizeBasedTDM(bool t_ClusterFlag);//基于簇大小的时分复用
 	void uniformTDM(bool t_ClusterFlag);//基于簇大小的时分复用
 
-	void updateAdmitEventIdList(bool t_ClusterFlag);//更新接纳链表
+	void updateWaitEventIdList(bool t_ClusterFlag);//更新接纳链表
 	void processEventList();
 	void processScheduleInfoTableWhenLocationUpdate();
 	void processWaitEventIdListWhenLocationUpdate();
@@ -76,7 +76,7 @@ private:
 
 	//日志记录函数
 	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
-	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_RSUId, int t_ClusterIdx, int t_PatternIdx);
+	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description);
 	void writeClusterPerformInfo(std::ofstream &t_File);//写入分簇信息的日志
 
 
