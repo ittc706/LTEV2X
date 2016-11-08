@@ -94,11 +94,7 @@ void RRM_RR::schedule() {
 
 
 void RRM_RR::informationClean() {
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++)
-			_RSU.m_RRM_RR->m_AdmitEventIdList[clusterIdx].clear();
-	}
+	
 }
 
 
@@ -118,9 +114,6 @@ void RRM_RR::updateAdmitEventIdList(bool t_ClusterFlag) {
 
 		if (m_SwitchEventIdList.size() != 0) throw Exp("cSystem::RRUpdateAdmitEventIdList");
 	}
-
-	//然后，处理RSU级别的等待链表
-	processWaitEventIdList();
 }
 
 void RRM_RR::processEventList() {
@@ -208,40 +201,18 @@ void RRM_RR::processSwitchListWhenLocationUpdate() {
 }
 
 
-void RRM_RR::processWaitEventIdList() {
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			int count = 0;
-			list<int>::iterator it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].begin();
-			while (it != _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end() && count++ < ns_RRM_RR::gc_TotalPatternNum) {
-				int eventId = *it;
-				MessageType messageType = m_EventVec[eventId].message.messageType;
-				//压入接入链表
-				_RSU.m_RRM_RR->pushToAdmitEventIdList(clusterIdx, eventId);
-
-				//更新日志
-				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, RSUId, clusterIdx, -1, RSUId, clusterIdx, -1, "Accept");
-				writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, RSUId, clusterIdx, -1, RSUId, clusterIdx, -1, "Accept");
-
-				it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
-			}
-			if (_RSU.m_RRM_RR->m_AdmitEventIdList[clusterIdx].size() > ns_RRM_RR::gc_TotalPatternNum)
-				throw Exp("RRProcessWaitEventIdList()");
-		}
-	}
-}
-
-
 void RRM_RR::roundRobin() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			for (int patternIdx = 0; patternIdx < _RSU.m_RRM_RR->m_AdmitEventIdList[clusterIdx].size(); patternIdx++) {
-				int eventId = _RSU.m_RRM_RR->m_AdmitEventIdList[clusterIdx][patternIdx];
+			int patternIdx = 0;
+			list<int>::iterator it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].begin();
+			while (it!= _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end() && patternIdx < ns_RRM_RR::gc_TotalPatternNum) {
+				int eventId = *it;
 				int VeUEId = m_EventVec[eventId].VeUEId;
-				MessageType messageType = m_EventVec[eventId].message.messageType;
-				_RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx] = new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx);
+				_RSU.m_RRM_RR->pushToTransimitScheduleInfoTable(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx));
+				it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
+				patternIdx++;
 			}
 		}
 	}
@@ -259,8 +230,8 @@ void RRM_RR::delaystatistics() {
 
 			//处理此刻正在将要传输的调度表
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
-				if (_RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx] == nullptr)continue;
-				m_EventVec[_RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx]->eventId].sendDelay++;
+				if (_RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx] == nullptr)continue;
+				m_EventVec[_RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx]->eventId].sendDelay++;
 			}
 		}
 	}
@@ -276,7 +247,7 @@ void RRM_RR::transimitPreparation() {
 		RSU &_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
-				RSU::RRM::ScheduleInfo *&info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
+				RSU::RRM::ScheduleInfo *&info = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
 				m_InterferenceVec[patternIdx].push_back(info->VeUEId);
 			}
@@ -330,7 +301,7 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 		RSU &_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
-				RSU::RRM::ScheduleInfo *&info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
+				RSU::RRM::ScheduleInfo *&info = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 
 				if (info == nullptr) continue;
 				int VeUEId = info->VeUEId;
@@ -382,7 +353,7 @@ void RRM_RR::writeScheduleInfo(ofstream& t_File) {
 			t_File << "        {" << endl;
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
 				t_File << "            Pattern[ " << left << setw(3) << patternIdx << "] : " << endl;
-				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
+				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
 				t_File << info->toScheduleString(3) << endl;
 			}
@@ -447,7 +418,7 @@ void RRM_RR::transimitEnd() {
 
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
 
-				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_RR->m_ScheduleInfoTable[clusterIdx][patternIdx];
+				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
 
 				if (m_EventVec[info->eventId].message.isFinished()) {//说明已经传输完毕

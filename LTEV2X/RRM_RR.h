@@ -54,7 +54,6 @@ public:
 	void processEventList();
 	void processWaitEventIdListWhenLocationUpdate();
 	void processSwitchListWhenLocationUpdate();
-	void processWaitEventIdList();
 
 	void roundRobin();//轮询调度，分配当前TTI的资源(就是更新ScheduleTable)
 	void transimitPreparation();//统计干扰信息

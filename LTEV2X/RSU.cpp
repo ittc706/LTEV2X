@@ -280,7 +280,6 @@ string RSU::RRM_ICC_DRA::toString(int t_NumTab) {
 
 RSU::RRM_RR::RRM_RR(RSU* t_This) {
 	m_This = t_This;
-	m_AdmitEventIdList = vector<vector<int>>(m_This->m_GTT->m_ClusterNum);
 	m_WaitEventIdList= vector<list<int>>(m_This->m_GTT->m_ClusterNum);
-	m_ScheduleInfoTable = vector<vector<RSU::RRM::ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<RSU::RRM::ScheduleInfo*>(ns_RRM_RR::gc_TotalPatternNum, nullptr));
+	m_TransimitScheduleInfoTable = vector<vector<RSU::RRM::ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<RSU::RRM::ScheduleInfo*>(ns_RRM_RR::gc_TotalPatternNum, nullptr));
 }

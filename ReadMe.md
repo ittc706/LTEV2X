@@ -1,3 +1,6 @@
+## version_2016_11_8(删除了RRM_RR的Admit表)
+
+
 ## version_2016_11_8(修改了RMM所有模式的日志部分)
 
 

@@ -254,13 +254,6 @@ public:
 		RSU* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 		/*
-		* 当前TTI接入列表
-		* 外层下标为簇编号
-		* 内层vector最大长度不超过Pattern数量
-		*/
-		std::vector<std::vector<int>> m_AdmitEventIdList;
-
-		/*
 		* RSU级别的等待列表
 		* 外层下标为簇编号
 		* 内层list存放的是处于等待接入状态的VeUEId
@@ -275,16 +268,11 @@ public:
 		* 外层下标代表簇编号
 		* 内层下标代表Pattern编号
 		*/
-		std::vector<std::vector<RSU::RRM::ScheduleInfo*>> m_ScheduleInfoTable;
+		std::vector<std::vector<RSU::RRM::ScheduleInfo*>> m_TransimitScheduleInfoTable;
 
 
 		RRM_RR(RSU* t_This);//构造函数
 		/*------------------成员函数------------------*/
-
-		/*
-		* 将AdmitEventIdList的添加封装起来，便于查看哪里调用，利于调试
-		*/
-		void pushToAdmitEventIdList(int t_ClusterIdx, int t_EventId);
 
 		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
@@ -295,6 +283,11 @@ public:
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
 		void pushToSwitchEventIdList(int t_EventId, std::list<int>& t_SwitchVeUEIdList);
+
+		/*
+		* 将ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
+		*/
+		void pushToTransimitScheduleInfoTable(RSU::RRM::ScheduleInfo* t_Info);
 	};
 
 	struct WT {
@@ -380,11 +373,6 @@ void RSU::RRM_ICC_DRA::pushToTransmitScheduleInfoList(RSU::RRM::ScheduleInfo* t_
 
 
 inline
-void RSU::RRM_RR::pushToAdmitEventIdList(int t_ClusterIdx, int t_EventId) {
-	m_AdmitEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-inline
 void RSU::RRM_RR::pushToWaitEventIdList(int t_ClusterIdx, int t_EventId, MessageType t_MessageType) {
 	if (t_MessageType == EMERGENCY) {
 		m_WaitEventIdList[t_ClusterIdx].insert(m_WaitEventIdList[t_ClusterIdx].begin(), t_EventId);
@@ -394,7 +382,14 @@ void RSU::RRM_RR::pushToWaitEventIdList(int t_ClusterIdx, int t_EventId, Message
 	}
 }
 
+
 inline
 void RSU::RRM_RR::pushToSwitchEventIdList(int t_EventId, std::list<int>& t_SwitchVeUEIdList) {
 	t_SwitchVeUEIdList.push_back(t_EventId);
+}
+
+
+inline
+void RSU::RRM_RR::pushToTransimitScheduleInfoTable(RSU::RRM::ScheduleInfo* t_Info) {
+	m_TransimitScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
 }
