@@ -54,15 +54,14 @@ public:
 private:
 	/*实现函数*/
 	void informationClean();//资源分配信息清空
-	void groupSizeBasedTDM(bool clusterFlag);//基于簇大小的时分复用
-	void uniformTDM(bool clusterFlag);//基于簇大小的时分复用
+	void groupSizeBasedTDM(bool t_ClusterFlag);//基于簇大小的时分复用
+	void uniformTDM(bool t_ClusterFlag);//基于簇大小的时分复用
 
-	void updateAdmitEventIdList(bool clusterFlag);//更新接纳链表
+	void updateAdmitEventIdList(bool t_ClusterFlag);//更新接纳链表
 	void processEventList();
 	void processScheduleInfoTableWhenLocationUpdate();
 	void processWaitEventIdListWhenLocationUpdate();
 	void processSwitchListWhenLocationUpdate();
-	void processWaitEventIdList();
 
 	void selectBasedOnP123();//基于P1、P2和P3的资源分配
 
@@ -72,7 +71,7 @@ private:
 
 	void transimitPreparation();//统计干扰信息
 	void transimitStart();//模拟传输开始，更新调度信息，累计吞吐量
-	void transimitStartThread(int fromRSUId,int toRSUId);//模拟传输开始，更新调度信息
+	void transimitStartThread(int t_FromRSUId, int t_ToRSUId);//模拟传输开始，更新调度信息
 	void transimitEnd();//模拟传输结束
 
 	//日志记录函数

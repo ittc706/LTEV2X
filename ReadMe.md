@@ -1,3 +1,7 @@
+## version_2016_11_8(修改了RRM_TDM_DRA模块)
+* 删除了Adimit链表
+* 删除了所有Emergency开头的数据结构
+
 ## version_2016_11_7(RRM_ICC_DRA初步完成)
 
 

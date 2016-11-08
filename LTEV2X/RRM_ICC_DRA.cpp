@@ -276,8 +276,6 @@ void RRM_ICC_DRA::selectBasedOnP123() {
 				int patternIdx = m_VeUEAry[VeUEId].m_RRM_ICC_DRA->selectRBBasedOnP2(curAvaliablePatternIdx);
 
 				if (patternIdx == -1) {//该用户传输的信息类型没有pattern剩余了
-					_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(clusterIdx, eventId);
-
 					//更新该事件的日志
 					m_EventVec[eventId].addEventLog(m_TTI, ADMIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
 

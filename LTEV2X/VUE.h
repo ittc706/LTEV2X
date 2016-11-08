@@ -128,8 +128,7 @@ public:
 
 		RRM_TDM_DRA(VeUE* t_This) :m_This(t_This) {}
 		//成员函数
-		int selectRBBasedOnP2(const std::vector<std::vector<int>>&t_CurAvaliablePatternIdx, MessageType t_MessageType);
-		int selectEmergencyRBBasedOnP2(const std::vector<int>&t_CurAvaliableEmergencyPatternIdx);
+		int selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx);
 
 		std::string toString(int t_NumTab);//用于打印VeUE信息
 	};
@@ -161,19 +160,11 @@ public:
 
 
 inline
-int VeUE::RRM_TDM_DRA::selectRBBasedOnP2(const std::vector<std::vector<int>>&t_CurAvaliablePatternIdx, MessageType t_MessageType) {
-	int size = static_cast<int>(t_CurAvaliablePatternIdx[t_MessageType].size());
+int VeUE::RRM_TDM_DRA::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx) {
+	int size = static_cast<int>(t_CurAvaliablePatternIdx.size());
 	if (size == 0) return -1;
 	std::uniform_int_distribution<int> u(0, size - 1);
-	return t_CurAvaliablePatternIdx[t_MessageType][u(s_Engine)];
-}
-
-inline
-int VeUE::RRM_TDM_DRA::selectEmergencyRBBasedOnP2(const std::vector<int>&t_CurAvaliableEmergencyPatternIdx) {
-	int size = static_cast<int>(t_CurAvaliableEmergencyPatternIdx.size());
-	if (size == 0) return -1;
-	std::uniform_int_distribution<int> u(0, size - 1);
-	return t_CurAvaliableEmergencyPatternIdx[u(s_Engine)];
+	return t_CurAvaliablePatternIdx[u(s_Engine)];
 }
 
 
