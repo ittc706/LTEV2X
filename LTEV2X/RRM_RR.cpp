@@ -133,11 +133,9 @@ void RRM_RR::processEventList() {
 		//将事件压入等待链表
 		_RSU.m_RRM_RR->pushToWaitEventIdList(clusterIdx,eventId, m_EventVec[eventId].message.messageType);
 
-		//更新该事件的日志
-		m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, RSUId, -1, -1, "Trigger");
-
-		//记录TTI日志
-		writeTTILogInfo(g_FileTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, RSUId, -1);
+		//更新日志
+		m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, -1, -1, -1, RSUId, clusterIdx, -1, "Trigger");
+		writeTTILogInfo(g_FileTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, -1, -1, -1, RSUId, clusterIdx, -1, "Trigger");
 	}
 }
 
@@ -163,24 +161,22 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 					//将其从等待链表中删除
 					it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
 
-					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTT->m_RSUId, -1, -1, "LocationUpdate");
-
-					//记录TTI日志
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, -1);
-				}else if(m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx!= clusterIdx){//仍然处于当前RSU范围内，但是位于不同的簇
-					//将其转移到当前RSU的其他簇内
+					//更新日志
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
+				}
+				else if (m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx != clusterIdx) {//仍然处于当前RSU范围内，但是位于不同的簇
+				   //将其转移到当前RSU的其他簇内
 					_RSU.m_RRM_RR->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId, messageType);
 
 					//将其从等待链表中删除
 					it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
 
-					//更新该事件的日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTT->m_RSUId, -1, -1, "LocationUpdate");
-
-					//记录TTI日志
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, -1);
-				}else {
+					//更新日志
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, -1, "LocationUpdate");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, -1, "LocationUpdate");
+				}
+				else {
 					it++;
 					continue; //继续留在当前RSU当前簇的等待链表
 				}
@@ -204,11 +200,9 @@ void RRM_RR::processSwitchListWhenLocationUpdate() {
 		//从Switch链表中删除
 		it = m_SwitchEventIdList.erase(it);
 
-		//更新该事件的日志
-		m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, RSUId, -1, -1, "LocationUpdate");
-
-		//记录TTI日志
-		writeTTILogInfo(g_FileTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, RSUId, -1);
+		//更新日志
+		m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, -1, -1, -1, RSUId, clusterIdx, -1, "LocationUpdate");
+		writeTTILogInfo(g_FileTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, -1, -1, -1, RSUId, clusterIdx, -1, "LocationUpdate");
 
 	}
 }
@@ -226,11 +220,9 @@ void RRM_RR::processWaitEventIdList() {
 				//压入接入链表
 				_RSU.m_RRM_RR->pushToAdmitEventIdList(clusterIdx, eventId);
 
-				//更新该事件的日志
-				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, RSUId, -1, -1, "Accept");
-
-				//记录TTI日志
-				writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, RSUId, -1);
+				//更新日志
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ADMIT, RSUId, clusterIdx, -1, RSUId, clusterIdx, -1, "Accept");
+				writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ADMIT, eventId, RSUId, clusterIdx, -1, RSUId, clusterIdx, -1, "Accept");
 
 				it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
 			}
@@ -368,8 +360,9 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSU.m_GTT->m_RSUId] += realEquivalentBitNum;
 
-				//更新该事件的日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTT->m_RSUId, -1, patternIdx, "Transimit");
+				//更新日志
+				m_EventVec[info->eventId].addEventLog(m_TTI, IS_TRANSIMITTING, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+				writeTTILogInfo(g_FileTTILogInfo, m_TTI, IS_TRANSIMITTING, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 			}
 		}
 	}
@@ -403,61 +396,44 @@ void RRM_RR::writeScheduleInfo(ofstream& t_File) {
 }
 
 
-void RRM_RR::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_RSUId, int t_PatternIdx) {
+void RRM_RR::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description) {
 	stringstream ss;
 	switch (t_EventLogType) {
 	case SUCCEED:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
-		ss << "{ RSU[" << t_RSUId << "]    PatternIdx[" << t_PatternIdx << "] }";
-		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
-		t_File << "    " << left << setw(13) << "[0]Succeed";
-		t_File << "    " << ss.str() << endl;
+		ss << " - Transimit Succeed At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "] - PatternIdx[" << t_FromPatternIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
+		break;
+	case IS_TRANSIMITTING:
+		ss << " - Transimiting  At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "] - PatternIdx[" << t_FromPatternIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case EVENT_TO_WAIT:
-		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
-		ss << "{ From: EventList ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
-		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
-		t_File << "    " << left << setw(13) << "[1]Switch";
-		t_File << "    " << ss.str() << endl;
+		ss << " - From: EventList - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
-	case WAIT_TO_ADMIT:
-		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
-		ss << "{ From: RSU[" << t_RSUId << "]'s WaitEventIdList ; To: RSU[" << t_RSUId << "]'s AdmitEventIdList }";
-		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
-		t_File << "    " << left << setw(13) << "[2]Switch";
-		t_File << "    " << ss.str() << endl;
+	case SCHEDULETABLE_TO_SWITCH:
+		ss << " - From: RSU[" << t_FromRSUId << "]'s ScheduleTable[" << t_FromClusterIdx << "][" << t_FromPatternIdx << "] - To: SwitchList";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case SCHEDULETABLE_TO_WAIT:
-		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
-		ss << "{ From: RSU[" << t_RSUId << "]'s ScheduleTable[" << t_PatternIdx << "] ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
-		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
-		t_File << "    " << left << setw(13) << "[3]Switch";
-		t_File << "    " << ss.str() << endl;
+		ss << " - From: RSU[" << t_FromRSUId << "]'s ScheduleTable[" << t_FromClusterIdx << "][" << t_FromPatternIdx << "] - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case WAIT_TO_SWITCH:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
-		ss << "{ From: RSU[" << t_RSUId << "]'s WaitEventIdList ; To: SwitchList }";
-		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
-		t_File << "    " << left << setw(13) << "[4]Switch";
-		t_File << "    " << ss.str() << endl;
+		ss << " - From: RSU[" << t_FromRSUId << "]'s WaitEventIdList[" << t_FromClusterIdx << "] - To: SwitchList";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case WAIT_TO_WAIT:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
-		ss << "{ From: RSU[" << t_RSUId << "]'s WaitEventIdList ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
-		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
-		t_File << "    " << left << setw(13) << "[5]Switch";
-		t_File << "    " << ss.str() << endl;
+		ss << " - From: RSU[" << t_FromRSUId << "]'s WaitEventIdList[" << t_FromClusterIdx << "] - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case SWITCH_TO_WAIT:
-		ss.str("");
-		ss << "Event[ " << left << setw(3) << t_EventId << "]: ";
-		ss << "{ From: SwitchList ; To: RSU[" << t_RSUId << "]'s WaitEventIdList }";
-		t_File << "[ TTI = " << left << setw(3) << t_TTI << "]";
-		t_File << "    " << left << setw(13) << "[5]Switch";
-		t_File << "    " << ss.str() << endl;
+		ss << " - From: SwitchList - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
+		break;
+	case TRANSIMIT_TO_WAIT:
+		ss << " - From: RSU[" << t_FromRSUId << "]'s TransimitScheduleInfoList[" << t_FromClusterIdx << "][" << t_FromPatternIdx << "] - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	}
 }
@@ -478,11 +454,9 @@ void RRM_RR::transimitEnd() {
 					//设置传输成功标记
 					m_EventVec[info->eventId].isSuccessded = true;
 
-					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTT->m_RSUId, -1, patternIdx, "Succeed");
-
-					//记录TTI日志
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, patternIdx);
+					//更新日志
+					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
 					//释放调度信息对象的内存资源
 					delete info;
@@ -491,11 +465,9 @@ void RRM_RR::transimitEnd() {
 				else {//没有传输完毕，转到Wait链表，等待下一次调度
 					_RSU.m_RRM_RR->pushToWaitEventIdList(clusterIdx, info->eventId, m_EventVec[info->eventId].message.messageType);
 
-					//更新该事件的日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSU.m_GTT->m_RSUId, -1, patternIdx, "WaitNextTurn");
-
-					//记录TTI日志
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, patternIdx);
+					//更新日志
+					m_EventVec[info->eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "NextTurn");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "NextTurn");
 
 					//释放调度信息对象的内存资源
 					delete info;

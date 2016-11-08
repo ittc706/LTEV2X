@@ -256,7 +256,7 @@ public:
 		/*
 		* 当前TTI接入列表
 		* 外层下标为簇编号
-		* 内层list最大长度不超过Pattern数量
+		* 内层vector最大长度不超过Pattern数量
 		*/
 		std::vector<std::vector<int>> m_AdmitEventIdList;
 
@@ -272,7 +272,8 @@ public:
 
 		/*
 		* 存放调度调度信息，本次进行传输
-		* 外层代表Pattern号
+		* 外层下标代表簇编号
+		* 内层下标代表Pattern编号
 		*/
 		std::vector<std::vector<RSU::RRM::ScheduleInfo*>> m_ScheduleInfoTable;
 

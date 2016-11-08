@@ -61,7 +61,7 @@ public:
 	void transimitStart();//模拟传输开始，更新调度信息，累计吞吐量
 	void transimitStartThread(int t_FromRSUId, int t_ToRSUId);//模拟传输开始，更新调度信息
 	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
-	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_RSUId, int t_PatternIdx);//以时间为单位记录日志
+	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description);//以时间为单位记录日志
 	void delaystatistics();//时延统计
 
 	void transimitEnd();//模拟传输结束，即统计吞吐量(就是更新ScheduleTable)
