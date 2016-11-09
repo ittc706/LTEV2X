@@ -1,3 +1,7 @@
+## version_2016_11_9(修改RRM_RR)
+* 就修改了writeScheduleInfo的格式
+* 删除了备忘录中已经修正的内容
+
 ## version_2016_11_9(Debug RRM所有模式)
 
 

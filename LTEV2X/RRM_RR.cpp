@@ -345,9 +345,9 @@ void RRM_RR::writeScheduleInfo(ofstream& t_File) {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 
 		RSU &_RSU = m_RSUAry[RSUId];
+		t_File << "    RSU[" << _RSU.m_GTT->m_RSUId << "] :" << endl;
+		t_File << "    {" << endl;
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			t_File << "    RSU[" << _RSU.m_GTT->m_RSUId << "] :" << endl;
-			t_File << "    {" << endl;
 			t_File << "        Cluster[" << clusterIdx << "] :" << endl;
 			t_File << "        {" << endl;
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
@@ -357,9 +357,8 @@ void RRM_RR::writeScheduleInfo(ofstream& t_File) {
 				t_File << info->toScheduleString(3) << endl;
 			}
 			t_File << "        }" << endl;
-			t_File << "    }" << endl;
 		}
-		
+		t_File << "    }" << endl;
 	}
 	t_File << "}" << endl;
 	t_File << "\n\n" << endl;
