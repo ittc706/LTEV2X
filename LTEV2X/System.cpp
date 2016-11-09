@@ -45,14 +45,14 @@ void System::process() {
 
 void System::configure() {//系统仿真参数配置
 
-	m_Config.NTTI = 200;//仿真TTI时间
+	m_Config.NTTI = 300;//仿真TTI时间
 	m_Config.periodicEventNTTI = 500;
 	m_Config.emergencyLambda = 0;// 0.001;
 	m_Config.dataLambda = 0;
-	m_Config.locationUpdateNTTI = 1000;
+	m_Config.locationUpdateNTTI = 100;
 
 	//地理拓扑与传输模式
-	m_GTTMode = HIGHSPEED;
+	m_GTTMode = URBAN;
 
 	//无线资源管理模式
 	m_RRMMode = RR;

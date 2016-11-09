@@ -56,8 +56,8 @@ public:
 	struct GTT {
 		~GTT();
 
-		int m_RSUId;//RRM_TDM_DRA模块需要
-		int m_ClusterIdx;//RRM_TDM_DRA模块需要
+		int m_RSUId;//车辆所在的RSUId
+		int m_ClusterIdx;//车辆所在簇编号
 
 		int m_Nt;//发送天线数目，WT_B模块需要
 		int m_Nr;//接收天线数目，WT_B模块需要
@@ -136,7 +136,7 @@ public:
 	struct RRM_ICC_DRA {
 		static std::default_random_engine s_Engine;
 
-		VeUE* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+		VeUE* m_This;//RRM_ICC_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 		RRM_ICC_DRA(VeUE* t_This) :m_This(t_This) {}
 

@@ -1,3 +1,6 @@
+## version_2016_11_9(Debug RRM所有模式)
+
+
 ## version_2016_11_9(修改枚举类型EventLogType)
 * IS_TRANSIMITING改为TRANSIMITING
 

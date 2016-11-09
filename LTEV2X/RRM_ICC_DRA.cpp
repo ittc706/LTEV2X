@@ -64,11 +64,11 @@ void RRM_ICC_DRA::schedule() {
 	//资源分配信息清空:包括每个RSU内的接入链表等
 	informationClean();
 
-	//建立接纳链表
+	//更新等待链表
 	updateWaitEventIdList(clusterFlag);
 
 	//资源选择
-	selectBasedOnP123();
+	selectRBBasedOnP123();
 
 	//统计时延信息
 	delaystatistics();
@@ -100,7 +100,6 @@ void RRM_ICC_DRA::updateWaitEventIdList(bool t_ClusterFlag) {
 	processEventList();
 	//其次，如果当前TTI进行了位置更新，需要处理调度表
 	if (t_ClusterFlag) {
-		if (m_SwitchEventIdList.size() != 0) throw Exp("cSystem::DRAUpdateAdmitEventIdList");
 		//处理RSU级别的调度链表
 		processScheduleInfoTableWhenLocationUpdate();
 
@@ -109,7 +108,6 @@ void RRM_ICC_DRA::updateWaitEventIdList(bool t_ClusterFlag) {
 
 		//处理System级别的切换链表
 		processSwitchListWhenLocationUpdate();
-		if (m_SwitchEventIdList.size() != 0) throw Exp("cSystem::DRAUpdateAdmitEventIdList");
 	}
 }
 
@@ -208,7 +206,7 @@ void RRM_ICC_DRA::processWaitEventIdListWhenLocationUpdate() {
 				}
 				else if (m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx != clusterIdx) {//仍然处于当前RSU范围内，但位于不同的簇
 
-																			   //将其添加到所在簇的等待链表
+					//将其添加到所在簇的等待链表
 					_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId);
 
 					//将其从等待链表中的当前簇删除
@@ -251,7 +249,7 @@ void RRM_ICC_DRA::processSwitchListWhenLocationUpdate() {
 
 
 
-void RRM_ICC_DRA::selectBasedOnP123() {
+void RRM_ICC_DRA::selectRBBasedOnP123() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
@@ -294,11 +292,9 @@ void RRM_ICC_DRA::selectBasedOnP123() {
 
 				it = _RSU.m_RRM_ICC_DRA->m_WaitEventIdList[clusterIdx].erase(it);
 			}
-
-			//<UNDOWN>目前暂时不需要调度表，因为默认不会持续占用资源
-			////将调度表中当前可以继续传输的用户压入传输链表中
-			//_RSU.m_RRM_ICC_DRA->pullFromScheduleInfoTable(m_TTI);
 		}
+		//将调度表中当前可以继续传输的用户压入传输链表中
+		_RSU.m_RRM_ICC_DRA->pullFromScheduleInfoTable(m_TTI);
 	}
 }
 
@@ -318,19 +314,7 @@ void RRM_ICC_DRA::delaystatistics() {
 				for (RSU::RRM::ScheduleInfo* &p : _RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx])
 					m_EventVec[p->eventId].sendDelay++;
 			}
-
-			//<UNDOWN>目前暂时不需要调度表，因为默认不会持续占用资源
-			////处理此刻位于调度表中，但不属于当前簇的事件
-			//int curClusterIdx = _RSU.m_RRM_ICC_DRA->getClusterIdx(m_TTI);
-			//for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			//	if (clusterIdx == curClusterIdx) continue;
-			//	for (RSU::RRM::ScheduleInfo *p : _RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx]) {
-			//		if (p == nullptr) continue;
-			//		m_EventVec[p->eventId].queuingDelay++;
-			//	}
-			//}
 		}
-		
 	}
 }
 
@@ -487,7 +471,7 @@ void RRM_ICC_DRA::transimitEnd() {
 
 				list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
 				if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-					RSU::RRM::ScheduleInfo *info = *lst.begin();
+					RSU::RRM::ScheduleInfo* &info = *lst.begin();
 					if (m_EventVec[info->eventId].message.isFinished()) {//说明该数据已经传输完毕
 
 						//设置传输成功标记
@@ -497,16 +481,17 @@ void RRM_ICC_DRA::transimitEnd() {
 						m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 						writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
-					}
-					else {//该数据仍未传完，将其压回m_WaitEventIdList，目前暂时是不支持持续占用的<UNDOWN>
-						_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(clusterIdx, info->eventId);
-					}
-					//释放调度信息对象的内存资源
-					delete *lst.begin();
-					*lst.begin() = nullptr;
+						//释放调度信息对象的内存资源
+						delete info;
+						info = nullptr;
 
-					//释放Pattern资源
-					_RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
+						_RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
+
+					}
+					else {//该数据仍未传完，将其压回m_ScheduleInfoTable
+						_RSU.m_RRM_ICC_DRA->pushToScheduleInfoTable(info);
+						info = nullptr;
+					}
 				}
 				//处理完后，将该pattern上的数据清空（此时要不本身就是空，要不就是nullptr指针）
 				lst.clear();
@@ -546,12 +531,12 @@ void RRM_ICC_DRA::writeScheduleInfo(ofstream& t_File) {
 void RRM_ICC_DRA::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description) {
 	stringstream ss;
 	switch (t_EventLogType) {
-	case SUCCEED:
-		ss << " - Transimit Succeed At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "] - PatternIdx[" << t_FromPatternIdx << "]";
-		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
-		break;
 	case TRANSIMITTING:
 		ss << " - Transimiting  At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "] - PatternIdx[" << t_FromPatternIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
+		break;
+	case SUCCEED:
+		ss << " - Transimit Succeed At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "] - PatternIdx[" << t_FromPatternIdx << "]";
 		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case EVENT_TO_WAIT:

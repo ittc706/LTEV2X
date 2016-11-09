@@ -50,8 +50,8 @@ public:
 	//类内数据结构定义
 	struct GTT {
 		int m_RSUId;
-		std::list<int> m_VeUEIdList;//当前RSU范围内的VeUEId编号容器,RRM_TDM_DRA模块需要
-		int m_ClusterNum;//一个RSU覆盖范围内的簇的个数,RRM_TDM_DRA模块需要
+		std::list<int> m_VeUEIdList;//当前RSU范围内的VeUEId编号容器,RRM模块需要
+		int m_ClusterNum;//一个RSU覆盖范围内的簇的个数,RRM模块需要
 		std::vector<std::list<int>> m_ClusterVeUEIdList;//存放每个簇的VeUE的Id的容器,下标代表簇的编号
 	};
 
@@ -248,10 +248,20 @@ public:
 		* 将TransimitScheduleInfo的添加封装起来，便于查看哪里调用，利于调试
 		*/
 		void pushToTransmitScheduleInfoList(RSU::RRM::ScheduleInfo* t_Info);
+
+		/*
+		* 将ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
+		*/
+		void pushToScheduleInfoTable(RSU::RRM::ScheduleInfo* t_Info);
+
+		/*
+		* 将RSU级别的ScheduleInfoTable的弹出封装起来，便于查看哪里调用，利于调试
+		*/
+		void pullFromScheduleInfoTable(int t_TTI);
 	};
 
 	struct RRM_RR {
-		RSU* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+		RSU* m_This;//RRM_RR会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 		/*
 		* RSU级别的等待列表
@@ -277,7 +287,7 @@ public:
 		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void pushToWaitEventIdList(int t_ClusterIdx, int t_EventId, MessageType t_MessageType);
+		void pushToWaitEventIdList(bool isEmergency, int t_ClusterIdx, int t_EventId);
 
 		/*
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
@@ -370,16 +380,32 @@ void RSU::RRM_ICC_DRA::pushToTransmitScheduleInfoList(RSU::RRM::ScheduleInfo* t_
 	m_TransimitScheduleInfoList[t_Info->clusterIdx][t_Info->patternIdx].push_back(t_Info);
 }
 
+inline
+void RSU::RRM_ICC_DRA::pushToScheduleInfoTable(RSU::RRM::ScheduleInfo* t_Info) {
+	m_ScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
+}
+
+inline
+void RSU::RRM_ICC_DRA::pullFromScheduleInfoTable(int t_TTI) {
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
+			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
+				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
+				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+			}
+		}
+	}
+}
+
+
 
 
 inline
-void RSU::RRM_RR::pushToWaitEventIdList(int t_ClusterIdx, int t_EventId, MessageType t_MessageType) {
-	if (t_MessageType == EMERGENCY) {
+void RSU::RRM_RR::pushToWaitEventIdList(bool isEmergency, int t_ClusterIdx, int t_EventId) {
+	if (isEmergency)
 		m_WaitEventIdList[t_ClusterIdx].insert(m_WaitEventIdList[t_ClusterIdx].begin(), t_EventId);
-	}
-	else {
+	else
 		m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
-	}
 }
 
 

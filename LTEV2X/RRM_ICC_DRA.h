@@ -51,7 +51,7 @@ public:
 	/*接口函数*/
 	void initialize() override;//初始化RSU VeUE内该单元的内部类
 	void cleanWhenLocationUpdate()override;//当发生位置更新时，清除缓存的调度相关信息
-	void schedule() override;//RRM_TDM_DRA调度总控，覆盖基类的虚函数
+	void schedule() override;//RRM_ICC_DRA调度总控，覆盖基类的虚函数
 private:
 	/*实现函数*/
 	void informationClean();//资源分配信息清空
@@ -62,7 +62,7 @@ private:
 	void processWaitEventIdListWhenLocationUpdate();
 	void processSwitchListWhenLocationUpdate();
 
-	void selectBasedOnP123();//基于P1、P2和P3的资源分配
+	void selectRBBasedOnP123();//基于P1、P2和P3的资源分配
 
 	void delaystatistics();//时延统计
 	void conflictListener();//帧听冲突
