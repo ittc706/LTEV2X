@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include<fstream>
+#include"ConfigLoader.h"
 #include"Config.h"
 #include"eNB.h"
 #include"RSU.h"

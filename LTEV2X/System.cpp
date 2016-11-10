@@ -44,18 +44,98 @@ void System::process() {
 }
 
 void System::configure() {//系统仿真参数配置
+	ConfigLoader configLoader("Config\\systemConfig.html");
+	configLoader.load();//解析配置文件
 
-	m_Config.NTTI = 20;//仿真TTI时间
-	m_Config.periodicEventNTTI = 500;
-	m_Config.emergencyLambda = 0;// 0.001;
-	m_Config.dataLambda = 0;
-	m_Config.locationUpdateNTTI = 1000;
+	stringstream ss;
 
-	//地理拓扑与传输模式
-	m_GTTMode = URBAN;
+	const string nullString("");
+	string temp;
+	if ((temp = configLoader.getParam("NTTI")) != nullString) {
+		ss << temp;
+		ss >> m_Config.NTTI;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw Exp("ConfigLoaderError");
 
-	//无线资源管理模式
-	m_RRMMode = RR;
+	if ((temp = configLoader.getParam("periodicEventNTTI")) != nullString) {
+		ss << temp;
+		ss >> m_Config.periodicEventNTTI;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
+
+	if ((temp = configLoader.getParam("emergencyLambda")) != nullString) {
+		ss << temp;
+		ss >> m_Config.emergencyLambda;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("dataLambda")) != nullString) {
+		ss << temp;
+		ss >> m_Config.dataLambda;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("locationUpdateNTTI")) != nullString) {
+		ss << temp;
+		ss >> m_Config.locationUpdateNTTI;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("GTTMode")) != nullString) {
+		if (temp == "URBAN") {
+			m_GTTMode = URBAN;
+			cout << "GTT单元：URBAN模式" << endl;
+		}
+		else if (temp == "HIGHSPEED") {
+			m_GTTMode = HIGHSPEED;
+			cout << "GTT单元：HIGHSPEED模式" << endl;
+		}
+		else
+			throw Exp("地理拓扑单元参数配置错误");
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("RRMMode")) != nullString) {
+		if (temp == "TDM_DRA") {
+			m_RRMMode = TDM_DRA;
+			cout << "RRM单元：TDM_DRA模式" << endl;
+		}
+		else if (temp == "ICC_DRA") {
+			m_RRMMode = ICC_DRA;
+			cout << "RRM单元：ICC_DRA模式" << endl;
+		}
+		else if (temp == "RR") {
+			m_RRMMode = RR;
+			cout << "RRM单元：RR模式" << endl;
+		}
+		else
+			throw Exp("无限资源管理单元参数配置错误");
+	}
+	else
+		throw Exp("ConfigLoaderError");
+	/*cout << m_Config.NTTI << endl;
+	cout << m_Config.periodicEventNTTI << endl;
+	cout << m_Config.emergencyLambda << endl;
+	cout << m_Config.dataLambda << endl;
+	cout << m_Config.locationUpdateNTTI << endl;
+	system("pause");*/
 }
 
 

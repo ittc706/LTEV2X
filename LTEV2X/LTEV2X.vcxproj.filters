@@ -87,6 +87,9 @@
     <ClInclude Include="GTT_Urban.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ConfigLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -144,6 +147,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RRM_ICC_DRA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigLoader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

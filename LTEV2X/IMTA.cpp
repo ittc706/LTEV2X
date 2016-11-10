@@ -703,7 +703,7 @@ void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, d
 
 		FILE *fpp;
 		errno_t err;
-		err = fopen_s(&fpp, "HF.txt", "w+");
+		err = fopen_s(&fpp, "Log\\GTTLog\\HF.txt", "w+");
 		for (int pp = 0; pp<1024; pp++)
 		{
 			fprintf(fpp, "%f\n", out1[pp][0]);

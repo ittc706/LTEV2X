@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Complex.h" />
+    <ClInclude Include="ConfigLoader.h" />
     <ClInclude Include="GTT.h" />
     <ClInclude Include="GTT_Urban.h" />
     <ClInclude Include="Matrix.h" />
@@ -151,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="ConfigLoader.cpp" />
     <ClCompile Include="GTT_High.cpp" />
     <ClCompile Include="GTT_Urban.cpp" />
     <ClCompile Include="Matrix.cpp" />

@@ -1,3 +1,6 @@
+## version_2016_11_10(修改了参数配置的方式)
+* 系统常量参数从参数配置文件中读取
+
 ## version_2016_11_10(增加了RRM_ICC_DRA以及RRM_RR的分簇信息日志)
 * 修复了VeUE::RRM_ICC_DRA初始化的问题，从RRM_TDM_DRA复制过来后，忘记改了
 
