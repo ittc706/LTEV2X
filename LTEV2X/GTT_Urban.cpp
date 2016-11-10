@@ -310,27 +310,27 @@ void GTT_Urban::freshLoc() {
 		}
 		else if ((m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId >= 31) && (m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId <= 61)) {
 			RSUIdx = gc_RSUInRoad[m_VeUEAry[UserIdx1].m_GTT_Urban->m_RoadId][0];
-			ClusterID = 3;
+			ClusterID = 2;
 		}
 		else if	((m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId <= 79) && (m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId >=62)){
 			RSUIdx = gc_RSUInRoad[m_VeUEAry[UserIdx1].m_GTT_Urban->m_RoadId][0];
-			ClusterID = 2;
+			ClusterID = 1;
 		}
 		else if ((m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId >= 80) && (m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId <= 96)) {
 			RSUIdx = gc_RSUInRoad[m_VeUEAry[UserIdx1].m_GTT_Urban->m_RoadId][1];
-			ClusterID = 5;
+			ClusterID = 3;
 		}
 		else if((m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId >= 97) && (m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId <= 126)){
 			RSUIdx = gc_RSUInRoad[m_VeUEAry[UserIdx1].m_GTT_Urban->m_RoadId][1];
-			ClusterID = 4;
+			ClusterID = 2;
 		}
 		else if ((m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId >= 127) && (m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId <= 157)) {
 			RSUIdx = gc_RSUInRoad[m_VeUEAry[UserIdx1].m_GTT_Urban->m_RoadId][2];
-			ClusterID = 7;
+			ClusterID = 0;
 		}
 		else {
 			RSUIdx = gc_RSUInRoad[m_VeUEAry[UserIdx1].m_GTT_Urban->m_RoadId][2];
-			ClusterID = 6;
+			ClusterID = 3;
 	}
 		/*switch (m_VeUEAry[UserIdx1].m_GTT_Urban->m_LocationId / 10)
 		{

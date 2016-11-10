@@ -95,7 +95,7 @@ namespace ns_GTT_Urban {//城镇模块常量设置
 	};
 
 	const int gc_RSUClusterNum[gc_RSUNumber] = {
-		8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+		4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4
 	};
 
 	const double gc_RSUTopoRatio[gc_RSUNumber * 2] = {

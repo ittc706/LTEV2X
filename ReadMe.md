@@ -1,3 +1,5 @@
+## version_2016_11_10（将城镇道路下每一个RSU下的簇个数减为4个）
+
 ## version_2016_11_9(修改RRM_RR)
 * 就修改了writeScheduleInfo的格式
 * 删除了备忘录中已经修正的内容
