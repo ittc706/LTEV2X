@@ -15,13 +15,13 @@ GTT_HighSpeed::GTT_HighSpeed(int &t_TTI, Configure& t_Config, eNB* &t_NBAry, Roa
 
 void GTT_HighSpeed::configure() {
 	m_Config.eNBNum = gc_eNBNumber;
-	m_Config.HighSpeedRodeNum = gc_LaneNumber;
+	m_HighSpeedRodeNum = gc_LaneNumber;
 	m_Config.RSUNum = gc_RSUNumber;//目前只表示UE RSU数
-	m_Config.pupr = new int[m_Config.HighSpeedRodeNum];
+	m_pupr = new int[m_HighSpeedRodeNum];
 	m_Config.VeUENum = 0;
 	double Lambda = gc_Length*3.6 / (2.5 * 140);
 	srand((unsigned)time(NULL));
-	for (int temp = 0; temp != m_Config.HighSpeedRodeNum; ++temp)
+	for (int temp = 0; temp != m_HighSpeedRodeNum; ++temp)
 	{
 		int k = 0;
 		long double p = 1.0;
@@ -32,17 +32,16 @@ void GTT_HighSpeed::configure() {
 			p *= u;
 			k++;
 		}
-		m_Config.pupr[temp] = k - 1;
+		m_pupr[temp] = k - 1;
 		m_Config.VeUENum = m_Config.VeUENum + k - 1;
-		//printf("%d\n",k-1);
 	}
-	m_Config.fv = 140;//车速设定,km/h
+	m_Speed = 140;//车速设定,km/h
 }
 
 
 void GTT_HighSpeed::initialize() {
 	m_eNBAry = new eNB[m_Config.eNBNum];
-	m_RoadAry = new Road[m_Config.HighSpeedRodeNum];
+	m_RoadAry = new Road[m_HighSpeedRodeNum];
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	m_RSUAry = new RSU[m_Config.RSUNum];
 
@@ -55,7 +54,7 @@ void GTT_HighSpeed::initialize() {
 
 
 	HighSpeedRodeConfigure laneConfigure;
-	for (int temp = 0; temp != m_Config.HighSpeedRodeNum; ++temp) {
+	for (int temp = 0; temp != m_HighSpeedRodeNum; ++temp) {
 		laneConfigure.roadId = temp;
 		m_RoadAry[temp].initializeHighSpeed(laneConfigure);
 	}
@@ -70,15 +69,14 @@ void GTT_HighSpeed::initialize() {
 	VeUEConfigure ueConfigure;
 	int ueidx = 0;
 
-	for (int LaneIdx = 0; LaneIdx != m_Config.HighSpeedRodeNum; LaneIdx++) {
-		for (int uprIdx = 0; uprIdx != m_Config.pupr[LaneIdx]; uprIdx++) {
+	for (int LaneIdx = 0; LaneIdx != m_HighSpeedRodeNum; LaneIdx++) {
+		for (int uprIdx = 0; uprIdx != m_pupr[LaneIdx]; uprIdx++) {
 			ueConfigure.laneId = LaneIdx;
-			//ueConfigure.locationID=rand()%conf.ueTopoNum;
 			ueConfigure.X = -1732 + rand() % 3465;
 			ueConfigure.Y = 0.0f;
 			ueConfigure.AbsX = m_RoadAry[LaneIdx].m_GTT_HighSpeed->m_AbsX + ueConfigure.X;
 			ueConfigure.AbsY = m_RoadAry[LaneIdx].m_GTT_HighSpeed->m_AbsY + ueConfigure.Y;
-			ueConfigure.V = m_Config.fv;
+			ueConfigure.V = m_Speed;
 			m_VeUEAry[ueidx++].initializeGTT_HighSpeed(ueConfigure);
 		}
 	}
@@ -135,7 +133,7 @@ void GTT_HighSpeed::channelGeneration() {
 	m_VeUENumPerRSU.push_back(curVeUENum);
 
 
-	//UNDONE
+	//<UNDONE>
 	//更新基站的VeUE容器
 	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
 		eNB &_eNB = m_eNBAry[eNBId];
@@ -145,7 +143,7 @@ void GTT_HighSpeed::channelGeneration() {
 			}
 		}
 	}
-	//UNDONE
+	//<UNDONE>
 }
 
 

@@ -1,3 +1,7 @@
+## version_2016_11_10(修改了System的Config)
+* 将部分参量移动到GTT_Urban以及GTT_HighSpeed作为成员变量
+
+
 ## version_2016_11_10(修改了参数配置的方式)
 * 系统常量参数从参数配置文件中读取
 

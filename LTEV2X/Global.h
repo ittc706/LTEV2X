@@ -153,7 +153,6 @@ namespace ns_GTT_HighSpeed {
 	const double gc_LaneWidth = 4.0f;
 	const double gc_FreshTime = 0.1f;
 	const double gc_ISD = 1732.0f;
-	const int gc_v = 140;
 
 	const double gc_LaneTopoRatio[gc_LaneNumber * 2] = {
 		0.0f, -2.5f,

@@ -4,6 +4,14 @@
 // <GTT_Urban>: Geographical Topology and Transport Urban
 
 class GTT_Urban :public GTT_Basic {
+private:
+	int m_xNum;//ueTopo x轴 格数
+	int m_yNum;//ueTopo y轴 格数
+	int m_ueTopoNum;
+	double *m_pueTopo;//一个Road中ue相对坐标
+	int m_UrbanRoadNum;//城镇Road总数
+	int* m_pupr;//user per road array
+	double m_Speed;//车辆车速
 public:
 	static std::default_random_engine s_Engine;
 	GTT_Urban() = delete;

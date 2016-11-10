@@ -4,6 +4,10 @@
 // <GTT_HighSpeed>: Geographical Topology and Transport HighSpeed
 
 class GTT_HighSpeed :public GTT_Basic {
+private:
+	int m_HighSpeedRodeNum;//高速Rode总数
+	int* m_pupr;//user per road array
+	double m_Speed;//车辆车速
 public:
 	static std::default_random_engine s_Engine;
 	GTT_HighSpeed() = delete;

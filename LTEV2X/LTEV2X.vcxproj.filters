@@ -140,9 +140,6 @@
     <ClCompile Include="TMC_B.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GTT_High.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="GTT_Urban.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -150,6 +147,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ConfigLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GTT_HighSpeed.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

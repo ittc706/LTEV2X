@@ -15,12 +15,12 @@ GTT_Urban::GTT_Urban(int &t_TTI, Configure& t_Config, eNB* &t_eNBAry, Road* &t_R
 
 void GTT_Urban::configure() {
 	m_Config.eNBNum = gc_eNBNumber;
-	m_Config.UrbanRoadNum = gc_RoadNumber;
+	m_UrbanRoadNum = gc_RoadNumber;
 	m_Config.RSUNum = gc_RSUNumber;//目前只表示UE RSU数
-	m_Config.pupr = new int[m_Config.UrbanRoadNum];
+	m_pupr = new int[m_UrbanRoadNum];
 	m_Config.VeUENum = 0;
 	int Lambda = static_cast<int>((gc_Length + gc_Width) * 2 * 3.6 / (2.5 * 15));
-	for (int temp = 0; temp != m_Config.UrbanRoadNum; ++temp)
+	for (int temp = 0; temp != m_UrbanRoadNum; ++temp)
 	{
 		int k = 0;
 		long double p = 1.0;
@@ -31,16 +31,16 @@ void GTT_Urban::configure() {
 			p *= u;
 			k++;
 		}
-		m_Config.pupr[temp] = k - 1;
+		m_pupr[temp] = k - 1;
 		m_Config.VeUENum = m_Config.VeUENum + k - 1;
 	}
-	m_Config.wxNum = 36;
-	m_Config.wyNum = 62;
-	m_Config.ueTopoNum = (m_Config.wxNum + m_Config.wyNum) * 2 - 4;
-	m_Config.pueTopo = new double[m_Config.ueTopoNum * 2];//重合了4个
+	m_xNum = 36;
+	m_yNum = 62;
+	m_ueTopoNum = (m_xNum + m_yNum) * 2 - 4;
+	m_pueTopo = new double[m_ueTopoNum * 2];//重合了4个
 	double temp_x = -(double)gc_Width / 2 + gc_LaneWidth;
 	double temp_y = -(double)gc_Length / 2 + gc_LaneWidth;
-	for (int temp = 0; temp != m_Config.ueTopoNum; ++temp)
+	for (int temp = 0; temp != m_ueTopoNum; ++temp)
 	{
 		if (temp>0 && temp <= 61) {
 			if (temp == 60) temp_y += 6; else temp_y += 7;
@@ -55,21 +55,21 @@ void GTT_Urban::configure() {
 			if (temp == 191) temp_x -= 5; else temp_x -= 7;
 		}
 
-		m_Config.pueTopo[temp * 2 + 0] = temp_x;
-		m_Config.pueTopo[temp * 2 + 1] = temp_y;
+		m_pueTopo[temp * 2 + 0] = temp_x;
+		m_pueTopo[temp * 2 + 1] = temp_y;
 	}
-	m_Config.fv = 15;//车速设定,km/h
+	m_Speed = 15;//车速设定,km/h
 }
 
 
 void GTT_Urban::initialize() {
 	m_eNBAry = new eNB[m_Config.eNBNum];
-	m_RoadAry = new Road[m_Config.UrbanRoadNum];
+	m_RoadAry = new Road[m_UrbanRoadNum];
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	m_RSUAry = new RSU[m_Config.RSUNum];
 
 	UrbanRoadConfigure roadConfigure;
-	for (int temp = 0; temp != m_Config.UrbanRoadNum; ++temp)
+	for (int temp = 0; temp != m_UrbanRoadNum; ++temp)
 	{
 		roadConfigure.roadId = temp;
 		if (temp % 2 == 0)
@@ -97,18 +97,18 @@ void GTT_Urban::initialize() {
 	VeUEConfigure ueConfigure;
 	int ueidx = 0;
 
-	for (int RoadIdx = 0; RoadIdx != m_Config.UrbanRoadNum; RoadIdx++)
+	for (int RoadIdx = 0; RoadIdx != m_UrbanRoadNum; RoadIdx++)
 	{
 
-		for (int uprIdx = 0; uprIdx != m_Config.pupr[RoadIdx]; uprIdx++)
+		for (int uprIdx = 0; uprIdx != m_pupr[RoadIdx]; uprIdx++)
 		{
 			ueConfigure.roadId = RoadIdx;
-			ueConfigure.locationId = rand() % m_Config.ueTopoNum;
-			ueConfigure.X = m_Config.pueTopo[ueConfigure.locationId * 2 + 0];
-			ueConfigure.Y = m_Config.pueTopo[ueConfigure.locationId * 2 + 1];
+			ueConfigure.locationId = rand() % m_ueTopoNum;
+			ueConfigure.X = m_pueTopo[ueConfigure.locationId * 2 + 0];
+			ueConfigure.Y = m_pueTopo[ueConfigure.locationId * 2 + 1];
 			ueConfigure.AbsX = m_RoadAry[RoadIdx].m_GTT_Urban->m_AbsX + ueConfigure.X;
 			ueConfigure.AbsY = m_RoadAry[RoadIdx].m_GTT_Urban->m_AbsY + ueConfigure.Y;
-			ueConfigure.V = m_Config.fv;
+			ueConfigure.V = m_Speed;
 			m_VeUEAry[ueidx++].initializeGTT_Urban(ueConfigure);
 
 		}
@@ -166,7 +166,7 @@ void GTT_Urban::channelGeneration() {
 	m_VeUENumPerRSU.push_back(curVeUENum);
 
 
-	//UNDONE
+	//<UNDONE>
 	//更新基站的VeUE容器
 	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
 		eNB &_eNB = m_eNBAry[eNBId];
@@ -176,7 +176,7 @@ void GTT_Urban::channelGeneration() {
 			}
 		}
 	}
-	//UNDONE
+	//<UNDONE>
 }
 
 
@@ -283,8 +283,8 @@ void GTT_Urban::freshLoc() {
 			m_VeUEAry[UserIdx].m_GTT_Urban->m_LocationId = m_VeUEAry[UserIdx].m_GTT_Urban->m_LocationId + 1;
 			break;
 		}
-		m_VeUEAry[UserIdx].m_GTT_Urban->m_X = m_Config.pueTopo[m_VeUEAry[UserIdx].m_GTT_Urban->m_LocationId * 2 + 0];
-		m_VeUEAry[UserIdx].m_GTT_Urban->m_Y = m_Config.pueTopo[m_VeUEAry[UserIdx].m_GTT_Urban->m_LocationId * 2 + 1];
+		m_VeUEAry[UserIdx].m_GTT_Urban->m_X = m_pueTopo[m_VeUEAry[UserIdx].m_GTT_Urban->m_LocationId * 2 + 0];
+		m_VeUEAry[UserIdx].m_GTT_Urban->m_Y = m_pueTopo[m_VeUEAry[UserIdx].m_GTT_Urban->m_LocationId * 2 + 1];
 		m_VeUEAry[UserIdx].m_GTT_Urban->m_AbsX = m_RoadAry[m_VeUEAry[UserIdx].m_GTT_Urban->m_RoadId].m_GTT_Urban->m_AbsX + m_VeUEAry[UserIdx].m_GTT_Urban->m_X;
 		m_VeUEAry[UserIdx].m_GTT_Urban->m_AbsY = m_RoadAry[m_VeUEAry[UserIdx].m_GTT_Urban->m_RoadId].m_GTT_Urban->m_AbsY + m_VeUEAry[UserIdx].m_GTT_Urban->m_Y;
 
