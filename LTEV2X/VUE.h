@@ -126,6 +126,7 @@ public:
 		
 		std::tuple<int, int> m_ScheduleInterval;//该VeUE所在簇的当前一轮调度区间
 
+		RRM_TDM_DRA() = delete;
 		RRM_TDM_DRA(VeUE* t_This) :m_This(t_This) {}
 		//成员函数
 		int selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx);
@@ -138,6 +139,7 @@ public:
 
 		VeUE* m_This;//RRM_ICC_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
+		RRM_ICC_DRA() = delete;
 		RRM_ICC_DRA(VeUE* t_This) :m_This(t_This) {}
 
 		int selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx);//随机选择资源块
@@ -146,7 +148,11 @@ public:
 	};
 
 	struct RRM_RR {
+		VeUE* m_This;//RRM_RR会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
+		RRM_RR() = delete;
+		RRM_RR(VeUE* t_This) :m_This(t_This) {}
+		std::string toString(int t_NumTab);//用于打印VeUE信息
 	};
 
 	struct WT {

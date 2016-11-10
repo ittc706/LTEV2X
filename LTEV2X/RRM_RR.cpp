@@ -64,13 +64,16 @@ void RRM_RR::cleanWhenLocationUpdate() {
 
 
 void RRM_RR::schedule() {
-	bool clusterFlag = m_TTI  % m_Config.locationUpdateNTTI == 0;
+	bool isLocationUpdate = m_TTI  % m_Config.locationUpdateNTTI == 0;
+
+	//写入地理位置信息
+	writeClusterPerformInfo(isLocationUpdate, g_FileClasterPerformInfo);
 
 	//调度前清理工作
 	informationClean();
 
 	//建立接纳链表
-	updateAdmitEventIdList(clusterFlag);
+	updateAdmitEventIdList(isLocationUpdate);
 
 	//开始本次调度
 	roundRobin();
@@ -447,6 +450,43 @@ void RRM_RR::transimitEnd() {
 			}
 		}
 	}
+}
+
+
+
+void RRM_RR::writeClusterPerformInfo(bool isLocationUpdate, ofstream& t_File) {
+	if (!isLocationUpdate) return;
+	t_File << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
+	t_File << "{" << endl;
+
+	//打印VeUE信息
+	t_File << "    VUE Info: " << endl;
+	t_File << "    {" << endl;
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		VeUE &_VeUE = m_VeUEAry[VeUEId];
+		t_File << _VeUE.m_RRM_RR->toString(2) << endl;
+	}
+	t_File << "    }\n" << endl;
+
+	////打印基站信息
+	//out << "    eNB Info: " << endl;
+	//out << "    {" << endl;
+	//for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
+	//	ceNB &_eNB = m_eNBAry[eNBId];
+	//	out << _eNB.toString(2) << endl;
+	//}
+	//out << "    }\n" << endl;
+
+	//打印RSU信息
+	t_File << "    RSU Info: " << endl;
+	t_File << "    {" << endl;
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		RSU &_RSU = m_RSUAry[RSUId];
+		t_File << _RSU.m_RRM_RR->toString(2) << endl;
+	}
+	t_File << "    }" << endl;
+
+	t_File << "}\n\n";
 }
 
 

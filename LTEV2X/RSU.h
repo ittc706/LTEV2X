@@ -280,10 +280,9 @@ public:
 		*/
 		std::vector<std::vector<RSU::RRM::ScheduleInfo*>> m_TransimitScheduleInfoTable;
 
-
-		RRM_RR(RSU* t_This);//构造函数
 		/*------------------成员函数------------------*/
-
+		RRM_RR(RSU* t_This);//构造函数
+		std::string toString(int t_NumTab);
 		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/

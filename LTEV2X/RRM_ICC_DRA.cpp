@@ -59,13 +59,16 @@ void RRM_ICC_DRA::cleanWhenLocationUpdate() {
 
 
 void RRM_ICC_DRA::schedule() {
-	bool clusterFlag = m_TTI  % m_Config.locationUpdateNTTI == 0;
+	bool isLocationUpdate = m_TTI  % m_Config.locationUpdateNTTI == 0;
+
+	//写入地理位置信息
+	writeClusterPerformInfo(isLocationUpdate, g_FileClasterPerformInfo);
 
 	//资源分配信息清空:包括每个RSU内的接入链表等
 	informationClean();
 
 	//更新等待链表
-	updateWaitEventIdList(clusterFlag);
+	updateWaitEventIdList(isLocationUpdate);
 
 	//资源选择
 	selectRBBasedOnP123();
@@ -571,7 +574,8 @@ void RRM_ICC_DRA::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_Ev
 }
 
 
-void RRM_ICC_DRA::writeClusterPerformInfo(ofstream& t_File) {
+void RRM_ICC_DRA::writeClusterPerformInfo(bool isLocationUpdate, ofstream& t_File) {
+	if (!isLocationUpdate) return;
 	t_File << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	t_File << "{" << endl;
 

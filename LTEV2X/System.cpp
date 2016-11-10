@@ -55,7 +55,7 @@ void System::configure() {//系统仿真参数配置
 	m_GTTMode = URBAN;
 
 	//无线资源管理模式
-	m_RRMMode = TDM_DRA;
+	m_RRMMode = RR;
 }
 
 

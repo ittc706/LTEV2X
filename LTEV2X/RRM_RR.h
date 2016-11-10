@@ -48,6 +48,7 @@ public:
 	void cleanWhenLocationUpdate()override;//当发生位置更新时，清除缓存的调度相关信息
 	void schedule() override;//DRA调度总控，覆盖基类的虚函数
 
+private:
 	void informationClean();//资源分配信息清空
 
 	void updateAdmitEventIdList(bool t_ClusterFlag);//更新接入表
@@ -56,17 +57,17 @@ public:
 	void processSwitchListWhenLocationUpdate();
 
 	void roundRobin();//轮询调度，分配当前TTI的资源(就是更新ScheduleTable)
+	void delaystatistics();//时延统计
+
 	void transimitPreparation();//统计干扰信息
 	void transimitStart();//模拟传输开始，更新调度信息，累计吞吐量
 	void transimitStartThread(int t_FromRSUId, int t_ToRSUId);//模拟传输开始，更新调度信息
-	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
-	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description);//以时间为单位记录日志
-	void delaystatistics();//时延统计
-
 	void transimitEnd();//模拟传输结束，即统计吞吐量(就是更新ScheduleTable)
 
+	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
+	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description);//以时间为单位记录日志
+	void writeClusterPerformInfo(bool isLocationUpdate, std::ofstream& t_File);//写入分簇信息的日志
 
-private:
 	std::pair<int, int> getOccupiedSubCarrierRange(int t_PatternIdx);
 };
 

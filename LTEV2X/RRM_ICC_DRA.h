@@ -75,7 +75,7 @@ private:
 						//日志记录函数
 	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
 	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description);
-	void writeClusterPerformInfo(std::ofstream& t_File);//写入分簇信息的日志
+	void writeClusterPerformInfo(bool isLocationUpdate, std::ofstream& t_File);//写入分簇信息的日志
 
 
 	//工具函数

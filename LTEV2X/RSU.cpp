@@ -283,3 +283,41 @@ RSU::RRM_RR::RRM_RR(RSU* t_This) {
 	m_WaitEventIdList= vector<list<int>>(m_This->m_GTT->m_ClusterNum);
 	m_TransimitScheduleInfoTable = vector<vector<RSU::RRM::ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<RSU::RRM::ScheduleInfo*>(ns_RRM_RR::gc_TotalPatternNum, nullptr));
 }
+
+
+std::string RSU::RRM_RR::toString(int t_NumTab) {
+	string indent;
+	for (int i = 0; i < t_NumTab; i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	//主干信息
+	ss << indent << "RSU[" << m_This->m_GTT->m_RSUId << "] :" << endl;
+	ss << indent << "{" << endl;
+
+	//开始打印VeUEIdList
+	ss << indent << "    " << "VeUEIdList :" << endl;
+	ss << indent << "    " << "{" << endl;
+	for (int clusterIdx = 0; clusterIdx < m_This->m_GTT->m_ClusterNum; clusterIdx++) {
+		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
+		ss << indent << "        " << "{" << endl;
+		int cnt = 0;
+		for (int RSUId : m_This->m_GTT->m_ClusterVeUEIdList[clusterIdx]) {
+			if (cnt % 10 == 0)
+				ss << indent << "            [ ";
+			ss << left << setw(3) << RSUId << " , ";
+			if (cnt % 10 == 9)
+				ss << " ]" << endl;
+			cnt++;
+		}
+		if (cnt != 0 && cnt % 10 != 0)
+			ss << " ]" << endl;
+		ss << indent << "        " << "}" << endl;
+	}
+	ss << indent << "    " << "}" << endl;
+
+
+	//主干信息
+	ss << indent << "}" << endl;
+	return ss.str();
+}

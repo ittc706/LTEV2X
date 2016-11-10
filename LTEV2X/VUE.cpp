@@ -82,7 +82,7 @@ void VeUE::initializeRRM_TDM_DRA() {
 
 void VeUE::initializeRRM_ICC_DRA() {
 	m_RRM = new RRM();
-	m_RRM_TDM_DRA = new RRM_TDM_DRA(this);
+	m_RRM_ICC_DRA = new RRM_ICC_DRA(this);
 
 	m_RRM->m_InterferenceVeUENum = vector<int>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
 	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
@@ -97,7 +97,7 @@ void VeUE::initializeRRM_ICC_DRA() {
 
 void VeUE::initializeRRM_RR() {
 	m_RRM = new RRM();
-	m_RRM_RR = new RRM_RR();
+	m_RRM_RR = new RRM_RR(this);
 
 	m_RRM->m_InterferenceVeUENum = vector<int>(ns_RRM_RR::gc_TotalPatternNum);
 	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_RR::gc_TotalPatternNum);
@@ -233,4 +233,16 @@ std::string VeUE::RRM_ICC_DRA::toString(int t_NumTab) {
 }
 
 
+
+std::string VeUE::RRM_RR::toString(int t_NumTab) {
+	string indent;
+	for (int i = 0; i < t_NumTab; i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	ss << indent << "{ VeUEId = " << left << setw(3) << m_This->m_VeUEId;
+	ss << " , RSUId = " << left << setw(3) << m_This->m_GTT->m_RSUId;
+	ss << " , ClusterIdx = " << left << setw(3) << m_This->m_GTT->m_ClusterIdx << " }";
+	return ss.str();
+}
 

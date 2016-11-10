@@ -1,4 +1,7 @@
-## version_2016_11_10（将城镇道路下每一个RSU下的簇个数减为4个）
+## version_2016_11_10(增加了RRM_ICC_DRA以及RRM_RR的分簇信息日志)
+* 修复了VeUE::RRM_ICC_DRA初始化的问题，从RRM_TDM_DRA复制过来后，忘记改了
+
+## version_2016_11_10(将城镇道路下每一个RSU下的簇个数减为4个)
 
 ## version_2016_11_9(修改RRM_RR)
 * 就修改了writeScheduleInfo的格式
