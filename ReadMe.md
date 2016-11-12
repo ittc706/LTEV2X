@@ -1,3 +1,6 @@
+version_2016_11_10(Debug WT模块)
+* 矩阵读取错误，每个分量的权值
+
 ## version_2016_11_10(修改了System的Config)
 * 将部分参量移动到GTT_Urban以及GTT_HighSpeed作为成员变量
 

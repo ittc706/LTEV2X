@@ -541,19 +541,16 @@ void GTT_Urban::writeVeUELocationUpdateLogInfo(ofstream &out1, ofstream &out2) {
 	}
 }
 
-void GTT_Urban::calculateInterference(const vector<list<int>>& RRMInterferenceVec) {
-	//由于不同的Pattern可能存在相同的干扰车辆，但是对于同一个干扰车辆，对当前车辆的干扰矩阵只算一次
-	for (int patternIdx = 0; patternIdx < RRMInterferenceVec.size(); patternIdx++) {
-		const list<int> &lst = RRMInterferenceVec[patternIdx];//当前Pattern下所有车辆的Id
+void GTT_Urban::calculateInterference(const vector<vector<list<int>>>& RRMInterferenceVec) {
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		m_VeUEAry[VeUEId].m_GTT_Urban->m_IMTA = new IMTA[m_Config.RSUNum];
+	}
 
-		for (int VeUEId : lst) {
-			m_VeUEAry[VeUEId].m_GTT_Urban->m_IMTA = new IMTA[m_Config.RSUNum];
-		}
-		
-		for (int VeUEId : lst) {
-			for (int interferenceVeUEId: lst){
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		for (int patternIdx = 0; patternIdx < RRMInterferenceVec[0].size(); patternIdx++) {
+			const list<int> &interList = RRMInterferenceVec[VeUEId][patternIdx];//当前车辆，当前Pattern下所有干扰车辆的Id
 
-				if (interferenceVeUEId == VeUEId) continue;
+			for (int interferenceVeUEId : interList) {
 
 				if (m_VeUEAry[VeUEId].m_GTT->m_InterferenceH[interferenceVeUEId] != nullptr) continue;
 
@@ -641,13 +638,12 @@ void GTT_Urban::calculateInterference(const vector<list<int>>& RRMInterferenceVe
 				delete[] antenna.pfRxAntSpacing;
 				delete[] FFT;
 				delete[] t_HAfterFFT;
-			}
+			}	
 		}
+	}
 
-		for (int VeUEId : lst) {
-			delete[] m_VeUEAry[VeUEId].m_GTT_Urban->m_IMTA;
-			m_VeUEAry[VeUEId].m_GTT_Urban->m_IMTA = nullptr;
-		}
-
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		delete[] m_VeUEAry[VeUEId].m_GTT_Urban->m_IMTA;
+		m_VeUEAry[VeUEId].m_GTT_Urban->m_IMTA = nullptr;
 	}
 }

@@ -651,7 +651,7 @@ void RRM_TDM_DRA::transimitPreparation() {
 
 	//请求地理拓扑单元计算干扰响应矩阵
 	long double start = clock();
-	m_GTTPoint->calculateInterference(m_InterferenceVec);
+	//m_GTTPoint->calculateInterference(m_InterferenceVec);
 	long double end = clock();
 	m_GTTTimeConsume += end - start;
 }

@@ -24,7 +24,7 @@ using namespace std;
 RRM_ICC_DRA::RRM_ICC_DRA(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
 	RRM_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 
-	m_InterferenceVec = vector<list<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
+	m_InterferenceVec = vector<vector<list<int>>>(m_Config.VeUENum, vector<list<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum));
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
 	int num = m_Config.RSUNum / m_ThreadNum;
@@ -356,9 +356,10 @@ void RRM_ICC_DRA::conflictListener() {
 
 void RRM_ICC_DRA::transimitPreparation() {
 	//首先清空上一次干扰信息
-	for (list<int>&lst : m_InterferenceVec) {
-		lst.clear();
-	}
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
+		for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++)
+			m_InterferenceVec[VeUEId][patternIdx].clear();
+	
 
 	//统计本次的干扰信息
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
@@ -366,10 +367,19 @@ void RRM_ICC_DRA::transimitPreparation() {
 
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
-				list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-				if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-					RSU::RRM::ScheduleInfo *info = *lst.begin();
-					m_InterferenceVec[patternIdx].push_back(info->VeUEId);
+				list<RSU::RRM::ScheduleInfo*> &curList = _RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+				if (curList.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
+					RSU::RRM::ScheduleInfo *curInfo = *curList.begin();
+					int curVeUEId = curInfo->VeUEId;
+					for (int otherCluster = 0; otherCluster < _RSU.m_GTT->m_ClusterNum; otherCluster++) {
+						if (otherCluster == clusterIdx)continue;
+						list<RSU::RRM::ScheduleInfo*> &otherList = _RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[otherCluster][patternIdx];
+						if (otherList.size() == 1) {//其他簇中该pattern下有车辆在传输，那么将该车辆作为干扰车辆
+							RSU::RRM::ScheduleInfo *otherInfo = *otherList.begin();
+							int otherVeUEId = otherInfo->VeUEId;
+							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
+						}
+					}	
 				}
 			}
 		}
@@ -377,15 +387,12 @@ void RRM_ICC_DRA::transimitPreparation() {
 
 	//更新每辆车的干扰车辆列表	
 	for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
-		list<int>& lst = m_InterferenceVec[patternIdx];
-		for (int VeUEId : lst) {
+		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+			list<int>& interList = m_InterferenceVec[VeUEId][patternIdx];
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)lst.size() - 1;//写入干扰数目
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = interList.size();//写入干扰数目
 
-			set<int> s(lst.begin(), lst.end());//用于更新干扰列表的
-			s.erase(VeUEId);
-
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(s.begin(), s.end());//写入干扰车辆ID
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
 
 			g_FileTemp << "VeUEId: " << VeUEId << " [";
 			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])

@@ -69,9 +69,10 @@ public:
 		* 下标：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
 		*/
 		std::vector<double> m_InterferencePloss;
+
 		/*
 		* 其他车辆，对当前车辆的信道响应矩阵，WT_B模块需要
-		* 下标：VeUEId：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
+		* 下标：干扰车辆的VeUEId：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
 		*/
 		std::vector<double*> m_InterferenceH;//下标对应的Pattern下，干扰信道响应矩阵，WT_B模块需要
 	};

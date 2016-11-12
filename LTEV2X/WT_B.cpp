@@ -20,6 +20,7 @@
 #include<iterator>
 #include<limits>
 #include<random>
+#include<iostream>
 #include<math.h>
 #include"WT_B.h"
 
@@ -101,6 +102,14 @@ tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrier
 		m_H=readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
 		m_HInterference = readInterferenceH(VeUEId, subCarrierIdx, patternIdx);//读入当前子载波干扰相应矩阵数组
 
+		/*if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] != 0) {
+			m_H.print();
+			cout << "干扰矩阵： ";
+			for (auto &c : m_HInterference) {
+				c.print();
+			}
+			cout << endl;
+		}*/
 
 		/* 下面开始计算W */
 
@@ -139,7 +148,7 @@ tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrier
 		/*以下计算公式中的干扰项,即公式中的第三项*/
 		Matrix denominatorRight(m_Nt, m_Nt);
 		for (int i = 0; i < (int)m_HInterference.size(); i++) {
-			denominatorRight = denominatorRight + m_Pt*WHer*m_HInterference[i] * m_HInterference[i].hermitian()*W;
+			denominatorRight = denominatorRight + m_Pt*m_PlossInterference[i]*WHer*m_HInterference[i] * m_HInterference[i].hermitian()*W;
 		}
 
 		Matrix denominator = denominatorLeft + denominatorMiddle + denominatorRight;//SINR运算的分母
@@ -155,6 +164,19 @@ tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrier
 	for (int i = 0; i < Sinr.col; i++) {
 		Sinr[i] = 10 * log10(Complex::abs(Sinr[i]));
 	}
+
+	if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] != 0) {
+		cout << "Ploss: " << m_Ploss << endl;
+		cout << "InterPloss: ";
+		for (auto tmpPloss : m_PlossInterference) {
+			cout << tmpPloss << " , ";
+		}
+		cout << endl;
+		cout << "Sinr: ";
+		Sinr.print();
+		cout << endl;
+	}
+	
 
 	if (m_Mol == 2) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
@@ -237,7 +259,7 @@ Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
 	Matrix res(m_Nr, m_Nt);
 	for (int row = 0; row < m_Nr; row++) {
 		for (int col = 0; col < m_Nt; col++) {
-			res[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTT->m_H[row * subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTT->m_H[row * subCarrierIdx + 1]);
+			res[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTT->m_H[row * 2048 + subCarrierIdx * 2], m_VeUEAry[VeUEIdx].m_GTT->m_H[row * 2048 + subCarrierIdx * 2 + 1]);
 		}
 	}
 	return res;
@@ -250,7 +272,8 @@ vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, int patte
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {
-				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row*subCarrierIdx], m_VeUEAry[VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row*subCarrierIdx + 1]);
+				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row * 2048 + subCarrierIdx * 2],
+					m_VeUEAry[VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row * 2048 + subCarrierIdx * 2 + 1]);
 			}
 		}
 		res.push_back(m);
