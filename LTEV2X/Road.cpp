@@ -1,4 +1,5 @@
 #include"Road.h"
+#include"Function.h"
 
 using namespace std;
 
@@ -9,18 +10,9 @@ Road::Road() {
 }
 
 Road::~Road() {
-	if (m_GTT != nullptr) {
-		delete m_GTT;
-		m_GTT = nullptr;
-	}
-	if (m_GTT_Urban != nullptr) {
-		delete m_GTT_Urban;
-		m_GTT_Urban = nullptr;
-	}
-	if (m_GTT_HighSpeed != nullptr) {
-		delete m_GTT_HighSpeed;
-		m_GTT_HighSpeed = nullptr;
-	}
+	Delete::safeDelete(m_GTT);
+	Delete::safeDelete(m_GTT_Urban);
+	Delete::safeDelete(m_GTT_HighSpeed);
 }
 
 void Road::initializeUrban(UrbanRoadConfigure &t_RoadConfigure) {

@@ -22,15 +22,12 @@
 #include<sstream>
 #include<cmath>
 #include"Matrix.h"
-
+#include"Function.h"
 
 using namespace std;
 
 void RowVector::free() {
-	if (rowVector != nullptr) {
-		delete[] rowVector;
-		rowVector = nullptr;
-	}
+	Delete::safeDelete(rowVector, true);
 }
 
 RowVector::~RowVector() {
@@ -113,11 +110,13 @@ void RowVector::resize(int size) {
 	col = size;
 	rowVector = new Complex[col]();
 	memcpy(rowVector, preRowVector, preCol*sizeof(Complex));
-	//free();//这里不能调用free()来析构原来的资源
-	if (preRowVector != nullptr) {
-		delete[] preRowVector;
-		preRowVector = nullptr;
-	}
+	/*-----------------------ATTENTION-----------------------
+	* 这里不能调用free()来析构原来的资源
+	* free()会释放this指向的对象的rowVector指针
+	* 而此时，该rowVector指针已经指向了新的区域
+	* 必须手动删除之前的指针
+	*------------------------ATTENTION-----------------------*/
+	Delete::safeDelete(preRowVector, true);
 }
 
 
@@ -233,10 +232,7 @@ default_random_engine Matrix::s_Engine((unsigned)time(NULL));
 
 
 void Matrix::free() {
-	if (matrix != nullptr) {
-		delete[] matrix;
-		matrix = nullptr;
-	}
+	Delete::safeDelete(matrix, true);
 }
 
 

@@ -5,6 +5,8 @@
 #include"System.h"
 #include"Exception.h"
 #include"Matrix.h"
+#include"Function.h"
+
 using namespace std;
 
 int main() {
@@ -40,7 +42,7 @@ int main() {
 	g_FileTTIThroughput.close();
 	g_FileRSUThroughput.close();
 
-	delete _system;
+	Delete::safeDelete(_system);
 	system("pause");
 	return 1;
 }

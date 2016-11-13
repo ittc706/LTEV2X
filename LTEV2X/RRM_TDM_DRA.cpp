@@ -24,13 +24,14 @@
 #include<set>
 #include"RRM_TDM_DRA.h"
 #include"Exception.h"
+#include"Function.h"
 
 using namespace std;
 
 RRM_TDM_DRA::RRM_TDM_DRA(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
 	RRM_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 
-	m_InterferenceVec = vector<list<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
+	m_InterferenceVec = vector<vector<list<int>>>(m_Config.VeUENum, vector<list<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum));
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
 	int num = m_Config.RSUNum / m_ThreadNum;
@@ -254,8 +255,7 @@ void RRM_TDM_DRA::processScheduleInfoTableWhenLocationUpdate() {
 					m_EventVec[eventId].message.reset();
 
 					//并释放该调度信息的资源
-					delete _RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx];
-					_RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+					Delete::safeDelete(_RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]);
 
 					//释放Pattern资源
 					_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -271,8 +271,7 @@ void RRM_TDM_DRA::processScheduleInfoTableWhenLocationUpdate() {
 						_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(isEmergency, m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId);
 
 						//并释放该调度信息的资源
-						delete _RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx];
-						_RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+						Delete::safeDelete(_RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]);
 
 						//释放Pattern资源
 						_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -555,8 +554,7 @@ void RRM_TDM_DRA::conflictListener() {
 						writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Conflict");
 
 						//释放调度信息对象的内存资源
-						delete info;
-						info = nullptr;
+						Delete::safeDelete(info);
 					}
 
 					//释放Pattern资源
@@ -583,8 +581,7 @@ void RRM_TDM_DRA::conflictListener() {
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Conflict");
 
 					//释放调度信息对象的内存资源
-					delete info;
-					info = nullptr;
+					Delete::safeDelete(info);
 				}
 				//释放Pattern资源
 				_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -598,60 +595,55 @@ void RRM_TDM_DRA::conflictListener() {
 
 void RRM_TDM_DRA::transimitPreparation() {
 	//首先清空上一次干扰信息
-	for (list<int>&lst : m_InterferenceVec) {
-		lst.clear();
-	}
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
+		for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++)
+			m_InterferenceVec[VeUEId][patternIdx].clear();
 
 	//统计本次的干扰信息
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
-		/*  EMERGENCY  */
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-				list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-				if (lst.size() == 1) {
-					RSU::RRM::ScheduleInfo *info = *lst.begin();
-
-					m_InterferenceVec[patternIdx].push_back(info->VeUEId);
+			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
+				list<RSU::RRM::ScheduleInfo*> &curList = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+				if (curList.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
+					RSU::RRM::ScheduleInfo *curInfo = *curList.begin();
+					int curVeUEId = curInfo->VeUEId;
+					for (int otherClusterIdx = 0; otherClusterIdx < _RSU.m_GTT->m_ClusterNum; otherClusterIdx++) {
+						if (otherClusterIdx == clusterIdx)continue;
+						list<RSU::RRM::ScheduleInfo*> &otherList = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
+						if (otherList.size() == 1) {//其他簇中该pattern下有车辆在传输，那么将该车辆作为干扰车辆
+							RSU::RRM::ScheduleInfo *otherInfo = *otherList.begin();
+							int otherVeUEId = otherInfo->VeUEId;
+							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
+						}
+					}
 				}
 			}
 		}
-		/*  EMERGENCY  */
-
-		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
-		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {			
-			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRM::ScheduleInfo *info = *lst.begin();
-
-				m_InterferenceVec[patternIdx].push_back(info->VeUEId);
-			}
-		}
 	}
-    
+
 	//更新每辆车的干扰车辆列表	
 	for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
-		list<int>& lst = m_InterferenceVec[patternIdx];
-		for (int VeUEId : lst) {
+		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+			list<int>& interList = m_InterferenceVec[VeUEId][patternIdx];
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)lst.size() - 1;//写入干扰数目
-			
-			set<int> s(lst.begin(), lst.end());//用于更新干扰列表的
-			s.erase(VeUEId);
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(s.begin(), s.end());//写入干扰车辆ID
-		
-			g_FileTemp << "VeUEId: " << VeUEId << " [";
-			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
-				g_FileTemp << c << ", ";
-			g_FileTemp << " ]" << endl;
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
+
+			if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx]>0) {
+				g_FileTemp << "VeUEId: " << VeUEId << " [";
+				for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
+					g_FileTemp << c << ", ";
+				g_FileTemp << " ]" << endl;
+			}
 		}
 	}
 
 	//请求地理拓扑单元计算干扰响应矩阵
 	long double start = clock();
-	//m_GTTPoint->calculateInterference(m_InterferenceVec);
+	m_GTTPoint->calculateInterference(m_InterferenceVec);
 	long double end = clock();
 	m_GTTTimeConsume += end - start;
 }
@@ -768,8 +760,7 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 			}
 		}
 	}
-	delete copyWTPoint;//getCopy是通过new创建的，因此这里释放资源
-	copyWTPoint = nullptr;
+	Delete::safeDelete(copyWTPoint);//getCopy是通过new创建的，因此这里释放资源
 }
 
 void RRM_TDM_DRA::writeScheduleInfo(ofstream& t_File) {
@@ -842,8 +833,7 @@ void RRM_TDM_DRA::transimitEnd() {
 						writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
 						//释放调度信息对象的内存资源
-						delete info;
-						info = nullptr;
+						Delete::safeDelete(info);
 
 						//释放Pattern资源
 						_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -875,8 +865,7 @@ void RRM_TDM_DRA::transimitEnd() {
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
 					//释放调度信息对象的内存资源
-					delete info;
-					info = nullptr;
+					Delete::safeDelete(info);
 
 					//释放Pattern资源
 					_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;

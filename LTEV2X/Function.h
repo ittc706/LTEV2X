@@ -3,18 +3,13 @@
 class Delete {
 public:
 	template<typename T>
-	static void deleteSingle(T*&p) {
-		if (p != nullptr) {
-			delete p;
-			p = nullptr;
-		}
-	}
-
-	template<typename T>
-	static void deleteAry(T*&p) {
-		if (p != nullptr) {
-			delete[] p;
-			p = nullptr;
+	static void safeDelete(T*&t_Point, bool t_IsArray = false) {
+		if (t_Point != nullptr) {
+			if (t_IsArray)
+				delete[] t_Point;
+			else
+				delete t_Point;
+			t_Point = nullptr;
 		}
 	}
 };

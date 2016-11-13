@@ -18,6 +18,7 @@
 
 #include<iomanip>
 #include"RRM_ICC_DRA.h"
+#include"Function.h"
 
 using namespace std;
 
@@ -151,8 +152,7 @@ void RRM_ICC_DRA::processScheduleInfoTableWhenLocationUpdate() {
 					m_EventVec[eventId].message.reset();
 
 					//并释放该调度信息的资源
-					delete _RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx];
-					_RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+					Delete::safeDelete(_RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]);
 
 					//释放Pattern资源
 					_RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -167,8 +167,7 @@ void RRM_ICC_DRA::processScheduleInfoTableWhenLocationUpdate() {
 						_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId);
 
 						//并释放该调度信息的资源
-						delete _RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx];
-						_RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+						Delete::safeDelete(_RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]);
 
 						//释放Pattern资源
 						_RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -340,8 +339,7 @@ void RRM_ICC_DRA::conflictListener() {
 						writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Conflict");
 
 						//释放调度信息对象的内存资源
-						delete info;
-						info = nullptr;
+						Delete::safeDelete(info);
 					}
 					//释放Pattern资源
 					_RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
@@ -474,8 +472,7 @@ void RRM_ICC_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 		}
 		
 	}
-	delete copyWTPoint;//getCopy是通过new创建的，因此这里释放资源
-	copyWTPoint = nullptr;
+	Delete::safeDelete(copyWTPoint);//getCopy是通过new创建的，因此这里释放资源
 }
 
 
@@ -499,8 +496,7 @@ void RRM_ICC_DRA::transimitEnd() {
 						writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
 						//释放调度信息对象的内存资源
-						delete info;
-						info = nullptr;
+						Delete::safeDelete(info);
 
 						_RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
 

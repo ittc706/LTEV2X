@@ -5,6 +5,7 @@
 #include<math.h>
 #include"VUE.h"
 #include"RSU.h"
+#include"Function.h"
 
 using namespace std;
 
@@ -119,60 +120,24 @@ void VeUE::initializeTMC() {
 
 
 VeUE::GTT::~GTT() {
-	if (m_IMTA != nullptr) {
-		delete[] m_IMTA;
-		m_IMTA = nullptr;
-	}
-	if (m_H != nullptr) {
-		delete[] m_H;
-		m_H = nullptr;
-	}
+	Delete::safeDelete(m_IMTA, true);
+	Delete::safeDelete(m_H, true);
 	for (double*& p : m_InterferenceH) {
-		if (p != nullptr) {
-			delete[] p;
-			p = nullptr;
-		}
+		Delete::safeDelete(p);
 	}
 }
 
 
 VeUE::~VeUE() {
-	if (m_GTT != nullptr) {
-		delete m_GTT;
-		m_GTT = nullptr;
-	}
-	if (m_GTT_Urban != nullptr) {
-		delete m_GTT_Urban;
-		m_GTT_Urban = nullptr;
-	}
-	if (m_GTT_HighSpeed != nullptr) {
-		delete m_GTT_HighSpeed;
-		m_GTT_HighSpeed = nullptr;
-	}
-	if (m_RRM != nullptr) {
-		delete m_RRM;
-		m_RRM = nullptr;
-	}
-	if (m_RRM_TDM_DRA != nullptr) {
-		delete m_RRM_TDM_DRA;
-		m_RRM_TDM_DRA = nullptr;
-	}
-	if (m_RRM_ICC_DRA != nullptr) {
-		delete m_RRM_TDM_DRA;
-		m_RRM_ICC_DRA = nullptr;
-	}
-	if (m_RRM_RR != nullptr) {
-		delete m_RRM_RR;
-		m_RRM_RR = nullptr;
-	}
-	if (m_WT != nullptr) {
-		delete m_WT;
-		m_WT = nullptr;
-	}
-	if (m_TMC != nullptr) {
-		delete m_TMC;
-		m_TMC = nullptr;
-	}
+	Delete::safeDelete(m_GTT);
+	Delete::safeDelete(m_GTT_Urban);
+	Delete::safeDelete(m_GTT_HighSpeed);
+	Delete::safeDelete(m_RRM);
+	Delete::safeDelete(m_RRM_TDM_DRA);
+	Delete::safeDelete(m_RRM_TDM_DRA);
+	Delete::safeDelete(m_RRM_RR);
+	Delete::safeDelete(m_WT);
+	Delete::safeDelete(m_TMC);
 }
 
 

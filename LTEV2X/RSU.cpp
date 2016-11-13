@@ -9,6 +9,7 @@
 #include"Exception.h"
 #include"Event.h"
 #include"Global.h"
+#include"Function.h"
 
 
 using namespace std;
@@ -76,10 +77,7 @@ void RSU::initializeTMC() {
 
 
 RSU::GTT::~GTT() {
-	if (m_IMTA != nullptr) {
-		delete[] m_IMTA;
-		m_IMTA = nullptr;
-	}
+	Delete::safeDelete(m_IMTA, true);
 }
 
 
@@ -95,42 +93,15 @@ std::string RSU::GTT::toString(int t_NumTab) {
 
 
 RSU::~RSU() {
-	if (m_GTT != nullptr) {
-		delete m_GTT;
-		m_GTT = nullptr;
-	}
-	if (m_GTT_Urban != nullptr) {
-		delete m_GTT_Urban;
-		m_GTT_Urban = nullptr;
-	}
-	if (m_GTT_HighSpeed != nullptr) {
-		delete m_GTT_HighSpeed;
-		m_GTT_HighSpeed = nullptr;
-	}
-	if (m_RRM != nullptr) {
-		delete m_RRM;
-		m_RRM = nullptr;
-	}
-	if (m_RRM_TDM_DRA != nullptr) {
-		delete m_RRM_TDM_DRA;
-		m_RRM_TDM_DRA = nullptr;
-	}
-	if (m_RRM_ICC_DRA != nullptr) {
-		delete m_RRM_ICC_DRA;
-		m_RRM_ICC_DRA = nullptr;
-	}
-	if (m_RRM_RR != nullptr) {
-		delete m_RRM_RR;
-		m_RRM_RR = nullptr;
-	}
-	if (m_WT != nullptr) {
-		delete m_WT;
-		m_WT = nullptr;
-	}
-	if (m_TMC != nullptr) {
-		delete m_TMC;
-		m_TMC = nullptr;
-	}
+	Delete::safeDelete(m_GTT);
+	Delete::safeDelete(m_GTT_Urban);
+	Delete::safeDelete(m_GTT_HighSpeed);
+	Delete::safeDelete(m_RRM);
+	Delete::safeDelete(m_RRM_TDM_DRA);
+	Delete::safeDelete(m_RRM_ICC_DRA);
+	Delete::safeDelete(m_RRM_RR);
+	Delete::safeDelete(m_WT);
+	Delete::safeDelete(m_TMC);
 }
 
 

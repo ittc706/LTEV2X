@@ -3,6 +3,7 @@
 #include<iostream>
 #include"IMTA.h"
 #include"Global.h"
+#include"Function.h"
 
 using namespace std;
 
@@ -128,22 +129,10 @@ IMTA::IMTA() {
 
 IMTA::~IMTA() {
 	refresh();
-	if (m_pfTxAntSpacing != nullptr) {
-		delete[] m_pfTxAntSpacing;
-		m_pfTxAntSpacing = nullptr;
-	}
-	if (m_pfRxAntSpacing != nullptr) {
-		delete[] m_pfRxAntSpacing;
-		m_pfRxAntSpacing = nullptr;
-	}
-	if (m_pfTxSlantAngle != nullptr) {
-		delete[] m_pfTxSlantAngle;
-		m_pfTxSlantAngle = nullptr;
-	}
-	if (m_pfRxSlantAngle != nullptr) {
-		delete[] m_pfRxSlantAngle;
-		m_pfRxSlantAngle = nullptr;
-	}
+	Delete::safeDelete(m_pfTxAntSpacing, true);
+	Delete::safeDelete(m_pfRxAntSpacing, true);
+	Delete::safeDelete(m_pfTxSlantAngle, true);
+	Delete::safeDelete(m_pfRxSlantAngle, true);
 }
 
 bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna, double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/) {
@@ -152,37 +141,24 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	m_byTxAntNum = t_eAntenna.byTxAntNum;
 	m_byRxAntNum = t_eAntenna.byRxAntNum;
 
-	if (m_pfTxAntSpacing != nullptr) {
-		delete[] m_pfTxAntSpacing;
-		m_pfTxAntSpacing = nullptr;
-	}
+	
+	Delete::safeDelete(m_pfTxAntSpacing, true);
 	m_pfTxAntSpacing = new double[m_byTxAntNum];
 
-	if (m_pfTxSlantAngle != nullptr) {
-		delete[] m_pfTxSlantAngle;
-		m_pfTxSlantAngle = nullptr;
-	}
+	Delete::safeDelete(m_pfTxSlantAngle);
 	m_pfTxSlantAngle = new double[m_byTxAntNum];
 
-	if (m_pfRxAntSpacing != nullptr) {
-		delete[] m_pfRxAntSpacing;
-		m_pfRxAntSpacing = nullptr;
-	}
+	Delete::safeDelete(m_pfRxAntSpacing, true);
 	m_pfRxAntSpacing = new double[m_byRxAntNum];
 
-	if (m_pfRxSlantAngle != nullptr) {
-		delete[] m_pfRxSlantAngle;
-		m_pfRxSlantAngle = nullptr;
-	}
+	Delete::safeDelete(m_pfRxSlantAngle, true);
 	m_pfRxSlantAngle = new double[m_byRxAntNum];
 
-	for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++byTempTxAnt)
-	{
+	for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++byTempTxAnt) {
 		m_pfTxAntSpacing[byTempTxAnt] = t_eAntenna.pfTxAntSpacing[byTempTxAnt] * gc_PI2;
 		m_pfTxSlantAngle[byTempTxAnt] = t_eAntenna.pfTxSlantAngle[byTempTxAnt] * gc_Degree2PI;
 	}
-	for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++byTempRxAnt)
-	{
+	for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++byTempRxAnt) {
 		m_pfRxAntSpacing[byTempRxAnt] = t_eAntenna.pfRxAntSpacing[byTempRxAnt] * gc_PI2;
 		m_pfRxSlantAngle[byTempRxAnt] = t_eAntenna.pfRxSlantAngle[byTempRxAnt] * gc_Degree2PI;
 	}
@@ -578,17 +554,17 @@ bool IMTA::enable(bool *t_pbEnable)
 		}
 
 
-	delete[] pfPhasePol;
-	delete[] pfSlantVV;
-	delete[] pfSlantVH;
-	delete[] pfSlantHV;
-	delete[] pfSlantHH;
-	delete[] pfPathDelay;
-	delete[] pfPathPower;
-	delete[] pfXAoD;
-	delete[] pfXAoA;
-	delete[] pfAoD;
-	delete[] pfAoA;
+	Delete::safeDelete(pfPhasePol, true);
+	Delete::safeDelete(pfSlantVV, true);
+	Delete::safeDelete(pfSlantVH, true);
+	Delete::safeDelete(pfSlantHV, true);
+	Delete::safeDelete(pfSlantHH, true);
+	Delete::safeDelete(pfPathDelay, true);
+	Delete::safeDelete(pfPathPower, true);
+	Delete::safeDelete(pfXAoD, true);
+	Delete::safeDelete(pfXAoA, true);
+	Delete::safeDelete(pfAoD, true);
+	Delete::safeDelete(pfAoA, true);
 	return true;
 }
 
@@ -722,37 +698,12 @@ void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, d
 }
 
 void IMTA::refresh(){
-	if (m_pfGain != nullptr) {
-		delete[] m_pfGain;
-		m_pfGain = nullptr;
-	}
-	if (m_pfSinAoD != nullptr) {
-		delete[] m_pfSinAoD;
-		m_pfSinAoD = nullptr;
-	}
-	if (m_pfCosAoD != nullptr) {
-		delete[] m_pfCosAoD;
-		m_pfCosAoD = nullptr;
-	}
-	if (m_pfPhase != nullptr) {
-		delete[] m_pfPhase;
-		m_pfPhase = nullptr;
-	}
-	if (m_pfSinAoA != nullptr) {
-		delete[] m_pfSinAoA;
-		m_pfSinAoA = nullptr;
-	}
-	if (m_pfCosAoA != nullptr) {
-		delete[] m_pfCosAoA;
-		m_pfCosAoA = nullptr;
-	}
-
-	if (m_pfPhaseLoS != nullptr) {
-		delete[] m_pfPhaseLoS;
-		m_pfPhaseLoS = nullptr;
-	}
-	if (m_pwFFTIndex != nullptr) {
-		delete[] m_pwFFTIndex;
-		m_pwFFTIndex = nullptr;
-	}
+	Delete::safeDelete(m_pfGain, true);
+	Delete::safeDelete(m_pfSinAoD, true);
+	Delete::safeDelete(m_pfCosAoD, true);
+	Delete::safeDelete(m_pfPhase, true);
+	Delete::safeDelete(m_pfSinAoA, true);
+	Delete::safeDelete(m_pfCosAoA, true);
+	Delete::safeDelete(m_pfPhaseLoS, true);
+	Delete::safeDelete(m_pwFFTIndex, true);
 }

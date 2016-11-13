@@ -22,6 +22,7 @@
 #include<iostream>
 #include<set>
 #include"RRM_RR.h"
+#include"Function.h"
 
 using namespace std;
 
@@ -444,8 +445,7 @@ void RRM_RR::transimitEnd() {
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
 					//释放调度信息对象的内存资源
-					delete info;
-					info = nullptr;
+					Delete::safeDelete(info);
 				}
 				else {//没有传输完毕，转到Wait链表，等待下一次调度
 					bool isEmergency = m_EventVec[info->eventId].message.messageType == EMERGENCY;
@@ -456,8 +456,7 @@ void RRM_RR::transimitEnd() {
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "NextTurn");
 
 					//释放调度信息对象的内存资源
-					delete info;
-					info = nullptr;
+					Delete::safeDelete(info);
 				}
 			}
 		}

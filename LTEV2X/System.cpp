@@ -3,6 +3,7 @@
 #include"System.h"
 #include"Global.h"
 #include"RSU.h"
+#include"Function.h"
 
 
 using namespace std;
@@ -204,39 +205,15 @@ void System::initializeTMCModule() {
 
 System::~System() {
 	//清理模块指针
-	if (m_TMCPoint != nullptr) {
-		delete m_TMCPoint;
-		m_TMCPoint = nullptr;
-	}
-	if (m_RRMPoint != nullptr) {
-		delete m_RRMPoint;
-		m_RRMPoint = nullptr;
-	}
-	if (m_GTTPoint != nullptr) {
-		delete m_GTTPoint;
-		m_GTTPoint = nullptr;
-	}
-	if (m_WTPoint != nullptr) {
-		delete m_WTPoint;
-		m_WTPoint = nullptr;
-	}
+	Delete::safeDelete(m_TMCPoint);
+	Delete::safeDelete(m_RRMPoint);
+	Delete::safeDelete(m_GTTPoint);
+	Delete::safeDelete(m_WTPoint);
 
 	//清理各实体类数组
-	if (m_eNBAry != nullptr) {
-		delete[] m_eNBAry;
-		m_eNBAry = nullptr;
-	}
-	if (m_RSUAry != nullptr) {
-		delete[] m_RSUAry;
-		m_RSUAry = nullptr;
-	}
-	if (m_VeUEAry != nullptr) {
-		delete[] m_VeUEAry;
-		m_VeUEAry = nullptr;
-	}
-	if (m_RoadAry != nullptr) {
-		delete[] m_RoadAry;
-		m_RoadAry = nullptr;
-	}
+	Delete::safeDelete(m_eNBAry, true);
+	Delete::safeDelete(m_RSUAry, true);
+	Delete::safeDelete(m_VeUEAry, true);
+	Delete::safeDelete(m_RoadAry, true);
 }
 

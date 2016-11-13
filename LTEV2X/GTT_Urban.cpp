@@ -3,6 +3,7 @@
 #include<iostream>
 #include"GTT_Urban.h"
 #include"Exception.h"
+#include"Function.h"
 
 using namespace std;
 using namespace ns_GTT_Urban;
@@ -110,10 +111,9 @@ void GTT_Urban::initialize() {
 void GTT_Urban::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		for (auto &c : m_VeUEAry[VeUEId].m_GTT->m_InterferenceH) {
-			if (c != nullptr) {
-				delete[] c;
-				c = nullptr;
-			}
+			if (c != nullptr)
+				Delete::safeDelete(c, true);
+
 		}
 	}
 }
@@ -499,19 +499,18 @@ void GTT_Urban::freshLoc() {
 		m_VeUEAry[UserIdx1].m_GTT->m_IMTA[RSUIdx].calculate(t_HAfterFFT,0.01f, ch_buffer, ch_sin, ch_cos, H,FFT);
 		memcpy(m_VeUEAry[UserIdx1].m_GTT->m_H, t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
 
-		delete flag;
-		delete[] H;
-		delete[] ch_buffer;
-		delete[] ch_sin;
-		delete[] ch_cos;
-		delete[] antenna.pfTxSlantAngle;
-		delete[] antenna.pfTxAntSpacing;
-		delete[] antenna.pfRxSlantAngle;
-		delete[] antenna.pfRxAntSpacing;
-		delete[] m_VeUEAry[UserIdx1].m_GTT->m_IMTA;
-		m_VeUEAry[UserIdx1].m_GTT->m_IMTA = nullptr;
-		delete[] FFT;
-		delete[] t_HAfterFFT;
+		Delete::safeDelete(flag);
+		Delete::safeDelete(H, true);
+		Delete::safeDelete(ch_buffer, true);
+		Delete::safeDelete(ch_sin, true);
+		Delete::safeDelete(ch_cos, true);
+		Delete::safeDelete(antenna.pfTxSlantAngle, true);
+		Delete::safeDelete(antenna.pfTxAntSpacing, true);
+		Delete::safeDelete(antenna.pfRxSlantAngle, true);
+		Delete::safeDelete(antenna.pfRxAntSpacing, true);
+		Delete::safeDelete(m_VeUEAry[UserIdx1].m_GTT->m_IMTA, true);
+		Delete::safeDelete(FFT, true);
+		Delete::safeDelete(t_HAfterFFT, true);
 	}
 }
 
@@ -618,23 +617,22 @@ void GTT_Urban::calculateInterference(const vector<vector<list<int>>>& RRMInterf
 
 				memcpy(m_VeUEAry[VeUEId].m_GTT->m_InterferenceH[interferenceVeUEId], t_HAfterFFT, 2 * 1024 * 2 * sizeof(double(0)));
 
-				delete flag; flag = nullptr;
-				delete[] H; H = nullptr;
-				delete[] ch_buffer; ch_buffer = nullptr;
-				delete[] ch_sin; ch_sin = nullptr;
-				delete[] ch_cos; ch_cos=nullptr;
-				delete[] antenna.pfTxSlantAngle; antenna.pfTxSlantAngle = nullptr;
-				delete[] antenna.pfTxAntSpacing; antenna.pfTxAntSpacing = nullptr;
-				delete[] antenna.pfRxSlantAngle; antenna.pfRxSlantAngle = nullptr;
-				delete[] antenna.pfRxAntSpacing; antenna.pfRxAntSpacing = nullptr;
-				delete[] FFT; FFT = nullptr;
-				delete[] t_HAfterFFT; t_HAfterFFT = nullptr;
+				Delete::safeDelete(flag);
+				Delete::safeDelete(H, true);
+				Delete::safeDelete(ch_buffer, true);
+				Delete::safeDelete(ch_sin, true);
+				Delete::safeDelete(ch_cos, true);
+				Delete::safeDelete(antenna.pfTxSlantAngle, true);
+				Delete::safeDelete(antenna.pfTxAntSpacing, true);
+				Delete::safeDelete(antenna.pfRxSlantAngle, true);
+				Delete::safeDelete(antenna.pfRxAntSpacing, true);
+				Delete::safeDelete(FFT, true);
+				Delete::safeDelete(t_HAfterFFT, true);
 			}	
 		}
 	}
 
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		delete[] m_VeUEAry[VeUEId].m_GTT->m_IMTA;
-		m_VeUEAry[VeUEId].m_GTT->m_IMTA = nullptr;
+		Delete::safeDelete(m_VeUEAry[VeUEId].m_GTT->m_IMTA, true);
 	}
 }
