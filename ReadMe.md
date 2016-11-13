@@ -1,4 +1,11 @@
-version_2016_11_10(Debug WT模块)
+## version_2016_11_13(Debug)
+* 修改了Matrix类库，修复了resize的问题
+* 修复了Matrix以及RowVecotor的移动赋值拷贝赋值的自赋值问题
+* 当成员有指针变量的时候，拷贝赋值也需要检查自赋值的正确性
+
+
+
+## version_2016_11_12(Debug WT模块)
 * 矩阵读取错误，每个分量的权值
 
 ## version_2016_11_10(修改了System的Config)

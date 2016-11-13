@@ -29,7 +29,7 @@ using namespace std;
 RRM_RR::RRM_RR(int &t_TTI, Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
 	RRM_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 	
-	m_InterferenceVec = vector<list<int>>(ns_RRM_RR::gc_TotalPatternNum);
+	m_InterferenceVec = vector<vector<list<int>>>(m_Config.VeUENum,vector<list<int>>(ns_RRM_RR::gc_TotalPatternNum));
 
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
@@ -241,17 +241,25 @@ void RRM_RR::delaystatistics() {
 
 
 void RRM_RR::transimitPreparation() {
-	for (list<int>&lst : m_InterferenceVec) {
-		lst.clear();
-	}
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
+		for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++)
+			m_InterferenceVec[VeUEId][patternIdx].clear();
+
 
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
-				RSU::RRM::ScheduleInfo *&info = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
-				if (info == nullptr) continue;
-				m_InterferenceVec[patternIdx].push_back(info->VeUEId);
+				RSU::RRM::ScheduleInfo *&curInfo = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
+				if (curInfo == nullptr) continue;
+				int curVeUEId = curInfo->VeUEId;
+				for (int otherClusterIdx = 0; otherClusterIdx < _RSU.m_GTT->m_ClusterNum; otherClusterIdx++) {
+					if (otherClusterIdx == clusterIdx)continue;
+					RSU::RRM::ScheduleInfo *&otherInfo= _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[otherClusterIdx][patternIdx];
+					if (otherInfo == nullptr) continue;
+					int otherVeUEId = otherInfo->VeUEId;
+					m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
+				}		
 			}
 		}
 	}
@@ -259,27 +267,25 @@ void RRM_RR::transimitPreparation() {
 
 	//更新每辆车的干扰车辆列表	
 	for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
-		list<int>& lst = m_InterferenceVec[patternIdx];
+		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+			list<int>& interList = m_InterferenceVec[VeUEId][patternIdx];
 
-		for (int VeUEId : lst) {
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)lst.size() - 1;//写入干扰数目
-
-			set<int> s(lst.begin(), lst.end());//用于更新干扰列表的
-			s.erase(VeUEId);
-
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(s.begin(), s.end());//写入干扰车辆ID
-
-			g_FileTemp << "VeUEId: " << VeUEId << " [";
-			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
-				g_FileTemp << c << ", ";
-			g_FileTemp << " ]" << endl;
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
+			
+			if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx]>0) {
+				g_FileTemp << "VeUEId: " << VeUEId << " [";
+				for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
+					g_FileTemp << c << ", ";
+				g_FileTemp << " ]" << endl;
+			}
 		}
 	}
 
 	//请求地理拓扑单元计算干扰响应矩阵
 	long double start = clock();
-	//m_GTTPoint->calculateInterference(m_InterferenceVec);
+	m_GTTPoint->calculateInterference(m_InterferenceVec);
 	long double end = clock();
 	m_GTTTimeConsume += end - start;
 }

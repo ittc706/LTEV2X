@@ -359,7 +359,6 @@ void RRM_ICC_DRA::transimitPreparation() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
 		for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++)
 			m_InterferenceVec[VeUEId][patternIdx].clear();
-	
 
 	//统计本次的干扰信息
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
@@ -371,9 +370,9 @@ void RRM_ICC_DRA::transimitPreparation() {
 				if (curList.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
 					RSU::RRM::ScheduleInfo *curInfo = *curList.begin();
 					int curVeUEId = curInfo->VeUEId;
-					for (int otherCluster = 0; otherCluster < _RSU.m_GTT->m_ClusterNum; otherCluster++) {
-						if (otherCluster == clusterIdx)continue;
-						list<RSU::RRM::ScheduleInfo*> &otherList = _RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[otherCluster][patternIdx];
+					for (int otherClusterIdx = 0; otherClusterIdx < _RSU.m_GTT->m_ClusterNum; otherClusterIdx++) {
+						if (otherClusterIdx == clusterIdx)continue;
+						list<RSU::RRM::ScheduleInfo*> &otherList = _RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
 						if (otherList.size() == 1) {//其他簇中该pattern下有车辆在传输，那么将该车辆作为干扰车辆
 							RSU::RRM::ScheduleInfo *otherInfo = *otherList.begin();
 							int otherVeUEId = otherInfo->VeUEId;
@@ -390,14 +389,16 @@ void RRM_ICC_DRA::transimitPreparation() {
 		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 			list<int>& interList = m_InterferenceVec[VeUEId][patternIdx];
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = interList.size();//写入干扰数目
+			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
 
 			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
 
-			g_FileTemp << "VeUEId: " << VeUEId << " [";
-			for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
-				g_FileTemp << c << ", ";
-			g_FileTemp << " ]" << endl;
+			if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx]>0) {
+				g_FileTemp << "VeUEId: " << VeUEId << " [";
+				for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
+					g_FileTemp << c << ", ";
+				g_FileTemp << " ]" << endl;
+			}	
 		}
 	}
 

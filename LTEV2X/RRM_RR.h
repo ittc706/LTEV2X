@@ -32,10 +32,11 @@ public:
 	std::list<int> m_SwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
 
 	/*
-	* 用于存放指定Pattern的干扰列表(同RSU下的簇间干扰或者RSU间干扰)
-	* 外层下标为PatternId(绝对量)
+	* 用于存放指定车辆指定Pattern的干扰列表(只保留RSU内簇间干扰)
+	* 外层下标为VeUEId
+	* 内层下标为PatternIdx
 	*/
-	std::vector<std::list<int>> m_InterferenceVec;
+	std::vector<std::vector<std::list<int>>> m_InterferenceVec;
 
 
 	//多线程有关参数

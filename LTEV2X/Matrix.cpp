@@ -75,16 +75,18 @@ RowVector::RowVector(const initializer_list<Complex> il) {
 
 
 RowVector& RowVector::operator=(const RowVector& t_RowVector) {
-	free();
-	col = t_RowVector.col;
-	rowVector = new Complex[col]();
-	memcpy(rowVector, t_RowVector.rowVector, col*sizeof(Complex));
+	if (rowVector != t_RowVector.rowVector) {//检查自赋值的正确性
+		free();
+		col = t_RowVector.col;
+		rowVector = new Complex[col]();
+		memcpy(rowVector, t_RowVector.rowVector, col*sizeof(Complex));
+	}
 	return *this;
 }
 
 
 RowVector& RowVector::operator=(RowVector&& t_RowVector) noexcept {
-	if (rowVector != t_RowVector.rowVector) {//自赋值检查
+	if (rowVector != t_RowVector.rowVector) {//检查自赋值的正确性
 		free();//清理资源
 		col = t_RowVector.col;
 		rowVector = t_RowVector.rowVector;//接管资源
@@ -108,10 +110,14 @@ void RowVector::resize(int size) {
 	if (size < 0) throw Exp("向量的维度必须是非负的");
 	int preCol = col;
 	Complex* preRowVector = rowVector;
-	free();
 	col = size;
 	rowVector = new Complex[col]();
 	memcpy(rowVector, preRowVector, preCol*sizeof(Complex));
+	//free();//这里不能调用free()来析构原来的资源
+	if (preRowVector != nullptr) {
+		delete[] preRowVector;
+		preRowVector = nullptr;
+	}
 }
 
 
@@ -260,6 +266,13 @@ Matrix::Matrix(const Matrix& t_Matrix) :
 	row(t_Matrix.row), col(t_Matrix.col) {
 	matrix=new RowVector[row];
 	for (int iter = 0; iter < row; iter++) {
+		/*-----------------------ATTENTION-----------------------
+		* 调用RowVector的拷贝赋值运算符
+		* 这里不能调用memcpy来拷贝matrix成员，因为要实现拷贝赋值的语义
+		* memcpy会将t_Matrix.matrix内存区域的值完全赋值一份给this->matrix
+		* 但是该内存区域是RowVector对象，而该对象包含了指针
+		* 这样会导致复制前后，RowVector中的指针一致
+		*------------------------ATTENTION-----------------------*/
 		matrix[iter] = t_Matrix[iter];
 	}
 }
@@ -487,16 +500,28 @@ Matrix Matrix::pseudoInverse() {
 
 
 Matrix& Matrix::operator=(const Matrix& t_Matrix) {
-	free();
-	row = t_Matrix.row;
-	col = t_Matrix.col;
-	matrix = t_Matrix.matrix;
+	if (matrix != t_Matrix.matrix) {//检查自赋值的正确性
+		free();
+		row = t_Matrix.row;
+		col = t_Matrix.col;
+		matrix = new RowVector[row];
+		for (int r = 0; r < row; r++) {
+			/*-----------------------ATTENTION-----------------------
+			* 调用RowVector的拷贝赋值运算符
+			* 这里不能调用memcpy来拷贝matrix成员，因为要实现拷贝赋值的语义
+			* memcpy会将t_Matrix.matrix内存区域的值完全赋值一份给this->matrix
+			* 但是该内存区域是RowVector对象，而该对象包含了指针
+			* 这样会导致复制前后，RowVector中的指针一致
+			*------------------------ATTENTION-----------------------*/
+			matrix[r].operator=(t_Matrix.matrix[r]);
+		}
+	}
 	return *this;
 }
 
 
 Matrix& Matrix::operator=(Matrix&& t_Matrix) noexcept {
-	if (matrix != t_Matrix.matrix) {//检查字符值的正确性
+	if (matrix != t_Matrix.matrix) {//检查自赋值的正确性
 		free();//清理资源
 		row = t_Matrix.row;
 		col = t_Matrix.col;

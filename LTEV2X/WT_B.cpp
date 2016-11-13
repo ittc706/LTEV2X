@@ -92,7 +92,6 @@ tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrier
 
 	//子载波数量
 	int m_SubCarrierNum = subCarrierIdxEnd - subCarrierIdxStart + 1;
-
 	/*****求每个子载波上的信噪比****/
 	RowVector Sinr(m_SubCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
 	for (int subCarrierIdx = subCarrierIdxStart; subCarrierIdx <= subCarrierIdxEnd; subCarrierIdx++) {
@@ -102,19 +101,19 @@ tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrier
 		m_H=readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
 		m_HInterference = readInterferenceH(VeUEId, subCarrierIdx, patternIdx);//读入当前子载波干扰相应矩阵数组
 
-		/*if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] != 0) {
+		if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] != 0) {
 			m_H.print();
 			cout << "干扰矩阵： ";
 			for (auto &c : m_HInterference) {
 				c.print();
 			}
 			cout << endl;
-		}*/
+		}
+
 
 		/* 下面开始计算W */
 
-		Matrix HHermit(m_Nt, m_Nr);
-		HHermit = m_H.hermitian();//求信道矩阵的hermitian
+		Matrix HHermit = m_H.hermitian();//求信道矩阵的hermitian
 
 		Matrix inverseExpLeft = m_Pt*m_Ploss*m_H * HHermit;//求逆表达式左边那项
 
@@ -165,7 +164,7 @@ tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrier
 		Sinr[i] = 10 * log10(Complex::abs(Sinr[i]));
 	}
 
-	if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] != 0) {
+	/*if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] >0) {
 		cout << "Ploss: " << m_Ploss << endl;
 		cout << "InterPloss: ";
 		for (auto tmpPloss : m_PlossInterference) {
@@ -175,28 +174,30 @@ tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrier
 		cout << "Sinr: ";
 		Sinr.print();
 		cout << endl;
-	}
+	}*/
 	
 
 	if (m_Mol == 2) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
-			sum_MI = sum_MI + getMutualInformation(*m_QPSK_MI,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
+			sum_MI = sum_MI + getMutualInformation(*m_QPSK_MI, (int)ceil((Sinr[k].real + 20) * 2));
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
 
 		int SNRIndex = closest(*m_QPSK_MI, ave_MI);
 		Sinreff = 0.5*(SNRIndex - 40);
-	}else if (m_Mol == 4) {
+	}
+	else if (m_Mol == 4) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
-			sum_MI = sum_MI + getMutualInformation(*m_QAM_MI16,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
+			sum_MI = sum_MI + getMutualInformation(*m_QAM_MI16, (int)ceil((Sinr[k].real + 20) * 2));
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
 
 		int SNRIndex = closest(*m_QAM_MI16, ave_MI);
 		Sinreff = 0.5*(SNRIndex - 40);
-	}else if (m_Mol == 6) {
+	}
+	else if (m_Mol == 6) {
 		for (int k = 0; k < m_SubCarrierNum; k++) {
-			sum_MI = sum_MI + getMutualInformation(*m_QAM_MI64,(int)ceil(Complex::abs(Sinr[k]) * 2 + 40 - 0.5));
+			sum_MI = sum_MI + getMutualInformation(*m_QAM_MI64, (int)ceil((Sinr[k].real + 20) * 2));
 		}
 		ave_MI = sum_MI / m_SubCarrierNum;
 
@@ -235,6 +236,126 @@ void WT_B::testCloest() {
 			    
 		}
 	}
+}
+
+
+void WT_B::testSINR() {
+	//配置本次函数调用的参数
+	m_Pt = pow(10, -4.7);//-17dbm-70dbm
+	m_Sigma = pow(10, -17.4);
+	m_Ploss = 0.000000000043;
+	m_Nr = 2;
+	m_Nt = 1;
+
+	int sizeTmp = 1;
+	cout << "sizeTmp " << sizeTmp << endl;
+
+	Complex Sinr;//每个子载波上的信噪比，维度为Nt的向量
+
+
+	m_H = Matrix(2, 1);
+	m_H[0][0] = Complex{ -0.75,-1.5 };
+	m_H[1][0] = Complex{ 0.43,-0.51 };
+
+	cout << "H :";
+	m_H.print();
+	Matrix m_HInterference1(2, 1);
+	m_HInterference1[0][0] = Complex{ -0.85,-0.48 };
+	m_HInterference1[1][0] = Complex{ -0.28,-0.21 };
+
+	Matrix m_HInterference2(2, 1);
+	m_HInterference2[0][0] = Complex{ -0.86,-0.50 };
+	m_HInterference2[1][0] = Complex{ -0.32,-0.20 };
+
+	if (sizeTmp == 1)
+		m_HInterference = vector<Matrix>{ m_HInterference1 };
+	else if (sizeTmp == 2)
+		m_HInterference = vector<Matrix>{ m_HInterference1 ,m_HInterference2 };
+
+
+	m_PlossInterference = vector<double>(sizeTmp, 0.000000044 / sizeTmp);
+
+
+	cout << "干扰矩阵： ";
+	for (auto &c : m_HInterference) {
+		c.print();
+	}
+	cout << endl;
+
+
+	/* 下面开始计算W */
+
+	Matrix HHermit = m_H.hermitian();//求信道矩阵的hermitian
+
+	Matrix inverseExpLeft = m_Pt*m_Ploss*m_H * HHermit;//求逆表达式左边那项
+
+													   //计算干扰项
+	Matrix Interference1(m_Nr, m_Nr);
+
+	for (int i = 0; i < (int)m_HInterference.size(); i++) {
+
+		Interference1 = Interference1 + m_Pt*m_PlossInterference[i] * m_HInterference[i] * m_HInterference[i].hermitian();
+	}
+
+	cout << "Interference1: ";
+	Interference1.print();
+
+
+	//求逆表达式右边那项
+	Matrix inverseExpRight = m_Sigma*Matrix::eye(m_Nr) + Interference1;//sigma上带曲线
+
+	cout << "求逆的项";
+	(inverseExpLeft + inverseExpRight).print();
+
+	cout << "求逆项的逆";
+	(inverseExpLeft + inverseExpRight).inverse(true).print();
+	Matrix W = (inverseExpLeft + inverseExpRight).inverse(true)*sqrt(m_Pt*m_Ploss)*m_H;//权重矩阵
+
+
+	cout << "W:";
+	W.print();
+
+	cout << "WH*W: ";
+	(W.hermitian()*W).print();
+
+
+	/* 下面开始计算D */
+	//先计算分子
+	Matrix WHer = W.hermitian();
+	cout << "WH: ";
+	WHer.print();
+	Matrix D = sqrt(m_Ploss*m_Pt)*WHer*m_H;
+	Matrix DHer = D.hermitian();
+	Matrix molecular = D*DHer;//SINR运算的分子，1*1的矩阵
+
+
+							  //然后计算分母
+	Matrix denominatorLeft = WHer*W*m_Sigma;//SINR运算的分母中的第一项
+	Matrix Iself = WHer*m_H*sqrt(m_Pt*m_Ploss) - D;
+	Matrix IselfHer = Iself.hermitian();
+	Matrix denominatorMiddle = Iself*IselfHer; //SINR运算的分母中的第二项
+
+											   /*以下计算公式中的干扰项,即公式中的第三项*/
+	Matrix denominatorRight(m_Nt, m_Nt);
+
+	for (int i = 0; i < (int)m_HInterference.size(); i++) {
+		cout << "系数";
+		(WHer*m_HInterference[i] * (m_HInterference[i].hermitian())*W).print();
+		denominatorRight = denominatorRight + m_Pt*m_PlossInterference[i] * WHer*m_HInterference[i] * m_HInterference[i].hermitian()*W;
+	}
+
+	cout << "denominatorRight: ";
+	denominatorRight.print();
+
+
+
+	Matrix denominator = denominatorLeft + denominatorMiddle + denominatorRight;//SINR运算的分母
+
+
+	Sinr = molecular[0][0] / denominator[0][0];
+
+	cout << "SINR: ";
+	Sinr.print();
 }
 
 
@@ -284,7 +405,8 @@ vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, int patte
 
 /*****查找MCS等级曲线*****/
 int WT_B::searchMCSLevelTable(double SINR) {
-	//double SINR_dB = 10 * log10(SINR);
+	if (SINR <= -10) return 1;
+	if (SINR >= 30) return 28;
 	if (SINR > -10 && SINR < 30) {
 		return (*m_MCSLevelTable)[static_cast<int>(ceil((SINR +10)*1000))];
 	}
@@ -404,3 +526,6 @@ tuple<ModulationType, int, double> WT_B::MCS2ModulationAndRate(int MCSLevel) {
 		throw Exp("MCSLevel is Wrong!");
 	}
 }
+
+
+

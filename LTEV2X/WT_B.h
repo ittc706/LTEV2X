@@ -36,6 +36,7 @@ public:
 	WT_Basic* getCopy()override;//获取该模块的一个拷贝
 	std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) override;
 	void testCloest();
+	void testSINR();
 
 private:
 	void configuration(int VeUEId, int patternIdx);//每次调用SINRCalculate前需要进行参数配置
