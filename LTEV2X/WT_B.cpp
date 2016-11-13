@@ -86,12 +86,34 @@ WT_Basic* WT_B::getCopy() {
 	return new WT_B(*this);
 }
 
-tuple<ModulationType, int, double> WT_B::SINRCalculate(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd, int patternIdx) {
+
+double WT_B::SINRCalculateMRC(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) {
 	//配置本次函数调用的参数
 	configuration(VeUEId, patternIdx);
 
 	//子载波数量
 	int m_SubCarrierNum = subCarrierIdxEnd - subCarrierIdxStart + 1;
+
+	///*****求每个子载波上的信噪比****/
+	//RowVector Sinr(m_SubCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
+	//for (int subCarrierIdx = subCarrierIdxStart; subCarrierIdx <= subCarrierIdxEnd; subCarrierIdx++) {
+	//	int relativeSubCarrierIdx = subCarrierIdx - subCarrierIdxStart;//相对的子载波下标
+
+	//	m_H = readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
+	//	m_HInterference = readInterferenceH(VeUEId, subCarrierIdx, patternIdx);//读入当前子载波干扰相应矩阵数组
+
+	//}
+	return 10;
+}
+
+
+tuple<ModulationType, int, double> WT_B::SINRCalculateMMSE(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd, int patternIdx) {
+	//配置本次函数调用的参数
+	configuration(VeUEId, patternIdx);
+
+	//子载波数量
+	int m_SubCarrierNum = subCarrierIdxEnd - subCarrierIdxStart + 1;
+
 	/*****求每个子载波上的信噪比****/
 	RowVector Sinr(m_SubCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
 	for (int subCarrierIdx = subCarrierIdxStart; subCarrierIdx <= subCarrierIdxEnd; subCarrierIdx++) {
@@ -362,7 +384,7 @@ void WT_B::testSINR() {
 void WT_B::configuration(int VeUEId, int patternIdx){
 	m_Nr = m_VeUEAry[VeUEId].m_GTT->m_Nr;
 	m_Nt = m_VeUEAry[VeUEId].m_GTT->m_Nt;
-	m_Mol = get<0>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
+	m_Mol = m_VeUEAry[VeUEId].m_RRM->m_ModulationType;
 	m_Ploss = m_VeUEAry[VeUEId].m_GTT->m_Ploss;
 	m_Pt = pow(10,-4.7);//-17dbm-70dbm
 	m_Sigma = pow(10,-17.4);

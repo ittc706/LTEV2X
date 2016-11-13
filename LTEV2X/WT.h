@@ -22,5 +22,6 @@ public:
 	//接口
 	virtual void initialize() = 0;//初始化RSU VeUE内该单元的内部类
 	virtual WT_Basic* getCopy() = 0;//获取该模块的一个拷贝
-	virtual std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) = 0;
+	virtual double SINRCalculateMRC(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) = 0;
+	virtual std::tuple<ModulationType, int, double> SINRCalculateMMSE(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) = 0;
 };

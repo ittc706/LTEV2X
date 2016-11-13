@@ -1,6 +1,8 @@
 #pragma once
 #include<fstream>
 #include<vector>
+#include"Enumeration.h"
+
 
 
 /*===========================================
@@ -216,6 +218,9 @@ namespace ns_GTT_HighSpeed {
 const int gc_TotalBandwidth =10 * 1000 * 1000;//10MHz
 const int gc_BandwidthOfRB = 12 * 1000 * 15;//180kHZ
 const int gc_BitNumPerRB=180;  //单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
+const ModulationType gc_ModulationType = QPSK;//调制方式
+const double gc_CodeRate = 0.5;//速率
+const double gc_CriticalPoint = 1.99;//不丢包传输的最小载干比，用于判断是否丢包之用
 
 /*===========================================
 *          RRM_TDM_DRA模块常量定义

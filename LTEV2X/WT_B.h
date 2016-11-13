@@ -34,7 +34,8 @@ public:
 
 	void initialize() override;//模块初始化调用的初始化函数,初始化RSU VeUE内该单元的内部类
 	WT_Basic* getCopy()override;//获取该模块的一个拷贝
-	std::tuple<ModulationType, int, double> SINRCalculate(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) override;
+	double SINRCalculateMRC(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) override;
+	std::tuple<ModulationType, int, double> SINRCalculateMMSE(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) override;
 	void testCloest();
 	void testSINR();
 

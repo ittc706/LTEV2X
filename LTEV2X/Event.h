@@ -15,6 +15,7 @@ private:
 	bool isDone;
 	int currentPackageIdx;
 	int remainBitNum;//currentPackageIdx所指向的package剩余待传输的bit数
+	int packetLossCnt;
 
 public:
 	/*构造函数*/
@@ -33,6 +34,8 @@ public:
 	bool isFinished();//判断是否完成事件的传输，并更新事件状态
 	int getRemainBitNum() { return remainBitNum; }
 	int getCurrentPackageIdx() { return currentPackageIdx; }
+	void packetLoss() { ++packetLossCnt; }
+	int getPacketLossCnt() { return packetLossCnt; }
 };
 
 struct Event {//事件类

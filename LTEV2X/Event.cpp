@@ -37,6 +37,7 @@ Message::Message(MessageType messageType) {
 		break;
 	}
 	isDone = false;
+	packetLossCnt = 0;
 }
 
 

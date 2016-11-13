@@ -108,16 +108,13 @@ public:
 		std::vector<int> m_InterferenceVeUENum;//下标对应的Pattern下，同频干扰数量
 		std::vector<std::vector<int>> m_InterferenceVeUEIdVec;//下标对应的Pattern下，同频干扰车辆ID，不包含当前车辆，每个类型对应的总数就是m_InterferenceVeUENum[patternIdx]
 		std::vector<std::vector<int>> m_PreInterferenceVeUEIdVec;//含义同上，上一次的干扰车辆，用于判断是否相同
-		/*
-		* 下标为Pattern编号
-		* tuple第一个元素：调制方式对应的2的指数，如QPSK为2，16QAM为4 64QAM位6，WT模块需要
-		* tuple第二个元素：调制方式对应的每符号的比特数目(实部或虚部)
-		* tuple第三个元素：编码码率
-		*/
-		std::vector<std::tuple<ModulationType,int,double>> m_WTInfo;
-		std::vector<bool> m_isWTCached;//标记是否缓存过WT结果，下标为patternIdx,需要在位置更新后清空
+		
+		const ModulationType m_ModulationType = gc_ModulationType;//调制方式
+		const double m_CodeRate = gc_CodeRate;//编码码率
+		std::vector<double> m_PreSINR;//上次计算的载干比，若为最小值则说明之前没有计算过
 
 		bool isNeedRecalculateSINR(int patternIdx);
+		bool isAlreadyCalculateSINR(int patternIdx) { return m_PreSINR[patternIdx] != (std::numeric_limits<double>::min)(); }
 	};
 
 	struct RRM_TDM_DRA {

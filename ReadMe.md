@@ -1,3 +1,8 @@
+## version_2016_11_13(调整传输方式)
+* 以固定的调制以及编码码率发送
+* 以SINR来判断是否丢包
+* 修改了WT
+
 ## version_2016_11_13(Debug)
 * 修改了Matrix类库，修复了resize的问题
 * 修复了Matrix以及RowVecotor的移动赋值拷贝赋值的自赋值问题

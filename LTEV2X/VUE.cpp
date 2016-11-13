@@ -72,8 +72,7 @@ void VeUE::initializeRRM_TDM_DRA() {
 	m_RRM->m_InterferenceVeUENum = vector<int>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
 	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
 	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum);
-	m_RRM->m_WTInfo = vector<tuple<ModulationType,int,double>>(ns_RRM_TDM_DRA::gc_TotalPatternNum, tuple<ModulationType, int, double>(_16QAM,0,0));
-	m_RRM->m_isWTCached = vector<bool>(ns_RRM_TDM_DRA::gc_TotalPatternNum, false);
+	m_RRM->m_PreSINR = vector<double>(ns_RRM_TDM_DRA::gc_TotalPatternNum, (numeric_limits<double>::min)());
 
 	//这两个数据比较特殊，必须等到GTT模块初始化完毕后，车辆的数目才能确定下来
 	m_GTT->m_InterferencePloss = vector<double>(m_VeUECount,0);
@@ -87,8 +86,7 @@ void VeUE::initializeRRM_ICC_DRA() {
 	m_RRM->m_InterferenceVeUENum = vector<int>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
 	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
 	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
-	m_RRM->m_WTInfo = vector<tuple<ModulationType, int, double>>(ns_RRM_ICC_DRA::gc_TotalPatternNum, tuple<ModulationType, int, double>(_16QAM, 0, 0));
-	m_RRM->m_isWTCached = vector<bool>(ns_RRM_ICC_DRA::gc_TotalPatternNum, false);
+	m_RRM->m_PreSINR = vector<double>(ns_RRM_ICC_DRA::gc_TotalPatternNum, (numeric_limits<double>::min)());
 
 	//这两个数据比较特殊，必须等到GTT模块初始化完毕后，车辆的数目才能确定下来
 	m_GTT->m_InterferencePloss = vector<double>(m_VeUECount, 0);
@@ -102,8 +100,7 @@ void VeUE::initializeRRM_RR() {
 	m_RRM->m_InterferenceVeUENum = vector<int>(ns_RRM_RR::gc_TotalPatternNum);
 	m_RRM->m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_RR::gc_TotalPatternNum);
 	m_RRM->m_PreInterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_RR::gc_TotalPatternNum);
-	m_RRM->m_WTInfo = vector<tuple<ModulationType, int, double>>(ns_RRM_RR::gc_TotalPatternNum, tuple<ModulationType, int, double>(_16QAM, 0, 0));
-	m_RRM->m_isWTCached = vector<bool>(ns_RRM_RR::gc_TotalPatternNum, false);
+	m_RRM->m_PreSINR = vector<double>(ns_RRM_RR::gc_TotalPatternNum, (numeric_limits<double>::min)());
 
 	//这两个数据比较特殊，必须等到GTT模块初始化完毕后，车辆的数目才能确定下来
 	m_GTT->m_InterferencePloss = vector<double>(m_VeUECount, 0);

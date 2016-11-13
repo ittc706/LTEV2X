@@ -59,7 +59,7 @@ void RRM_TDM_DRA::cleanWhenLocationUpdate() {
 		for (vector<int>& preInterferenceVeUEIdVec : m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec)
 			preInterferenceVeUEIdVec.clear();
 
-		m_VeUEAry[VeUEId].m_RRM->m_isWTCached.assign(ns_RRM_TDM_DRA::gc_TotalPatternNum, false);
+		m_VeUEAry[VeUEId].m_RRM->m_PreSINR.assign(ns_RRM_TDM_DRA::gc_TotalPatternNum, (numeric_limits<double>::min)());
 	}
 }
 
@@ -685,17 +685,23 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 					g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << endl;
 
-					if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
-						m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx] = copyWTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
-						m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
-						m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx] = true;
-					}
-					double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
+					double factor = m_VeUEAry[VeUEId].m_RRM->m_ModulationType * m_VeUEAry[VeUEId].m_RRM->m_CodeRate;
 
 					//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 					int maxEquivalentBitNum = (int)((double)(ns_RRM_TDM_DRA::gc_RBNumPerPatternType[EMERGENCY] * gc_BitNumPerRB)* factor);
 
+					//计算SINR
+					double curSINR = 0;
+					if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->isAlreadyCalculateSINR(patternIdx)) {//调制编码方式需要更新时
+						curSINR = copyWTPoint->SINRCalculateMRC(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
+						m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
+						m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx] = curSINR;
+					}
+					else
+						curSINR = m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx];
+
 					//记录调度信息
+					if (curSINR < gc_CriticalPoint) m_EventVec[info->eventId].message.packetLoss();//记录丢包
 					info->transimitBitNum = maxEquivalentBitNum;
 					info->currentPackageIdx = m_EventVec[info->eventId].message.getCurrentPackageIdx();
 					info->remainBitNum = m_EventVec[info->eventId].message.getRemainBitNum();
@@ -728,19 +734,24 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				//计算SINR，获取调制编码方式
 				pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
 				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((patternType == 0) ? "Emergency" : (patternType == 1 ? "Period" : "Data")) << endl;
-
-				//if ( !m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
-				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx]) {//调制编码方式需要更新时
-					m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx] = copyWTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
-					m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
-					m_VeUEAry[VeUEId].m_RRM->m_isWTCached[patternIdx] = true;
-				}
-				double factor = get<1>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx])*get<2>(m_VeUEAry[VeUEId].m_RRM->m_WTInfo[patternIdx]);
+	
+				double factor = m_VeUEAry[VeUEId].m_RRM->m_ModulationType * m_VeUEAry[VeUEId].m_RRM->m_CodeRate;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 				int maxEquivalentBitNum = (int)((double)(ns_RRM_TDM_DRA::gc_RBNumPerPatternType[patternType] * gc_BitNumPerRB)* factor);
 				
+				//计算SINR
+				double curSINR = 0;
+				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->isAlreadyCalculateSINR(patternIdx)) {//调制编码方式需要更新时
+					curSINR = copyWTPoint->SINRCalculateMRC(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
+					m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
+					m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx] = curSINR;
+				}
+				else
+					curSINR = m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx];
+
 				//记录调度信息
+				if (curSINR < gc_CriticalPoint) m_EventVec[info->eventId].message.packetLoss();//记录丢包
 				info->transimitBitNum = maxEquivalentBitNum;
 				info->currentPackageIdx = m_EventVec[info->eventId].message.getCurrentPackageIdx();
 				info->remainBitNum = m_EventVec[info->eventId].message.getRemainBitNum();
