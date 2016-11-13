@@ -55,6 +55,15 @@ public:
 	//类内数据结构定义
 	struct GTT {
 		~GTT();
+		int m_RoadId;//所在Road Id
+		double m_X;//相对横坐标
+		double m_Y;
+		double m_AbsX;//绝对横坐标
+		double m_AbsY;
+		double m_V;//速度
+		double m_VAngle;
+		double m_FantennaAngle;
+		IMTA *m_IMTA = nullptr;
 
 		int m_RSUId;//车辆所在的RSUId
 		int m_ClusterIdx;//车辆所在簇编号
@@ -78,30 +87,11 @@ public:
 	};
 
 	struct GTT_Urban {
-		~GTT_Urban();
-		int m_RoadId;
 		int m_LocationId;
-		double m_X;//相对横坐标
-		double m_Y;
-		double m_AbsX;//绝对横坐标
-		double m_AbsY;
-		double m_V;//速度
-		double m_VAngle;
-		double m_FantennaAngle;
-		IMTA *m_IMTA = nullptr;
 	};
 
 	struct GTT_HighSpeed {
-		~GTT_HighSpeed();
-		int m_RoadId;
-		double m_X;//相对横坐标
-		double m_Y;
-		double m_AbsX;//绝对横坐标
-		double m_AbsY;
-		double m_V;//速度
-		double m_VAngle;
-		double m_FantennaAngle;
-		IMTA *m_IMTA = nullptr;
+
 	};
 
 	struct RRM {

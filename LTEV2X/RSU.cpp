@@ -23,11 +23,10 @@ RSU::RSU() {
 
 void RSU::initializeGTT_Urban(RSUConfigure &t_RSUConfigure){
 	m_GTT->m_RSUId = t_RSUConfigure.RSUId;
-	m_GTT_Urban->m_AbsX = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * ns_GTT_Urban::gc_Width;
-	m_GTT_Urban->m_AbsY = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1] * ns_GTT_Urban::gc_Length;
-	randomUniform(&m_GTT_Urban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
-	printf("RSU£º");
-	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTT->m_RSUId, m_GTT_Urban->m_AbsX, m_GTT_Urban->m_AbsY);
+	m_GTT->m_AbsX = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * ns_GTT_Urban::gc_Width;
+	m_GTT->m_AbsY = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1] * ns_GTT_Urban::gc_Length;
+	randomUniform(&m_GTT->m_FantennaAngle, 1, 180.0f, -180.0f, false);
+	g_FileLocationInfo << m_GTT->toString(0);
 
 	m_GTT->m_ClusterNum = ns_GTT_Urban::gc_RSUClusterNum[m_GTT->m_RSUId];
 	m_GTT->m_ClusterVeUEIdList = vector<list<int>>(m_GTT->m_ClusterNum);
@@ -37,11 +36,10 @@ void RSU::initializeGTT_Urban(RSUConfigure &t_RSUConfigure){
 
 void RSU::initializeGTT_HighSpeed(RSUConfigure &t_RSUConfigure) {
 	m_GTT->m_RSUId = t_RSUConfigure.RSUId;
-	m_GTT_HighSpeed->m_AbsX = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * 100;
-	m_GTT_HighSpeed->m_AbsY = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1];
-	randomUniform(&m_GTT_HighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);
-	printf("RSU£º");
-	printf("m_wRSUID=%d,m_fAbsX=%f,m_fAbsY=%f\n", m_GTT->m_RSUId, m_GTT_HighSpeed->m_AbsX, m_GTT_HighSpeed->m_AbsY);
+	m_GTT->m_AbsX = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * 100;
+	m_GTT->m_AbsY = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1];
+	randomUniform(&m_GTT->m_FantennaAngle, 1, 180.0f, -180.0f, false);
+	g_FileLocationInfo << m_GTT->toString(0);
 
 	m_GTT->m_ClusterNum = ns_GTT_HighSpeed::gc_RSUClusterNum;
 	m_GTT->m_ClusterVeUEIdList = vector<list<int>>(m_GTT->m_ClusterNum);
@@ -77,7 +75,7 @@ void RSU::initializeTMC() {
 }
 
 
-RSU::GTT_Urban::~GTT_Urban() {
+RSU::GTT::~GTT() {
 	if (m_IMTA != nullptr) {
 		delete[] m_IMTA;
 		m_IMTA = nullptr;
@@ -85,11 +83,14 @@ RSU::GTT_Urban::~GTT_Urban() {
 }
 
 
-RSU::GTT_HighSpeed::~GTT_HighSpeed() {
-	if (m_IMTA != nullptr) {
-		delete[] m_IMTA;
-		m_IMTA = nullptr;
-	}
+std::string RSU::GTT::toString(int t_NumTab) {
+	string indent;
+	for (int i = 0; i < t_NumTab; i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	ss << indent << "Road[" << m_RSUId << "]: (" << m_AbsX << "," << m_AbsY << ")" << endl;
+	return ss.str();
 }
 
 

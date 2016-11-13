@@ -25,6 +25,7 @@ public:
 	/*功能函数*/
 	std::string toString();
 	void reset();//重新发送该消息时，重置信息各个状态
+
 	/*
 	* 更新信息状态
 	* transimitMaxBitNum为本次该时频资源可传输的最大bit数

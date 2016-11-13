@@ -12,21 +12,15 @@ void eNB::initializeUrban(eNBConfigure &t_eNBConfigure){
 	m_Y = t_eNBConfigure.Y;
 	m_AbsX = t_eNBConfigure.AbsX;
 	m_AbsY = t_eNBConfigure.AbsY;
-	printf("»ùÕ¾£º");
-	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_AbsX, m_AbsY);
+	g_FileLocationInfo << toString(0);
 }
 
 
-void eNB::initializeHighSpeed(eNBConfigure &t_eNBConfigure)
-{
-	//m_wLaneID = t_eNBConfigure.wLaneID;
+void eNB::initializeHighSpeed(eNBConfigure &t_eNBConfigure) {
 	m_eNBId = t_eNBConfigure.eNBId;
-	//m_fX = t_eNBConfigure.fX;
-	//m_fY = t_eNBConfigure.fY;
 	m_AbsX = ns_GTT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 0];
 	m_AbsY = ns_GTT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 1];
-	printf("»ùÕ¾£º");
-	printf("m_fAbsX=%f,m_fAbsY=%f\n", m_AbsX, m_AbsY);
+	g_FileLocationInfo << toString(0);
 }
 
 
@@ -36,7 +30,7 @@ string eNB::toString(int n) {
 		indent.append("    ");
 
 	ostringstream ss;
-	ss << indent << "eNB[" << m_eNBId << "] :" << endl;
+	ss << indent << "eNB[" << m_eNBId << "] : (" <<m_AbsX<<","<<m_AbsY<<")"<< endl;
 	ss << indent << "{" << endl;
 	ss << indent << "    " << "VeUEIdList :" << endl;
 	ss << indent << "    " << "{" << endl;

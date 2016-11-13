@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClInclude Include="Complex.h" />
     <ClInclude Include="ConfigLoader.h" />
+    <ClInclude Include="Function.h" />
     <ClInclude Include="GTT.h" />
     <ClInclude Include="GTT_Urban.h" />
     <ClInclude Include="Matrix.h" />

@@ -12,9 +12,8 @@ extern std::ofstream g_FileTemp;
 //GTT_Urban模块
 extern std::ofstream g_FileVeUELocationUpdateLogInfo;
 extern std::ofstream g_FileVeUENumPerRSULogInfo;
-//RRM_RR模块
-extern std::ofstream g_FileScheduleInfo;
-//RRM_TDM_DRA模块
+extern std::ofstream g_FileLocationInfo;
+//RRM模块
 extern std::ofstream g_FileScheduleInfo;
 extern std::ofstream g_FileClasterPerformInfo;
 extern std::ofstream g_FileEventListInfo;

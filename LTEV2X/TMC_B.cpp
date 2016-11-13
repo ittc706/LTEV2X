@@ -204,9 +204,16 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 				m_TransimitSucceedEventNumPerEventType[2]++;
 				break;
 			}
-		}
-			
+		}	
 	}
+	int totalSucceededPackageNum = [=] {
+		int res = 0;
+		res += m_TransimitSucceedEventNumPerEventType[0] * gc_PeriodMessagePackageNum;
+		res += m_TransimitSucceedEventNumPerEventType[1] * gc_EmergencyMessagePackageNum;
+		res += m_TransimitSucceedEventNumPerEventType[2] * gc_DataMessagePackageNum;
+		return res;
+	}();
+
 	cout << "成功传输统计" << endl;
 	for (int num : m_TransimitSucceedEventNumPerEventType)
 		cout << num << endl;
@@ -311,6 +318,14 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	for (int throughput : tmpRSUThroughput) 
 		g_FileRSUThroughput<< throughput << " ";
 	g_FileRSUThroughput << endl;
+
+
+	//统计丢包率
+	int lossPacketNum = 0;
+	for (int eventId = 0; eventId < Event::s_EventCount; eventId++) {
+		lossPacketNum += m_EventVec[eventId].message.getPacketLossCnt();
+	}
+	cout << "丢包率: " << (double)lossPacketNum / (double)totalSucceededPackageNum;
 }
 
 void TMC_B::writeEventListInfo(ofstream &out) {

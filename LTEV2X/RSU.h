@@ -50,25 +50,26 @@ public:
 	//类内数据结构定义
 	struct GTT {
 		int m_RSUId;
+
+		double m_AbsX;
+		double m_AbsY;
+		IMTA *m_IMTA = nullptr;
+		double m_FantennaAngle;
+
 		std::list<int> m_VeUEIdList;//当前RSU范围内的VeUEId编号容器,RRM模块需要
 		int m_ClusterNum;//一个RSU覆盖范围内的簇的个数,RRM模块需要
 		std::vector<std::list<int>> m_ClusterVeUEIdList;//存放每个簇的VeUE的Id的容器,下标代表簇的编号
+
+		~GTT();
+		std::string toString(int t_NumTab);
 	};
 
 	struct GTT_Urban {
-		~GTT_Urban();
-		double m_AbsX;
-		double m_AbsY;
-		IMTA *m_IMTA = nullptr;
-		double m_FantennaAngle;
+
 	};
 
 	struct GTT_HighSpeed {
-		~GTT_HighSpeed();
-		double m_AbsX;
-		double m_AbsY;
-		IMTA *m_IMTA = nullptr;
-		double m_FantennaAngle;
+
 	};
 
 	struct RRM {

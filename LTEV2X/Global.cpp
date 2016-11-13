@@ -8,9 +8,10 @@ using namespace std;
 *            输出日志文件流声明
 * ==========================================*/
 ofstream g_FileTemp("Log\\Temp.txt");
-//GTT_Urban模块
-ofstream g_FileVeUELocationUpdateLogInfo("Log\\RRMLog\\VeUELocationUpdateLogInfo.txt");
-ofstream g_FileVeUENumPerRSULogInfo("Log\\TMCLog\\VeUENumPerRSULogInfo.txt");
+//GTT模块
+ofstream g_FileVeUELocationUpdateLogInfo("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");
+ofstream g_FileVeUENumPerRSULogInfo("Log\\GTTLog\\VeUENumPerRSULogInfo.txt");
+ofstream g_FileLocationInfo("Log\\GTTLog\\LocationInfo.txt");
 //RRM模块
 ofstream g_FileScheduleInfo("Log\\RRMLog\\ScheduleInfo.txt");
 ofstream g_FileClasterPerformInfo("Log\\RRMLog\\ClasterPerformInfo.txt");

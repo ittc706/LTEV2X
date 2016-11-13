@@ -15,24 +15,24 @@ void VeUE::initializeGTT_Urban(VeUEConfigure &t_UEConfigure) {
 	m_GTT = new GTT();
 	m_GTT_Urban = new GTT_Urban();
 
-	m_GTT_Urban->m_RoadId = t_UEConfigure.roadId;
+	m_GTT->m_RoadId = t_UEConfigure.roadId;
 	m_GTT_Urban->m_LocationId = t_UEConfigure.locationId;
-	m_GTT_Urban->m_X = t_UEConfigure.X;
-	m_GTT_Urban->m_Y = t_UEConfigure.Y;
-	m_GTT_Urban->m_AbsX = t_UEConfigure.AbsX;
-	m_GTT_Urban->m_AbsY = t_UEConfigure.AbsY;
-	m_GTT_Urban->m_V = t_UEConfigure.V;
+	m_GTT->m_X = t_UEConfigure.X;
+	m_GTT->m_Y = t_UEConfigure.Y;
+	m_GTT->m_AbsX = t_UEConfigure.AbsX;
+	m_GTT->m_AbsY = t_UEConfigure.AbsY;
+	m_GTT->m_V = t_UEConfigure.V;
 
 	if ((0 < m_GTT_Urban->m_LocationId) && (m_GTT_Urban->m_LocationId <= 61))
-		m_GTT_Urban->m_VAngle = 90;
+		m_GTT->m_VAngle = 90;
 	else if ((61 < m_GTT_Urban->m_LocationId) && (m_GTT_Urban->m_LocationId <= 96))
-		m_GTT_Urban->m_VAngle = 0;
+		m_GTT->m_VAngle = 0;
 	else if ((96 < m_GTT_Urban->m_LocationId) && (m_GTT_Urban->m_LocationId <= 157))
-		m_GTT_Urban->m_VAngle = -90;
+		m_GTT->m_VAngle = -90;
 	else
-		m_GTT_Urban->m_VAngle = -180;
+		m_GTT->m_VAngle = -180;
 
-	randomUniform(&m_GTT_Urban->m_FantennaAngle, 1, 180.0f, -180.0f, false);
+	randomUniform(&m_GTT->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 
 	m_GTT->m_Nt = 1;
 	m_GTT->m_Nr = 2;
@@ -45,19 +45,19 @@ void VeUE::initializeGTT_HighSpeed(VeUEConfigure &t_UEConfigure) {
 	m_GTT = new GTT();
 	m_GTT_HighSpeed = new GTT_HighSpeed();
 
-	m_GTT_HighSpeed->m_RoadId = t_UEConfigure.laneId;
-	m_GTT_HighSpeed->m_X = t_UEConfigure.X;
-	m_GTT_HighSpeed->m_Y = t_UEConfigure.Y;
-	m_GTT_HighSpeed->m_AbsX = t_UEConfigure.AbsX;
-	m_GTT_HighSpeed->m_AbsY = t_UEConfigure.AbsY;
-	m_GTT_HighSpeed->m_V = t_UEConfigure.V / 3.6f;
+	m_GTT->m_RoadId = t_UEConfigure.laneId;
+	m_GTT->m_X = t_UEConfigure.X;
+	m_GTT->m_Y = t_UEConfigure.Y;
+	m_GTT->m_AbsX = t_UEConfigure.AbsX;
+	m_GTT->m_AbsY = t_UEConfigure.AbsY;
+	m_GTT->m_V = t_UEConfigure.V / 3.6f;
 
-	if (m_GTT_HighSpeed->m_RoadId <= 2)
-		m_GTT_HighSpeed->m_VAngle = 0;
+	if (m_GTT->m_RoadId <= 2)
+		m_GTT->m_VAngle = 0;
 	else
-		m_GTT_HighSpeed->m_VAngle = 180;
+		m_GTT->m_VAngle = 180;
 
-	randomUniform(&m_GTT_HighSpeed->m_FantennaAngle, 1, 180.0f, -180.0f, false);
+	randomUniform(&m_GTT->m_FantennaAngle, 1, 180.0f, -180.0f, false);
 
 	m_GTT->m_Nt = 1;
 	m_GTT->m_Nr = 2;
@@ -119,6 +119,10 @@ void VeUE::initializeTMC() {
 
 
 VeUE::GTT::~GTT() {
+	if (m_IMTA != nullptr) {
+		delete[] m_IMTA;
+		m_IMTA = nullptr;
+	}
 	if (m_H != nullptr) {
 		delete[] m_H;
 		m_H = nullptr;
@@ -128,22 +132,6 @@ VeUE::GTT::~GTT() {
 			delete[] p;
 			p = nullptr;
 		}
-	}
-}
-
-
-VeUE::GTT_Urban::~GTT_Urban() {
-	if (m_IMTA != nullptr) {
-		delete[] m_IMTA;
-		m_IMTA = nullptr;
-	}
-}
-
-
-VeUE::GTT_HighSpeed::~GTT_HighSpeed() {
-	if (m_IMTA != nullptr) {
-		delete[] m_IMTA;
-		m_IMTA = nullptr;
 	}
 }
 
