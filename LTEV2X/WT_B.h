@@ -34,20 +34,20 @@ public:
 
 	void initialize() override;//模块初始化调用的初始化函数,初始化RSU VeUE内该单元的内部类
 	WT_Basic* getCopy()override;//获取该模块的一个拷贝
-	double SINRCalculateMRC(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) override;
-	std::tuple<ModulationType, int, double> SINRCalculateMMSE(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) override;
+	double SINRCalculateMRC(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) override;
+	std::tuple<ModulationType, int, double> SINRCalculateMMSE(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) override;
 	void testCloest();
 	void testSINR();
 
 private:
-	void configuration(int VeUEId, int patternIdx);//每次调用SINRCalculate前需要进行参数配置
-	Matrix readH(int VeUEIdx, int subCarrierIdx);//读取对应子载波的信道响应矩阵
-	std::vector<Matrix> readInterferenceH(int VeUEIdx, int subCarrierIdx, int patternIdx);//读取对应车辆在对应子载波上的干扰矩阵数组
+	void configuration(int t_VeUEId, int t_PatternIdx);//每次调用SINRCalculate前需要进行参数配置
+	Matrix readH(int t_VeUEIdx, int t_SubCarrierIdx);//读取对应子载波的信道响应矩阵
+	std::vector<Matrix> readInterferenceH(int t_VeUEIdx, int t_SubCarrierIdx, int t_PatternIdx);//读取对应车辆在对应子载波上的干扰矩阵数组
 
-	int searchMCSLevelTable(double SINR);
-	int closest(std::vector<double> v, double target);//二分法查找算法
-	int closest2(std::vector<double> v, double target);//线性查找
+	int searchMCSLevelTable(double t_SINR);
+	int closest(std::vector<double> t_Vec, double t_Target);//二分法查找算法
+	int closest2(std::vector<double> t_Vec, double t_Target);//线性查找
 
-	double getMutualInformation(std::vector<double> v, int dex);
-	std::tuple<ModulationType, int, double> MCS2ModulationAndRate(int MCSLevel);//将MCS等级映射为[调制方式，该调制方式下一个符号对应的bit数量，码率]
+	double getMutualInformation(std::vector<double> t_Vec, int t_Index);
+	std::tuple<ModulationType, int, double> MCS2ModulationAndRate(int t_MCSLevel);//将MCS等级映射为[调制方式，该调制方式下一个符号对应的bit数量，码率]
 };

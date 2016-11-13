@@ -87,12 +87,12 @@ WT_Basic* WT_B::getCopy() {
 }
 
 
-double WT_B::SINRCalculateMRC(int VeUEId, int subCarrierIdxStart, int subCarrierIdxEnd, int patternIdx) {
+double WT_B::SINRCalculateMRC(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) {
 	//配置本次函数调用的参数
-	configuration(VeUEId, patternIdx);
+	configuration(t_VeUEId, t_PatternIdx);
 
 	//子载波数量
-	int m_SubCarrierNum = subCarrierIdxEnd - subCarrierIdxStart + 1;
+	int m_SubCarrierNum = t_SubCarrierIdxEnd - t_SubCarrierIdxStart + 1;
 
 	///*****求每个子载波上的信噪比****/
 	//RowVector Sinr(m_SubCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
@@ -107,23 +107,23 @@ double WT_B::SINRCalculateMRC(int VeUEId, int subCarrierIdxStart, int subCarrier
 }
 
 
-tuple<ModulationType, int, double> WT_B::SINRCalculateMMSE(int VeUEId,int subCarrierIdxStart,int subCarrierIdxEnd, int patternIdx) {
+tuple<ModulationType, int, double> WT_B::SINRCalculateMMSE(int t_VeUEId,int t_SubCarrierIdxStart,int t_SubCarrierIdxEnd, int t_PatternIdx) {
 	//配置本次函数调用的参数
-	configuration(VeUEId, patternIdx);
+	configuration(t_VeUEId, t_PatternIdx);
 
 	//子载波数量
-	int m_SubCarrierNum = subCarrierIdxEnd - subCarrierIdxStart + 1;
+	int m_SubCarrierNum = t_SubCarrierIdxEnd - t_SubCarrierIdxStart + 1;
 
 	/*****求每个子载波上的信噪比****/
 	RowVector Sinr(m_SubCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
-	for (int subCarrierIdx = subCarrierIdxStart; subCarrierIdx <= subCarrierIdxEnd; subCarrierIdx++) {
+	for (int subCarrierIdx = t_SubCarrierIdxStart; subCarrierIdx <= t_SubCarrierIdxEnd; subCarrierIdx++) {
 		
-		int relativeSubCarrierIdx = subCarrierIdx - subCarrierIdxStart;//相对的子载波下标
+		int relativeSubCarrierIdx = subCarrierIdx - t_SubCarrierIdxStart;//相对的子载波下标
 
-		m_H=readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
-		m_HInterference = readInterferenceH(VeUEId, subCarrierIdx, patternIdx);//读入当前子载波干扰相应矩阵数组
+		m_H=readH(t_VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
+		m_HInterference = readInterferenceH(t_VeUEId, subCarrierIdx, t_PatternIdx);//读入当前子载波干扰相应矩阵数组
 
-		if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] != 0) {
+		if (m_VeUEAry[t_VeUEId].m_RRM->m_InterferenceVeUENum[t_PatternIdx] != 0) {
 			m_H.print();
 			cout << "干扰矩阵： ";
 			for (auto &c : m_HInterference) {
@@ -381,42 +381,42 @@ void WT_B::testSINR() {
 }
 
 
-void WT_B::configuration(int VeUEId, int patternIdx){
-	m_Nr = m_VeUEAry[VeUEId].m_GTT->m_Nr;
-	m_Nt = m_VeUEAry[VeUEId].m_GTT->m_Nt;
-	m_Mol = m_VeUEAry[VeUEId].m_RRM->m_ModulationType;
-	m_Ploss = m_VeUEAry[VeUEId].m_GTT->m_Ploss;
+void WT_B::configuration(int t_VeUEId, int t_PatternIdx){
+	m_Nr = m_VeUEAry[t_VeUEId].m_GTT->m_Nr;
+	m_Nt = m_VeUEAry[t_VeUEId].m_GTT->m_Nt;
+	m_Mol = m_VeUEAry[t_VeUEId].m_RRM->m_ModulationType;
+	m_Ploss = m_VeUEAry[t_VeUEId].m_GTT->m_Ploss;
 	m_Pt = pow(10,-4.7);//-17dbm-70dbm
 	m_Sigma = pow(10,-17.4);
 
 	m_PlossInterference.clear();
-	for (int interferenceVeUEId : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx]) {
-		m_PlossInterference .push_back(m_VeUEAry[VeUEId].m_GTT->m_InterferencePloss[interferenceVeUEId]);
+	for (int interferenceVeUEId : m_VeUEAry[t_VeUEId].m_RRM->m_InterferenceVeUEIdVec[t_PatternIdx]) {
+		m_PlossInterference .push_back(m_VeUEAry[t_VeUEId].m_GTT->m_InterferencePloss[interferenceVeUEId]);
 	}
 }
 
 
 
 
-Matrix WT_B::readH(int VeUEIdx,int subCarrierIdx) {
+Matrix WT_B::readH(int t_VeUEIdx,int t_SubCarrierIdx) {
 	Matrix res(m_Nr, m_Nt);
 	for (int row = 0; row < m_Nr; row++) {
 		for (int col = 0; col < m_Nt; col++) {
-			res[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTT->m_H[row * 2048 + subCarrierIdx * 2], m_VeUEAry[VeUEIdx].m_GTT->m_H[row * 2048 + subCarrierIdx * 2 + 1]);
+			res[row][col] = Complex(m_VeUEAry[t_VeUEIdx].m_GTT->m_H[row * 2048 + t_SubCarrierIdx * 2], m_VeUEAry[t_VeUEIdx].m_GTT->m_H[row * 2048 + t_SubCarrierIdx * 2 + 1]);
 		}
 	}
 	return res;
 }
 
 
-vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, int patternIdx) {
+vector<Matrix> WT_B::readInterferenceH(int t_VeUEIdx, int t_SubCarrierIdx, int t_PatternIdx) {
 	vector<Matrix> res;
-	for (int interferenceVeUEId : m_VeUEAry[VeUEIdx].m_RRM->m_InterferenceVeUEIdVec[patternIdx]) {
+	for (int interferenceVeUEId : m_VeUEAry[t_VeUEIdx].m_RRM->m_InterferenceVeUEIdVec[t_PatternIdx]) {
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {
-				m[row][col] = Complex(m_VeUEAry[VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row * 2048 + subCarrierIdx * 2],
-					m_VeUEAry[VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row * 2048 + subCarrierIdx * 2 + 1]);
+				m[row][col] = Complex(m_VeUEAry[t_VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row * 2048 + t_SubCarrierIdx * 2],
+					m_VeUEAry[t_VeUEIdx].m_GTT->m_InterferenceH[interferenceVeUEId][row * 2048 + t_SubCarrierIdx * 2 + 1]);
 			}
 		}
 		res.push_back(m);
@@ -426,50 +426,50 @@ vector<Matrix> WT_B::readInterferenceH(int VeUEIdx, int subCarrierIdx, int patte
 
 
 /*****查找MCS等级曲线*****/
-int WT_B::searchMCSLevelTable(double SINR) {
-	if (SINR <= -10) return 1;
-	if (SINR >= 30) return 28;
-	if (SINR > -10 && SINR < 30) {
-		return (*m_MCSLevelTable)[static_cast<int>(ceil((SINR +10)*1000))];
+int WT_B::searchMCSLevelTable(double t_SINR) {
+	if (t_SINR <= -10) return 1;
+	if (t_SINR >= 30) return 28;
+	if (t_SINR > -10 && t_SINR < 30) {
+		return (*m_MCSLevelTable)[static_cast<int>(ceil((t_SINR +10)*1000))];
 	}
 	throw Exp("SINR越界");
 }
 
 
-int WT_B::closest(vector<double> v, double target) {
+int WT_B::closest(vector<double> t_Vec, double t_Target) {
 	int leftIndex = 0;
-	int rightIndex = static_cast<int>(v.size() - 1);
-	double leftDiff = v[leftIndex] - target;
-	double rightDiff = v[rightIndex] - target;
+	int rightIndex = static_cast<int>(t_Vec.size() - 1);
+	double leftDiff = t_Vec[leftIndex] - t_Target;
+	double rightDiff = t_Vec[rightIndex] - t_Target;
 	
 	while (leftIndex <= rightIndex) {
 		if (rightDiff <= 0) return rightIndex;//???
 		if (leftDiff >= 0) return leftIndex;//???
 
 		int midIndex = leftIndex + ((rightIndex - leftIndex) >> 1);
-		double midDiff = v[midIndex] - target;
+		double midDiff = t_Vec[midIndex] - t_Target;
 		if (midDiff == 0) return midIndex;
 		else if (midDiff < 0) {
 			leftIndex = midIndex + 1;
-			leftDiff = v[leftIndex] - target;
+			leftDiff = t_Vec[leftIndex] - t_Target;
 			if (abs(midDiff) < abs(leftDiff)) return midIndex;
 		}
 		else {
 			rightIndex = midIndex - 1;
-			rightDiff = v[rightIndex] - target;
+			rightDiff = t_Vec[rightIndex] - t_Target;
 			if (abs(midDiff) < abs(rightDiff)) return midIndex;
 		}
 	}
-	return abs(v[leftIndex] - target) < abs(v[leftIndex - 1] - target) ? leftIndex : leftIndex - 1;//???
+	return abs(t_Vec[leftIndex] - t_Target) < abs(t_Vec[leftIndex - 1] - t_Target) ? leftIndex : leftIndex - 1;//???
 }
 
 
-int WT_B::closest2(vector<double> v, double target) {
+int WT_B::closest2(vector<double> t_Vec, double t_Target) {
 	int res = -1;
 	double minimum = (numeric_limits<double>::max)();
-	for (int i = 0; i < static_cast<int>(v.size()); i++) {
-		if (abs(v[i] - target) < minimum) {
-			minimum = abs(v[i] - target);
+	for (int i = 0; i < static_cast<int>(t_Vec.size()); i++) {
+		if (abs(t_Vec[i] - t_Target) < minimum) {
+			minimum = abs(t_Vec[i] - t_Target);
 			res = i;
 		}
 	}
@@ -478,16 +478,16 @@ int WT_B::closest2(vector<double> v, double target) {
 
 
 
-double WT_B::getMutualInformation(vector<double> v, int dex) {
-	if (dex < 0) return v[0];
-	if (dex >= (int)v.size()) return v[v.size() - 1];
-	return v[dex];
+double WT_B::getMutualInformation(vector<double> t_Vec, int t_Index) {
+	if (t_Index < 0) return t_Vec[0];
+	if (t_Index >= (int)t_Vec.size()) return t_Vec[t_Vec.size() - 1];
+	return t_Vec[t_Index];
 }
 
 
-tuple<ModulationType, int, double> WT_B::MCS2ModulationAndRate(int MCSLevel) {
+tuple<ModulationType, int, double> WT_B::MCS2ModulationAndRate(int t_MCSLevel) {
 	//目前对应的是LTE上行的0-27对应于这里的1-28
-	switch (MCSLevel) {
+	switch (t_MCSLevel) {
 	case 1:
 		return tuple<ModulationType, int, double>(QPSK, 1, 0.0764);
 	case 2:
