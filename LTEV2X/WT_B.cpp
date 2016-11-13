@@ -30,9 +30,9 @@ using namespace std;
 
 default_random_engine WT_B::s_Engine(0);
 
-WT_B::WT_B(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry) :WT_Basic(t_Config, t_RSUAry, t_VeUEAry) {}
+WT_B::WT_B(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, SINRMode t_SINRMode) :WT_Basic(t_Config, t_RSUAry, t_VeUEAry, t_SINRMode) {}
 
-WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_VeUEAry) {}
+WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_VeUEAry, t_WT_B.m_SINRMode) {}
 
 
 void WT_B::initialize() {
@@ -51,6 +51,19 @@ void WT_B::initialize() {
 WT_Basic* WT_B::getCopy() {
 	return new WT_B(*this);
 }
+
+
+double WT_B::SINRCalculate(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) {
+	switch (m_SINRMode) {
+	case SINR_MRC:
+		return SINRCalculateMRC(t_VeUEId, t_SubCarrierIdxStart, t_SubCarrierIdxEnd, t_PatternIdx);
+	case SINR_MMSE:
+		return SINRCalculateMMSE(t_VeUEId, t_SubCarrierIdxStart, t_SubCarrierIdxEnd, t_PatternIdx);
+	default:
+		throw Exp("wrong SINRMode");
+	}
+}
+
 
 
 double WT_B::SINRCalculateMRC(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) {

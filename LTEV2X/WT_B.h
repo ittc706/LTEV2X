@@ -23,13 +23,14 @@ public:
 	Matrix m_H;//每个RB有一个Nr*Nt的信道矩阵
 	std::vector<Matrix> m_HInterference;//下标为干扰源编号
 
-	WT_B(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry);
+	WT_B(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, SINRMode t_SINRMode);
 	WT_B(const WT_B& t_WT_B);
 
 	void initialize() override;//模块初始化调用的初始化函数,初始化RSU VeUE内该单元的内部类
 	WT_Basic* getCopy()override;//获取该模块的一个拷贝
-	double SINRCalculateMRC(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) override;
-	double SINRCalculateMMSE(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) override;
+	double SINRCalculate(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) override;
+	double SINRCalculateMRC(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx);
+	double SINRCalculateMMSE(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx);
 
 private:
 	void configuration(int t_VeUEId, int t_PatternIdx);//每次调用SINRCalculate前需要进行参数配置

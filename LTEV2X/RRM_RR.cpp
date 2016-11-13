@@ -327,7 +327,7 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				//计算SINR
 				double curSINR = 0;
 				if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->isAlreadyCalculateSINR(patternIdx)) {//调制编码方式需要更新时
-					curSINR = copyWTPoint->SINRCalculateMRC(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
+					curSINR = copyWTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
 					m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
 					m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx] = curSINR;
 				}
