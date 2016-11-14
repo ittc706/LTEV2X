@@ -4,6 +4,10 @@
 // <GTT_Urban>: Geographical Topology and Transport Urban
 
 class GTT_Urban :public GTT_Basic {
+	/*------------------静态------------------*/
+public:
+	static std::default_random_engine s_Engine;
+	/*------------------域------------------*/
 private:
 	int m_xNum;//ueTopo x轴 格数
 	int m_yNum;//ueTopo y轴 格数
@@ -12,12 +16,15 @@ private:
 	int m_UrbanRoadNum;//城镇Road总数
 	int* m_pupr;//user per road array
 	double m_Speed;//车辆车速
+
 public:
-	static std::default_random_engine s_Engine;
+	std::vector<std::vector<int>> m_VeUENumPerRSU;//统计每个RSU下的车辆数目，外层下标代表第几次位置更新(从0开始)，内层下标代表RSU编号
+
+	/*------------------方法------------------*/
+public:
 	GTT_Urban() = delete;
 	GTT_Urban(int &t_TTI, Configure& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry);
 
-	std::vector<std::vector<int>> m_VeUENumPerRSU;//统计每个RSU下的车辆数目，外层下标代表第几次位置更新(从0开始)，内层下标代表RSU编号
 
 	void configure()override;//参数配置
 	void cleanWhenLocationUpdate()override;//当发生位置更新时，清除缓存的调度相关信息

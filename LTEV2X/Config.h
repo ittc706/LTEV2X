@@ -30,10 +30,10 @@ struct eNBConfigure {
 struct UrbanRoadConfigure {
 	Configure* systemConfig;
 	int roadId;
-	void *peNB;
+	void *eNB;
 	int eNBNum;
 	int eNBOffset;
-	void *pLane;
+	void *lane;
 	int laneNum;
 	int laneOffset;
 };
@@ -64,27 +64,27 @@ struct RSUConfigure {
 
 /*地理位置配置参数*/
 struct Location {
-	bool bManhattan;
-	LocationType eType;
-	double distance; // m
-	double distance1; // m
-	double distance2; // m
-	double eNBAntH; // m
-	double VeUEAntH; // m
-	double afPosCor[5];
+	bool manhattan;
+	LocationType locationType;
+	double distance; //单位:m
+	double distance1; //单位:m
+	double distance2; //单位:m
+	double eNBAntH; //单位:m
+	double VeUEAntH; //单位:m
+	double posCor[5];
 
 };
 
 /*天线配置参数*/
 struct Antenna {
-	double fTxAngle; // degree
-	double fRxAngle; // degree
-	double fMaxAttenu; // dB
+	double TxAngle; // degree
+	double RxAngle; // degree
+	double maxAttenu; // dB
 	int byTxAntNum;
 	int byRxAntNum;
-	double *pfTxSlantAngle; // degree
-	double *pfRxSlantAngle; // degree
-	double *pfTxAntSpacing;
-	double *pfRxAntSpacing;
-	double fAntGain;
+	double *TxSlantAngle; // degree
+	double *RxSlantAngle; // degree
+	double *TxAntSpacing;
+	double *RxAntSpacing;
+	double antGain;
 };

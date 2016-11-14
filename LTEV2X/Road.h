@@ -19,16 +19,17 @@ public:
 	void initializeUrban(UrbanRoadConfigure &t_RoadConfigure);
 	void initializeHighSpeed(HighSpeedRodeConfigure &t_LaneConfigure);
 
-	struct GTT;
-	struct GTT_Urban;
-	struct GTT_HighSpeed;
+	class GTT;
+	class GTT_Urban;
+	class GTT_HighSpeed;
 
 	GTT* m_GTT = nullptr;
 	GTT_Urban* m_GTT_Urban = nullptr;//用于存储城镇场景的特定参数
 	GTT_HighSpeed* m_GTT_HighSpeed = nullptr;//用于存储高速场景的特定参数
 
 	
-	struct GTT{
+	class GTT{
+	public:
 		int m_RoadId;
 		double m_AbsX;
 		double m_AbsY;
@@ -37,14 +38,15 @@ public:
 		std::string toString(int t_NumTab);
 	};
 
-	struct GTT_Urban {
+	class GTT_Urban {
+	public:
 		int m_eNBNum;
 		int m_eNBId;
 		eNB *m_eNB;
-
 	};
 
-	struct GTT_HighSpeed {
+	class GTT_HighSpeed {
+	public:
 
 	};
 };

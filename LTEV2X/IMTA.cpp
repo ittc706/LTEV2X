@@ -137,7 +137,7 @@ IMTA::~IMTA() {
 
 bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna, double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/) {
 	m_bBuilt = false;
-	m_fAntGain = t_eAntenna.fAntGain * 0.1f;
+	m_fAntGain = t_eAntenna.antGain * 0.1f;
 	m_byTxAntNum = t_eAntenna.byTxAntNum;
 	m_byRxAntNum = t_eAntenna.byRxAntNum;
 
@@ -155,15 +155,15 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	m_pfRxSlantAngle = new double[m_byRxAntNum];
 
 	for (int byTempTxAnt = 0; byTempTxAnt != m_byTxAntNum; ++byTempTxAnt) {
-		m_pfTxAntSpacing[byTempTxAnt] = t_eAntenna.pfTxAntSpacing[byTempTxAnt] * gc_PI2;
-		m_pfTxSlantAngle[byTempTxAnt] = t_eAntenna.pfTxSlantAngle[byTempTxAnt] * gc_Degree2PI;
+		m_pfTxAntSpacing[byTempTxAnt] = t_eAntenna.TxAntSpacing[byTempTxAnt] * gc_PI2;
+		m_pfTxSlantAngle[byTempTxAnt] = t_eAntenna.TxSlantAngle[byTempTxAnt] * gc_Degree2PI;
 	}
 	for (int byTempRxAnt = 0; byTempRxAnt != m_byRxAntNum; ++byTempRxAnt) {
-		m_pfRxAntSpacing[byTempRxAnt] = t_eAntenna.pfRxAntSpacing[byTempRxAnt] * gc_PI2;
-		m_pfRxSlantAngle[byTempRxAnt] = t_eAntenna.pfRxSlantAngle[byTempRxAnt] * gc_Degree2PI;
+		m_pfRxAntSpacing[byTempRxAnt] = t_eAntenna.RxAntSpacing[byTempRxAnt] * gc_PI2;
+		m_pfRxSlantAngle[byTempRxAnt] = t_eAntenna.RxSlantAngle[byTempRxAnt] * gc_Degree2PI;
 	}
-	m_fTxAngle = t_eAntenna.fTxAngle * gc_Degree2PI;
-	m_fRxAngle = t_eAntenna.fRxAngle * gc_Degree2PI;
+	m_fTxAngle = t_eAntenna.TxAngle * gc_Degree2PI;
+	m_fRxAngle = t_eAntenna.RxAngle * gc_Degree2PI;
 	m_fVelocity = t_fVelocity / 3.6f * t_fFrequency * gc_PI2 / gc_C;
 	m_fvAngle = t_fVAngle * gc_Degree2PI;
 	//FFTœ‡πÿ
@@ -189,7 +189,7 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	double fPL1;
 	double fPL2;
 	double fDistanceBP = 4 * (t_eLocation.VeUEAntH - 1)*(t_eLocation.VeUEAntH - 1)*t_fFrequency / gc_C;
-	switch (t_eLocation.eType)
+	switch (t_eLocation.locationType)
 	{
 	case Los:
 		m_bLoS = true;
@@ -262,7 +262,7 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	double fKSTD;
 	const double *cpfConstant;
 
-	if (t_eLocation.bManhattan)
+	if (t_eLocation.manhattan)
 	{
 		fDSMean = -7.19f;
 		fDSSTD = 0.40f;
@@ -309,7 +309,7 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	{
 		for (int byTempTime = 0; byTempTime != 5; ++byTempTime)
 		{
-			afTemp[byTemp] += (cpfConstant[byTemp * 5 + byTempTime] * t_eLocation.afPosCor[byTempTime]);
+			afTemp[byTemp] += (cpfConstant[byTemp * 5 + byTempTime] * t_eLocation.posCor[byTempTime]);
 		}
 	}
 	m_fDS = pow(10.0f, fDSSTD * afTemp[0] + fDSMean);

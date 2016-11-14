@@ -198,37 +198,37 @@ void GTT_HighSpeed::freshLoc() {
 		RSUIdx = 17 - int(m_VeUEAry[UserIdx1].m_GTT->m_AbsX / 100 + 0.5);
 		m_VeUEAry[UserIdx1].m_GTT->m_RSUId = RSUIdx;
 		m_RSUAry[RSUIdx].m_GTT->m_VeUEIdList.push_back(UserIdx1);
-		location.eType = None;
+		location.locationType = None;
 		location.distance = 0;
 		location.distance1 = 0;
 		location.distance2 = 0;
 
 		double angle = 0;
-		location.bManhattan = false;
+		location.manhattan = false;
 
-		location.eType = Los;
+		location.locationType = Los;
 		location.distance = sqrt(pow((m_VeUEAry[UserIdx1].m_GTT->m_AbsX - m_RSUAry[RSUIdx].m_GTT->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1].m_GTT->m_AbsY - m_RSUAry[RSUIdx].m_GTT->m_AbsY), 2.0f));
 		angle = atan2(m_VeUEAry[UserIdx1].m_GTT->m_AbsY - m_RSUAry[RSUIdx].m_GTT->m_AbsY, m_VeUEAry[UserIdx1].m_GTT->m_AbsX - m_RSUAry[RSUIdx].m_GTT->m_AbsX) / gc_Degree2PI;
 
 		location.eNBAntH = 5;
 		location.VeUEAntH = 1.5;
-		randomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
+		randomGaussian(location.posCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
-		antenna.fTxAngle = angle - m_VeUEAry[UserIdx1].m_GTT->m_FantennaAngle;
-		antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTT->m_FantennaAngle;
-		antenna.fAntGain = 3;
+		antenna.TxAngle = angle - m_VeUEAry[UserIdx1].m_GTT->m_FantennaAngle;
+		antenna.RxAngle = angle - m_RSUAry[RSUIdx].m_GTT->m_FantennaAngle;
+		antenna.antGain = 3;
 		antenna.byTxAntNum = 1;
 		antenna.byRxAntNum = 2;
-		antenna.pfTxSlantAngle = new double[antenna.byTxAntNum];
-		antenna.pfTxAntSpacing = new double[antenna.byTxAntNum];
-		antenna.pfRxSlantAngle = new double[antenna.byRxAntNum];
-		antenna.pfRxAntSpacing = new double[antenna.byRxAntNum];
-		antenna.pfTxSlantAngle[0] = 90.0f;
-		antenna.pfTxAntSpacing[0] = 0.0f;
-		antenna.pfRxSlantAngle[0] = 90.0f;
-		antenna.pfRxSlantAngle[1] = 90.0f;
-		antenna.pfRxAntSpacing[0] = 0.0f;
-		antenna.pfRxAntSpacing[1] = 0.5f;
+		antenna.TxSlantAngle = new double[antenna.byTxAntNum];
+		antenna.TxAntSpacing = new double[antenna.byTxAntNum];
+		antenna.RxSlantAngle = new double[antenna.byRxAntNum];
+		antenna.RxAntSpacing = new double[antenna.byRxAntNum];
+		antenna.TxSlantAngle[0] = 90.0f;
+		antenna.TxAntSpacing[0] = 0.0f;
+		antenna.RxSlantAngle[0] = 90.0f;
+		antenna.RxSlantAngle[1] = 90.0f;
+		antenna.RxAntSpacing[0] = 0.0f;
+		antenna.RxAntSpacing[1] = 0.5f;
 
 		double t_Pl = 0;
 
@@ -257,10 +257,10 @@ void GTT_HighSpeed::freshLoc() {
 		Delete::safeDelete(ch_buffer, true);
 		Delete::safeDelete(ch_sin, true);
 		Delete::safeDelete(ch_cos, true);
-		Delete::safeDelete(antenna.pfTxSlantAngle, true);
-		Delete::safeDelete(antenna.pfTxAntSpacing, true);
-		Delete::safeDelete(antenna.pfRxSlantAngle, true);
-		Delete::safeDelete(antenna.pfRxAntSpacing, true);
+		Delete::safeDelete(antenna.TxSlantAngle, true);
+		Delete::safeDelete(antenna.TxAntSpacing, true);
+		Delete::safeDelete(antenna.RxSlantAngle, true);
+		Delete::safeDelete(antenna.RxAntSpacing, true);
 		Delete::safeDelete(m_VeUEAry[UserIdx1].m_GTT->m_IMTA, true);
 		Delete::safeDelete(FFT, true);
 		Delete::safeDelete(t_HAfterFFT, true);
@@ -305,37 +305,37 @@ void GTT_HighSpeed::calculateInterference(const vector<vector<list<int>>>& RRMIn
 
 
 				int RSUIdx = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
-				location.eType = None;
+				location.locationType = None;
 				location.distance = 0;
 				location.distance1 = 0;
 				location.distance2 = 0;
 
 				double angle = 0;
-				location.bManhattan = false;
+				location.manhattan = false;
 
-				location.eType = Los;
+				location.locationType = Los;
 				location.distance = sqrt(pow((m_VeUEAry[interferenceVeUEId].m_GTT->m_AbsX - m_RSUAry[RSUIdx].m_GTT->m_AbsX), 2.0f) + pow((m_VeUEAry[interferenceVeUEId].m_GTT->m_AbsY - m_RSUAry[RSUIdx].m_GTT->m_AbsY), 2.0f));
 				angle = atan2(m_VeUEAry[interferenceVeUEId].m_GTT->m_AbsY - m_RSUAry[RSUIdx].m_GTT->m_AbsY, m_VeUEAry[interferenceVeUEId].m_GTT->m_AbsX - m_RSUAry[RSUIdx].m_GTT->m_AbsX) / gc_Degree2PI;
 
 				location.eNBAntH = 5;
 				location.VeUEAntH = 1.5;
-				randomGaussian(location.afPosCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
+				randomGaussian(location.posCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
-				antenna.fTxAngle = angle - m_VeUEAry[interferenceVeUEId].m_GTT->m_FantennaAngle;
-				antenna.fRxAngle = angle - m_RSUAry[RSUIdx].m_GTT->m_FantennaAngle;
-				antenna.fAntGain = 6;
+				antenna.TxAngle = angle - m_VeUEAry[interferenceVeUEId].m_GTT->m_FantennaAngle;
+				antenna.RxAngle = angle - m_RSUAry[RSUIdx].m_GTT->m_FantennaAngle;
+				antenna.antGain = 6;
 				antenna.byTxAntNum = 1;
 				antenna.byRxAntNum = 2;
-				antenna.pfTxSlantAngle = new double[antenna.byTxAntNum];
-				antenna.pfTxAntSpacing = new double[antenna.byTxAntNum];
-				antenna.pfRxSlantAngle = new double[antenna.byRxAntNum];
-				antenna.pfRxAntSpacing = new double[antenna.byRxAntNum];
-				antenna.pfTxSlantAngle[0] = 90.0f;
-				antenna.pfTxAntSpacing[0] = 0.0f;
-				antenna.pfRxSlantAngle[0] = 90.0f;
-				antenna.pfRxSlantAngle[1] = 90.0f;
-				antenna.pfRxAntSpacing[0] = 0.0f;
-				antenna.pfRxAntSpacing[1] = 0.5f;
+				antenna.TxSlantAngle = new double[antenna.byTxAntNum];
+				antenna.TxAntSpacing = new double[antenna.byTxAntNum];
+				antenna.RxSlantAngle = new double[antenna.byRxAntNum];
+				antenna.RxAntSpacing = new double[antenna.byRxAntNum];
+				antenna.TxSlantAngle[0] = 90.0f;
+				antenna.TxAntSpacing[0] = 0.0f;
+				antenna.RxSlantAngle[0] = 90.0f;
+				antenna.RxSlantAngle[1] = 90.0f;
+				antenna.RxAntSpacing[0] = 0.0f;
+				antenna.RxAntSpacing[1] = 0.5f;
 
 				double t_Pl = 0;
 				m_VeUEAry[interferenceVeUEId].m_GTT->m_IMTA[RSUIdx].build(&t_Pl, gc_FC, location, antenna, m_VeUEAry[interferenceVeUEId].m_GTT->m_V, m_VeUEAry[interferenceVeUEId].m_GTT->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
@@ -365,10 +365,10 @@ void GTT_HighSpeed::calculateInterference(const vector<vector<list<int>>>& RRMIn
 				Delete::safeDelete(ch_buffer, true);
 				Delete::safeDelete(ch_sin, true);
 				Delete::safeDelete(ch_cos, true);
-				Delete::safeDelete(antenna.pfTxSlantAngle, true);
-				Delete::safeDelete(antenna.pfTxAntSpacing, true);
-				Delete::safeDelete(antenna.pfRxSlantAngle, true);
-				Delete::safeDelete(antenna.pfRxAntSpacing, true);
+				Delete::safeDelete(antenna.TxSlantAngle, true);
+				Delete::safeDelete(antenna.TxAntSpacing, true);
+				Delete::safeDelete(antenna.RxSlantAngle, true);
+				Delete::safeDelete(antenna.RxAntSpacing, true);
 				Delete::safeDelete(FFT, true);
 				Delete::safeDelete(t_HAfterFFT, true);
 			}

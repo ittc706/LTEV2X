@@ -14,15 +14,15 @@
 class RSU {
 public:
 	//类内嵌套结构体前置声明
-	struct GTT;
-	struct GTT_Urban;
-	struct GTT_HighSpeed;
-	struct RRM;
-	struct RRM_TDM_DRA;
-	struct RRM_ICC_DRA;
-	struct RRM_RR;
-	struct WT;
-	struct TMC;
+	class GTT;
+	class GTT_Urban;
+	class GTT_HighSpeed;
+	class RRM;
+	class RRM_TDM_DRA;
+	class RRM_ICC_DRA;
+	class RRM_RR;
+	class WT;
+	class TMC;
 
 
 	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
@@ -48,7 +48,8 @@ public:
 	~RSU();
 
 	//类内数据结构定义
-	struct GTT {
+	class GTT {
+	public:
 		int m_RSUId;
 
 		double m_AbsX;
@@ -64,15 +65,16 @@ public:
 		std::string toString(int t_NumTab);
 	};
 
-	struct GTT_Urban {
-
+	class GTT_Urban {
+	public:
 	};
 
-	struct GTT_HighSpeed {
-
+	class GTT_HighSpeed {
+	public:
 	};
 
-	struct RRM {
+	class RRM {
+	public:
 		/*===========================================
 		*            调度信息数据结构
 		* ==========================================*/
@@ -106,8 +108,8 @@ public:
 		};
 	};
 
-	struct RRM_TDM_DRA {
-		
+	class RRM_TDM_DRA {
+	public:
 
 		RSU* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
@@ -191,7 +193,8 @@ public:
 		void pullFromScheduleInfoTable(int t_TTI);
 	};
 
-	struct RRM_ICC_DRA {
+	class RRM_ICC_DRA {
+	public:
 		RSU* m_This;
 
 		RRM_ICC_DRA(RSU* t_This);//构造函数
@@ -261,7 +264,8 @@ public:
 		void pullFromScheduleInfoTable(int t_TTI);
 	};
 
-	struct RRM_RR {
+	class RRM_RR {
+	public:
 		RSU* m_This;//RRM_RR会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 		/*
@@ -300,12 +304,12 @@ public:
 		void pushToTransimitScheduleInfoTable(RSU::RRM::ScheduleInfo* t_Info);
 	};
 
-	struct WT {
-
+	class WT {
+	public:
 	};
 
-	struct TMC {
-
+	class TMC {
+	public:
 	};
 
 };

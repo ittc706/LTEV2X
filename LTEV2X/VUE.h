@@ -15,15 +15,15 @@
 class VeUE {
 public:
 	//类内嵌套结构体前置声明
-	struct GTT;
-	struct GTT_Urban;
-	struct GTT_HighSpeed;
-	struct RRM;
-	struct RRM_TDM_DRA;
-	struct RRM_ICC_DRA;
-	struct RRM_RR;
-	struct WT;
-	struct TMC;
+	class GTT;
+	class GTT_Urban;
+	class GTT_HighSpeed;
+	class RRM;
+	class RRM_TDM_DRA;
+	class RRM_ICC_DRA;
+	class RRM_RR;
+	class WT;
+	class TMC;
 
 	//类内结构体指针，只能是指针形式，因为到当前行，结构体的定义尚未出现，只能定义不完整类型
 	GTT* m_GTT = nullptr;//用于存储供其他模块使用的参数
@@ -53,7 +53,8 @@ public:
 	
 
 	//类内数据结构定义
-	struct GTT {
+	class GTT {
+	public:
 		~GTT();
 		int m_RoadId;//所在Road Id
 		double m_X;//相对横坐标
@@ -86,15 +87,18 @@ public:
 		std::vector<double*> m_InterferenceH;//下标对应的Pattern下，干扰信道响应矩阵，WT_B模块需要
 	};
 
-	struct GTT_Urban {
+	class GTT_Urban {
+	public:
 		int m_LocationId;
 	};
 
-	struct GTT_HighSpeed {
+	class GTT_HighSpeed {
+	public:
 
 	};
 
-	struct RRM {
+	class RRM {
+	public:
 		std::vector<int> m_InterferenceVeUENum;//下标对应的Pattern下，同频干扰数量
 		std::vector<std::vector<int>> m_InterferenceVeUEIdVec;//下标对应的Pattern下，同频干扰车辆ID，不包含当前车辆，每个类型对应的总数就是m_InterferenceVeUENum[patternIdx]
 		std::vector<std::vector<int>> m_PreInterferenceVeUEIdVec;//含义同上，上一次的干扰车辆，用于判断是否相同
@@ -107,9 +111,9 @@ public:
 		bool isAlreadyCalculateSINR(int patternIdx) { return m_PreSINR[patternIdx] != (std::numeric_limits<double>::min)(); }
 	};
 
-	struct RRM_TDM_DRA {
+	class RRM_TDM_DRA {
 		static std::default_random_engine s_Engine;
-
+	public:
 		VeUE* m_This;//RRM_TDM_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 		
 		std::tuple<int, int> m_ScheduleInterval;//该VeUE所在簇的当前一轮调度区间
@@ -122,9 +126,9 @@ public:
 		std::string toString(int t_NumTab);//用于打印VeUE信息
 	};
 
-	struct RRM_ICC_DRA {
+	class RRM_ICC_DRA {
 		static std::default_random_engine s_Engine;
-
+	public:
 		VeUE* m_This;//RRM_ICC_DRA会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 		RRM_ICC_DRA() = delete;
@@ -135,7 +139,8 @@ public:
 		std::string toString(int t_NumTab);//用于打印VeUE信息
 	};
 
-	struct RRM_RR {
+	class RRM_RR {
+	public:
 		VeUE* m_This;//RRM_RR会用到GTT的相关参数，而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
 
 		RRM_RR() = delete;
@@ -143,11 +148,12 @@ public:
 		std::string toString(int t_NumTab);//用于打印VeUE信息
 	};
 
-	struct WT {
-
+	class WT {
+	public:
 	};
 
-	struct TMC {
+	class TMC {
+	public:
 		std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;//地理位置更新日志信息
 	};
 };

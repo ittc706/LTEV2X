@@ -35,50 +35,50 @@ std::pair<int, std::vector<int>> Message::constMemberInitialize(MessageType t_Me
 }
 
 Message::Message(MessageType t_MessageType) :
-	messageType(t_MessageType), 
-	packageNum(constMemberInitialize(t_MessageType).first), 
-	bitNumPerPackage(constMemberInitialize(t_MessageType).second){
+	m_MessageType(t_MessageType), 
+	m_PackageNum(constMemberInitialize(t_MessageType).first), 
+	m_BitNumPerPackage(constMemberInitialize(t_MessageType).second){
 
-	currentPackageIdx = 0;
-	remainBitNum = bitNumPerPackage[0];
-	isDone = false;
-	packageIsLoss.assign(packageNum, false);
+	m_CurrentPackageIdx = 0;
+	m_RemainBitNum = m_BitNumPerPackage[0];
+	m_IsFinished = false;
+	m_PackageIsLoss.assign(m_PackageNum, false);
 }
 
 
 void Message::reset() { 
-	currentPackageIdx = 0;
-	remainBitNum = bitNumPerPackage[0];
-	isDone = false;
-	packageIsLoss.assign(packageNum, false);
+	m_CurrentPackageIdx = 0;
+	m_RemainBitNum = m_BitNumPerPackage[0];
+	m_IsFinished = false;
+	m_PackageIsLoss.assign(m_PackageNum, false);
 }
 
 
 int Message::transimit(int transimitMaxBitNum) {
-	if (transimitMaxBitNum >= remainBitNum) {//当前package传输完毕
-		int temp = remainBitNum;
-		if (++currentPackageIdx == packageNum) {//若当前package是最后一个package，那么说明传输成功
-			remainBitNum = 0;
-			isDone = true;
+	if (transimitMaxBitNum >= m_RemainBitNum) {//当前package传输完毕
+		int temp = m_RemainBitNum;
+		if (++m_CurrentPackageIdx == m_PackageNum) {//若当前package是最后一个package，那么说明传输成功
+			m_RemainBitNum = 0;
+			m_IsFinished = true;
 		}
 		else
-			remainBitNum = bitNumPerPackage[currentPackageIdx];
+			m_RemainBitNum = m_BitNumPerPackage[m_CurrentPackageIdx];
 		return temp;
 	}
 	else {//当前package尚未传输完毕，只需更新remainBitNum
-		remainBitNum -= transimitMaxBitNum;
+		m_RemainBitNum -= transimitMaxBitNum;
 		return transimitMaxBitNum;
 	}
 }
 
 
 bool Message::isFinished() {
-	return isDone;
+	return m_IsFinished;
 }
 
 string Message::toString() {
 	string s;
-	switch (messageType) {
+	switch (m_MessageType) {
 	case PERIOD:
 		s = "PERIOD";
 		break;
@@ -91,7 +91,7 @@ string Message::toString() {
 	}
 	ostringstream ss;
 	ss << "[ byteNum = { ";
-	for(int bitNum: bitNumPerPackage)
+	for(int bitNum: m_BitNumPerPackage)
 		ss << left << setw(3) << bitNum << ", ";
 	ss << "} , MessageType = " << s << " ]";
 	return ss.str();

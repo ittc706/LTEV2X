@@ -7,18 +7,17 @@
 #include"Complex.h"
 #include"Exception.h"
 
-/*
-* 定义此类的目的是为了在越界访问的时候抛出异常，而非产生一个运行时错误，更利于错误的定位
-* vector下标的越界访问
-*/
 class RowVector {
-	/*数据成员*/
+	/*------------------域------------------*/
+private:
 	Complex* rowVector;//底层容器，设为私有禁止直接访问
 public:
-	/*数据成员*/
 	int col;//向量长度，由于是行向量，这里称为列数
 
-	/*构造函数*/
+
+	/*------------------方法------------------*/
+public:
+	/*---构造函数---*/
 	~RowVector();
 	RowVector();
 	explicit RowVector(int t_Col);
@@ -26,13 +25,13 @@ public:
 	RowVector(RowVector&& t_RowVector) noexcept;
 	RowVector(const std::initializer_list<Complex> il);
 
-	/*成员运算符重载*/
+	/*---成员运算符重载---*/
 	RowVector& operator=(const RowVector& t_RowVector);
 	RowVector& operator=(RowVector&& t_RowVector) noexcept;
 	Complex& operator[](int pos);
 	const Complex& operator[](int pos) const;
 
-	/*其他功能函数*/
+	/*---其他功能函数---*/
 	void resize(int size);
 	std::string toString();
 	void print(std::ostream&out = std::cout);
@@ -64,27 +63,38 @@ RowVector elementDivide(const RowVector& t_RowVector1, const RowVector& t_RowVec
 
 
 class Matrix {
-	/*数据成员*/
+	/*------------------静态------------------*/
+public:
+	/*---域---*/
+	static std::default_random_engine s_Engine;
+	/*---方法---*/
+	static Matrix buildDdentityMatrix(int t_Row);
+	static Matrix verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
+	static std::pair<Matrix, Matrix> verticalSplit(const Matrix& t_Matrix, int leftCol, int rightCol);
+	static std::pair<Matrix, Matrix> horizonSplit(const Matrix& t_Matrix, int upRow, int downRow);
+	static Matrix eye(const int dim);//生成单位阵
+	/*------------------域------------------*/
+private:
 	RowVector* matrix;//底层多维容器，设为私有禁止直接访问
 public:
-	/*静态数据成员*/
-	static std::default_random_engine s_Engine;
-
-	/*数据成员*/
 	int row;//行数
 	int col;//列数
 
-
-	/*构造函数*/
+	/*------------------方法------------------*/
+	/*---拷贝控制函数---*/
+public:
 	~Matrix();
 	Matrix();
 	Matrix(int t_Row, int t_Col);
 	Matrix(const Matrix& t_Matrix);
 	Matrix(Matrix&& t_Matrix) noexcept;
 	Matrix(const std::initializer_list<RowVector>& il);
+private:
+	void free();
 	
 
-	/*矩阵功能函数*/
+	/*---矩阵功能函数---*/
+public:
 	void randomFill(double realLeft, double readRight, double imagLeft, double imagRight);
 	Matrix conjugate();//求共轭
 	Matrix transpose();//求转置
@@ -95,30 +105,22 @@ public:
 	Matrix pseudoInverse();//求广义逆矩阵
 
 
-	/*成员运算符重载*/
+	/*---成员运算符重载---*/
+public:
 	Matrix& operator=(const Matrix& t_Matrix);//赋值运算符
 	Matrix& operator=(Matrix&& t_Matrix) noexcept;//赋值运算符
 	RowVector& operator[](int pos);//下标运算符(非常量版本)
 	const RowVector& operator[](int pos) const;//下标运算符(常量版本)
 
 
-	/*其他功能函数*/
+	/*---其他功能函数---*/
+public:
 	std::string toString();
 	void print(std::ostream&out = std::cout, int numEnter = 0);
 
 
-	/*用于构造对象的静态函数*/
-	static Matrix buildDdentityMatrix(int t_Row);
-
-	/*实现函数*/
-	static Matrix verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2);
-	static std::pair<Matrix, Matrix> verticalSplit(const Matrix& t_Matrix, int leftCol, int rightCol);
-	static std::pair<Matrix, Matrix> horizonSplit(const Matrix& t_Matrix, int upRow, int downRow);
-	static Matrix eye(const int dim);//生成单位阵
-
 private:
 	Matrix inverseWhenDimlowerThan3(bool tryPseudoInverse);
-	void free();
 };
 
 //单目取反运算符

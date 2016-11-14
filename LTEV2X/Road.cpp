@@ -23,7 +23,7 @@ void Road::initializeUrban(UrbanRoadConfigure &t_RoadConfigure) {
 
 	m_GTT_Urban->m_eNBNum = t_RoadConfigure.eNBNum;
 	if (m_GTT_Urban->m_eNBNum == 1) {
-		m_GTT_Urban->m_eNB = (eNB *)t_RoadConfigure.peNB + t_RoadConfigure.eNBOffset;
+		m_GTT_Urban->m_eNB = (eNB *)t_RoadConfigure.eNB + t_RoadConfigure.eNBOffset;
 		eNBConfigure eNBConfigure;
 		eNBConfigure.systemConfig = t_RoadConfigure.systemConfig;
 		eNBConfigure.roadId = m_GTT->m_RoadId;
