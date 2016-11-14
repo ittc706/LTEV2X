@@ -8,36 +8,41 @@ using namespace std;
 
 int Event::s_EventCount = 0;
 
-Message::Message(MessageType messageType) {
-	this->messageType = messageType;
-	switch (messageType) {
+std::pair<int, std::vector<int>> Message::constMemberInitialize(MessageType t_MessageType) {
+	pair<int, std::vector<int>> res;
+	switch (t_MessageType) {
 	case PERIOD:
-		packageNum = gc_PeriodMessagePackageNum;
-		bitNumPerPackage = vector<int>(packageNum);
-		for (int i = 0; i < packageNum; i++)
-			bitNumPerPackage[i] = gc_PeriodMessageBitNumPerPackage[i];
-		currentPackageIdx = 0;
-		remainBitNum = bitNumPerPackage[0];
-		break;
+		res.first = gc_PeriodMessagePackageNum;
+		res.second = vector<int>(gc_PeriodMessagePackageNum);
+		for (int i = 0; i < gc_PeriodMessagePackageNum; i++)
+			res.second[i] = gc_PeriodMessageBitNumPerPackage[i];
+		return res;
 	case EMERGENCY:
-		packageNum = gc_EmergencyMessagePackageNum;
-		bitNumPerPackage = vector<int>(packageNum);
-		for (int i = 0; i < packageNum; i++)
-			bitNumPerPackage[i] = gc_EmergencyMessageBitNumPerPackage[i];
-		currentPackageIdx = 0;
-		remainBitNum = bitNumPerPackage[0];
-		break;
+		res.first = gc_EmergencyMessagePackageNum;
+		res.second = vector<int>(gc_PeriodMessagePackageNum);
+		for (int i = 0; i < gc_PeriodMessagePackageNum; i++)
+			res.second[i] = gc_EmergencyMessageBitNumPerPackage[i];
+		return res;
 	case DATA:
-		packageNum = gc_DataMessagePackageNum;
-		bitNumPerPackage = vector<int>(packageNum);
-		for (int i = 0; i < packageNum; i++)
-			bitNumPerPackage[i] = gc_DataMessageBitNumPerPackage[i];
-		currentPackageIdx = 0;
-		remainBitNum = bitNumPerPackage[0];
-		break;
+		res.first = gc_DataMessagePackageNum;
+		res.second = vector<int>(gc_PeriodMessagePackageNum);
+		for (int i = 0; i < gc_PeriodMessagePackageNum; i++)
+			res.second[i] = gc_DataMessageBitNumPerPackage[i];
+		return res;
+	default:
+		throw Exp("Wrong MessageType");
 	}
+}
+
+Message::Message(MessageType t_MessageType) :
+	messageType(t_MessageType), 
+	packageNum(constMemberInitialize(t_MessageType).first), 
+	bitNumPerPackage(constMemberInitialize(t_MessageType).second){
+
+	currentPackageIdx = 0;
+	remainBitNum = bitNumPerPackage[0];
 	isDone = false;
-	packetLossCnt = 0;
+	packageIsLoss.assign(packageNum, false);
 }
 
 
@@ -45,6 +50,7 @@ void Message::reset() {
 	currentPackageIdx = 0;
 	remainBitNum = bitNumPerPackage[0];
 	isDone = false;
+	packageIsLoss.assign(packageNum, false);
 }
 
 

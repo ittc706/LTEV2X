@@ -174,7 +174,7 @@ void System::initializeGTTModule() {
 }
 
 void System::initializeWTModule() {
-	m_WTPoint = new WT_B(m_Config, m_RSUAry, m_VeUEAry, SINR_MMSE);
+	m_WTPoint = new WT_B(m_Config, m_RSUAry, m_VeUEAry, SINR_MRC);
 	m_WTPoint->initialize();//Ä£¿é³õÊ¼»¯
 }
 
@@ -182,7 +182,7 @@ void System::initializeWTModule() {
 void System::initializeRRMModule() {
 	switch (m_RRMMode) {
 	case RR:
-		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 1);
+		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);
 		break;
 	case TDM_DRA:
 		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);

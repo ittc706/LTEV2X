@@ -193,7 +193,7 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	m_TransimitSucceedEventNumPerEventType = vector<int>(3);
 	for (Event &event : m_EventVec) {
 		if (event.isSuccessded) {
-			switch (event.message.messageType) {
+			switch (event.message.getMessageType()) {
 			case PERIOD:
 				m_TransimitSucceedEventNumPerEventType[0]++;
 				break;
@@ -222,7 +222,7 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	//统计等待时延
 	for (Event &event : m_EventVec)
 		if (event.isSuccessded) {
-			switch (event.message.messageType) {
+			switch (event.message.getMessageType()) {
 			case PERIOD:
 				ssPeriod << event.queuingDelay << " ";
 				break;
@@ -247,7 +247,7 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	ssData.str("");
 	for (Event &event : m_EventVec)
 		if (event.isSuccessded) {
-			switch (event.message.messageType) {
+			switch (event.message.getMessageType()) {
 			case PERIOD:
 				ssPeriod << event.sendDelay << " ";
 				break;
@@ -280,7 +280,7 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	ssEmergency.str("");
 	ssData.str("");
 	for (Event &event : m_EventVec) {
-		switch (event.message.messageType) {
+		switch (event.message.getMessageType()) {
 		case PERIOD:
 			ssPeriod << event.conflictNum << " ";
 			break;
@@ -323,7 +323,9 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	//统计丢包率
 	int lossPacketNum = 0;
 	for (int eventId = 0; eventId < Event::s_EventCount; eventId++) {
-		lossPacketNum += m_EventVec[eventId].message.getPacketLossCnt();
+		if (m_EventVec[eventId].message.isFinished()) {
+			lossPacketNum += m_EventVec[eventId].message.getPacketLossCnt();
+		}
 	}
 	cout << "丢包率: " << (double)lossPacketNum / (double)totalSucceededPackageNum;
 }
@@ -342,7 +344,7 @@ void TMC_B::writeEventListInfo(ofstream &out) {
 void TMC_B::writeEventLogInfo(ofstream &out) {
 	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
 		string s;
-		switch (m_EventVec[eventId].message.messageType) {
+		switch (m_EventVec[eventId].message.getMessageType()) {
 		case PERIOD:
 			s = "PERIOD";
 			break;

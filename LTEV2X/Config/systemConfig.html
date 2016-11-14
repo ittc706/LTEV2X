@@ -1,8 +1,8 @@
 <!--仿真总时间，单位TTI(毫秒)-->
-<NTTI>2000</NTTI>
+<NTTI>200</NTTI>
 
 <!--业务模型与控制单元-->
-<periodicEventNTTI>100</periodicEventNTTI><!--周期事件周期，单位TTI-->
+<periodicEventNTTI>500</periodicEventNTTI><!--周期事件周期，单位TTI-->
 
 <emergencyLambda>0</emergencyLambda><!--紧急事件Lambda，单位次/TTI-->
 
@@ -21,5 +21,5 @@
 	[TDM_DRA]：簇间时分的竞争式资源管理模式
 	[ICC_DRA]：簇间并发的竞争式资源管理模式
 	[RR]：集中式轮询调度模式-->
-<RRMMode>RR</RRMMode>
+<RRMMode>ICC_DRA</RRMMode>
 

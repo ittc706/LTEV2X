@@ -226,7 +226,7 @@ void RRM_TDM_DRA::processEventList() {
 		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
 
 		//将该事件压入紧急事件等待链表
-		bool isEmergency = event.message.messageType == EMERGENCY;
+		bool isEmergency = event.message.getMessageType() == EMERGENCY;
 		_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//更新日志
@@ -267,7 +267,7 @@ void RRM_TDM_DRA::processScheduleInfoTableWhenLocationUpdate() {
 				else {
 					if (m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx != clusterIdx) {//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
 						//压入该RSU的等待链表
-						bool isEmergency = m_EventVec[eventId].message.messageType == EMERGENCY;
+						bool isEmergency = m_EventVec[eventId].message.getMessageType() == EMERGENCY;
 						_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(isEmergency, m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId);
 
 						//并释放该调度信息的资源
@@ -384,7 +384,7 @@ void RRM_TDM_DRA::processSwitchListWhenLocationUpdate() {
 		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
 
 		//转入等待链表
-		bool isEmergency = m_EventVec[eventId].message.messageType == EMERGENCY;
+		bool isEmergency = m_EventVec[eventId].message.getMessageType() == EMERGENCY;
 		_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//从Switch表中将其删除
@@ -467,7 +467,7 @@ void RRM_TDM_DRA::selectRBBasedOnP123() {
 			int VeUEId = m_EventVec[eventId].VeUEId;
 
 			//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
-			MessageType messageType = m_EventVec[eventId].message.messageType;
+			MessageType messageType = m_EventVec[eventId].message.getMessageType();
 			int patternIdx = m_VeUEAry[VeUEId].m_RRM_TDM_DRA->selectRBBasedOnP2(curAvaliablePatternIdx[messageType]);
 
 			if (patternIdx == -1) {//该用户传输的信息类型没有pattern剩余了
@@ -674,7 +674,7 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					int VeUEId = info->VeUEId;
 
 					//计算SINR，获取调制编码方式
-					pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
+					pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.getMessageType(), patternIdx);
 					g_FileTemp << "Emergency PatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << endl;
 
 					double factor = m_VeUEAry[VeUEId].m_RRM->m_ModulationType * m_VeUEAry[VeUEId].m_RRM->m_CodeRate;
@@ -724,7 +724,7 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				int patternType = getPatternType(patternIdx);
 
 				//计算SINR，获取调制编码方式
-				pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.messageType, patternIdx);
+				pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(m_EventVec[info->eventId].message.getMessageType(), patternIdx);
 				g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((patternType == 0) ? "Emergency" : (patternType == 1 ? "Period" : "Data")) << endl;
 	
 				double factor = m_VeUEAry[VeUEId].m_RRM->m_ModulationType * m_VeUEAry[VeUEId].m_RRM->m_CodeRate;

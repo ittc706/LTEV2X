@@ -32,10 +32,19 @@ default_random_engine WT_B::s_Engine(0);
 
 WT_B::WT_B(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, SINRMode t_SINRMode) :WT_Basic(t_Config, t_RSUAry, t_VeUEAry, t_SINRMode) {}
 
-WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_VeUEAry, t_WT_B.m_SINRMode) {}
+WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_VeUEAry, t_WT_B.m_SINRMode) {
+	m_QPSK_MI = t_WT_B.m_QPSK_MI;
+}
 
 
 void WT_B::initialize() {
+	//读入信噪比和互信息的对应表(QPSK),维度是1*95
+	ifstream in("WT\\QPSK_MI.md");
+	m_QPSK_MI = make_shared<vector<double>>();
+	istream_iterator<double> inIter2(in), eof2;
+	m_QPSK_MI->assign(inIter2, eof2);
+	in.close();
+
 	//初始化VeUE的该模块参数部分
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId].initializeWT();
@@ -67,34 +76,79 @@ double WT_B::SINRCalculate(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarr
 
 
 double WT_B::SINRCalculateMRC(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) {
-	//配置本次函数调用的参数
-	configuration(t_VeUEId, t_PatternIdx);
-
 	//子载波数量
-	int m_SubCarrierNum = t_SubCarrierIdxEnd - t_SubCarrierIdxStart + 1;
+	int subCarrierNum = t_SubCarrierIdxEnd - t_SubCarrierIdxStart + 1;
 
-	///*****求每个子载波上的信噪比****/
-	//RowVector Sinr(m_SubCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
-	//for (int subCarrierIdx = subCarrierIdxStart; subCarrierIdx <= subCarrierIdxEnd; subCarrierIdx++) {
-	//	int relativeSubCarrierIdx = subCarrierIdx - subCarrierIdxStart;//相对的子载波下标
+	//配置本次函数调用的参数
+	configuration(t_VeUEId, t_PatternIdx, subCarrierNum);
 
-	//	m_H = readH(VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
-	//	m_HInterference = readInterferenceH(VeUEId, subCarrierIdx, patternIdx);//读入当前子载波干扰相应矩阵数组
+	/*****求每个子载波上的信噪比****/
+	vector<double> SINR(subCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
+	for (int subCarrierIdx = t_SubCarrierIdxStart; subCarrierIdx <= t_SubCarrierIdxEnd; subCarrierIdx++) {
+		int relativeSubCarrierIdx = subCarrierIdx - t_SubCarrierIdxStart;//相对的子载波下标
 
-	//}
-	return 10;
+		m_H = readH(t_VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
+		m_HInterference = readInterferenceH(t_VeUEId, subCarrierIdx, t_PatternIdx);//读入当前子载波干扰相应矩阵数组
+
+		double HSum1 = 0;
+		for (int r = 0; r < m_Nr; r++) {
+			HSum1 += Complex::abs(m_H[r][0])*Complex::abs(m_H[r][0]);
+		}
+
+		double molecule = m_Pt*m_Ploss*HSum1*HSum1;
+
+		double HSum2 = 0;
+		for (int j = 0; j < m_HInterference.size(); j++) {
+			double weight = m_Pt*m_PlossInterference[j];
+			Complex tmp(0,0);
+			for (int r = 0; r < m_Nr; r++) {
+				tmp += m_H[r][0] * m_HInterference[j][r][0];
+			}
+			HSum2 += weight * Complex::abs(tmp)*Complex::abs(tmp);
+		}
+
+		double denominator = HSum1*m_Sigma + HSum2;
+
+		SINR[relativeSubCarrierIdx] = 10 * log10(molecule / denominator);
+	}
+
+	//互信息方法求有效信噪比Sinreff
+
+	double sum_MI = 0, ave_MI = 0;
+	double Sinreff = 0;
+
+	for (int k = 0; k < subCarrierNum; k++) {
+		sum_MI = sum_MI + getMutualInformation(*m_QPSK_MI, (int)ceil((SINR[k] + 20) * 2));
+	}
+	ave_MI = sum_MI / subCarrierNum;
+
+	int SNRIndex = closest(*m_QPSK_MI, ave_MI);
+	Sinreff = 0.5*(SNRIndex - 40);
+
+	/*if (m_HInterference.size() > 0) {
+		cout << "InterNum: " << m_HInterference.size() << endl;
+		cout << "Ploss: " << m_Ploss << endl;
+		cout << "InterPloss: [";
+		for (auto tmpPloss : m_PlossInterference)
+			cout << tmpPloss << " , ";
+		cout << "]" << endl;
+		cout << "SINR: " << Sinreff << endl;
+		cout << endl;
+	}*/
+
+	return Sinreff;
 }
 
 
 double WT_B::SINRCalculateMMSE(int t_VeUEId,int t_SubCarrierIdxStart,int t_SubCarrierIdxEnd, int t_PatternIdx) {
-	//配置本次函数调用的参数
-	configuration(t_VeUEId, t_PatternIdx);
-
 	//子载波数量
-	int m_SubCarrierNum = t_SubCarrierIdxEnd - t_SubCarrierIdxStart + 1;
+	int subCarrierNum = t_SubCarrierIdxEnd - t_SubCarrierIdxStart + 1;
+
+	//配置本次函数调用的参数
+	configuration(t_VeUEId, t_PatternIdx, subCarrierNum);
 
 	/*****求每个子载波上的信噪比****/
-	RowVector SINRPerSubCarrier(m_SubCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
+	vector<double> SINR(subCarrierNum);//每个子载波上的信噪比，维度为Nt的向量
 	for (int subCarrierIdx = t_SubCarrierIdxStart; subCarrierIdx <= t_SubCarrierIdxEnd; subCarrierIdx++) {
 		
 		int relativeSubCarrierIdx = subCarrierIdx - t_SubCarrierIdxStart;//相对的子载波下标
@@ -102,18 +156,7 @@ double WT_B::SINRCalculateMMSE(int t_VeUEId,int t_SubCarrierIdxStart,int t_SubCa
 		m_H=readH(t_VeUEId, subCarrierIdx);//读入当前子载波的信道响应矩阵
 		m_HInterference = readInterferenceH(t_VeUEId, subCarrierIdx, t_PatternIdx);//读入当前子载波干扰相应矩阵数组
 
-		/*if (m_VeUEAry[t_VeUEId].m_RRM->m_InterferenceVeUENum[t_PatternIdx] != 0) {
-			m_H.print();
-			cout << "干扰矩阵： ";
-			for (auto &c : m_HInterference) {
-				c.print();
-			}
-			cout << endl;
-		}*/
-
-
 		/* 下面开始计算W */
-
 		Matrix HHermit = m_H.hermitian();//求信道矩阵的hermitian
 
 		Matrix inverseExpLeft = m_Pt*m_Ploss*m_H * HHermit;//求逆表达式左边那项
@@ -154,31 +197,32 @@ double WT_B::SINRCalculateMMSE(int t_VeUEId,int t_SubCarrierIdxStart,int t_SubCa
 		Matrix denominator = denominatorLeft + denominatorMiddle + denominatorRight;//SINR运算的分母
 
 
-		SINRPerSubCarrier[relativeSubCarrierIdx] = molecular[0][0] / denominator[0][0];
+		SINR[relativeSubCarrierIdx] = 10*log10((molecular[0][0] / denominator[0][0]).real);
 	}
 
-	for (int i = 0; i < SINRPerSubCarrier.col; i++) {
-		SINRPerSubCarrier[i] = 10 * log10(Complex::abs(SINRPerSubCarrier[i]));
-	}
+	//互信息方法求有效信噪比Sinreff
+	double sum_MI = 0, ave_MI = 0;
+	double Sinreff = 0;
 
-	double averageSINR = 0;
-
-	for (int i = 0; i < SINRPerSubCarrier.col; i++) {
-		averageSINR += SINRPerSubCarrier[i].real;
+	for (int k = 0; k < subCarrierNum; k++) {
+		sum_MI = sum_MI + getMutualInformation(*m_QPSK_MI, (int)ceil((SINR[k] + 20) * 2));
 	}
+	ave_MI = sum_MI / subCarrierNum;
+
+	int SNRIndex = closest(*m_QPSK_MI, ave_MI);
+	Sinreff = 0.5*(SNRIndex - 40);
 	
-	return averageSINR;
+	return Sinreff;
 }
 
 
 
 
-void WT_B::configuration(int t_VeUEId, int t_PatternIdx){
+void WT_B::configuration(int t_VeUEId, int t_PatternIdx, int t_SubCarrierNum){
 	m_Nr = m_VeUEAry[t_VeUEId].m_GTT->m_Nr;
 	m_Nt = m_VeUEAry[t_VeUEId].m_GTT->m_Nt;
-	m_Mol = m_VeUEAry[t_VeUEId].m_RRM->m_ModulationType;
 	m_Ploss = m_VeUEAry[t_VeUEId].m_GTT->m_Ploss;
-	m_Pt = pow(10,-4.7);//-17dbm-70dbm
+	m_Pt = pow(10, (23 - 10 * log10(t_SubCarrierNum * 15 * 1000))/10);
 	m_Sigma = pow(10,-17.4);
 
 	m_PlossInterference.clear();
@@ -247,5 +291,8 @@ int WT_B::closest(vector<double> t_Vec, double t_Target) {
 }
 
 
-
-
+double WT_B::getMutualInformation(vector<double> t_Vec, int t_Index) {
+	if (t_Index < 0) return t_Vec[0];
+	if (t_Index >= (int)t_Vec.size()) return t_Vec[t_Vec.size() - 1];
+	return t_Vec[t_Index];
+}

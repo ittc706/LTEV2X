@@ -2,25 +2,28 @@
 #include<vector>
 #include<list>
 #include<string>
+#include<utility>
 #include"Global.h"
 #include"Enumeration.h"
 
 struct Message {//消息类
-	/*数据成员*/
-	MessageType messageType;//该消息的类型
-	int packageNum;//消息的数据包总数
-	std::vector<int> bitNumPerPackage;
-
+	/*实现*/
 private:
+	const MessageType messageType;//该消息的类型
+	const int packageNum;//消息的数据包总数
+	const std::vector<int> bitNumPerPackage;
+
+
 	bool isDone;
 	int currentPackageIdx;
 	int remainBitNum;//currentPackageIdx所指向的package剩余待传输的bit数
-	int packetLossCnt;
+	std::vector<bool> packageIsLoss;//记录每个数据包是否丢包
 
+	std::pair<int, std::vector<int>> constMemberInitialize(MessageType t_MessageType);
 public:
-	/*构造函数*/
+	/*接口*/
 	Message() = delete;
-	Message(MessageType messageType);
+	Message(MessageType t_MessageType);
 
 	/*功能函数*/
 	std::string toString();
@@ -32,11 +35,19 @@ public:
 	* 但本次传输的实际bit数可以小于该值，并返回实际传输的bit数量
 	*/
 	int transimit(int transimitMaxBitNum);
+	void packetLoss() { packageIsLoss[currentPackageIdx] = true; }
 	bool isFinished();//判断是否完成事件的传输，并更新事件状态
+	MessageType getMessageType() { return messageType; }
 	int getRemainBitNum() { return remainBitNum; }
 	int getCurrentPackageIdx() { return currentPackageIdx; }
-	void packetLoss() { ++packetLossCnt; }
-	int getPacketLossCnt() { return packetLossCnt; }
+	int getPacketLossCnt() { 
+		return [=] {
+			int res = 0;
+			for (bool isLoss : packageIsLoss)
+				res += isLoss ? 1 : 0;
+			return res;
+		}();
+	}
 };
 
 struct Event {//事件类

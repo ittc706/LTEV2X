@@ -124,7 +124,7 @@ void RRM_RR::processEventList() {
 		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
 		RSU &_RSU = m_RSUAry[RSUId];
 		//将事件压入等待链表
-		bool isEmergency = event.message.messageType == EMERGENCY;
+		bool isEmergency = event.message.getMessageType() == EMERGENCY;
 		_RSU.m_RRM_RR->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//更新日志
@@ -144,7 +144,7 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 			while (it != _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end()) {
 				int eventId = *it;
 				int VeUEId = m_EventVec[eventId].VeUEId;
-				bool isEmergency = m_EventVec[eventId].message.messageType == EMERGENCY;
+				bool isEmergency = m_EventVec[eventId].message.getMessageType() == EMERGENCY;
 				if (m_VeUEAry[VeUEId].m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {//该VeUE已经不在该RSU范围内
 
 					//将其添加到System级别的RSU切换链表中
@@ -190,7 +190,7 @@ void RRM_RR::processSwitchListWhenLocationUpdate() {
 		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
 		RSU &_RSU = m_RSUAry[RSUId];
 
-		bool isEmergency = m_EventVec[eventId].message.messageType == EMERGENCY;
+		bool isEmergency = m_EventVec[eventId].message.getMessageType() == EMERGENCY;
 		_RSU.m_RRM_RR->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//从Switch链表中删除
@@ -448,7 +448,7 @@ void RRM_RR::transimitEnd() {
 					Delete::safeDelete(info);
 				}
 				else {//没有传输完毕，转到Wait链表，等待下一次调度
-					bool isEmergency = m_EventVec[info->eventId].message.messageType == EMERGENCY;
+					bool isEmergency = m_EventVec[info->eventId].message.getMessageType() == EMERGENCY;
 					_RSU.m_RRM_RR->pushToWaitEventIdList(isEmergency, clusterIdx, info->eventId);
 
 					//更新日志
