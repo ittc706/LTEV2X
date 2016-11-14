@@ -26,7 +26,7 @@
 using namespace std;
 
 TMC_B::TMC_B(int &t_TTI, 
-	Configure& t_Config, 
+	SystemConfig& t_Config, 
 	RSU* t_RSUAry, 
 	VeUE* t_VeUEAry, 
 	vector<Event>& t_EventVec, 

@@ -15,7 +15,7 @@ Road::~Road() {
 	Delete::safeDelete(m_GTT_HighSpeed);
 }
 
-void Road::initializeUrban(UrbanRoadConfigure &t_RoadConfigure) {
+void Road::initializeUrban(UrbanRoadConfig &t_RoadConfigure) {
 	m_GTT->m_RoadId = t_RoadConfigure.roadId;
 	m_GTT->m_AbsX = ns_GTT_Urban::gc_RoadTopoRatio[m_GTT->m_RoadId * 2 + 0] * ns_GTT_Urban::gc_Width;
 	m_GTT->m_AbsY = ns_GTT_Urban::gc_RoadTopoRatio[m_GTT->m_RoadId * 2 + 1] * ns_GTT_Urban::gc_Length;
@@ -24,7 +24,7 @@ void Road::initializeUrban(UrbanRoadConfigure &t_RoadConfigure) {
 	m_GTT_Urban->m_eNBNum = t_RoadConfigure.eNBNum;
 	if (m_GTT_Urban->m_eNBNum == 1) {
 		m_GTT_Urban->m_eNB = (eNB *)t_RoadConfigure.eNB + t_RoadConfigure.eNBOffset;
-		eNBConfigure eNBConfigure;
+		eNBConfig eNBConfigure;
 		eNBConfigure.systemConfig = t_RoadConfigure.systemConfig;
 		eNBConfigure.roadId = m_GTT->m_RoadId;
 		eNBConfigure.X = 42.0f;
@@ -37,7 +37,7 @@ void Road::initializeUrban(UrbanRoadConfigure &t_RoadConfigure) {
 }
 
 
-void Road::initializeHighSpeed(HighSpeedRodeConfigure &t_RoadHighSpeedConfigure) {
+void Road::initializeHighSpeed(HighSpeedRodeConfig &t_RoadHighSpeedConfigure) {
 	m_GTT->m_RoadId = t_RoadHighSpeedConfigure.roadId;
 	m_GTT->m_AbsX = 0.0f;
 	m_GTT->m_AbsY = ns_GTT_HighSpeed::gc_LaneTopoRatio[m_GTT->m_RoadId * 2 + 1] * ns_GTT_HighSpeed::gc_LaneWidth;

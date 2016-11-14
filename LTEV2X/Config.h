@@ -2,7 +2,7 @@
 #include"Enumeration.h"
 
 /*系统基本的仿真参数*/
-struct Configure {
+struct SystemConfig {
 	int NTTI;//仿真总共的TTI
 	int locationUpdateNTTI;//车辆刷新位置的周期
 
@@ -16,8 +16,8 @@ struct Configure {
 };
 
 /*eNB配置参数*/
-struct eNBConfigure {
-	Configure* systemConfig;
+struct eNBConfig {
+	SystemConfig* systemConfig;
 	int roadId;
 	int eNBId;
 	double X;
@@ -27,8 +27,8 @@ struct eNBConfigure {
 };
 
 /*Road配置参数*/
-struct UrbanRoadConfigure {
-	Configure* systemConfig;
+struct UrbanRoadConfig {
+	SystemConfig* systemConfig;
 	int roadId;
 	void *eNB;
 	int eNBNum;
@@ -39,14 +39,14 @@ struct UrbanRoadConfigure {
 };
 
 
-struct HighSpeedRodeConfigure {
-	Configure* systemConfig;
+struct HighSpeedRodeConfig {
+	SystemConfig* systemConfig;
 	int roadId;
 };
 
 
 /*VeUE配置参数*/
-struct VeUEConfigure {
+struct VeUEConfig {
 	int roadId;
 	int laneId;
 	int locationId;
@@ -58,7 +58,7 @@ struct VeUEConfigure {
 };
 
 /*RSU配置参数*/
-struct RSUConfigure {
+struct RSUConfig {
 	int RSUId;
 };
 

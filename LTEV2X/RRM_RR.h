@@ -14,7 +14,7 @@ class RRM_RR :public RRM_Basic {
 public:
 	RRM_RR() = delete;
 	RRM_RR(int &t_TTI, 
-		Configure& t_Config, 
+		SystemConfig& t_Config, 
 		RSU* t_RSUAry, 
 		VeUE* t_VeUEAry, 
 		std::vector<Event>& t_EventVec, 

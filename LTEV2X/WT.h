@@ -15,11 +15,11 @@ enum SINRMode {
 class WT_Basic {
 public:
 
-	WT_Basic(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, SINRMode t_SINRMode) :
+	WT_Basic(SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, SINRMode t_SINRMode) :
 		m_Config(t_Config), m_RSUAry(t_RSUAry), m_VeUEAry(t_VeUEAry), m_SINRMode(t_SINRMode) {}
 
 	//数据成员
-	Configure& m_Config;//系统参数配置
+	SystemConfig& m_Config;//系统参数配置
 	RSU* m_RSUAry;//RSU容器
 	VeUE* m_VeUEAry;//VeUE容器
 	SINRMode m_SINRMode;//计算SINR的模式

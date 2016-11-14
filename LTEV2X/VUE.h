@@ -39,8 +39,8 @@ public:
 	
 	~VeUE();
 	//每个类内结构体均由相应模块来完成初始化
-	void initializeGTT_Urban(VeUEConfigure &t_UEConfigure);
-	void initializeGTT_HighSpeed(VeUEConfigure &t_UEConfigure);
+	void initializeGTT_Urban(VeUEConfig &t_UEConfigure);
+	void initializeGTT_HighSpeed(VeUEConfig &t_UEConfigure);
 	void initializeRRM_TDM_DRA();
 	void initializeRRM_ICC_DRA();
 	void initializeRRM_RR();

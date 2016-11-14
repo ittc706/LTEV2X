@@ -38,8 +38,8 @@ public:
 
 
 	RSU();
-	void initializeGTT_Urban(RSUConfigure &t_RSUConfigure);
-	void initializeGTT_HighSpeed(RSUConfigure &t_RSUConfigure);
+	void initializeGTT_Urban(RSUConfig &t_RSUConfigure);
+	void initializeGTT_HighSpeed(RSUConfig &t_RSUConfigure);
 	void initializeRRM_TDM_DRA();
 	void initializeRRM_ICC_DRA();
 	void initializeRRM_RR();

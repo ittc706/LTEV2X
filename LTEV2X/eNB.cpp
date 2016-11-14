@@ -5,7 +5,7 @@
 using namespace std;
 
 
-void eNB::initializeUrban(eNBConfigure &t_eNBConfigure){
+void eNB::initializeUrban(eNBConfig &t_eNBConfigure){
 	m_RoadId = t_eNBConfigure.roadId;
 	m_eNBId = t_eNBConfigure.eNBId;
 	m_X = t_eNBConfigure.X;
@@ -16,7 +16,7 @@ void eNB::initializeUrban(eNBConfigure &t_eNBConfigure){
 }
 
 
-void eNB::initializeHighSpeed(eNBConfigure &t_eNBConfigure) {
+void eNB::initializeHighSpeed(eNBConfig &t_eNBConfigure) {
 	m_eNBId = t_eNBConfigure.eNBId;
 	m_AbsX = ns_GTT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 0];
 	m_AbsY = ns_GTT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 1];

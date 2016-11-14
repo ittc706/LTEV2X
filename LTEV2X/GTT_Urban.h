@@ -23,7 +23,7 @@ public:
 	/*------------------方法------------------*/
 public:
 	GTT_Urban() = delete;
-	GTT_Urban(int &t_TTI, Configure& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry);
+	GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry);
 
 
 	void configure()override;//参数配置

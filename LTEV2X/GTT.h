@@ -13,7 +13,7 @@ class GTT_Basic {
 	/*------------------域------------------*/
 public:
 	int& m_TTI;//当前的TTI时刻
-	Configure& m_Config;//系统参数配置
+	SystemConfig& m_Config;//系统参数配置
 	eNB* &m_eNBAry;//基站容器，这里为什么必须是引用类型，因为系统的这些数组指针必须靠该模块来初始化，因此不能传入拷贝
 	Road* &m_RoadAry;//道路容器
 	RSU* &m_RSUAry;//RSU容器
@@ -22,7 +22,7 @@ public:
 	/*------------------接口------------------*/
 public:
 	GTT_Basic() = delete;
-	GTT_Basic(int &t_TTI, Configure& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
+	GTT_Basic(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
 		m_TTI(t_TTI), m_Config(t_Config), m_eNBAry(t_eNBAry), m_RoadAry(t_RoadAry), m_RSUAry(t_RSUAry), m_VeUEAry(t_VeUEAry) {}
 
 	virtual void configure() = 0;//参数配置

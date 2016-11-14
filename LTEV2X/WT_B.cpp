@@ -30,7 +30,7 @@ using namespace std;
 
 default_random_engine WT_B::s_Engine(0);
 
-WT_B::WT_B(Configure& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, SINRMode t_SINRMode) :WT_Basic(t_Config, t_RSUAry, t_VeUEAry, t_SINRMode) {}
+WT_B::WT_B(SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, SINRMode t_SINRMode) :WT_Basic(t_Config, t_RSUAry, t_VeUEAry, t_SINRMode) {}
 
 WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_VeUEAry, t_WT_B.m_SINRMode) {
 	m_QPSK_MI = t_WT_B.m_QPSK_MI;

@@ -8,7 +8,7 @@ class TMC_B :public TMC_Basic {
 public:
 	TMC_B() = delete;
 	TMC_B(int &t_TTI, 
-		Configure& t_Config, 
+		SystemConfig& t_Config, 
 		RSU* t_RSUAry, 
 		VeUE* t_VeUEAry, 
 		std::vector<Event>& t_EventVec, 

@@ -12,7 +12,7 @@ using namespace std;
 int VeUE::m_VeUECount = 0;
 
 
-void VeUE::initializeGTT_Urban(VeUEConfigure &t_UEConfigure) {
+void VeUE::initializeGTT_Urban(VeUEConfig &t_UEConfigure) {
 	m_GTT = new GTT();
 	m_GTT_Urban = new GTT_Urban();
 
@@ -42,7 +42,7 @@ void VeUE::initializeGTT_Urban(VeUEConfigure &t_UEConfigure) {
 }
 
 
-void VeUE::initializeGTT_HighSpeed(VeUEConfigure &t_UEConfigure) {
+void VeUE::initializeGTT_HighSpeed(VeUEConfig &t_UEConfigure) {
 	m_GTT = new GTT();
 	m_GTT_HighSpeed = new GTT_HighSpeed();
 

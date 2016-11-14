@@ -17,7 +17,7 @@ class RRM_ICC_DRA :public RRM_Basic {
 public:
 	RRM_ICC_DRA() = delete;
 	RRM_ICC_DRA(int &t_TTI,
-		Configure& t_Config,
+		SystemConfig& t_Config,
 		RSU* t_RSUAry,
 		VeUE* t_VeUEAry,
 		std::vector<Event>& t_EventVec,

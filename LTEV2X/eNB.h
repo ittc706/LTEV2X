@@ -23,7 +23,7 @@ public:
 
 	/*------------------方法------------------*/
 public:
-	void initializeUrban(eNBConfigure &t_eNBConfigure);
-	void initializeHighSpeed(eNBConfigure &t_eNBConfigure);
+	void initializeUrban(eNBConfig &t_eNBConfigure);
+	void initializeHighSpeed(eNBConfig &t_eNBConfigure);
 	std::string toString(int n);//用于打印基站信息
 };

@@ -24,7 +24,7 @@ class System{
 public:
 	/*------------------域------------------*/
 	int m_TTI;//当前的TTI时刻
-	Configure m_Config;//系统参数配置
+	SystemConfig m_Config;//系统参数配置
 	eNB* m_eNBAry = nullptr;//基站容器
 	Road* m_RoadAry = nullptr;//道路容器
 	RSU* m_RSUAry = nullptr;//RSU容器

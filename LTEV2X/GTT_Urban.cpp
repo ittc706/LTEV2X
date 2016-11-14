@@ -10,7 +10,7 @@ using namespace ns_GTT_Urban;
 
 default_random_engine GTT_Urban::s_Engine((unsigned)time(NULL));
 
-GTT_Urban::GTT_Urban(int &t_TTI, Configure& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
+GTT_Urban::GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
 	GTT_Basic(t_TTI, t_Config, t_eNBAry, t_RoadAry, t_RSUAry, t_VeUEAry) {}
 
 
@@ -69,7 +69,7 @@ void GTT_Urban::initialize() {
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	m_RSUAry = new RSU[m_Config.RSUNum];
 
-	UrbanRoadConfigure roadConfigure;
+	UrbanRoadConfig roadConfigure;
 	for (int temp = 0; temp != m_UrbanRoadNum; ++temp) {
 		roadConfigure.roadId = temp;
 		if (temp % 2 == 0) {
@@ -84,13 +84,13 @@ void GTT_Urban::initialize() {
 		m_RoadAry[temp].initializeUrban(roadConfigure);
 	}
 
-	RSUConfigure RSUConfigure;
+	RSUConfig RSUConfigure;
 	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++) {
 		RSUConfigure.RSUId = RSUIdx;
 		m_RSUAry[RSUIdx].initializeGTT_Urban(RSUConfigure);
 	}
 
-	VeUEConfigure ueConfigure;
+	VeUEConfig ueConfigure;
 	int ueidx = 0;
 
 	for (int RoadIdx = 0; RoadIdx != m_UrbanRoadNum; RoadIdx++) {

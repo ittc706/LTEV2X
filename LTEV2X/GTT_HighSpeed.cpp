@@ -10,7 +10,7 @@ using namespace ns_GTT_HighSpeed;
 
 default_random_engine GTT_HighSpeed::s_Engine((unsigned)time(NULL));
 
-GTT_HighSpeed::GTT_HighSpeed(int &t_TTI, Configure& t_Config, eNB* &t_NBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
+GTT_HighSpeed::GTT_HighSpeed(int &t_TTI, SystemConfig& t_Config, eNB* &t_NBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
 	GTT_Basic(t_TTI, t_Config, t_NBAry, t_RoadAry, t_RSUAry, t_VeUEAry) {}
 
 
@@ -46,7 +46,7 @@ void GTT_HighSpeed::initialize() {
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	m_RSUAry = new RSU[m_Config.RSUNum];
 
-	eNBConfigure eNBConfigure;
+	eNBConfig eNBConfigure;
 	for (int temp = 0; temp != m_Config.eNBNum; ++temp)
 	{
 		eNBConfigure.eNBId = temp;
@@ -54,20 +54,20 @@ void GTT_HighSpeed::initialize() {
 	}
 
 
-	HighSpeedRodeConfigure laneConfigure;
+	HighSpeedRodeConfig laneConfigure;
 	for (int temp = 0; temp != m_HighSpeedRodeNum; ++temp) {
 		laneConfigure.roadId = temp;
 		m_RoadAry[temp].initializeHighSpeed(laneConfigure);
 	}
 
-	RSUConfigure RSUConfigure;
+	RSUConfig RSUConfigure;
 	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++) {
 
 		RSUConfigure.RSUId = RSUIdx;
 		m_RSUAry[RSUIdx].initializeGTT_HighSpeed(RSUConfigure);
 	}
 
-	VeUEConfigure ueConfigure;
+	VeUEConfig ueConfigure;
 	int ueidx = 0;
 
 	for (int LaneIdx = 0; LaneIdx != m_HighSpeedRodeNum; LaneIdx++) {

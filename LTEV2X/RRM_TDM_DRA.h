@@ -16,7 +16,7 @@ class RRM_TDM_DRA :public RRM_Basic {
 public:
 	RRM_TDM_DRA() = delete;
 	RRM_TDM_DRA(int &t_TTI,
-		Configure& t_Config,
+		SystemConfig& t_Config,
 		RSU* t_RSUAry,
 		VeUE* t_VeUEAry,
 		std::vector<Event>& t_EventVec,
