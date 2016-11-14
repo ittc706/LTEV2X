@@ -22,8 +22,8 @@ RSU::RSU() {
 }
 
 
-void RSU::initializeGTT_Urban(RSUConfig &t_RSUConfigure){
-	m_GTT->m_RSUId = t_RSUConfigure.RSUId;
+void RSU::initializeGTT_Urban(RSUConfig &t_RSUConfig){
+	m_GTT->m_RSUId = t_RSUConfig.RSUId;
 	m_GTT->m_AbsX = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * ns_GTT_Urban::gc_Width;
 	m_GTT->m_AbsY = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1] * ns_GTT_Urban::gc_Length;
 	randomUniform(&m_GTT->m_FantennaAngle, 1, 180.0f, -180.0f, false);
@@ -35,8 +35,8 @@ void RSU::initializeGTT_Urban(RSUConfig &t_RSUConfigure){
 }
 
 
-void RSU::initializeGTT_HighSpeed(RSUConfig &t_RSUConfigure) {
-	m_GTT->m_RSUId = t_RSUConfigure.RSUId;
+void RSU::initializeGTT_HighSpeed(RSUConfig &t_RSUConfig) {
+	m_GTT->m_RSUId = t_RSUConfig.RSUId;
 	m_GTT->m_AbsX = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * 100;
 	m_GTT->m_AbsY = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1];
 	randomUniform(&m_GTT->m_FantennaAngle, 1, 180.0f, -180.0f, false);

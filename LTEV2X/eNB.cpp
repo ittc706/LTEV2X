@@ -5,28 +5,28 @@
 using namespace std;
 
 
-void eNB::initializeUrban(eNBConfig &t_eNBConfigure){
-	m_RoadId = t_eNBConfigure.roadId;
-	m_eNBId = t_eNBConfigure.eNBId;
-	m_X = t_eNBConfigure.X;
-	m_Y = t_eNBConfigure.Y;
-	m_AbsX = t_eNBConfigure.AbsX;
-	m_AbsY = t_eNBConfigure.AbsY;
+void eNB::initializeUrban(eNBConfig &t_eNBConfig){
+	m_RoadId = t_eNBConfig.roadId;
+	m_eNBId = t_eNBConfig.eNBId;
+	m_X = t_eNBConfig.X;
+	m_Y = t_eNBConfig.Y;
+	m_AbsX = t_eNBConfig.AbsX;
+	m_AbsY = t_eNBConfig.AbsY;
 	g_FileLocationInfo << toString(0);
 }
 
 
-void eNB::initializeHighSpeed(eNBConfig &t_eNBConfigure) {
-	m_eNBId = t_eNBConfigure.eNBId;
+void eNB::initializeHighSpeed(eNBConfig &t_eNBConfig) {
+	m_eNBId = t_eNBConfig.eNBId;
 	m_AbsX = ns_GTT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 0];
 	m_AbsY = ns_GTT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 1];
 	g_FileLocationInfo << toString(0);
 }
 
 
-string eNB::toString(int n) {
+string eNB::toString(int t_NumTab) {
 	string indent;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < t_NumTab; i++)
 		indent.append("    ");
 
 	ostringstream ss;

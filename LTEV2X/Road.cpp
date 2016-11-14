@@ -15,30 +15,30 @@ Road::~Road() {
 	Delete::safeDelete(m_GTT_HighSpeed);
 }
 
-void Road::initializeUrban(UrbanRoadConfig &t_RoadConfigure) {
-	m_GTT->m_RoadId = t_RoadConfigure.roadId;
+void Road::initializeUrban(UrbanRoadConfig &t_RoadConfig) {
+	m_GTT->m_RoadId = t_RoadConfig.roadId;
 	m_GTT->m_AbsX = ns_GTT_Urban::gc_RoadTopoRatio[m_GTT->m_RoadId * 2 + 0] * ns_GTT_Urban::gc_Width;
 	m_GTT->m_AbsY = ns_GTT_Urban::gc_RoadTopoRatio[m_GTT->m_RoadId * 2 + 1] * ns_GTT_Urban::gc_Length;
 	g_FileLocationInfo << m_GTT->toString(0);
 
-	m_GTT_Urban->m_eNBNum = t_RoadConfigure.eNBNum;
+	m_GTT_Urban->m_eNBNum = t_RoadConfig.eNBNum;
 	if (m_GTT_Urban->m_eNBNum == 1) {
-		m_GTT_Urban->m_eNB = (eNB *)t_RoadConfigure.eNB + t_RoadConfigure.eNBOffset;
-		eNBConfig eNBConfigure;
-		eNBConfigure.systemConfig = t_RoadConfigure.systemConfig;
-		eNBConfigure.roadId = m_GTT->m_RoadId;
-		eNBConfigure.X = 42.0f;
-		eNBConfigure.Y = -88.5f;
-		eNBConfigure.AbsX = m_GTT->m_AbsX + eNBConfigure.X;
-		eNBConfigure.AbsY = m_GTT->m_AbsY + eNBConfigure.Y;
-		eNBConfigure.eNBId = t_RoadConfigure.eNBOffset;
-		m_GTT_Urban->m_eNB->initializeUrban(eNBConfigure);
+		m_GTT_Urban->m_eNB = (eNB *)t_RoadConfig.eNB + t_RoadConfig.eNBOffset;
+		eNBConfig eNBConfig;
+		eNBConfig.systemConfig = t_RoadConfig.systemConfig;
+		eNBConfig.roadId = m_GTT->m_RoadId;
+		eNBConfig.X = 42.0f;
+		eNBConfig.Y = -88.5f;
+		eNBConfig.AbsX = m_GTT->m_AbsX + eNBConfig.X;
+		eNBConfig.AbsY = m_GTT->m_AbsY + eNBConfig.Y;
+		eNBConfig.eNBId = t_RoadConfig.eNBOffset;
+		m_GTT_Urban->m_eNB->initializeUrban(eNBConfig);
 	}
 }
 
 
-void Road::initializeHighSpeed(HighSpeedRodeConfig &t_RoadHighSpeedConfigure) {
-	m_GTT->m_RoadId = t_RoadHighSpeedConfigure.roadId;
+void Road::initializeHighSpeed(HighSpeedRodeConfig &t_RoadHighSpeedConfig) {
+	m_GTT->m_RoadId = t_RoadHighSpeedConfig.roadId;
 	m_GTT->m_AbsX = 0.0f;
 	m_GTT->m_AbsY = ns_GTT_HighSpeed::gc_LaneTopoRatio[m_GTT->m_RoadId * 2 + 1] * ns_GTT_HighSpeed::gc_LaneWidth;
 }

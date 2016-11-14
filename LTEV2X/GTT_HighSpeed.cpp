@@ -46,39 +46,39 @@ void GTT_HighSpeed::initialize() {
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	m_RSUAry = new RSU[m_Config.RSUNum];
 
-	eNBConfig eNBConfigure;
+	eNBConfig _eNBConfig;
 	for (int temp = 0; temp != m_Config.eNBNum; ++temp)
 	{
-		eNBConfigure.eNBId = temp;
-		m_eNBAry[temp].initializeHighSpeed(eNBConfigure);
+		_eNBConfig.eNBId = temp;
+		m_eNBAry[temp].initializeHighSpeed(_eNBConfig);
 	}
 
 
-	HighSpeedRodeConfig laneConfigure;
+	HighSpeedRodeConfig highSpeedRodeConfig;
 	for (int temp = 0; temp != m_HighSpeedRodeNum; ++temp) {
-		laneConfigure.roadId = temp;
-		m_RoadAry[temp].initializeHighSpeed(laneConfigure);
+		highSpeedRodeConfig.roadId = temp;
+		m_RoadAry[temp].initializeHighSpeed(highSpeedRodeConfig);
 	}
 
-	RSUConfig RSUConfigure;
+	RSUConfig _RSUConfig;
 	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++) {
 
-		RSUConfigure.RSUId = RSUIdx;
-		m_RSUAry[RSUIdx].initializeGTT_HighSpeed(RSUConfigure);
+		_RSUConfig.RSUId = RSUIdx;
+		m_RSUAry[RSUIdx].initializeGTT_HighSpeed(_RSUConfig);
 	}
 
-	VeUEConfig ueConfigure;
+	VeUEConfig _VeUEConfig;
 	int ueidx = 0;
 
 	for (int LaneIdx = 0; LaneIdx != m_HighSpeedRodeNum; LaneIdx++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[LaneIdx]; uprIdx++) {
-			ueConfigure.laneId = LaneIdx;
-			ueConfigure.X = -1732 + rand() % 3465;
-			ueConfigure.Y = 0.0f;
-			ueConfigure.AbsX = m_RoadAry[LaneIdx].m_GTT->m_AbsX + ueConfigure.X;
-			ueConfigure.AbsY = m_RoadAry[LaneIdx].m_GTT->m_AbsY + ueConfigure.Y;
-			ueConfigure.V = m_Speed;
-			m_VeUEAry[ueidx++].initializeGTT_HighSpeed(ueConfigure);
+			_VeUEConfig.laneId = LaneIdx;
+			_VeUEConfig.X = -1732 + rand() % 3465;
+			_VeUEConfig.Y = 0.0f;
+			_VeUEConfig.AbsX = m_RoadAry[LaneIdx].m_GTT->m_AbsX + _VeUEConfig.X;
+			_VeUEConfig.AbsY = m_RoadAry[LaneIdx].m_GTT->m_AbsY + _VeUEConfig.Y;
+			_VeUEConfig.V = m_Speed;
+			m_VeUEAry[ueidx++].initializeGTT_HighSpeed(_VeUEConfig);
 		}
 	}
 }

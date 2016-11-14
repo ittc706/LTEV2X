@@ -12,17 +12,17 @@ using namespace std;
 int VeUE::m_VeUECount = 0;
 
 
-void VeUE::initializeGTT_Urban(VeUEConfig &t_UEConfigure) {
+void VeUE::initializeGTT_Urban(VeUEConfig &t_VeUEConfig) {
 	m_GTT = new GTT();
 	m_GTT_Urban = new GTT_Urban();
 
-	m_GTT->m_RoadId = t_UEConfigure.roadId;
-	m_GTT_Urban->m_LocationId = t_UEConfigure.locationId;
-	m_GTT->m_X = t_UEConfigure.X;
-	m_GTT->m_Y = t_UEConfigure.Y;
-	m_GTT->m_AbsX = t_UEConfigure.AbsX;
-	m_GTT->m_AbsY = t_UEConfigure.AbsY;
-	m_GTT->m_V = t_UEConfigure.V;
+	m_GTT->m_RoadId = t_VeUEConfig.roadId;
+	m_GTT_Urban->m_LocationId = t_VeUEConfig.locationId;
+	m_GTT->m_X = t_VeUEConfig.X;
+	m_GTT->m_Y = t_VeUEConfig.Y;
+	m_GTT->m_AbsX = t_VeUEConfig.AbsX;
+	m_GTT->m_AbsY = t_VeUEConfig.AbsY;
+	m_GTT->m_V = t_VeUEConfig.V;
 
 	if ((0 < m_GTT_Urban->m_LocationId) && (m_GTT_Urban->m_LocationId <= 61))
 		m_GTT->m_VAngle = 90;
@@ -42,16 +42,16 @@ void VeUE::initializeGTT_Urban(VeUEConfig &t_UEConfigure) {
 }
 
 
-void VeUE::initializeGTT_HighSpeed(VeUEConfig &t_UEConfigure) {
+void VeUE::initializeGTT_HighSpeed(VeUEConfig &t_VeUEConfig) {
 	m_GTT = new GTT();
 	m_GTT_HighSpeed = new GTT_HighSpeed();
 
-	m_GTT->m_RoadId = t_UEConfigure.laneId;
-	m_GTT->m_X = t_UEConfigure.X;
-	m_GTT->m_Y = t_UEConfigure.Y;
-	m_GTT->m_AbsX = t_UEConfigure.AbsX;
-	m_GTT->m_AbsY = t_UEConfigure.AbsY;
-	m_GTT->m_V = t_UEConfigure.V / 3.6f;
+	m_GTT->m_RoadId = t_VeUEConfig.laneId;
+	m_GTT->m_X = t_VeUEConfig.X;
+	m_GTT->m_Y = t_VeUEConfig.Y;
+	m_GTT->m_AbsX = t_VeUEConfig.AbsX;
+	m_GTT->m_AbsY = t_VeUEConfig.AbsY;
+	m_GTT->m_V = t_VeUEConfig.V / 3.6f;
 
 	if (m_GTT->m_RoadId <= 2)
 		m_GTT->m_VAngle = 0;

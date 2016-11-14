@@ -5,11 +5,21 @@
 class Complex {
 	/*------------------静态------------------*/
 public:
+	/*
+	* 用于计算复数的模值
+	*/
 	static double abs(const Complex&c);
 
 	/*------------------域------------------*/
 public:
+	/*
+	* 实部
+	*/
 	double real;
+
+	/*
+	* 虚部
+	*/
 	double imag;
 
 	/*------------------方法------------------*/
@@ -80,11 +90,37 @@ public:
 	void print(std::ostream&out = std::cout);
 };
 
-
+/*
+* 取反运算符
+*/
 Complex operator-(const Complex& c);
+
+/*
+* 加法运算符
+*/
 Complex operator+(const Complex& c1, const Complex& c2);
+
+/*
+* 减法运算符
+*/
 Complex operator-(const Complex& c1, const Complex& c2);
+
+/*
+* 乘法运算符
+*/
 Complex operator*(const Complex& c1, const Complex& c2);
+
+/*
+* 除法运算符
+*/
 Complex operator/(const Complex& c1, const Complex& c2);
+
+/*
+* 相等运算符
+*/
 bool operator==(const Complex& c1, const Complex& c2);
+
+/*
+* 不等运算符
+*/
 bool operator!=(const Complex& c1, const Complex& c2);

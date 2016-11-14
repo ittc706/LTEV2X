@@ -2,6 +2,9 @@
 
 class Delete {
 public:
+	/*
+	* 删除函数，删除后会置空指针
+	*/
 	template<typename T>
 	static void safeDelete(T*&t_Point, bool t_IsArray = false) {
 		if (t_Point != nullptr) {

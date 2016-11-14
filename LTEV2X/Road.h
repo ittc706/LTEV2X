@@ -16,8 +16,8 @@ public:
 	Road();
 	~Road();
 
-	void initializeUrban(UrbanRoadConfig &t_RoadConfigure);
-	void initializeHighSpeed(HighSpeedRodeConfig &t_LaneConfigure);
+	void initializeUrban(UrbanRoadConfig &t_RoadConfig);
+	void initializeHighSpeed(HighSpeedRodeConfig &t_RoadHighSpeedConfig);
 
 	class GTT;
 	class GTT_Urban;

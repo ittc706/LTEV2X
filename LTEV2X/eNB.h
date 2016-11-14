@@ -8,22 +8,53 @@
 class eNB{
 	/*------------------域------------------*/
 public:
+	/*
+	* 所在道路Id
+	*/
 	int m_RoadId;
-	int m_eNBId;
-	double m_X;
-	double m_Y;
-	double m_AbsX;
-	double m_AbsY;
-	
 
+	/*
+	* 基站Id
+	*/
+	int m_eNBId;
+
+	/*
+	* 基站相对横纵坐标
+	*/
+	double m_X, m_Y;
+
+	/*
+	* 基站绝对横纵坐标
+	*/
+	double m_AbsX, m_AbsY;
+	
     //<UNDONE>
-	std::list<int> m_RSUIdList;//该基站中的RSU容器（存储RSU的Id）
-	std::list<int> m_VeUEIdList;//该基站中的VeUE容器（存储VeUE的Id）
+	/*
+	* 该基站中的RSU容器(存储RSU的Id)
+	*/
+	std::list<int> m_RSUIdList;
+
 	//<UNDONE>
+	/*
+	* 该基站中的VeUE容器(存储VeUE的Id)
+	*/
+	std::list<int> m_VeUEIdList;
+
 
 	/*------------------方法------------------*/
 public:
-	void initializeUrban(eNBConfig &t_eNBConfigure);
-	void initializeHighSpeed(eNBConfig &t_eNBConfigure);
-	std::string toString(int n);//用于打印基站信息
+	/*
+	* 城镇场景下的初始化方法
+	*/
+	void initializeUrban(eNBConfig &t_eNBConfig);
+
+	/*
+	* 高速场景下的初始化方法
+	*/
+	void initializeHighSpeed(eNBConfig &t_eNBConfig);
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
 };

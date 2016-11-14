@@ -69,40 +69,40 @@ void GTT_Urban::initialize() {
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	m_RSUAry = new RSU[m_Config.RSUNum];
 
-	UrbanRoadConfig roadConfigure;
+	UrbanRoadConfig urbanRoadConfig;
 	for (int temp = 0; temp != m_UrbanRoadNum; ++temp) {
-		roadConfigure.roadId = temp;
+		urbanRoadConfig.roadId = temp;
 		if (temp % 2 == 0) {
-			roadConfigure.eNBNum = 1;
-			roadConfigure.eNB = m_eNBAry;
-			roadConfigure.eNBOffset = temp / 2;
+			urbanRoadConfig.eNBNum = 1;
+			urbanRoadConfig.eNB = m_eNBAry;
+			urbanRoadConfig.eNBOffset = temp / 2;
 		}
 		else {
-			roadConfigure.eNBNum = 0;
+			urbanRoadConfig.eNBNum = 0;
 		}
 
-		m_RoadAry[temp].initializeUrban(roadConfigure);
+		m_RoadAry[temp].initializeUrban(urbanRoadConfig);
 	}
 
-	RSUConfig RSUConfigure;
+	RSUConfig _RSUConfig;
 	for (int RSUIdx = 0; RSUIdx != m_Config.RSUNum; RSUIdx++) {
-		RSUConfigure.RSUId = RSUIdx;
-		m_RSUAry[RSUIdx].initializeGTT_Urban(RSUConfigure);
+		_RSUConfig.RSUId = RSUIdx;
+		m_RSUAry[RSUIdx].initializeGTT_Urban(_RSUConfig);
 	}
 
-	VeUEConfig ueConfigure;
+	VeUEConfig _VeUEConfig;
 	int ueidx = 0;
 
 	for (int RoadIdx = 0; RoadIdx != m_UrbanRoadNum; RoadIdx++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[RoadIdx]; uprIdx++) {
-			ueConfigure.roadId = RoadIdx;
-			ueConfigure.locationId = rand() % m_ueTopoNum;
-			ueConfigure.X = m_pueTopo[ueConfigure.locationId * 2 + 0];
-			ueConfigure.Y = m_pueTopo[ueConfigure.locationId * 2 + 1];
-			ueConfigure.AbsX = m_RoadAry[RoadIdx].m_GTT->m_AbsX + ueConfigure.X;
-			ueConfigure.AbsY = m_RoadAry[RoadIdx].m_GTT->m_AbsY + ueConfigure.Y;
-			ueConfigure.V = m_Speed;
-			m_VeUEAry[ueidx++].initializeGTT_Urban(ueConfigure);
+			_VeUEConfig.roadId = RoadIdx;
+			_VeUEConfig.locationId = rand() % m_ueTopoNum;
+			_VeUEConfig.X = m_pueTopo[_VeUEConfig.locationId * 2 + 0];
+			_VeUEConfig.Y = m_pueTopo[_VeUEConfig.locationId * 2 + 1];
+			_VeUEConfig.AbsX = m_RoadAry[RoadIdx].m_GTT->m_AbsX + _VeUEConfig.X;
+			_VeUEConfig.AbsY = m_RoadAry[RoadIdx].m_GTT->m_AbsY + _VeUEConfig.Y;
+			_VeUEConfig.V = m_Speed;
+			m_VeUEAry[ueidx++].initializeGTT_Urban(_VeUEConfig);
 		}
 	}
 }

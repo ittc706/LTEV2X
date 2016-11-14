@@ -1,21 +1,50 @@
 #pragma once
 #include"Enumeration.h"
 
-/*系统基本的仿真参数*/
+//系统基本的仿真参数
 struct SystemConfig {
-	int NTTI;//仿真总共的TTI
-	int locationUpdateNTTI;//车辆刷新位置的周期
+	/*
+	* 仿真总共的TTI
+	*/
+	int NTTI;
 
-	int periodicEventNTTI;//周期性事件的周期（单位TTI）
-	double dataLambda;//数据业务事件泊松过程Lamda
-	double emergencyLambda;//紧急事件泊松过程Lamda,单位次/TTI
+	/*
+	* 车辆刷新位置的周期
+	*/
+	int locationUpdateNTTI;
 
-	int VeUENum;//车辆总数
-	int RSUNum;//RSU总数
-	int eNBNum;//基站总数
+	/*
+	* 周期性事件的周期（单位TTI）
+	*/
+	int periodicEventNTTI;
+
+	/*
+	* 数据业务事件泊松过程Lamda
+	*/
+	double dataLambda;
+
+	/*
+	* 紧急事件泊松过程Lamda,单位次/TTI
+	*/
+	double emergencyLambda;
+
+	/*
+	* 车辆总数
+	*/
+	int VeUENum;
+
+	/*
+	* RSU总数
+	*/
+	int RSUNum;
+
+	/*
+	* 基站总数
+	*/
+	int eNBNum;
 };
 
-/*eNB配置参数*/
+//eNB配置参数
 struct eNBConfig {
 	SystemConfig* systemConfig;
 	int roadId;
@@ -26,7 +55,7 @@ struct eNBConfig {
 	double AbsY;
 };
 
-/*Road配置参数*/
+//Road配置参数
 struct UrbanRoadConfig {
 	SystemConfig* systemConfig;
 	int roadId;
@@ -45,7 +74,7 @@ struct HighSpeedRodeConfig {
 };
 
 
-/*VeUE配置参数*/
+//VeUE配置参数
 struct VeUEConfig {
 	int roadId;
 	int laneId;
@@ -57,12 +86,12 @@ struct VeUEConfig {
 	double V;
 };
 
-/*RSU配置参数*/
+//RSU配置参数
 struct RSUConfig {
 	int RSUId;
 };
 
-/*地理位置配置参数*/
+//地理位置配置参数
 struct Location {
 	bool manhattan;
 	LocationType locationType;
@@ -75,7 +104,7 @@ struct Location {
 
 };
 
-/*天线配置参数*/
+//天线配置参数
 struct Antenna {
 	double TxAngle; // degree
 	double RxAngle; // degree
