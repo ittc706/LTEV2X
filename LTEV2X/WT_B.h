@@ -24,7 +24,7 @@ public:
 	std::shared_ptr<std::vector<double>> m_QPSK_MI;
 
 
-	WT_B(SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, SINRMode t_SINRMode);
+	WT_B(SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, WTMode t_SINRMode);
 	WT_B(const WT_B& t_WT_B);
 
 	void initialize() override;//模块初始化调用的初始化函数,初始化RSU VeUE内该单元的内部类

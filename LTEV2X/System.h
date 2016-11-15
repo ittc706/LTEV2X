@@ -40,6 +40,7 @@ public:
 	GTT_Basic* m_GTTPoint = nullptr;//地理拓扑与传输单元
 
 	WT_Basic* m_WTPoint = nullptr;//无线传输单元
+	WTMode m_WTMode;
 
 	TMC_Basic* m_TMCPoint = nullptr;//业务模型与控制单元
 

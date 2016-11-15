@@ -18,6 +18,10 @@ enum RRMMode {
 	ICC_DRA
 };
 
+enum WTMode {
+	SINR_MRC,
+	SINR_MMSE
+};
 
 enum MessageType {
 	EMERGENCY = 0,   //紧急信息（比如车祸信息，优先级较高）

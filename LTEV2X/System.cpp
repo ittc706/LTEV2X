@@ -131,6 +131,21 @@ void System::configure() {//系统仿真参数配置
 	}
 	else
 		throw Exp("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("WTMode")) != nullString) {
+		if (temp == "SINR_MRC") {
+			m_WTMode = SINR_MRC;
+			cout << "WT单元：SINR_MRC模式" << endl;
+		}
+		else if (temp == "SINR_MMSE") {
+			m_WTMode = SINR_MMSE;
+			cout << "WT单元：SINR_MMSE模式" << endl;
+		}
+		else
+			throw Exp("无线传输单元参数配置错误");
+	}
+	else
+		throw Exp("ConfigLoaderError");
 	/*cout << m_Config.NTTI << endl;
 	cout << m_Config.periodicEventNTTI << endl;
 	cout << m_Config.emergencyLambda << endl;
@@ -174,7 +189,7 @@ void System::initializeGTTModule() {
 }
 
 void System::initializeWTModule() {
-	m_WTPoint = new WT_B(m_Config, m_RSUAry, m_VeUEAry, SINR_MRC);
+	m_WTPoint = new WT_B(m_Config, m_RSUAry, m_VeUEAry, m_WTMode);
 	m_WTPoint->initialize();//模块初始化
 }
 
