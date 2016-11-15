@@ -41,9 +41,10 @@ private:
 
 	/*
 	* 记录每个数据包是否丢包
+	* 一个包只能被丢一次，因此用布尔值来标记，而不是用丢包次数来标记
 	*/
 	std::vector<bool> m_PackageIsLoss;
-	
+
 	/*------------------方法------------------*/
 public:
 	/*
@@ -72,7 +73,7 @@ public:
 	* transimitMaxBitNum为本次该时频资源可传输的最大bit数
 	* 但本次传输的实际bit数可以小于该值，并返回实际传输的bit数量
 	*/
-	int transimit(int transimitMaxBitNum);
+	int transimit(int t_TransimitMaxBitNum);
 
 	/*
 	* 记录当前传输的包发生丢包
@@ -80,9 +81,9 @@ public:
 	void packetLoss() { m_PackageIsLoss[m_CurrentPackageIdx] = true; }
 
 	/*
-	* 判断是否完成事件的传输，并更新事件状态
+	* 判断是否完成事件的传输
 	*/
-	bool isFinished();
+	bool isFinished() { return m_IsFinished; }
 
 	/*
 	* 返回消息类型
@@ -102,7 +103,7 @@ public:
 	/*
 	* 返回丢包总数
 	*/
-	int getPacketLossCnt() { 
+	int getPacketLossCnt() {
 		return [=] {
 			int res = 0;
 			for (bool isLoss : m_PackageIsLoss)
@@ -111,9 +112,9 @@ public:
 		}();
 	}
 private:/*---实现---*/
-	/*
-	* 构造函数初始化列表调用的函数，用于初始化const成员
-	*/
+		/*
+		* 构造函数初始化列表调用的函数，用于初始化const成员
+		*/
 	std::pair<int, std::vector<int>> constMemberInitialize(MessageType t_MessageType);
 };
 
@@ -189,7 +190,7 @@ private:
 	*/
 	std::list<std::string> logTrackList;
 
-    /*------------------方法------------------*/
+	/*------------------方法------------------*/
 public:
 	/*
 	* 默认构造函数定义为删除
@@ -210,7 +211,7 @@ public:
 	/*
 	* 生成用于日志输出的格式化的字符串
 	*/
-	std::string toLogString(int n);
+	std::string toLogString(int t_NumTab);
 
 	/*
 	* 添加日志

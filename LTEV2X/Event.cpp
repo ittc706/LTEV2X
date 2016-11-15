@@ -35,9 +35,9 @@ std::pair<int, std::vector<int>> Message::constMemberInitialize(MessageType t_Me
 }
 
 Message::Message(MessageType t_MessageType) :
-	m_MessageType(t_MessageType), 
-	m_PackageNum(constMemberInitialize(t_MessageType).first), 
-	m_BitNumPerPackage(constMemberInitialize(t_MessageType).second){
+	m_MessageType(t_MessageType),
+	m_PackageNum(constMemberInitialize(t_MessageType).first),
+	m_BitNumPerPackage(constMemberInitialize(t_MessageType).second) {
 
 	m_CurrentPackageIdx = 0;
 	m_RemainBitNum = m_BitNumPerPackage[0];
@@ -46,7 +46,7 @@ Message::Message(MessageType t_MessageType) :
 }
 
 
-void Message::reset() { 
+void Message::reset() {
 	m_CurrentPackageIdx = 0;
 	m_RemainBitNum = m_BitNumPerPackage[0];
 	m_IsFinished = false;
@@ -54,8 +54,8 @@ void Message::reset() {
 }
 
 
-int Message::transimit(int transimitMaxBitNum) {
-	if (transimitMaxBitNum >= m_RemainBitNum) {//当前package传输完毕
+int Message::transimit(int t_TransimitMaxBitNum) {
+	if (t_TransimitMaxBitNum >= m_RemainBitNum) {//当前package传输完毕
 		int temp = m_RemainBitNum;
 		if (++m_CurrentPackageIdx == m_PackageNum) {//若当前package是最后一个package，那么说明传输成功
 			m_RemainBitNum = 0;
@@ -66,15 +66,11 @@ int Message::transimit(int transimitMaxBitNum) {
 		return temp;
 	}
 	else {//当前package尚未传输完毕，只需更新remainBitNum
-		m_RemainBitNum -= transimitMaxBitNum;
-		return transimitMaxBitNum;
+		m_RemainBitNum -= t_TransimitMaxBitNum;
+		return t_TransimitMaxBitNum;
 	}
 }
 
-
-bool Message::isFinished() {
-	return m_IsFinished;
-}
 
 string Message::toString() {
 	string s;
@@ -91,7 +87,7 @@ string Message::toString() {
 	}
 	ostringstream ss;
 	ss << "[ byteNum = { ";
-	for(int bitNum: m_BitNumPerPackage)
+	for (int bitNum : m_BitNumPerPackage)
 		ss << left << setw(3) << bitNum << ", ";
 	ss << "} , MessageType = " << s << " ]";
 	return ss.str();
@@ -99,11 +95,11 @@ string Message::toString() {
 
 
 Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
-	isSuccessded(false), 
-	propagationDelay(0), 
-	sendDelay(0), 
-	processingDelay(0), 
-	queuingDelay(0), 
+	isSuccessded(false),
+	propagationDelay(0),
+	sendDelay(0),
+	processingDelay(0),
+	queuingDelay(0),
 	conflictNum(0),
 	message(Message(t_MessageType)) {
 	this->VeUEId = t_VeUEId;
@@ -120,9 +116,9 @@ string Event::toString() {
 }
 
 
-string Event::toLogString(int n) {
+string Event::toLogString(int t_NumTab) {
 	string indent;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < t_NumTab; i++)
 		indent.append("    ");
 
 	ostringstream ss;
@@ -132,7 +128,7 @@ string Event::toLogString(int n) {
 }
 
 
-void Event::addEventLog(int t_TTI, EventLogType t_EventLogType, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx,string t_Description) {
+void Event::addEventLog(int t_TTI, EventLogType t_EventLogType, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, string t_Description) {
 	stringstream ss;
 	switch (t_EventLogType) {
 	case TRANSIMITTING:

@@ -51,23 +51,23 @@ RowVector::RowVector(int t_Col) :
 RowVector::RowVector(const RowVector& t_RowVector) :
 	col(t_RowVector.col) {
 	rowVector = new Complex[col]();
-	memcpy(rowVector, t_RowVector.rowVector, col*sizeof(Complex));
+	memcpy(rowVector, t_RowVector.rowVector, col * sizeof(Complex));
 }
 
 
 RowVector::RowVector(RowVector&& t_RowVector) noexcept
-	:col(t_RowVector.col), rowVector(t_RowVector.rowVector){
-    //在初始化列表接管资源
+	:col(t_RowVector.col), rowVector(t_RowVector.rowVector) {
+	//在初始化列表接管资源
 	t_RowVector.rowVector = nullptr;//置空指针
 }
 
 
-RowVector::RowVector(const initializer_list<Complex> il) {
-	col = static_cast<int>(il.size());
+RowVector::RowVector(const initializer_list<Complex> t_InitializeList) {
+	col = static_cast<int>(t_InitializeList.size());
 	rowVector = new Complex[col]();
 	int iter = 0;
-	for (const Complex&c : il)
-		rowVector[iter++]=c;
+	for (const Complex&c : t_InitializeList)
+		rowVector[iter++] = c;
 }
 
 
@@ -76,7 +76,7 @@ RowVector& RowVector::operator=(const RowVector& t_RowVector) {
 		free();
 		col = t_RowVector.col;
 		rowVector = new Complex[col]();
-		memcpy(rowVector, t_RowVector.rowVector, col*sizeof(Complex));
+		memcpy(rowVector, t_RowVector.rowVector, col * sizeof(Complex));
 	}
 	return *this;
 }
@@ -93,23 +93,24 @@ RowVector& RowVector::operator=(RowVector&& t_RowVector) noexcept {
 }
 
 
-Complex& RowVector::operator[](int pos) {
-	return rowVector[pos];
+Complex& RowVector::operator[](int t_Pos) {
+	return rowVector[t_Pos];
 }
 
 
-const Complex& RowVector::operator[](int pos) const {
-	return rowVector[pos];
+const Complex& RowVector::operator[](int t_Pos) const {
+	return rowVector[t_Pos];
 }
 
 
-void RowVector::resize(int size) {
-	if (size < 0) throw Exp("向量的维度必须是非负的");
+void RowVector::resize(int t_Size) {
+	if (t_Size < 0) throw Exp("向量的维度必须是非负的");
 	int preCol = col;
 	Complex* preRowVector = rowVector;
-	col = size;
+	col = t_Size;
 	rowVector = new Complex[col]();
-	memcpy(rowVector, preRowVector, preCol*sizeof(Complex));
+	int copyCol = col < preCol ? col : preCol;
+	memcpy(rowVector, preRowVector, copyCol * sizeof(Complex));
 	/*-----------------------ATTENTION-----------------------
 	* 这里不能调用free()来析构原来的资源
 	* free()会释放this指向的对象的rowVector指针
@@ -129,8 +130,8 @@ string RowVector::toString() {
 }
 
 
-void RowVector::print(ostream&out) {
-	out << toString();
+void RowVector::print(ostream&t_Out) {
+	t_Out << toString();
 }
 
 //行向量单目取反运算符
@@ -149,6 +150,17 @@ RowVector operator+(const RowVector& t_RowVector1, const RowVector& t_RowVector2
 	RowVector res(t_RowVector1.col);
 	for (int c = 0; c < t_RowVector1.col; c++) {
 		res[c] = t_RowVector1[c] + t_RowVector2[c];
+	}
+	return res;
+}
+
+
+//行向量与行向量的运算
+RowVector operator-(const RowVector& t_RowVector1, const RowVector& t_RowVector2) {
+	if (t_RowVector1.col != t_RowVector2.col) throw Exp("向量维度不同，无法相减");
+	RowVector res(t_RowVector1.col);
+	for (int c = 0; c < t_RowVector1.col; c++) {
+		res[c] = t_RowVector1[c] - t_RowVector2[c];
 	}
 	return res;
 }
@@ -260,7 +272,7 @@ Matrix::Matrix(int t_Row, int t_Col) :
 
 Matrix::Matrix(const Matrix& t_Matrix) :
 	row(t_Matrix.row), col(t_Matrix.col) {
-	matrix=new RowVector[row];
+	matrix = new RowVector[row];
 	for (int iter = 0; iter < row; iter++) {
 		/*-----------------------ATTENTION-----------------------
 		* 调用RowVector的拷贝赋值运算符
@@ -281,32 +293,32 @@ Matrix::Matrix(Matrix&& t_Matrix) noexcept
 }
 
 
-Matrix::Matrix(const initializer_list<RowVector>& il) {
-	if (il.size() == 0) {
+Matrix::Matrix(const initializer_list<RowVector>& t_InitializeList) {
+	if (t_InitializeList.size() == 0) {
 		row = 0;
 		col = 0;
 		matrix = nullptr;
 	}
 	else {
 		col = 0;
-		row = static_cast<int>(il.size());
+		row = static_cast<int>(t_InitializeList.size());
 		matrix = new RowVector[row];
-		for (const RowVector& rv : il) {
+		for (const RowVector& rv : t_InitializeList) {
 			if (col < rv.col) col = rv.col;
 		}
 		int iter = 0;
-		for (const RowVector& rv : il) {
+		for (const RowVector& rv : t_InitializeList) {
 			RowVector rvTmp(rv);
 			rvTmp.resize(col);
-			matrix[iter++]=std::move(rvTmp);
+			matrix[iter++] = std::move(rvTmp);
 		}
 	}
 }
 
 
-void Matrix::randomFill(double realLeft, double readRight, double imagLeft, double imagRight) {
-	uniform_real_distribution<double> urdReal(realLeft, readRight);
-	uniform_real_distribution<double> urdImag(imagLeft, imagRight);
+void Matrix::randomFill(double t_RealLeft, double t_RealRight, double t_ImagLeft, double t_ImagRight) {
+	uniform_real_distribution<double> urdReal(t_RealLeft, t_RealRight);
+	uniform_real_distribution<double> urdImag(t_ImagLeft, t_ImagRight);
 	for (int r = 0; r < row; r++) {
 		for (int c = 0; c < col; c++) {
 			matrix[r][c] = Complex(urdReal(Matrix::s_Engine), urdImag(Matrix::s_Engine));
@@ -344,12 +356,12 @@ Matrix Matrix::hermitian() {
 }
 
 
-Matrix Matrix::inverse(bool tryPseudoInverse) {
+Matrix Matrix::inverse(bool t_TryPseudoInverse) {
 	if (row <= 0 || col <= 0 || row != col) throw Exp("该矩阵无法求逆");
 
-	if (row < 3) return inverseWhenDimlowerThan3(tryPseudoInverse);
+	if (row < 3) return inverseWhenDimlowerThan3(t_TryPseudoInverse);
 
-	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::buildDdentityMatrix(row));
+	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::eye(row));
 
 	//先变换成下三角矩阵
 	Complex zero(0, 0);
@@ -361,7 +373,7 @@ Matrix Matrix::inverse(bool tryPseudoInverse) {
 			while (tmpRow < row&&mergeMatrix[tmpRow][r] == zero)
 				tmpRow++;
 			if (tmpRow == row) {
-				if (tryPseudoInverse) {
+				if (t_TryPseudoInverse) {
 					return this->pseudoInverse();
 				}
 				else {
@@ -376,7 +388,7 @@ Matrix Matrix::inverse(bool tryPseudoInverse) {
 		}
 		mergeMatrix[r] = mergeMatrix[r] / mergeMatrix[r][r];//将对角线部分置1
 
-		//将该列的下半部分置0
+															//将该列的下半部分置0
 		for (tmpRow = r + 1; tmpRow < row; tmpRow++) {
 			if (mergeMatrix[tmpRow][r] == zero)continue;
 			Complex factor = -mergeMatrix[tmpRow][r];
@@ -397,21 +409,21 @@ Matrix Matrix::inverse(bool tryPseudoInverse) {
 }
 
 
-Matrix Matrix::inverseWhenDimlowerThan3(bool tryPseudoInverse) {
+Matrix Matrix::inverseWhenDimlowerThan3(bool t_TryPseudoInverse) {
 	if (row == 1) {
 		if (Complex::abs(this->operator[](0)[0]) == 0) {
-			if (tryPseudoInverse)
-				return Matrix{ {0,0} };
+			if (t_TryPseudoInverse)
+				return Matrix{ { 0,0 } };
 			else
 				throw Exp("该矩阵无法求逆");
 		}
-		return Matrix{ {1 / this->operator[](0)[0]} };
+		return Matrix{ { 1 / this->operator[](0)[0] } };
 	}
 	else {
 		Matrix res(row, col);
 		Complex denominator = this->operator[](0)[0] * this->operator[](1)[1] - this->operator[](0)[1] * this->operator[](1)[0];
 		if (denominator == 0) {
-			if (tryPseudoInverse) return pseudoInverse();
+			if (t_TryPseudoInverse) return pseudoInverse();
 			else throw Exp("该矩阵无法求逆");
 		}
 		res[0][0] = this->operator[](1)[1] / denominator;
@@ -425,7 +437,7 @@ Matrix Matrix::inverseWhenDimlowerThan3(bool tryPseudoInverse) {
 
 Matrix Matrix::diag() {
 	if (row != col) throw Exp("该函数只支持方阵");
-	Matrix res(1,row);
+	Matrix res(1, row);
 	for (int r = 0; r < row; r++) {
 		res[0][r] = this->operator[](r)[r];
 	}
@@ -435,7 +447,7 @@ Matrix Matrix::diag() {
 
 pair<Matrix, Matrix>  Matrix::fullRankDecomposition() {
 	//设矩阵的维度为m*n，秩为r，r至少为1
-	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::buildDdentityMatrix(row));
+	Matrix mergeMatrix = Matrix::verticalMerge(*this, Matrix::eye(row));
 
 	//首先将矩阵转化为标准型，即上面是r*n的行满秩矩阵，下面是(m-r)*n的零矩阵
 	Complex zero(0, 0);
@@ -459,11 +471,11 @@ pair<Matrix, Matrix>  Matrix::fullRankDecomposition() {
 				tmpRV = mergeMatrix[r];
 				mergeMatrix[r] = mergeMatrix[tmpRow];
 				mergeMatrix[tmpRow] = tmpRV;
-			}	
+			}
 		}
 		mergeMatrix[r] = mergeMatrix[r] / mergeMatrix[r][iterCol];//将对角线部分置1
 
-		//将该列的下半部分置0
+																  //将该列的下半部分置0
 		for (tmpRow = r + 1; tmpRow < row; tmpRow++) {
 			if (mergeMatrix[tmpRow][iterCol] == zero)continue;
 			Complex factor = -mergeMatrix[tmpRow][iterCol];
@@ -472,14 +484,14 @@ pair<Matrix, Matrix>  Matrix::fullRankDecomposition() {
 		iterCol++;
 		rank++;
 	}
-    
+
 	if (rank == 0) throw Exp("该矩阵秩为0，不满足满秩分解的条件");
 
 	pair<Matrix, Matrix> splitRes = verticalSplit(mergeMatrix, mergeMatrix.col - row, row);
 	Matrix B = splitRes.first;
 	Matrix P = splitRes.second;
 
-	Matrix F = verticalSplit(P.inverse(),rank, P.col - rank).first;
+	Matrix F = verticalSplit(P.inverse(), rank, P.col - rank).first;
 	Matrix G = horizonSplit(B, rank, B.row - rank).first;
 
 	return pair<Matrix, Matrix>(F, G);
@@ -528,13 +540,13 @@ Matrix& Matrix::operator=(Matrix&& t_Matrix) noexcept {
 }
 
 
-RowVector& Matrix::operator[](int pos) {
-	return matrix[pos];
+RowVector& Matrix::operator[](int t_Pos) {
+	return matrix[t_Pos];
 }
 
 
-const RowVector& Matrix::operator[](int pos) const {
-	return  matrix[pos];
+const RowVector& Matrix::operator[](int t_Pos) const {
+	return  matrix[t_Pos];
 }
 
 
@@ -547,18 +559,10 @@ string Matrix::toString() {
 }
 
 
-void Matrix::print(ostream&out, int numEnter) {
-	out << toString();
-	for (int i = 0; i < numEnter; i++)
+void Matrix::print(ostream&t_Out, int t_NumEnter) {
+	t_Out << toString();
+	for (int i = 0; i < t_NumEnter; i++)
 		cout << endl;
-}
-
-
-Matrix Matrix::buildDdentityMatrix(int t_Row) {
-	Matrix res(t_Row, t_Row);
-	for (int r = 0; r < t_Row; r++)
-		res[r][r] = Complex(1, 0);
-	return res;
 }
 
 
@@ -579,9 +583,9 @@ Matrix Matrix::verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 }
 
 
-pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix,int leftCol,int rightCol) {
-	if (t_Matrix.col != leftCol+ rightCol) throw Exp("该矩阵无法分裂成指定维度");
-	Matrix left(t_Matrix.row, leftCol), right(t_Matrix.row, rightCol);
+pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix, int t_LeftCol, int t_RightCol) {
+	if (t_Matrix.col != t_LeftCol + t_RightCol) throw Exp("该矩阵无法分裂成指定维度");
+	Matrix left(t_Matrix.row, t_LeftCol), right(t_Matrix.row, t_RightCol);
 	for (int r = 0; r < left.row; r++) {
 		for (int c = 0; c < left.col; c++) {
 			left[r][c] = t_Matrix[r][c];
@@ -597,9 +601,9 @@ pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix,int leftCol,in
 }
 
 
-pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int upRow, int downRow) {
-	if (t_Matrix.row != upRow + downRow) throw Exp("该矩阵无法分裂成指定维度");
-	Matrix up(upRow, t_Matrix.col), down(downRow, t_Matrix.col);
+pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int t_UpRow, int t_DownRow) {
+	if (t_Matrix.row != t_UpRow + t_DownRow) throw Exp("该矩阵无法分裂成指定维度");
+	Matrix up(t_UpRow, t_Matrix.col), down(t_DownRow, t_Matrix.col);
 	for (int r = 0; r < up.row; r++) {
 		for (int c = 0; c < up.col; c++) {
 			up[r][c] = t_Matrix[r][c];
@@ -614,11 +618,11 @@ pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int upRow, int
 	return pair<Matrix, Matrix>(up, down);
 }
 
-Matrix Matrix::eye(const int dim) {
-	if (dim < 1) throw Exp("单位阵维度至少为1");
-	Matrix res(dim, dim);
-	for (int i = 0; i < dim; i++) {
-		res[i][i] = 1;
+Matrix Matrix::eye(const int t_Dim) {
+	if (t_Dim < 1) throw Exp("单位阵维度至少为1");
+	Matrix res(t_Dim, t_Dim);
+	for (int i = 0; i < t_Dim; i++) {
+		res[i][i] = Complex(1, 0);
 	}
 	return res;
 }

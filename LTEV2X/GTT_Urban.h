@@ -63,6 +63,8 @@ public:
 
 	/*
 	* 构造函数
+	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
+	* 该构造函数也定义了该模块的视图
 	*/
 	GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry);
 
@@ -77,7 +79,7 @@ public:
 	void cleanWhenLocationUpdate()override;
 
 	/*
-	* 初始化
+	* 初始化各个实体数组
 	*/
 	void initialize()override;
 
@@ -98,6 +100,11 @@ public:
 
 	/*
 	* 计算干扰矩阵
+	* 传入的参数解释
+	*		外层下标为车辆编号
+	*		内层下标为Pattern编号
+	*		最内层list为该车辆在该Pattern下的干扰列表
+	* 目前仅有簇间干扰，因为RSU间干扰太小，几乎可以忽略
 	*/
 	void calculateInterference(const std::vector<std::vector<std::list<int>>>& RRMInterferenceVec) override;
 };
