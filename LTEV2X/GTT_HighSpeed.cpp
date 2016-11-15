@@ -285,14 +285,14 @@ void GTT_HighSpeed::writeVeUELocationUpdateLogInfo(ofstream &out1, ofstream &out
 }
 
 
-void GTT_HighSpeed::calculateInterference(const vector<vector<list<int>>>& RRMInterferenceVec) {
+void GTT_HighSpeed::calculateInterference(const vector<vector<list<int>>>& t_RRMInterferenceVec) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId].m_GTT->m_IMTA = new IMTA[m_Config.RSUNum];
 	}
 
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		for (int patternIdx = 0; patternIdx < RRMInterferenceVec[VeUEId].size(); patternIdx++) {
-			const list<int> &lst = RRMInterferenceVec[VeUEId][patternIdx];//当前车辆，当前Pattern下所有干扰车辆的Id
+		for (int patternIdx = 0; patternIdx < t_RRMInterferenceVec[VeUEId].size(); patternIdx++) {
+			const list<int> &lst = t_RRMInterferenceVec[VeUEId][patternIdx];//当前车辆，当前Pattern下所有干扰车辆的Id
 
 			for (int interferenceVeUEId : lst) {
 

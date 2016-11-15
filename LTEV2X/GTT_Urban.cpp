@@ -515,30 +515,30 @@ void GTT_Urban::freshLoc() {
 }
 
 
-void GTT_Urban::writeVeUELocationUpdateLogInfo(ofstream &out1, ofstream &out2) {
+void GTT_Urban::writeVeUELocationUpdateLogInfo(ofstream &t_File1, ofstream &t_File2) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		out1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
-		out1 << "{" << endl;
+		t_File1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
+		t_File1 << "{" << endl;
 		for (const tuple<int, int> &t : m_VeUEAry[VeUEId].m_TMC->m_LocationUpdateLogInfoList)
-			out1 << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
-		out1 << "}" << endl;
+			t_File1 << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
+		t_File1 << "}" << endl;
 	}
 	for (const vector<int> &v : m_VeUENumPerRSU) {
 		for (int i : v) {
-			out2 << i << " ";
+			t_File2 << i << " ";
 		}
-		out2 << endl;
+		t_File2 << endl;
 	}
 }
 
-void GTT_Urban::calculateInterference(const vector<vector<list<int>>>& RRMInterferenceVec) {
+void GTT_Urban::calculateInterference(const vector<vector<list<int>>>& t_RRMInterferenceVec) {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId].m_GTT->m_IMTA = new IMTA[m_Config.RSUNum];
 	}
 
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		for (int patternIdx = 0; patternIdx < RRMInterferenceVec[0].size(); patternIdx++) {
-			const list<int> &interList = RRMInterferenceVec[VeUEId][patternIdx];//当前车辆，当前Pattern下所有干扰车辆的Id
+		for (int patternIdx = 0; patternIdx < t_RRMInterferenceVec[0].size(); patternIdx++) {
+			const list<int> &interList = t_RRMInterferenceVec[VeUEId][patternIdx];//当前车辆，当前Pattern下所有干扰车辆的Id
 
 			for (int interferenceVeUEId : interList) {
 

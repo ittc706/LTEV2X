@@ -86,7 +86,7 @@ public:
 	/*
 	* 写入地理位置更新日志
 	*/
-	virtual void writeVeUELocationUpdateLogInfo(std::ofstream &out1, std::ofstream &ou2) = 0;
+	virtual void writeVeUELocationUpdateLogInfo(std::ofstream &t_File1, std::ofstream &t_File2) = 0;
 
 	/*
 	* 计算干扰矩阵
@@ -96,5 +96,5 @@ public:
 	*		最内层list为该车辆在该Pattern下的干扰列表
 	* 目前仅有簇间干扰，因为RSU间干扰太小，几乎可以忽略
 	*/
-	virtual void calculateInterference(const std::vector<std::vector<std::list<int>>>& RRMInterferenceVec) = 0;
+	virtual void calculateInterference(const std::vector<std::vector<std::list<int>>>& t_RRMInterferenceVec) = 0;
 };
