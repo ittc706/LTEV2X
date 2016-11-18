@@ -51,8 +51,8 @@ const double gc_Degree2PI = 0.01745329251994329576923690768489f;
 const double gc_SqrtHalf = 0.70710678118654752440084436210485f;
 const double gc_SqrtThree = 1.73205080756887729f;
 const double gc_C = 299792458.0f;
-const double gc_FC = 2e9f;
-
+const double gc_FC = 6e9f;
+	
 namespace ns_GTT_Urban {//城镇模块常量设置
 
 	const int gc_eNBNumber = 7;

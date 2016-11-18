@@ -73,6 +73,7 @@ public:
 		int m_Nr;//接收天线数目，WT_B模块需要
 		double m_Ploss;//路径损耗，WT_B模块需要
 		double* m_H;//信道响应矩阵，WT_B模块需要
+		double* m_Distance;//车辆与所有RSU之间的距离
 
 		/*
 		* 其他车辆，对当前车辆的干扰路径损耗，WT_B模块需要

@@ -100,6 +100,7 @@ struct Location {
 	double distance2; //单位:m
 	double eNBAntH; //单位:m
 	double VeUEAntH; //单位:m
+	double RSUAntH;//单位：m
 	double posCor[5];
 
 };

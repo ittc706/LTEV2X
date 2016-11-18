@@ -125,6 +125,7 @@ VeUE::GTT::~GTT() {
 	for (double*& p : m_InterferenceH) {
 		Delete::safeDelete(p);
 	}
+	Delete::safeDelete(m_Distance, true);
 }
 
 
