@@ -1,31 +1,78 @@
 #include<iomanip>
+#include<cmath>
 #include"Global.h"
 #include"Function.h"
 
 using namespace std;
 
 
-/*===========================================
-*            输出日志文件流声明
-* ==========================================*/
-ofstream g_FileTemp("Log\\Temp.txt");
-//GTT模块
-ofstream g_FileVeUELocationUpdateLogInfo("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");
-ofstream g_FileVeUENumPerRSULogInfo("Log\\GTTLog\\VeUENumPerRSULogInfo.txt");
-ofstream g_FileLocationInfo("Log\\GTTLog\\LocationInfo.txt");
+void logFileConfig(Platform t_Platform) {
+	if (t_Platform == Windows) {
+		/*===========================================
+		*            输出日志文件流定义
+		* ==========================================*/
+		ofstream g_FileTemp("Log\\Temp.txt");
+		//GTT模块
+		ofstream g_FileVeUELocationUpdateLogInfo("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");
+		ofstream g_FileVeUENumPerRSULogInfo("Log\\GTTLog\\VeUENumPerRSULogInfo.txt");
+		ofstream g_FileLocationInfo("Log\\GTTLog\\LocationInfo.txt");
+		//RRM模块
+		ofstream g_FileScheduleInfo("Log\\RRMLog\\ScheduleInfo.txt");
+		ofstream g_FileClasterPerformInfo("Log\\RRMLog\\ClasterPerformInfo.txt");
+		ofstream g_FileEventListInfo("Log\\RRMLog\\EventListInfo.txt");
+		ofstream g_FileTTILogInfo("Log\\RRMLog\\TTILogInfo.txt");
+		ofstream g_FileEventLogInfo("Log\\RRMLog\\EventLogInfo.txt");
+		//TMC_B模块
+		ofstream g_FileDelayStatistics("Log\\TMCLog\\DelayStatistics.txt");
+		ofstream g_FileEmergencyPossion("Log\\TMCLog\\EmergencyPossion.txt");
+		ofstream g_FileDataPossion("Log\\TMCLog\\DataPossion.txt");
+		ofstream g_FileConflictNum("Log\\TMCLog\\ConflictNum.txt");
+		ofstream g_FileTTIThroughput("Log\\TMCLog\\TTIThroughput.txt");
+		ofstream g_FileRSUThroughput("Log\\TMCLog\\RSUThroughput.txt");
+	}
+	else {
+		/*===========================================
+		*            输出日志文件流定义
+		* ==========================================*/
+		ofstream g_FileTemp("Log/Temp.txt");
+		//GTT模块
+		ofstream g_FileVeUELocationUpdateLogInfo("Log/GTTLog/VeUELocationUpdateLogInfo.txt");
+		ofstream g_FileVeUENumPerRSULogInfo("Log/GTTLog/VeUENumPerRSULogInfo.txt");
+		ofstream g_FileLocationInfo("Log/GTTLog/LocationInfo.txt");
+		//RRM模块
+		ofstream g_FileScheduleInfo("Log/RRMLog/ScheduleInfo.txt");
+		ofstream g_FileClasterPerformInfo("Log/RRMLog/ClasterPerformInfo.txt");
+		ofstream g_FileEventListInfo("Log/RRMLog/EventListInfo.txt");
+		ofstream g_FileTTILogInfo("Log/RRMLog/TTILogInfo.txt");
+		ofstream g_FileEventLogInfo("Log/RRMLog/EventLogInfo.txt");
+		//TMC_B模块
+		ofstream g_FileDelayStatistics("Log/TMCLog/DelayStatistics.txt");
+		ofstream g_FileEmergencyPossion("Log/TMCLog/EmergencyPossion.txt");
+		ofstream g_FileDataPossion("Log/TMCLog/DataPossion.txt");
+		ofstream g_FileConflictNum("Log/TMCLog/ConflictNum.txt");
+		ofstream g_FileTTIThroughput("Log/TMCLog/TTIThroughput.txt");
+		ofstream g_FileRSUThroughput("Log/TMCLog/RSUThroughput.txt");
+	}
+
+}
+ofstream g_FileTemp;
+//GTT_Urban模块
+ofstream g_FileVeUELocationUpdateLogInfo;
+ofstream g_FileVeUENumPerRSULogInfo;
+ofstream g_FileLocationInfo;
 //RRM模块
-ofstream g_FileScheduleInfo("Log\\RRMLog\\ScheduleInfo.txt");
-ofstream g_FileClasterPerformInfo("Log\\RRMLog\\ClasterPerformInfo.txt");
-ofstream g_FileEventListInfo("Log\\RRMLog\\EventListInfo.txt");
-ofstream g_FileTTILogInfo("Log\\RRMLog\\TTILogInfo.txt");
-ofstream g_FileEventLogInfo("Log\\RRMLog\\EventLogInfo.txt");
+ofstream g_FileScheduleInfo;
+ofstream g_FileClasterPerformInfo;
+ofstream g_FileEventListInfo;
+ofstream g_FileTTILogInfo;
+ofstream g_FileEventLogInfo;
 //TMC_B模块
-ofstream g_FileDelayStatistics("Log\\TMCLog\\DelayStatistics.txt");
-ofstream g_FileEmergencyPossion("Log\\TMCLog\\EmergencyPossion.txt");
-ofstream g_FileDataPossion("Log\\TMCLog\\DataPossion.txt");
-ofstream g_FileConflictNum("Log\\TMCLog\\ConflictNum.txt");
-ofstream g_FileTTIThroughput("Log\\TMCLog\\TTIThroughput.txt");
-ofstream g_FileRSUThroughput("Log\\TMCLog\\RSUThroughput.txt");
+ofstream g_FileDelayStatistics;
+ofstream g_FileEmergencyPossion;
+ofstream g_FileDataPossion;
+ofstream g_FileConflictNum;
+ofstream g_FileTTIThroughput;
+ofstream g_FileRSUThroughput;
 
 
 /*===========================================

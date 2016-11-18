@@ -1,5 +1,6 @@
 #include<iomanip>
 #include<fstream>
+#include<stdlib.h>
 #include"System.h"
 #include"Global.h"
 #include"RSU.h"
@@ -9,6 +10,8 @@
 using namespace std;
 
 void System::process() {
+	long double programStart = clock();
+
 	//参数配置
 	configure();
 
@@ -33,8 +36,13 @@ void System::process() {
 	}
 
 	cout.setf(ios::fixed);
-	cout << "干扰信道计算耗时：" << m_RRMPoint->m_GTTTimeConsume / 1000.0L << " s\n" << endl;
-	cout << "SINR计算耗时：" << m_RRMPoint->m_WTTimeConsume / 1000.0L << " s\n" << endl;
+	double timeFactor;
+	if (m_Config.platform == Windows)
+		timeFactor = 1000L;
+	else
+		timeFactor = 1000000L;
+	cout << "干扰信道计算耗时：" << m_RRMPoint->m_GTTTimeConsume / timeFactor << " s\n" << endl;
+	cout << "SINR计算耗时：" << m_RRMPoint->m_WTTimeConsume / timeFactor << " s\n" << endl;
 	cout.unsetf(ios::fixed);
 
 	//处理各项业务时延数据
@@ -42,16 +50,50 @@ void System::process() {
 
 	//打印车辆地理位置更新日志信息
 	m_GTTPoint->writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo, g_FileVeUENumPerRSULogInfo);
+
+	//整个程序计时
+	long double programEnd = clock();
+	cout.setf(ios::fixed);
+	cout << "\nRunning Time :" << setprecision(1) << (programEnd - programStart) / timeFactor << " s\n" << endl;
+	cout.unsetf(ios::fixed);
 }
 
 void System::configure() {//系统仿真参数配置
-	ConfigLoader configLoader("Config\\systemConfig.html");
+	srand((unsigned)time(NULL));//设置真个仿真的随机数种子
+
+	ConfigLoader configLoader("systemConfig.html");
 	configLoader.load();//解析配置文件
 
 	stringstream ss;
 
 	const string nullString("");
 	string temp;
+	
+	if ((temp = configLoader.getParam("Platform")) != nullString) {
+		if (temp == "Windows") {
+			m_Config.platform = Windows;
+		}
+		else if (temp == "Linux") {
+			m_Config.platform = Linux;
+		}
+		else
+			throw Exp("平台参数配置错误");
+
+		//提示信息
+		cout << "您选择的平台为："<< temp<<"(务必确认您使用的平台是否为"<< temp<<",若不正确会导致文件路径错误)" << endl;
+		cout << "请输入" << endl;
+		cout << "    输入'yes':继续运行" << endl;
+		cout << "    输入其他:终止程序，重新设定平台参数" << endl;
+		string temp2;
+		cin >> temp2;
+		if (temp2 != "yes") {
+			exit(0);
+		}
+		logFileConfig(m_Config.platform);
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
 	if ((temp = configLoader.getParam("NTTI")) != nullString) {
 		ss << temp;
 		ss >> m_Config.NTTI;
@@ -146,12 +188,6 @@ void System::configure() {//系统仿真参数配置
 	}
 	else
 		throw Exp("ConfigLoaderError");
-	/*cout << m_Config.NTTI << endl;
-	cout << m_Config.periodicEventNTTI << endl;
-	cout << m_Config.emergencyLambda << endl;
-	cout << m_Config.dataLambda << endl;
-	cout << m_Config.locationUpdateNTTI << endl;
-	system("pause");*/
 }
 
 
@@ -230,5 +266,25 @@ System::~System() {
 	Delete::safeDelete(m_RSUAry, true);
 	Delete::safeDelete(m_VeUEAry, true);
 	Delete::safeDelete(m_RoadAry, true);
+
+    //关闭文件流
+	g_FileTemp.close();
+
+	g_FileVeUELocationUpdateLogInfo.close();
+	g_FileVeUENumPerRSULogInfo.close();
+	g_FileLocationInfo.close();
+
+	g_FileScheduleInfo.close();
+	g_FileClasterPerformInfo.close();
+	g_FileEventListInfo.close();
+	g_FileTTILogInfo.close();
+	g_FileEventLogInfo.close();
+
+	g_FileDelayStatistics.close();
+	g_FileEmergencyPossion.close();
+	g_FileDataPossion.close();
+	g_FileConflictNum.close();
+	g_FileTTIThroughput.close();
+	g_FileRSUThroughput.close();
 }
 

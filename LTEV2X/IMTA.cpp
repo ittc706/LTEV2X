@@ -677,7 +677,7 @@ void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, d
 		}
 		
 
-		FILE *fpp;
+		/*FILE *fpp;
 		errno_t err;
 		err = fopen_s(&fpp, "Log\\GTTLog\\HF.txt", "w+");
 		for (int pp = 0; pp<1024; pp++)
@@ -685,7 +685,7 @@ void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, d
 			fprintf(fpp, "%f\n", out1[pp][0]);
 			fprintf(fpp, "%f\n", out1[pp][1]);
 		}
-		fclose(fpp);
+		fclose(fpp);*/
 
 		fftw_destroy_plan(ptemp1);
 		fftw_destroy_plan(ptemp2);

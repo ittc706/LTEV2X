@@ -4,6 +4,7 @@
 #include<fstream>
 #include<set>
 #include<map>
+#include"Exception.h"
 
 class ConfigLoader {
 private:

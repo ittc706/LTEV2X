@@ -1,6 +1,7 @@
 #include<tuple>
 #include<iomanip>
 #include<iostream>
+#include<string.h>
 #include"GTT_Urban.h"
 #include"Exception.h"
 #include"Function.h"

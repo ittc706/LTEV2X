@@ -17,7 +17,7 @@ void ConfigLoader::load() {
 		string rightTag = it->operator[](3);
 		string content = it->operator[](2);
 		if (leftTag != rightTag) {
-			throw exception("tag not match");
+			throw Exp("tag not match");
 		}
 		m_TagContentMap[leftTag] = content;
 	}

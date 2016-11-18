@@ -21,6 +21,7 @@
 #include<iomanip>
 #include<sstream>
 #include<cmath>
+#include<string.h>
 #include"Matrix.h"
 #include"Function.h"
 

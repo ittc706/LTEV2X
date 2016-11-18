@@ -39,7 +39,13 @@ WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT
 
 void WT_B::initialize() {
 	//读入信噪比和互信息的对应表(QPSK),维度是1*95
-	ifstream in("WT\\QPSK_MI.md");
+	ifstream in;
+	if (m_Config.platform == Windows) {
+		in.open("WT\\QPSK_MI.md");
+	}
+	else{
+		in.open("WT/QPSK_MI.md");
+	}
 	m_QPSK_MI = make_shared<vector<double>>();
 	istream_iterator<double> inIter2(in), eof2;
 	m_QPSK_MI->assign(inIter2, eof2);

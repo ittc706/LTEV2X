@@ -4,6 +4,11 @@
 //系统基本的仿真参数
 struct SystemConfig {
 	/*
+	* 仿真平台，Linux或Windows，仅涉及到文件路径的格式
+	*/
+	Platform platform;
+
+	/*
 	* 仿真总共的TTI
 	*/
 	int NTTI;

@@ -10,37 +10,8 @@
 using namespace std;
 
 int main() {
-	long double start = clock();
-	srand((unsigned)time(NULL));
-
 	System* _system = new System();;
 	_system->process();
-
-
-	long double end = clock();
-
-	cout.setf(ios::fixed);
-	cout << "\nRunning Time :" << setprecision(1) << (end - start) / 1000.0L << " s\n" << endl;
-	cout.unsetf(ios::fixed);
-
-	g_FileTemp.close();
-
-	g_FileVeUELocationUpdateLogInfo.close();
-	g_FileVeUENumPerRSULogInfo.close();
-	g_FileLocationInfo.close();
-
-	g_FileScheduleInfo.close();
-	g_FileClasterPerformInfo.close();
-	g_FileEventListInfo.close();
-	g_FileTTILogInfo.close();
-	g_FileEventLogInfo.close();
-	
-	g_FileDelayStatistics.close();
-	g_FileEmergencyPossion.close();
-	g_FileDataPossion.close();
-	g_FileConflictNum.close();
-	g_FileTTIThroughput.close();
-	g_FileRSUThroughput.close();
 
 	Delete::safeDelete(_system);
 	system("pause");

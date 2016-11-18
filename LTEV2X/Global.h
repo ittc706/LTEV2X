@@ -27,6 +27,7 @@ extern std::ofstream g_FileConflictNum;
 extern std::ofstream g_FileTTIThroughput;
 extern std::ofstream g_FileRSUThroughput;
 
+void logFileConfig(Platform t_Platform);
 
 /*===========================================
 *               È«Óòº¯ÊýÉùÃ÷
