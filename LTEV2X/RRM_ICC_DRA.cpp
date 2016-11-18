@@ -527,9 +527,12 @@ void RRM_ICC_DRA::writeScheduleInfo(ofstream& t_File) {
 			t_File << "        {" << endl;
 			for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
 				t_File << "            Pattern[ " << left << setw(3) << patternIdx << "] : " << endl;
-				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx];
-				if (info == nullptr) continue;
-				t_File << info->toScheduleString(3) << endl;
+				bool isAvaliable = _RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx];
+				if (!isAvaliable) {
+					RSU::RRM::ScheduleInfo* &info = *(_RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
+					if (info == nullptr) throw Exp("logic error");
+					t_File << info->toScheduleString(3) << endl;
+				}
 			}
 			t_File << "        }" << endl;
 			t_File << "    }" << endl;
