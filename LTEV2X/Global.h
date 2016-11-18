@@ -215,35 +215,80 @@ namespace ns_GTT_HighSpeed {
 /*===========================================
 *          无线资源管理单元常量
 * ==========================================*/
-const int gc_TotalBandwidth =10 * 1000 * 1000;//10MHz
-const int gc_BandwidthOfRB = 12 * 1000 * 15;//180kHZ
-const int gc_BitNumPerRB=180;  //单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
-const ModulationType gc_ModulationType = QPSK;//调制方式
-const double gc_CodeRate = 0.5;//速率
-const double gc_CriticalPoint = 1.99;//不丢包传输的最小载干比，用于判断是否丢包之用
+/*
+* 10MHz，总带宽(Hz)
+*/
+const int gc_TotalBandwidth =10 * 1000 * 1000;
+
+/*
+* 每个RB的带宽(Hz)
+*/
+const int gc_BandwidthOfRB = 12 * 1000 * 15;
+
+/*
+* 单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
+*/
+const int gc_BitNumPerRB=180;
+
+/*
+* 调制方式
+*/
+const ModulationType gc_ModulationType = QPSK;
+
+/*
+* 信道编码码率
+*/
+const double gc_CodeRate = 0.5;
+
+/*
+* 不丢包传输的最小载干比
+* 用于判断是否丢包之用
+*/
+const double gc_CriticalPoint = 1.99;//
 
 /*===========================================
 *          RRM_TDM_DRA模块常量定义
 * ==========================================*/
 namespace ns_RRM_TDM_DRA {
-	const int gc_NTTI = 100; //所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
+	/*
+	* 所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
+	*/
+	const int gc_NTTI = 100;
 
+	/*
+	* 事件的Pattern的类型种类
+	* 即紧急事件，周期事件，数据业务事件
+	*/
+	const int gc_PatternTypeNum = 3;
 
-	const int gc_PatternTypeNum = 3;//事件的Pattern的类型种类
-	const int gc_RBNumPerPatternType[gc_PatternTypeNum] = { 2,10,10 };//每个Pattern种类所占的RB数量
-	const int gc_PatternNumPerPatternType[gc_PatternTypeNum] = { 0,5,0 };//在全频段每个Pattern种类对应的Pattern数量
+	/*
+	* 每个Pattern种类所占的RB数量
+	*/
+	const int gc_RBNumPerPatternType[gc_PatternTypeNum] = { 2,10,10 };
 
+	/*
+	* 每个Pattern种类对应的Pattern数量
+	*/
+	const int gc_PatternNumPerPatternType[gc_PatternTypeNum] = { 0,5,0 };
+
+	/*
+	* 每个种类的事件，其各自的Pattern的开始与结束编号，即[startIdx,endIdx]，闭区间
+	*/
 	const int gc_PatternTypePatternIdxInterval[gc_PatternTypeNum][2] = {
 		{ 0,gc_PatternNumPerPatternType[0] - 1 },
 		{ gc_PatternNumPerPatternType[0],gc_PatternNumPerPatternType[0] + gc_PatternNumPerPatternType[1] - 1 },
 		{ gc_PatternNumPerPatternType[0] + gc_PatternNumPerPatternType[1],gc_PatternNumPerPatternType[0] + gc_PatternNumPerPatternType[1] + gc_PatternNumPerPatternType[2] - 1 },
 	};
+
+	/*
+	* 所有Pattern数量，包括三个事件
+	*/
 	const int gc_TotalPatternNum = [&]() {
 		int res = 0;
 		for (int num : gc_PatternNumPerPatternType)
 			res += num;
 		return res;
-	}();//所有Pattern数量总和(包括Emergency)
+	}();
 }
 
 
@@ -251,8 +296,15 @@ namespace ns_RRM_TDM_DRA {
 *          RRM_RR模块常量定义
 * ==========================================*/
 namespace ns_RRM_RR {
-	const int gc_RBNumPerPattern = 10;//每个Pattern的RB数量
-	const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;//总的Pattern数量
+	/*
+	* 每个Pattern的RB数量
+	*/
+	const int gc_RBNumPerPattern = 10;
+
+	/*
+	* 总的Pattern数量
+	*/
+	const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;
 }
 
 
@@ -260,8 +312,15 @@ namespace ns_RRM_RR {
 *          RRM_ICC_DRA模块常量定义
 * ==========================================*/
 namespace ns_RRM_ICC_DRA {
-	const int gc_RBNumPerPattern = 10;//每个Pattern的RB数量
-	const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;//总的Pattern数量
+	/*
+	* 每个Pattern的RB数量
+	*/
+	const int gc_RBNumPerPattern = 10;
+
+	/*
+	* 总的Pattern数量
+	*/
+	const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;
 }
 
 
@@ -269,13 +328,31 @@ namespace ns_RRM_ICC_DRA {
 /*===========================================
 *          数据业务与统计单元常量
 * ==========================================*/
+/*
+* 周期事件数据包数量
+*/
 const int gc_PeriodMessagePackageNum = 4;
+/*
+* 周期事每个数据包的bit数量
+*/
 const int gc_PeriodMessageBitNumPerPackage[gc_PeriodMessagePackageNum] = { 1520,1520,1520,2400 };
 
+/*
+* 紧急事件数据包数量
+*/
 const int gc_EmergencyMessagePackageNum = 4;
+/*
+* 紧急事每个数据包的bit数量
+*/
 const int gc_EmergencyMessageBitNumPerPackage[gc_EmergencyMessagePackageNum] = { 1520,1520,1520,2400 };
 
+/*
+* 数据业务事件数据包数量
+*/
 const int gc_DataMessagePackageNum = 4;
+/*
+* 数据业务事每个数据包的bit数量
+*/
 const int gc_DataMessageBitNumPerPackage[gc_DataMessagePackageNum] = { 1520,1520,1520,2400 };
 
 
