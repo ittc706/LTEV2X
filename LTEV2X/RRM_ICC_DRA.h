@@ -154,7 +154,6 @@ private:
 	*/
 	void transimitEnd();
 
-
 	/*
 	* 记录调度信息日志
 	*/

@@ -60,17 +60,17 @@ public:
 	/*
 	* 构造函数
 	*/
-	RRM_RR(int &t_TTI, 
-		SystemConfig& t_Config, 
-		RSU* t_RSUAry, 
-		VeUE* t_VeUEAry, 
-		std::vector<Event>& t_EventVec, 
-		std::vector<std::list<int>>& t_EventTTIList, 
+	RRM_RR(int &t_TTI,
+		SystemConfig& t_Config,
+		RSU* t_RSUAry,
+		VeUE* t_VeUEAry,
+		std::vector<Event>& t_EventVec,
+		std::vector<std::list<int>>& t_EventTTIList,
 		std::vector<std::vector<int>>& t_TTIRSUThroughput,
 		GTT_Basic* t_GTTPoint,
 		WT_Basic* t_WTPoint,
 		int t_ThreadNum
-		);
+	);
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

@@ -174,6 +174,16 @@ void System::configure() {//系统仿真参数配置
 	else
 		throw Exp("ConfigLoaderError");
 
+	if ((temp = configLoader.getParam("ThreadNum")) != nullString) {
+		ss << temp;
+		ss >> m_ThreadNum;
+		ss.clear();//清除标志位
+		ss.str("");
+		cout << "开辟的线程数量为: " << m_ThreadNum << endl;
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
 	if ((temp = configLoader.getParam("WTMode")) != nullString) {
 		if (temp == "SINR_MRC") {
 			m_WTMode = SINR_MRC;
@@ -233,13 +243,13 @@ void System::initializeWTModule() {
 void System::initializeRRMModule() {
 	switch (m_RRMMode) {
 	case RR:
-		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);
+		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_ThreadNum);
 		break;
 	case TDM_DRA:
-		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);
+		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_ThreadNum);
 		break;
 	case ICC_DRA:
-		m_RRMPoint = new RRM_ICC_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, 4);
+		m_RRMPoint = new RRM_ICC_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_ThreadNum);
 		break;
 	default:
 		break;

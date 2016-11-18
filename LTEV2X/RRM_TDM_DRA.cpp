@@ -960,40 +960,40 @@ void RRM_TDM_DRA::writeClusterPerformInfo(ofstream &t_File) {
 }
 
 
-int RRM_TDM_DRA::getMaxIndex(const vector<double>&clusterSize) {
+int RRM_TDM_DRA::getMaxIndex(const vector<double>&t_ClusterSize) {
 	double max = 0;
 	int dex = -1;
-	for (int i = 0; i < static_cast<int>(clusterSize.size()); i++) {
-		if (clusterSize[i] > max) {
+	for (int i = 0; i < static_cast<int>(t_ClusterSize.size()); i++) {
+		if (t_ClusterSize[i] > max) {
 			dex = i;
-			max = clusterSize[i];
+			max = t_ClusterSize[i];
 		}
 	}
 	return dex;
 }
 
 
-int RRM_TDM_DRA::getPatternType(int patternIdx) {
+int RRM_TDM_DRA::getPatternType(int t_PatternIdx) {
 	//patternIdx指所有事件类型的Pattern的绝对序号，从0开始编号，包括Emergency
 	for (int patternType = 0; patternType < ns_RRM_TDM_DRA::gc_PatternTypeNum; patternType++) {
-		if (patternIdx >= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[patternType][0] && patternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[patternType][1])
+		if (t_PatternIdx >= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[patternType][0] && t_PatternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[patternType][1])
 			return patternType;
 	}
 	throw Exp("getPatternType");
 }
 
 
-pair<int, int> RRM_TDM_DRA::getOccupiedSubCarrierRange(MessageType messageType, int patternIdx) {
+pair<int, int> RRM_TDM_DRA::getOccupiedSubCarrierRange(MessageType t_MessageType, int t_PatternIdx) {
 
 	pair<int, int> res;
 
 	int offset = 0;
-	for (int i = 0; i < messageType; i++) {
+	for (int i = 0; i < t_MessageType; i++) {
 		offset += ns_RRM_TDM_DRA::gc_RBNumPerPatternType[i] * ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[i];
-		patternIdx -= ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[i];
+		t_PatternIdx -= ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[i];
 	}
-	res.first = offset + ns_RRM_TDM_DRA::gc_RBNumPerPatternType[messageType] * patternIdx;
-	res.second = offset + ns_RRM_TDM_DRA::gc_RBNumPerPatternType[messageType] * (patternIdx + 1) - 1;
+	res.first = offset + ns_RRM_TDM_DRA::gc_RBNumPerPatternType[t_MessageType] * t_PatternIdx;
+	res.second = offset + ns_RRM_TDM_DRA::gc_RBNumPerPatternType[t_MessageType] * (t_PatternIdx + 1) - 1;
 
 	res.first *= 12;
 	res.second = (res.second + 1) * 12 - 1;

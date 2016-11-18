@@ -13,8 +13,57 @@
 //<RRM_TDM_DRA> :Radio Resource Management Time Division Dultiplexing based Distributed Resource Allocation
 
 class RRM_TDM_DRA :public RRM_Basic {
+	/*------------------域------------------*/
 public:
+	/*
+	* 地理拓扑单元模块指针
+	* 期间会调用地理拓扑单元来计算干扰信道响应
+	*/
+	GTT_Basic* m_GTTPoint;
+
+	/*
+	* 无线传输单元模块指针
+	* 期间会调用无线传输单元来计算SINR
+	*/
+	WT_Basic* m_WTPoint;
+
+	/*
+	* 用于存放进行RSU切换的车辆，暂时保存的作用
+	*/
+	std::list<int> m_SwitchEventIdList;
+
+	/*
+	* 用于存放指定车辆指定Pattern的干扰列表(只保留RSU内簇间干扰)
+	* 外层下标为VeUEId
+	* 内层下标为PatternIdx(绝对量)
+	*/
+	std::vector<std::vector<std::list<int>>> m_InterferenceVec;
+
+	/*
+	* 多线程总数
+	*/
+	int m_ThreadNum;
+
+	/*
+	* 多线程容器
+	*/
+	std::vector<std::thread> m_Threads;
+
+	/*
+	* 分配给每个线程的RSUId范围
+	*/
+	std::vector<std::pair<int, int>> m_ThreadsRSUIdRange;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 默认构造函数定义为删除
+	*/
 	RRM_TDM_DRA() = delete;
+
+	/*
+	* 构造函数
+	*/
 	RRM_TDM_DRA(int &t_TTI,
 		SystemConfig& t_Config,
 		RSU* t_RSUAry,
@@ -25,65 +74,122 @@ public:
 		GTT_Basic* t_GTTPoint,
 		WT_Basic* t_WTPoint,
 		int t_ThreadNum
-		);
-
-	/*------------------数据成员------------------*/
-
-	GTT_Basic* m_GTTPoint;//地理拓扑单元模块指针
-	WT_Basic* m_WTPoint;//无线传输单元模块指针
-	std::list<int> m_SwitchEventIdList;//用于存放进行RSU切换的车辆，暂时保存的作用
+	);
 
 	/*
-	* 用于存放指定车辆指定Pattern的干扰列表(只保留RSU内簇间干扰)
-	* 外层下标为VeUEId
-	* 内层下标为PatternIdx(绝对量)
+	* 初始化RSU VeUE内该单元的内部类
 	*/
-	std::vector<std::vector<std::list<int>>> m_InterferenceVec;
+	void initialize() override;
 
-	//多线程有关参数
-	int m_ThreadNum;
-	std::vector<std::thread> m_Threads;
-	std::vector<std::pair<int, int>> m_ThreadsRSUIdRange;
+	/*
+	* 当发生位置更新时，清除缓存的调度相关信息
+	*/
+	void cleanWhenLocationUpdate()override;
 
-	/*------------------成员函数------------------*/
+	/*
+	* RRM_ICC_DRA调度总控，覆盖基类的虚函数
+	*/
+	void schedule() override;
 
-public:
-	/*接口函数*/
-	void initialize() override;//初始化RSU VeUE内该单元的内部类
-	void cleanWhenLocationUpdate()override;//当发生位置更新时，清除缓存的调度相关信息
-	void schedule() override;//RRM_TDM_DRA调度总控，覆盖基类的虚函数
+
 private:
-	/*实现函数*/
-	void groupSizeBasedTDM(bool t_ClusterFlag);//基于簇大小的时分复用
-	void uniformTDM(bool t_ClusterFlag);//基于簇大小的时分复用
+	/*
+	* 基于簇大小的时分复用
+	*/
+	void groupSizeBasedTDM(bool t_ClusterFlag);
 
-	void updateWaitEventIdList(bool t_ClusterFlag);//更新接纳链表
+	/*
+	* 均匀分配给每个簇时域资源
+	*/
+	void uniformTDM(bool t_ClusterFlag);
+
+	/*
+	* 更新等待链表
+	*/
+	void updateWaitEventIdList(bool t_ClusterFlag);
+
+	/*
+	* 处理事件链表
+	* 将该时刻触发的事件放入RSU的等待链表中
+	*/
 	void processEventList();
+
+	/*
+	* 地理位置更新时，处理调度表
+	*/
 	void processScheduleInfoTableWhenLocationUpdate();
+
+	/*
+	* 地理位置更新时，处理等待链表
+	*/
 	void processWaitEventIdListWhenLocationUpdate();
+
+	/*
+	* 地理位置更新时，处理转接表
+	*/
 	void processSwitchListWhenLocationUpdate();
 
-	void selectRBBasedOnP123();//基于P1、P2和P3的资源分配
+	/*
+	* 基于P1/P2/P3的资源选择
+	*/
+	void selectRBBasedOnP123();
 
+	/*
+	* 时延统计
+	*/
+	void delaystatistics();
 
-	void delaystatistics();//时延统计
-	void conflictListener();//帧听冲突
+	/*
+	* 帧听冲突，冲突后避让
+	*/
+	void conflictListener();
 
-	void transimitPreparation();//统计干扰信息
-	void transimitStart();//模拟传输开始，更新调度信息，累计吞吐量
-	void transimitStartThread(int t_FromRSUId, int t_ToRSUId);//模拟传输开始，更新调度信息
-	void transimitEnd();//模拟传输结束
+	/*
+	* 计算干扰信道响应
+	*/
+	void transimitPreparation();
 
-	//日志记录函数
-	void writeScheduleInfo(std::ofstream& t_File);//记录调度信息日志
+	/*
+	* 模拟传输开始，更新调度信息，累计吞吐量
+	*/
+	void transimitStart();
+	void transimitStartThread(int t_FromRSUId, int t_ToRSUId);
+
+	/*
+	* 模拟传输结束，更新状态
+	*/
+	void transimitEnd();
+
+	/*
+	* 记录调度信息日志
+	*/
+	void writeScheduleInfo(std::ofstream& t_File);
+
+	/*
+	* 以TTI为主键记录日志
+	*/
 	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description);
-	void writeClusterPerformInfo(std::ofstream &t_File);//写入分簇信息的日志
+
+	/*
+	* 写入分簇信息的日志
+	*/
+	void writeClusterPerformInfo(std::ofstream &t_File);
 
 
-	//工具函数
-	int getMaxIndex(const std::vector<double>&clusterSize);
-	int getPatternType(int patternIdx);
-	std::pair<int, int> getOccupiedSubCarrierRange(MessageType messageType, int patternIdx);
+	/*
+	* 返回给定数组中最大值的下标
+	*/
+	int getMaxIndex(const std::vector<double>&t_ClusterSize);
+
+	/*
+	* 返回指定Pattern编号对应的Pattern类型编号，即事件类型编号
+	*/
+	int getPatternType(int t_PatternIdx);
+
+	/*
+	* 返回指定Pattern编号对应的子载波编号
+	*/
+	std::pair<int, int> getOccupiedSubCarrierRange(MessageType t_MessageType, int t_PatternIdx);
 
 };
 

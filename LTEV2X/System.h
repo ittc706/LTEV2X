@@ -46,6 +46,7 @@ public:
 
 	RRMMode m_RRMMode;//调度模式选择
 	RRM_Basic* m_RRMPoint = nullptr;//无限资源管理单元
+	int m_ThreadNum;//线程数量
 
 
 	/*------------------方法------------------*/
