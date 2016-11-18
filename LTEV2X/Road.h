@@ -26,13 +26,13 @@ public:
 	GTT* m_GTT = nullptr;
 
 	/*
-	* GTT内部类指针
+	* GTT_Urban内部类指针
 	* 用于存储城镇场景的特定参数
 	*/
 	GTT_Urban* m_GTT_Urban = nullptr;
 
 	/*
-	* GTT内部类指针
+	* GTT_HighSpeed内部类指针
 	* 用于存储高速场景的特定参数
 	*/
 	GTT_HighSpeed* m_GTT_HighSpeed = nullptr;

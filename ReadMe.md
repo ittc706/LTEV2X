@@ -1,3 +1,5 @@
+## version_2016_11_19(加注释)
+
 ## version_2016_11_18(debug)
 * 日志流对象的初始化
 * 修改ICC_DRA的ScheduleInfo
