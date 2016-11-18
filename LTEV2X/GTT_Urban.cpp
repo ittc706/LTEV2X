@@ -316,7 +316,7 @@ void GTT_Urban::freshLoc() {
 		for (int RSUIdx = 0; RSUIdx != gc_RSUNumber; RSUIdx++) {
 			double wSFSTD = 0;
 			double wDistanceBP = 4 * (location.VeUEAntH - 1)*(location.RSUAntH - 1)*gc_FC / gc_C;
-			if (3 <m_VeUEAry[UserIdx1].m_GTT->m_Distance[RSUIdx]< wDistanceBP)
+			if (m_VeUEAry[UserIdx1].m_GTT->m_Distance[RSUIdx] > 3 && m_VeUEAry[UserIdx1].m_GTT->m_Distance[RSUIdx] < wDistanceBP)
 			{
 				wPL[RSUIdx] = 22.7f * log10(m_VeUEAry[UserIdx1].m_GTT->m_Distance[RSUIdx]) + 27.0f + 20.0f * (log10(gc_FC) - 9.0f);//×ª»»ÎªGHz
 			}
