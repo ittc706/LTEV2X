@@ -11,47 +11,47 @@ void logFileConfig(Platform t_Platform) {
 		/*===========================================
 		*            输出日志文件流定义
 		* ==========================================*/
-		ofstream g_FileTemp("Log\\Temp.txt");
+		g_FileTemp.open("Log\\Temp.txt");
 		//GTT模块
-		ofstream g_FileVeUELocationUpdateLogInfo("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");
-		ofstream g_FileVeUENumPerRSULogInfo("Log\\GTTLog\\VeUENumPerRSULogInfo.txt");
-		ofstream g_FileLocationInfo("Log\\GTTLog\\LocationInfo.txt");
+		g_FileVeUELocationUpdateLogInfo.open("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");
+		g_FileVeUENumPerRSULogInfo.open("Log\\GTTLog\\VeUENumPerRSULogInfo.txt");
+		g_FileLocationInfo.open("Log\\GTTLog\\LocationInfo.txt");
 		//RRM模块
-		ofstream g_FileScheduleInfo("Log\\RRMLog\\ScheduleInfo.txt");
-		ofstream g_FileClasterPerformInfo("Log\\RRMLog\\ClasterPerformInfo.txt");
-		ofstream g_FileEventListInfo("Log\\RRMLog\\EventListInfo.txt");
-		ofstream g_FileTTILogInfo("Log\\RRMLog\\TTILogInfo.txt");
-		ofstream g_FileEventLogInfo("Log\\RRMLog\\EventLogInfo.txt");
+		g_FileScheduleInfo.open("Log\\RRMLog\\ScheduleInfo.txt");
+		g_FileClasterPerformInfo.open("Log\\RRMLog\\ClasterPerformInfo.txt");
+		g_FileEventListInfo.open("Log\\RRMLog\\EventListInfo.txt");
+		g_FileTTILogInfo.open("Log\\RRMLog\\TTILogInfo.txt");
+		g_FileEventLogInfo.open("Log\\RRMLog\\EventLogInfo.txt");
 		//TMC_B模块
-		ofstream g_FileDelayStatistics("Log\\TMCLog\\DelayStatistics.txt");
-		ofstream g_FileEmergencyPossion("Log\\TMCLog\\EmergencyPossion.txt");
-		ofstream g_FileDataPossion("Log\\TMCLog\\DataPossion.txt");
-		ofstream g_FileConflictNum("Log\\TMCLog\\ConflictNum.txt");
-		ofstream g_FileTTIThroughput("Log\\TMCLog\\TTIThroughput.txt");
-		ofstream g_FileRSUThroughput("Log\\TMCLog\\RSUThroughput.txt");
+		g_FileDelayStatistics.open("Log\\TMCLog\\DelayStatistics.txt");
+		g_FileEmergencyPossion.open("Log\\TMCLog\\EmergencyPossion.txt");
+		g_FileDataPossion.open("Log\\TMCLog\\DataPossion.txt");
+		g_FileConflictNum.open("Log\\TMCLog\\ConflictNum.txt");
+		g_FileTTIThroughput.open("Log\\TMCLog\\TTIThroughput.txt");
+		g_FileRSUThroughput.open("Log\\TMCLog\\RSUThroughput.txt");
 	}
 	else {
 		/*===========================================
 		*            输出日志文件流定义
 		* ==========================================*/
-		ofstream g_FileTemp("Log/Temp.txt");
+		g_FileTemp.open("Log/Temp.txt");
 		//GTT模块
-		ofstream g_FileVeUELocationUpdateLogInfo("Log/GTTLog/VeUELocationUpdateLogInfo.txt");
-		ofstream g_FileVeUENumPerRSULogInfo("Log/GTTLog/VeUENumPerRSULogInfo.txt");
-		ofstream g_FileLocationInfo("Log/GTTLog/LocationInfo.txt");
+		g_FileVeUELocationUpdateLogInfo.open("Log/GTTLog\\VeUELocationUpdateLogInfo.txt");
+		g_FileVeUENumPerRSULogInfo.open("Log/GTTLog/VeUENumPerRSULogInfo.txt");
+		g_FileLocationInfo.open("Log/GTTLog/LocationInfo.txt");
 		//RRM模块
-		ofstream g_FileScheduleInfo("Log/RRMLog/ScheduleInfo.txt");
-		ofstream g_FileClasterPerformInfo("Log/RRMLog/ClasterPerformInfo.txt");
-		ofstream g_FileEventListInfo("Log/RRMLog/EventListInfo.txt");
-		ofstream g_FileTTILogInfo("Log/RRMLog/TTILogInfo.txt");
-		ofstream g_FileEventLogInfo("Log/RRMLog/EventLogInfo.txt");
+		g_FileScheduleInfo.open("Log/RRMLog/ScheduleInfo.txt");
+		g_FileClasterPerformInfo.open("Log/RRMLog\\ClasterPerformInfo.txt");
+		g_FileEventListInfo.open("Log/RRMLog/EventListInfo.txt");
+		g_FileTTILogInfo.open("Log/RRMLog/TTILogInfo.txt");
+		g_FileEventLogInfo.open("Log/RRMLog/EventLogInfo.txt");
 		//TMC_B模块
-		ofstream g_FileDelayStatistics("Log/TMCLog/DelayStatistics.txt");
-		ofstream g_FileEmergencyPossion("Log/TMCLog/EmergencyPossion.txt");
-		ofstream g_FileDataPossion("Log/TMCLog/DataPossion.txt");
-		ofstream g_FileConflictNum("Log/TMCLog/ConflictNum.txt");
-		ofstream g_FileTTIThroughput("Log/TMCLog/TTIThroughput.txt");
-		ofstream g_FileRSUThroughput("Log/TMCLog/RSUThroughput.txt");
+		g_FileDelayStatistics.open("Log/TMCLog/DelayStatistics.txt");
+		g_FileEmergencyPossion.open("Log/TMCLog/EmergencyPossion.txt");
+		g_FileDataPossion.open("Log/TMCLog/DataPossion.txt");
+		g_FileConflictNum.open("Log/TMCLog/ConflictNum.txt");
+		g_FileTTIThroughput.open("Log/TMCLog/TTIThroughput.txt");
+		g_FileRSUThroughput.open("Log/TMCLog/RSUThroughput.txt");
 	}
 
 }
