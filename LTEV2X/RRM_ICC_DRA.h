@@ -55,6 +55,7 @@ public:
 	*/
 	std::vector<std::pair<int, int>> m_ThreadsRSUIdRange;
 
+	/*------------------方法------------------*/
 public:
 	/*
 	* 默认构造函数定义为删除
@@ -76,10 +77,6 @@ public:
 		int t_ThreadNum
 	);
 
-	
-	/*------------------方法------------------*/
-
-public:
 	/*
 	* 初始化RSU VeUE内该单元的内部类
 	*/
