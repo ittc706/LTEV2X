@@ -19,14 +19,14 @@ private:
 	std::map<std::string, std::string> m_TagContentMap;
 public:
 	/*
-	* 默认构造函数定义为删除
+	* 默认构造函数
 	*/
-	ConfigLoader() = delete;
+	ConfigLoader() {}
 
 	/*
 	* 接受文件名的构造函数
 	*/
-	explicit ConfigLoader(std::string t_FilePath);
+	void initialize(std::string t_FilePath);
 
 	/*
 	* 从m_TagContentMap根据标签名取出值

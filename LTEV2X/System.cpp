@@ -61,38 +61,35 @@ void System::process() {
 void System::configure() {//系统仿真参数配置
 	srand((unsigned)time(NULL));//设置真个仿真的随机数种子
 
-	ConfigLoader configLoader("systemConfig.html");
+	ConfigLoader configLoader;
+
+	//首先先判断当前的平台，利用路径的表示在两个平台下的差异来判断
+	ifstream inPlatformWindows("Config\\systemConfig.html"),
+		inPlatformLinux("Config/systemConfig.html");
+	
+	if (inPlatformWindows.is_open()) {
+		m_Config.platform = Windows;
+		cout << "您当前的平台为：Windows" << endl;
+		configLoader.initialize("Config\\systemConfig.html");
+	}
+	else if (inPlatformLinux.is_open()) {
+		m_Config.platform = Linux;
+		cout << "您当前的平台为：Linux" << endl;
+		configLoader.initialize("Config/systemConfig.html");
+	}
+	else
+		throw Exp("PlatformError");
+
+	//初始化输出流对象
+	logFileConfig(m_Config.platform);
+
+	//开始解析配置文件
 	configLoader.load();//解析配置文件
 
 	stringstream ss;
 
 	const string nullString("");
 	string temp;
-	
-	if ((temp = configLoader.getParam("Platform")) != nullString) {
-		if (temp == "Windows") {
-			m_Config.platform = Windows;
-		}
-		else if (temp == "Linux") {
-			m_Config.platform = Linux;
-		}
-		else
-			throw Exp("平台参数配置错误");
-
-		//提示信息
-		cout << "您选择的平台为："<< temp<<"(务必确认您使用的平台是否为"<< temp<<",若不正确会导致文件路径错误)" << endl;
-		cout << "请输入" << endl;
-		cout << "    输入'yes':继续运行" << endl;
-		cout << "    输入其他:终止程序，重新设定平台参数" << endl;
-		string temp2;
-		cin >> temp2;
-		if (temp2 != "yes") {
-			exit(0);
-		}
-		logFileConfig(m_Config.platform);
-	}
-	else
-		throw Exp("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("NTTI")) != nullString) {
 		ss << temp;
@@ -176,10 +173,10 @@ void System::configure() {//系统仿真参数配置
 
 	if ((temp = configLoader.getParam("ThreadNum")) != nullString) {
 		ss << temp;
-		ss >> m_ThreadNum;
+		ss >> m_Config.threadNum;
 		ss.clear();//清除标志位
 		ss.str("");
-		cout << "开辟的线程数量为: " << m_ThreadNum << endl;
+		cout << "开辟的线程数量为: " << m_Config.threadNum << endl;
 	}
 	else
 		throw Exp("ConfigLoaderError");
@@ -243,13 +240,13 @@ void System::initializeWTModule() {
 void System::initializeRRMModule() {
 	switch (m_RRMMode) {
 	case RR:
-		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_ThreadNum);
+		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
 		break;
 	case TDM_DRA:
-		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_ThreadNum);
+		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
 		break;
 	case ICC_DRA:
-		m_RRMPoint = new RRM_ICC_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_ThreadNum);
+		m_RRMPoint = new RRM_ICC_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
 		break;
 	default:
 		break;

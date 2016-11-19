@@ -3,7 +3,7 @@
 
 using namespace std;
 
-ConfigLoader::ConfigLoader(string t_FilePath) {
+void ConfigLoader::initialize(string t_FilePath) {
 	ifstream in(t_FilePath);
 	istream_iterator<char> if_it(in), if_eof;
 	m_Content.assign(if_it, if_eof);

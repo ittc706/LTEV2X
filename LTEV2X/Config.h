@@ -14,6 +14,12 @@ struct SystemConfig {
 	int NTTI;
 
 	/*
+	* 线程数量
+	*/
+	int threadNum;
+
+
+	/*
 	* 车辆刷新位置的周期
 	*/
 	int locationUpdateNTTI;
