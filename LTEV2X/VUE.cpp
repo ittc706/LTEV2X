@@ -142,10 +142,10 @@ VeUE::~VeUE() {
 }
 
 
-bool VeUE::RRM::isNeedRecalculateSINR(int patternIdx) {
-	if (m_InterferenceVeUEIdVec[patternIdx].size() != m_PreInterferenceVeUEIdVec[patternIdx].size()) return true;
-	for (int i = 0; i < m_InterferenceVeUEIdVec[patternIdx].size(); i++) {
-		if (m_InterferenceVeUEIdVec[patternIdx][i] != m_PreInterferenceVeUEIdVec[patternIdx][i]) return true;
+bool VeUE::RRM::isNeedRecalculateSINR(int t_PatternIdx) {
+	if (m_InterferenceVeUEIdVec[t_PatternIdx].size() != m_PreInterferenceVeUEIdVec[t_PatternIdx].size()) return true;
+	for (int i = 0; i < m_InterferenceVeUEIdVec[t_PatternIdx].size(); i++) {
+		if (m_InterferenceVeUEIdVec[t_PatternIdx][i] != m_PreInterferenceVeUEIdVec[t_PatternIdx][i]) return true;
 	}
 	return false;
 }

@@ -48,6 +48,8 @@ public:
 	*/
 	long double m_GTTTimeConsume = 0;
 	long double m_WTTimeConsume = 0;
+
+	/*------------------接口------------------*/
 public:
 	/*
 	* 默认构造函数定义为删除

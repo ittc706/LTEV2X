@@ -13,15 +13,18 @@ public:
 	int& m_TTI;
 
 	/*
-	* 系统参数配置
+	* 系统配置参数,指向系统的该参数
 	*/
 	SystemConfig& m_Config;
 
 	/*
-	* 实体类容器
-	* RSU，车辆
+	* RSU容器,指向系统的该参数
 	*/
 	RSU* m_RSUAry;
+
+	/*
+	* VeUE容器,指向系统的该参数
+	*/
 	VeUE* m_VeUEAry;
 
 	/*
@@ -41,7 +44,7 @@ public:
 	*/
 	std::vector<std::vector<int>>& m_TTIRSUThroughput;
 
-	/*------------------方法------------------*/
+	/*------------------接口------------------*/
 public:
 	/*
 	* 默认构造函数定义为删除
@@ -50,6 +53,8 @@ public:
 
 	/*
 	* 构造函数
+	* 该构造函数定义了该模块的视图
+	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
 	TMC_Basic(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
 		m_TTI(t_TTI),

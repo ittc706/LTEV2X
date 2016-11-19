@@ -15,14 +15,10 @@
 using namespace std;
 
 
-RSU::RSU() {
+void RSU::initializeGTT_Urban(RSUConfig &t_RSUConfig){
 	m_GTT = new GTT();
 	m_GTT_Urban = new GTT_Urban();
-	m_GTT_HighSpeed = new GTT_HighSpeed();
-}
 
-
-void RSU::initializeGTT_Urban(RSUConfig &t_RSUConfig){
 	m_GTT->m_RSUId = t_RSUConfig.RSUId;
 	m_GTT->m_AbsX = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * ns_GTT_Urban::gc_Width;
 	m_GTT->m_AbsY = ns_GTT_Urban::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1] * ns_GTT_Urban::gc_Length;
@@ -36,6 +32,9 @@ void RSU::initializeGTT_Urban(RSUConfig &t_RSUConfig){
 
 
 void RSU::initializeGTT_HighSpeed(RSUConfig &t_RSUConfig) {
+	m_GTT = new GTT();
+	m_GTT_HighSpeed = new GTT_HighSpeed();
+
 	m_GTT->m_RSUId = t_RSUConfig.RSUId;
 	m_GTT->m_AbsX = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 0] * 100;
 	m_GTT->m_AbsY = ns_GTT_HighSpeed::gc_RSUTopoRatio[m_GTT->m_RSUId * 2 + 1];

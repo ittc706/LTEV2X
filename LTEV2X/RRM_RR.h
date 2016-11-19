@@ -59,6 +59,8 @@ public:
 
 	/*
 	* 构造函数
+	* 该构造函数定义了该模块的视图
+	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
 	RRM_RR(int &t_TTI,
 		SystemConfig& t_Config,
