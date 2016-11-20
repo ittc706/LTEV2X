@@ -75,7 +75,7 @@ void RRM_ICC_DRA::schedule() {
 	selectRBBasedOnP123();
 
 	//统计时延信息
-	delaystatistics();
+	sendDelaystatistics();
 
 	//帧听冲突
 	conflictListener();
@@ -279,6 +279,8 @@ void RRM_ICC_DRA::processWaitEventIdList() {
 					//更新日志
 					m_EventVec[eventId].addEventLog(m_TTI, WITHDRAWING, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WITHDRAWING, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
+
+					it++;
 				}
 			}	
 		}
@@ -313,8 +315,8 @@ void RRM_ICC_DRA::selectRBBasedOnP123() {
 
 				if (patternIdx == -1) {//该用户传输的信息类型没有pattern剩余了
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ACCESS, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ACCESS, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
+					m_EventVec[eventId].addEventLog(m_TTI, ACCESS_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, ACCESS_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
 								
 					continue;
 				}
@@ -333,7 +335,7 @@ void RRM_ICC_DRA::selectRBBasedOnP123() {
 }
 
 
-void RRM_ICC_DRA::delaystatistics() {
+void RRM_ICC_DRA::sendDelaystatistics() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
@@ -583,6 +585,10 @@ void RRM_ICC_DRA::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_Ev
 		ss << " - Transimiting  At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "] - PatternIdx[" << t_FromPatternIdx << "]";
 		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
+	case WITHDRAWING:
+		ss << " - Withdraw  At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
+		break;
 	case SUCCEED:
 		ss << " - Transimit Succeed At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "] - PatternIdx[" << t_FromPatternIdx << "]";
 		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
@@ -605,6 +611,14 @@ void RRM_ICC_DRA::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_Ev
 		break;
 	case WAIT_TO_WAIT:
 		ss << " - From: RSU[" << t_FromRSUId << "]'s WaitEventIdList[" << t_FromClusterIdx << "] - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
+		break;
+	case WAIT_TO_ACCESS:
+		ss << " - From: RSU[" << t_FromRSUId << "]'s WaitEventIdList[" << t_FromClusterIdx << "] - To: RSU[" << t_ToRSUId << "]'s AccessEventIdList[" << t_ToClusterIdx << "]";
+		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
+		break;
+	case ACCESS_TO_WAIT:
+		ss << " - From: RSU[" << t_FromRSUId << "]'s AccessEventIdList[" << t_FromClusterIdx << "] - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "]";
 		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case SWITCH_TO_WAIT:

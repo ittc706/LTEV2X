@@ -3,32 +3,17 @@ close all;
 clc;
 
 
+
 figId=1;%图的Id
 
 %% 读取时延统计信息
+PeriodDelayStatistics=load('PeriodDelayStatistics.txt');
 
-DelayStatistics=importdata('DelayStatistics.txt');
-
-periodBound=find(isnan(DelayStatistics(1,:)),1,'first');
-
-
-
-if(isempty(periodBound))
-    periodQueuingDelay=DelayStatistics(1,:);
-    periodSendDelay=DelayStatistics(2,:);
-else
-    periodQueuingDelay=DelayStatistics(1,1:periodBound-1);
-    periodSendDelay=DelayStatistics(2,1:periodBound-1);
-end
+PeriodQueuingDelay=PeriodDelayStatistics(1,:);
+PeriodSendDelay=PeriodDelayStatistics(2,:);
 
 
-
-
-if(max(periodQueuingDelay)-min(periodQueuingDelay)<5)
-    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,min(periodQueuingDelay)-1:min(periodQueuingDelay)+5);
-else
-    [numberPeriod,centerPeriod]=hist(periodQueuingDelay,min(periodQueuingDelay)-1:max(periodQueuingDelay)+1);
-end
+[numberPeriod,centerPeriod]=hist(PeriodQueuingDelay,min(PeriodQueuingDelay)-1:max(PeriodQueuingDelay)+1);
 numberPeriod=numberPeriod./sum(numberPeriod);
 
 
@@ -41,20 +26,11 @@ title('周期事件等待时延统计','LineWidth',2);
 xlabel('等待时延(TTI)','LineWidth',2);
 ylabel('概率','LineWidth',2);
 grid on;
-
-   
-
+    
 
 %% 传输时延
-if(max(periodSendDelay)-min(periodSendDelay)<5)
-    [numberPeriod,centerPeriod]=hist(periodSendDelay,min(periodSendDelay)-1:min(periodSendDelay)+5);
-else
-    [numberPeriod,centerPeriod]=hist(periodSendDelay,min(periodSendDelay)-1:max(periodSendDelay)+1);
-end
+[numberPeriod,centerPeriod]=hist(PeriodSendDelay,min(PeriodSendDelay)-1:max(PeriodSendDelay)+1);
 numberPeriod=numberPeriod./sum(numberPeriod);
-
-
-
 
 figure(figId)
 figId=figId+1;
@@ -64,33 +40,13 @@ xlabel('传输时延(TTI)','LineWidth',2);
 ylabel('概率','LineWidth',2);
 grid on;
 
-    
-
 
 
 %% 读取冲突统计信息
-ConflictNum=importdata('ConflictNum.txt');
+PeriodConflictNum=load('PeriodConflictNum.txt');
 
-periodBound=find(isnan(ConflictNum(1,:)),1,'first');
-
-
-if(isempty(periodBound))
-    periodConflictNum=ConflictNum(1,:);
-else
-    periodConflictNum=ConflictNum(1,1:periodBound-1);
-end
-
-
-
-if(max(periodConflictNum)-min(periodConflictNum)<5)
-    [numberPeriod,centerPeriod]=hist(periodConflictNum,min(periodConflictNum)-1:min(periodConflictNum)+5);
-else
-    [numberPeriod,centerPeriod]=hist(periodConflictNum,min(periodConflictNum)-1:max(periodConflictNum)+1);
-end
+[numberPeriod,centerPeriod]=hist(PeriodConflictNum,min(PeriodConflictNum)-1:max(PeriodConflictNum)+1);
 numberPeriod=numberPeriod./sum(numberPeriod);
-
-
-
 
 figure(figId)
 figId=figId+1;
@@ -100,15 +56,11 @@ xlabel('冲突次数','LineWidth',2);
 ylabel('概率','LineWidth',2);
 grid on;
 
-    
-
-
-
 
 %% 吞吐率
-load ./TTIThroughput.txt
-load ./RSUThroughput.txt
-load ./VeUENumPerRSULogInfo.txt
+TTIThroughput=load('./TTIThroughput.txt');
+RSUThroughput=load('./RSUThroughput.txt');
+VeUENumPerRSULogInfo=load('../GTTLog/VeUENumPerRSULogInfo.txt');
 
 TTIThroughput=TTIThroughput/1000;
 accumulatedTTIThroughput=zeros(1,length(TTIThroughput));

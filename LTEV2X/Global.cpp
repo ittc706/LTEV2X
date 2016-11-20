@@ -23,10 +23,14 @@ void logFileConfig(Platform t_Platform) {
 		g_FileTTILogInfo.open("Log\\RRMLog\\TTILogInfo.txt");
 		g_FileEventLogInfo.open("Log\\RRMLog\\EventLogInfo.txt");
 		//TMC_BÄ£¿é
-		g_FileDelayStatistics.open("Log\\TMCLog\\DelayStatistics.txt");
+		g_FileEmergencyDelayStatistics.open("Log\\TMCLog\\EmergencyDelayStatistics.txt");
+		g_FilePeriodDelayStatistics.open("Log\\TMCLog\\PeriodDelayStatistics.txt");
+		g_FileDataDelayStatistics.open("Log\\TMCLog\\DataDelayStatistics.txt");
 		g_FileEmergencyPossion.open("Log\\TMCLog\\EmergencyPossion.txt");
 		g_FileDataPossion.open("Log\\TMCLog\\DataPossion.txt");
-		g_FileConflictNum.open("Log\\TMCLog\\ConflictNum.txt");
+		g_FileEmergencyConflictNum.open("Log\\TMCLog\\EmergencyConflictNum.txt");
+		g_FilePeriodConflictNum.open("Log\\TMCLog\\PeriodConflictNum.txt");
+		g_FileDataConflictNum.open("Log\\TMCLog\\DataConflictNum.txt");
 		g_FileTTIThroughput.open("Log\\TMCLog\\TTIThroughput.txt");
 		g_FileRSUThroughput.open("Log\\TMCLog\\RSUThroughput.txt");
 	}
@@ -46,10 +50,14 @@ void logFileConfig(Platform t_Platform) {
 		g_FileTTILogInfo.open("Log/RRMLog/TTILogInfo.txt");
 		g_FileEventLogInfo.open("Log/RRMLog/EventLogInfo.txt");
 		//TMC_BÄ£¿é
-		g_FileDelayStatistics.open("Log/TMCLog/DelayStatistics.txt");
+		g_FileEmergencyDelayStatistics.open("Log/TMCLog/EmergencyDelayStatistics.txt");
+		g_FilePeriodDelayStatistics.open("Log/TMCLog/PeriodDelayStatistics.txt");
+		g_FileDataDelayStatistics.open("Log/TMCLog/DataDelayStatistics.txt");
 		g_FileEmergencyPossion.open("Log/TMCLog/EmergencyPossion.txt");
 		g_FileDataPossion.open("Log/TMCLog/DataPossion.txt");
-		g_FileConflictNum.open("Log/TMCLog/ConflictNum.txt");
+		g_FileEmergencyConflictNum.open("Log/TMCLog/EmergencyConflictNum.txt");
+		g_FilePeriodConflictNum.open("Log/TMCLog/PeriodConflictNum.txt");
+		g_FileDataConflictNum.open("Log/TMCLog/DataConflictNum.txt");
 		g_FileTTIThroughput.open("Log/TMCLog/TTIThroughput.txt");
 		g_FileRSUThroughput.open("Log/TMCLog/RSUThroughput.txt");
 	}
@@ -67,12 +75,17 @@ ofstream g_FileEventListInfo;
 ofstream g_FileTTILogInfo;
 ofstream g_FileEventLogInfo;
 //TMC_BÄ£¿é
-ofstream g_FileDelayStatistics;
+ofstream g_FileEmergencyDelayStatistics;
+ofstream g_FilePeriodDelayStatistics;
+ofstream g_FileDataDelayStatistics;
 ofstream g_FileEmergencyPossion;
 ofstream g_FileDataPossion;
-ofstream g_FileConflictNum;
+ofstream g_FileEmergencyConflictNum;
+ofstream g_FilePeriodConflictNum;
+ofstream g_FileDataConflictNum;
 ofstream g_FileTTIThroughput;
 ofstream g_FileRSUThroughput;
+
 
 
 /*===========================================

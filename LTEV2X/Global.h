@@ -20,10 +20,14 @@ extern std::ofstream g_FileEventListInfo;
 extern std::ofstream g_FileTTILogInfo;
 extern std::ofstream g_FileEventLogInfo;
 //TMC_BÄ£¿é
-extern std::ofstream g_FileDelayStatistics;
+extern std::ofstream g_FileEmergencyDelayStatistics;
+extern std::ofstream g_FilePeriodDelayStatistics;
+extern std::ofstream g_FileDataDelayStatistics;
 extern std::ofstream g_FileEmergencyPossion;
 extern std::ofstream g_FileDataPossion;
-extern std::ofstream g_FileConflictNum;
+extern std::ofstream g_FileEmergencyConflictNum;
+extern std::ofstream g_FilePeriodConflictNum;
+extern std::ofstream g_FileDataConflictNum;
 extern std::ofstream g_FileTTIThroughput;
 extern std::ofstream g_FileRSUThroughput;
 

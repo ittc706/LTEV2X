@@ -178,7 +178,11 @@ void TMC_B::buildEventList(ofstream& t_File) {
 	writeEventListInfo(t_File);
 }
 
-void TMC_B::processStatistics(ofstream& t_FileDelay, ofstream& t_FileEmergencyPossion, ofstream& t_FileDataPossion, ofstream& t_FileConflict, ofstream& t_FileEventLog) {
+void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePeriodDelay, ofstream& t_FileDataDelay,
+	ofstream& t_FileEmergencyPossion, ofstream& t_FileDataPossion,
+	ofstream& t_FileEmergencyConflict, ofstream& t_FilePeriodConflict, ofstream& t_FileDataConflict,
+	ofstream& t_FileEventLog) {
+
 	stringstream ssPeriod;
 	stringstream ssEmergency;
 	stringstream ssData;
@@ -236,9 +240,9 @@ void TMC_B::processStatistics(ofstream& t_FileDelay, ofstream& t_FileEmergencyPo
 				throw Exp("非法消息类型");
 			}
 		}
-	t_FileDelay << ssEmergency.str() << endl;
-	t_FileDelay << ssPeriod.str() << endl;
-	t_FileDelay << ssData.str() << endl;
+	t_FileEmergencyDelay << ssEmergency.str() << endl;
+	t_FilePeriodDelay << ssPeriod.str() << endl;
+	t_FileDataDelay << ssData.str() << endl;
 
 	
 	//统计传输时延
@@ -261,9 +265,9 @@ void TMC_B::processStatistics(ofstream& t_FileDelay, ofstream& t_FileEmergencyPo
 				throw Exp("非法消息类型");
 			}
 		}
-	t_FileDelay << ssEmergency.str() << endl;
-	t_FileDelay << ssPeriod.str() << endl;
-	t_FileDelay << ssData.str() << endl;
+	t_FileEmergencyDelay << ssEmergency.str() << endl;
+	t_FilePeriodDelay << ssPeriod.str() << endl;
+	t_FileDataDelay << ssData.str() << endl;
 
 	//统计紧急事件分布情况
 	for (int num : m_VeUEEmergencyNum)
@@ -294,9 +298,9 @@ void TMC_B::processStatistics(ofstream& t_FileDelay, ofstream& t_FileEmergencyPo
 			throw Exp("非法消息类型");
 		}
 	}
-	t_FileConflict << ssEmergency.str() << endl;
-	t_FileConflict << ssPeriod.str() << endl;
-	t_FileConflict << ssData.str() << endl;
+	t_FileEmergencyConflict << ssEmergency.str() << endl;
+	t_FilePeriodConflict << ssPeriod.str() << endl;
+	t_FileDataConflict << ssData.str() << endl;
 	writeEventLogInfo(t_FileEventLog);
 
 	//统计吞吐率
@@ -360,7 +364,8 @@ void TMC_B::writeEventLogInfo(ofstream &t_File) {
 		t_File << "    " << "VeUEId = " << m_EventVec[eventId].getVeUEId() << endl;
 		t_File << "    " << "MessageType = " << s << endl;
 		t_File << "    " << "SendDelay = " << m_EventVec[eventId].getSendDelay() << "(TTI)" << endl;
-		t_File << "    " << "QueuingDelay = " << m_EventVec[eventId].getQueueDelay() << "(TTI)" << endl;
+		t_File << "    " << "QueueDelay = " << m_EventVec[eventId].getQueueDelay() << "(TTI)" << endl;
+		t_File << "    " << "ProcessDelay = " << m_EventVec[eventId].getProcessDelay() << "(TTI)" << endl;
 		t_File << m_EventVec[eventId].toLogString(1);
 		t_File << "}" << endl;
 	}

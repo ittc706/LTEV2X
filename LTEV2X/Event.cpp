@@ -52,7 +52,7 @@ bool Event::tryAcccess() {
 
 void Event::conflict() {
 	uniform_int_distribution<int> u(1, m_CurWindowSize);
-	m_CurWindowSize = max(m_MaxWindowSize, m_CurWindowSize * 2);
+	m_CurWindowSize = min(m_MaxWindowSize, m_CurWindowSize * 2);
 	m_WithdrawalTime = u(s_Engine);
 	m_ConflictNum++;
 }
@@ -122,6 +122,9 @@ void Event::addEventLog(int t_TTI, EventLogType t_EventLogType, int t_FromRSUId,
 	case TRANSIMITTING:
 		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - Transimit At: RSU[" << t_FromRSUId << "] - Cluster[" << t_FromClusterIdx << "] - Pattern[" << t_FromPatternIdx << "] }";
 		break;
+	case WITHDRAWING:
+		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - Withdraw At: RSU[" << t_FromRSUId << "] - Cluster[" << t_FromClusterIdx << "] }";
+		break;
 	case SUCCEED:
 		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - Transimit Succeed At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "] - PatternIdx[" << t_FromPatternIdx << "] }";
 		break;
@@ -139,6 +142,12 @@ void Event::addEventLog(int t_TTI, EventLogType t_EventLogType, int t_FromRSUId,
 		break;
 	case WAIT_TO_WAIT:
 		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - From: RSU[" << t_FromRSUId << "]'s WaitEventIdList[" << t_FromClusterIdx << "] - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "] }";
+		break;
+	case WAIT_TO_ACCESS:
+		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - From: RSU[" << t_FromRSUId << "]'s WaitEventIdList[" << t_FromClusterIdx << "] - To: RSU[" << t_ToRSUId << "]'s AccessEventIdList[" << t_ToClusterIdx << "] }";
+		break;
+	case ACCESS_TO_WAIT:
+		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - From: RSU[" << t_FromRSUId << "]'s AccessEventIdList[" << t_FromClusterIdx << "] - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "] }";
 		break;
 	case SWITCH_TO_WAIT:
 		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - From: SwitchList - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "] }";
