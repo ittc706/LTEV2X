@@ -96,6 +96,11 @@ public:
 
 private:
 	/*
+	* 资源分配信息清空
+	*/
+	void informationClean();
+
+	/*
 	* 基于簇大小的时分复用
 	*/
 	void groupSizeBasedTDM(bool t_ClusterFlag);
@@ -108,7 +113,7 @@ private:
 	/*
 	* 更新等待链表
 	*/
-	void updateWaitEventIdList(bool t_ClusterFlag);
+	void updateAccessEventIdList(bool t_ClusterFlag);
 
 	/*
 	* 处理事件链表
@@ -130,6 +135,11 @@ private:
 	* 地理位置更新时，处理转接表
 	*/
 	void processSwitchListWhenLocationUpdate();
+
+	/*
+	* 处理等待链表，生成接入链表
+	*/
+	void processWaitEventIdList();
 
 	/*
 	* 基于P1/P2/P3的资源选择

@@ -135,6 +135,7 @@ string RSU::RRM::ScheduleInfo::toScheduleString(int t_NumTab) {
 RSU::RRM_TDM_DRA::RRM_TDM_DRA(RSU* t_This) {
 	m_This = t_This;
 
+	m_AccessEventIdList = vector<pair<list<int>, list<int>>>(m_This->m_GTT->m_ClusterNum);
 	m_WaitEventIdList = vector<pair<list<int>,list<int>>>(m_This->m_GTT->m_ClusterNum);
 	m_PatternIsAvailable = vector<vector<bool>>(m_This->m_GTT->m_ClusterNum, vector<bool>(ns_RRM_TDM_DRA::gc_TotalPatternNum, true));
 	m_ScheduleInfoTable = vector<vector<RSU::RRM::ScheduleInfo*>>(m_This->m_GTT->m_ClusterNum, vector<RSU::RRM::ScheduleInfo*>(ns_RRM_TDM_DRA::gc_TotalPatternNum, nullptr));

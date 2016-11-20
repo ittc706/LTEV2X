@@ -75,7 +75,7 @@ void RRM_ICC_DRA::schedule() {
 	selectRBBasedOnP123();
 
 	//统计时延信息
-	sendDelaystatistics();
+	delaystatistics();
 
 	//帧听冲突
 	conflictListener();
@@ -267,7 +267,10 @@ void RRM_ICC_DRA::processWaitEventIdList() {
 				int eventId = *it;
 				//如果该事件不需要退避，则转入接入表
 				if (m_EventVec[eventId].tryAcccess()) {
-					_RSU.m_RRM_ICC_DRA->m_AccessEventIdList[clusterIdx].push_back(eventId);
+					
+					//压入接入链表
+					_RSU.m_RRM_ICC_DRA->pushToAccessEventIdList(clusterIdx, eventId);
+
 					//更新日志
 					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ACCESS, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "CanAccess");
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ACCESS, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "CanAccess");
@@ -335,7 +338,7 @@ void RRM_ICC_DRA::selectRBBasedOnP123() {
 }
 
 
-void RRM_ICC_DRA::sendDelaystatistics() {
+void RRM_ICC_DRA::delaystatistics() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 
@@ -586,7 +589,7 @@ void RRM_ICC_DRA::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_Ev
 		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case WITHDRAWING:
-		ss << " - Withdraw  At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "]";
+		ss << " - Withdrawing  At: RSU[" << t_FromRSUId << "] - ClusterIdx[" << t_FromClusterIdx << "]";
 		t_File << "{ TTI : " << left << setw(3) << t_TTI << " - EventId = " << left << setw(3) << t_EventId << " - Description : <" << left << setw(10) << t_Description + ">" << ss.str() << " }" << endl;
 		break;
 	case SUCCEED:

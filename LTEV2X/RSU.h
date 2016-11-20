@@ -294,6 +294,14 @@ public:
 		std::vector<std::vector<bool>> m_PatternIsAvailable;
 
 		/*
+		* 接入列表
+		* 存放的是VeUEId
+		* 外层下标代表簇编号
+		* 内层first代表Emergency，second代表非Emergency
+		*/
+		std::vector<std::pair<std::list<int>, std::list<int>>> m_AccessEventIdList;
+
+		/*
 		* 等待列表
 		* 存放的是VeUEId
 		* 外层下标代表簇编号
@@ -336,9 +344,14 @@ public:
 		int getClusterIdx(int t_TTI);
 
 		/*
+		* 将AccessVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+		*/
+		void pushToAccessEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId);
+
+		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void pushToWaitEventIdList(bool isEmergency, int t_ClusterIdx, int t_EventId);
+		void pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId);
 
 		/*
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
@@ -423,6 +436,11 @@ public:
 		std::string toString(int t_NumTab);
 
 		/*
+		* 将AccessVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+		*/
+		void pushToAccessEventIdList(int t_ClusterIdx, int t_EventId);
+
+		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
 		void pushToWaitEventIdList(int t_ClusterIdx, int t_EventId);
@@ -488,7 +506,7 @@ public:
 		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
 		*/
-		void pushToWaitEventIdList(bool isEmergency, int t_ClusterIdx, int t_EventId);
+		void pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId);
 
 		/*
 		* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
@@ -511,10 +529,17 @@ public:
 
 };
 
+inline
+void RSU::RRM_TDM_DRA::pushToAccessEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
+		m_AccessEventIdList[t_ClusterIdx].first.push_back(t_EventId);
+	else
+		m_AccessEventIdList[t_ClusterIdx].second.push_back(t_EventId);
+}
 
 inline
-void RSU::RRM_TDM_DRA::pushToWaitEventIdList(bool isEmergency, int t_ClusterIdx, int t_EventId) {
-	if (isEmergency)
+void RSU::RRM_TDM_DRA::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
 		m_WaitEventIdList[t_ClusterIdx].first.push_back(t_EventId);
 	else
 		m_WaitEventIdList[t_ClusterIdx].second.push_back(t_EventId);
@@ -564,7 +589,10 @@ void RSU::RRM_TDM_DRA::pullFromScheduleInfoTable(int t_TTI) {
 
 
 
-
+inline
+void RSU::RRM_ICC_DRA::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
+	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
+}
 
 inline
 void RSU::RRM_ICC_DRA::pushToWaitEventIdList(int t_ClusterIdx, int t_EventId) {
@@ -602,8 +630,8 @@ void RSU::RRM_ICC_DRA::pullFromScheduleInfoTable(int t_TTI) {
 
 
 inline
-void RSU::RRM_RR::pushToWaitEventIdList(bool isEmergency, int t_ClusterIdx, int t_EventId) {
-	if (isEmergency)
+void RSU::RRM_RR::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
 		m_WaitEventIdList[t_ClusterIdx].insert(m_WaitEventIdList[t_ClusterIdx].begin(), t_EventId);
 	else
 		m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);

@@ -1,3 +1,6 @@
+## version_2016_11_20(RRM_TDM_DRA模式也增加了冲突避让机制)
+* 有待检查
+
 ## version_2016_11_20(修改matlab作图)
 
 ## version_2016_11_20(TMC_bug)

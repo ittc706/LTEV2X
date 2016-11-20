@@ -138,7 +138,7 @@ private:
 	/*
 	* 时延统计
 	*/
-	void sendDelaystatistics();
+	void delaystatistics();
 
 	/*
 	* 帧听冲突，冲突后避让
