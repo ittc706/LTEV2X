@@ -36,12 +36,12 @@ void logFileConfig(Platform t_Platform) {
 		* ==========================================*/
 		g_FileTemp.open("Log/Temp.txt");
 		//GTTÄ£¿é
-		g_FileVeUELocationUpdateLogInfo.open("Log/GTTLog\\VeUELocationUpdateLogInfo.txt");
+		g_FileVeUELocationUpdateLogInfo.open("Log/GTTLog/VeUELocationUpdateLogInfo.txt");
 		g_FileVeUENumPerRSULogInfo.open("Log/GTTLog/VeUENumPerRSULogInfo.txt");
 		g_FileLocationInfo.open("Log/GTTLog/LocationInfo.txt");
 		//RRMÄ£¿é
 		g_FileScheduleInfo.open("Log/RRMLog/ScheduleInfo.txt");
-		g_FileClasterPerformInfo.open("Log/RRMLog\\ClasterPerformInfo.txt");
+		g_FileClasterPerformInfo.open("Log/RRMLog/ClasterPerformInfo.txt");
 		g_FileEventListInfo.open("Log/RRMLog/EventListInfo.txt");
 		g_FileTTILogInfo.open("Log/RRMLog/TTILogInfo.txt");
 		g_FileEventLogInfo.open("Log/RRMLog/EventLogInfo.txt");
