@@ -51,20 +51,20 @@ public:
 	/*
 	* 生成事件链表
 	*/
-	void buildEventList(std::ofstream& out) override;
+	void buildEventList(std::ofstream& t_File) override;
 
 	/*
 	* 仿真结束后统计各种数据
 	*/
-	void processStatistics(std::ofstream& outDelay, std::ofstream& outEmergencyPossion, std::ofstream& outDataPossion, std::ofstream& outConflict, std::ofstream& outEventLog) override;
+	void processStatistics(std::ofstream& t_FileDelay, std::ofstream& t_FileEmergencyPossion, std::ofstream& t_FileDataPossion, std::ofstream& t_FileConflict, std::ofstream& t_FileEventLog) override;
 private:
 	/*
 	* 写入事件列表的信息
 	*/
-	void writeEventListInfo(std::ofstream &out);
+	void writeEventListInfo(std::ofstream &t_File);
 
 	/*
 	* 写入以事件的日志信息
 	*/
-	void writeEventLogInfo(std::ofstream &out);
+	void writeEventLogInfo(std::ofstream &t_File);
 };

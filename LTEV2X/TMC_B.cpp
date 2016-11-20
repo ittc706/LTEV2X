@@ -55,7 +55,7 @@ void TMC_B::initialize() {
 }
 
 
-void TMC_B::buildEventList(ofstream& out) {
+void TMC_B::buildEventList(ofstream& t_File) {
 	/*按时间顺序（事件的Id与时间相关，Id越小，事件发生的时间越小生成事件链表*/
 
 	default_random_engine dre;//随机数引擎
@@ -175,10 +175,10 @@ void TMC_B::buildEventList(ofstream& out) {
 	}
 	
 	//打印事件链表
-	writeEventListInfo(out);
+	writeEventListInfo(t_File);
 }
 
-void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion, ofstream& outDataPossion, ofstream& outConflict, ofstream& outEventLog) {
+void TMC_B::processStatistics(ofstream& t_FileDelay, ofstream& t_FileEmergencyPossion, ofstream& t_FileDataPossion, ofstream& t_FileConflict, ofstream& t_FileEventLog) {
 	stringstream ssPeriod;
 	stringstream ssEmergency;
 	stringstream ssData;
@@ -236,9 +236,9 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 				throw Exp("非法消息类型");
 			}
 		}
-	outDelay << ssPeriod.str() << endl;
-	outDelay << ssEmergency.str() << endl;
-	outDelay << ssData.str() << endl;
+	t_FileDelay << ssEmergency.str() << endl;
+	t_FileDelay << ssPeriod.str() << endl;
+	t_FileDelay << ssData.str() << endl;
 
 	
 	//统计传输时延
@@ -248,11 +248,11 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	for (Event &event : m_EventVec)
 		if (event.isFinished()) {
 			switch (event.getMessageType()) {
-			case PERIOD:
-				ssPeriod << event.getSendDelay() << " ";
-				break;
 			case EMERGENCY:
 				ssEmergency << event.getSendDelay() << " ";
+				break;
+			case PERIOD:
+				ssPeriod << event.getSendDelay() << " ";
 				break;
 			case DATA:
 				ssData << event.getSendDelay() << " ";
@@ -261,19 +261,19 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 				throw Exp("非法消息类型");
 			}
 		}
-	outDelay << ssPeriod.str() << endl;
-	outDelay << ssEmergency.str() << endl;
-	outDelay << ssData.str() << endl;
+	t_FileDelay << ssEmergency.str() << endl;
+	t_FileDelay << ssPeriod.str() << endl;
+	t_FileDelay << ssData.str() << endl;
 
 	//统计紧急事件分布情况
 	for (int num : m_VeUEEmergencyNum)
-		outEmergencyPossion << num << " ";
-	outEmergencyPossion << endl;//这里很关键，将缓存区的数据刷新到流中
+		t_FileEmergencyPossion << num << " ";
+	t_FileEmergencyPossion << endl;//这里很关键，将缓存区的数据刷新到流中
 
 	//统计数据业务事件分布情况
 	for (int num : m_VeUEDataNum)
-		outDataPossion << num << " ";
-	outDataPossion << endl;//这里很关键，将缓存区的数据刷新到流中
+		t_FileDataPossion << num << " ";
+	t_FileDataPossion << endl;//这里很关键，将缓存区的数据刷新到流中
 
 	//统计冲突情况
 	ssPeriod.str("");
@@ -281,11 +281,11 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	ssData.str("");
 	for (Event &event : m_EventVec) {
 		switch (event.getMessageType()) {
-		case PERIOD:
-			ssPeriod << event.getConflictNum() << " ";
-			break;
 		case EMERGENCY:
 			ssEmergency << event.getConflictNum() << " ";
+			break;
+		case PERIOD:
+			ssPeriod << event.getConflictNum() << " ";
 			break;
 		case DATA:
 			ssData << event.getConflictNum() << " ";
@@ -294,10 +294,10 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 			throw Exp("非法消息类型");
 		}
 	}
-	outConflict << ssPeriod.str() << endl;
-	outConflict << ssEmergency.str() << endl;
-	outConflict << ssData.str() << endl;
-	writeEventLogInfo(outEventLog);
+	t_FileConflict << ssEmergency.str() << endl;
+	t_FileConflict << ssPeriod.str() << endl;
+	t_FileConflict << ssData.str() << endl;
+	writeEventLogInfo(t_FileEventLog);
 
 	//统计吞吐率
 	vector<int> tmpTTIThroughput(m_Config.NTTI);
@@ -330,18 +330,18 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	cout << "丢包率: " << (double)lossPacketNum / (double)totalSucceededPackageNum;
 }
 
-void TMC_B::writeEventListInfo(ofstream &out) {
+void TMC_B::writeEventListInfo(ofstream &t_File) {
 	for (int i = 0; i < m_Config.NTTI; i++) {
-		out << "[ TTI = " << left << setw(3) << i << " ]" << endl;
-		out << "{" << endl;
+		t_File << "[ TTI = " << left << setw(3) << i << " ]" << endl;
+		t_File << "{" << endl;
 		for (int eventId : m_EventTTIList[i]) {
 			Event& e = m_EventVec[eventId];
-			out << "    " << e.toString() << endl;
+			t_File << "    " << e.toString() << endl;
 		}
-		out << "}\n\n" << endl;
+		t_File << "}\n\n" << endl;
 	}
 }
-void TMC_B::writeEventLogInfo(ofstream &out) {
+void TMC_B::writeEventLogInfo(ofstream &t_File) {
 	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
 		string s;
 		switch (m_EventVec[eventId].getMessageType()) {
@@ -355,14 +355,14 @@ void TMC_B::writeEventLogInfo(ofstream &out) {
 			s = "DATA";
 			break;
 		}
-		out << "EventId = " << eventId << endl;
-		out << "{" << endl;
-		out << "    " << "VeUEId = " << m_EventVec[eventId].getVeUEId() << endl;
-		out << "    " << "MessageType = " << s << endl;
-		out << "    " << "SendDelay = " << m_EventVec[eventId].getSendDelay() << "(TTI)" << endl;
-		out << "    " << "QueuingDelay = " << m_EventVec[eventId].getQueueDelay() << "(TTI)" << endl;
-		out << m_EventVec[eventId].toLogString(1);
-		out << "}" << endl;
+		t_File << "EventId = " << eventId << endl;
+		t_File << "{" << endl;
+		t_File << "    " << "VeUEId = " << m_EventVec[eventId].getVeUEId() << endl;
+		t_File << "    " << "MessageType = " << s << endl;
+		t_File << "    " << "SendDelay = " << m_EventVec[eventId].getSendDelay() << "(TTI)" << endl;
+		t_File << "    " << "QueuingDelay = " << m_EventVec[eventId].getQueueDelay() << "(TTI)" << endl;
+		t_File << m_EventVec[eventId].toLogString(1);
+		t_File << "}" << endl;
 	}
 }
 

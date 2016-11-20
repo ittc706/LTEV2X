@@ -73,10 +73,10 @@ public:
 	/*
 	* 生成事件链表
 	*/
-	virtual void buildEventList(std::ofstream& out)=0;
+	virtual void buildEventList(std::ofstream& t_File)=0;
 
 	/*
 	* 仿真结束后统计各种数据
 	*/
-	virtual void processStatistics(std::ofstream& outDelay, std::ofstream& outEmergencyPossion, std::ofstream& outDataPossion, std::ofstream& outConflict, std::ofstream& outEventLog)=0;
+	virtual void processStatistics(std::ofstream& t_FileDelay, std::ofstream& t_FileEmergencyPossion, std::ofstream& t_FileDataPossion, std::ofstream& t_FileConflict, std::ofstream& t_FileEventLog)=0;
 };
