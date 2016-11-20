@@ -1,4 +1,5 @@
 #include<iomanip>
+#include<cmath>
 #include"Event.h"
 #include"Enumeration.h"
 #include"Global.h"
@@ -8,53 +9,58 @@ using namespace std;
 
 int Event::s_EventCount = 0;
 
-std::pair<int, std::vector<int>> Message::constMemberInitialize(MessageType t_MessageType) {
-	pair<int, std::vector<int>> res;
-	switch (t_MessageType) {
-	case PERIOD:
-		res.first = gc_PeriodMessagePackageNum;
-		res.second = vector<int>(gc_PeriodMessagePackageNum);
-		for (int i = 0; i < gc_PeriodMessagePackageNum; i++)
-			res.second[i] = gc_PeriodMessageBitNumPerPackage[i];
-		return res;
-	case EMERGENCY:
-		res.first = gc_EmergencyMessagePackageNum;
-		res.second = vector<int>(gc_PeriodMessagePackageNum);
-		for (int i = 0; i < gc_PeriodMessagePackageNum; i++)
-			res.second[i] = gc_EmergencyMessageBitNumPerPackage[i];
-		return res;
-	case DATA:
-		res.first = gc_DataMessagePackageNum;
-		res.second = vector<int>(gc_PeriodMessagePackageNum);
-		for (int i = 0; i < gc_PeriodMessagePackageNum; i++)
-			res.second[i] = gc_DataMessageBitNumPerPackage[i];
-		return res;
-	default:
-		throw Exp("Wrong MessageType");
-	}
-}
 
-Message::Message(MessageType t_MessageType) :
+default_random_engine Event::s_Engine(0);
+
+
+Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
+	m_EventId(s_EventCount++),
+	m_VeUEId(t_VeUEId),
+	m_TriggerTTI(t_TTI),
 	m_MessageType(t_MessageType),
-	m_PackageNum(constMemberInitialize(t_MessageType).first),
-	m_BitNumPerPackage(constMemberInitialize(t_MessageType).second) {
-
-	m_CurrentPackageIdx = 0;
+	m_PackageNum(gc_MessagePackageNum[t_MessageType]),
+	m_BitNumPerPackage(gc_MessageBitNumPerPackage[t_MessageType]),
+	m_IsFinished(false),
+	m_CurrentPackageIdx(0),
+	m_InitialWindowSize(gc_InitialWindowSize[t_MessageType]),
+	m_MaxWindowSize(gc_MaxWindowSize[t_MessageType]),
+	m_WithdrawalTime(0),
+	m_ConflictNum(0),
+	m_SendDelay(0),
+	m_QueueDelay(0),
+	m_ProcessDelay(0) {
 	m_RemainBitNum = m_BitNumPerPackage[0];
-	m_IsFinished = false;
 	m_PackageIsLoss.assign(m_PackageNum, false);
+	m_CurWindowSize = m_InitialWindowSize;
 }
 
 
-void Message::reset() {
+void Event::reset() {
+	if (m_IsFinished)throw Exp("error");
 	m_CurrentPackageIdx = 0;
+	m_WithdrawalTime = 0;
 	m_RemainBitNum = m_BitNumPerPackage[0];
-	m_IsFinished = false;
 	m_PackageIsLoss.assign(m_PackageNum, false);
+	m_CurWindowSize = m_InitialWindowSize;
 }
 
 
-int Message::transimit(int t_TransimitMaxBitNum) {
+bool Event::tryAcccess() {
+	if (m_WithdrawalTime == 0) return true;
+	--m_WithdrawalTime;
+	return false;
+}
+
+
+void Event::conflict() {
+	uniform_int_distribution<int> u(1, m_CurWindowSize);
+	m_CurWindowSize = max(m_MaxWindowSize, m_CurWindowSize * 2);
+	m_WithdrawalTime = u(s_Engine);
+	m_ConflictNum++;
+}
+
+
+int Event::transimit(int t_TransimitMaxBitNum) {
 	if (t_TransimitMaxBitNum >= m_RemainBitNum) {//当前package传输完毕
 		int temp = m_RemainBitNum;
 		if (++m_CurrentPackageIdx == m_PackageNum) {//若当前package是最后一个package，那么说明传输成功
@@ -72,7 +78,7 @@ int Message::transimit(int t_TransimitMaxBitNum) {
 }
 
 
-string Message::toString() {
+string Event::toString() {
 	string s;
 	switch (m_MessageType) {
 	case PERIOD:
@@ -90,28 +96,12 @@ string Message::toString() {
 	for (int bitNum : m_BitNumPerPackage)
 		ss << left << setw(3) << bitNum << ", ";
 	ss << "} , MessageType = " << s << " ]";
-	return ss.str();
-}
+	string messageString = ss.str();
 
-
-Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
-	isSuccessded(false),
-	propagationDelay(0),
-	sendDelay(0),
-	processingDelay(0),
-	queuingDelay(0),
-	conflictNum(0),
-	message(Message(t_MessageType)) {
-	this->VeUEId = t_VeUEId;
-	this->TTI = t_TTI;
-}
-
-
-string Event::toString() {
-	ostringstream ss;
-	ss << "{ EventId = " << left << setw(3) << eventId;
-	ss << " , VeUEId = " << left << setw(3) << VeUEId;
-	ss << "] ， Message = " << message.toString() << " }";
+	ss.str();
+	ss << "{ EventId = " << left << setw(3) << m_EventId;
+	ss << " , VeUEId = " << left << setw(3) << m_VeUEId;
+	ss << "] ， Message = " << messageString << " }";
 	return ss.str();
 }
 
@@ -122,7 +112,7 @@ string Event::toLogString(int t_NumTab) {
 		indent.append("    ");
 
 	ostringstream ss;
-	for (string log : logTrackList)
+	for (string log : m_LogTrackList)
 		ss << indent << log << endl;
 	return ss.str();
 }
@@ -157,10 +147,9 @@ void Event::addEventLog(int t_TTI, EventLogType t_EventLogType, int t_FromRSUId,
 		break;
 	case TRANSIMIT_TO_WAIT:
 		ss << "{ TTI: " << left << setw(3) << t_TTI << " - Description : <" << left << setw(10) << t_Description + ">" << " - From: RSU[" << t_FromRSUId << "]'s TransmitScheduleInfoList[" << t_FromClusterIdx << "][" << t_FromPatternIdx << "] - To: RSU[" << t_ToRSUId << "]'s WaitEventIdList[" << t_ToClusterIdx << "] }";
-		conflictNum++;
 		break;
 	}
-	logTrackList.push_back(ss.str());
+	m_LogTrackList.push_back(ss.str());
 }
 
 

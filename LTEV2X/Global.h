@@ -329,31 +329,33 @@ namespace ns_RRM_ICC_DRA {
 *          数据业务与统计单元常量
 * ==========================================*/
 /*
-* 周期事件数据包数量
+* 紧急事件/周期事件/数据业务事件 的数据包数量
+* 下标以MessageType的定义为准
 */
-const int gc_PeriodMessagePackageNum = 4;
-/*
-* 周期事每个数据包的bit数量
-*/
-const int gc_PeriodMessageBitNumPerPackage[gc_PeriodMessagePackageNum] = { 1520,1520,1520,2400 };
+const std::vector<int> gc_MessagePackageNum = { 4,4,4 };
 
 /*
-* 紧急事件数据包数量
+* 紧急事件/周期事件/数据业务事件 每个数据包的bit数量
+* 下标以MessageType的定义为准
 */
-const int gc_EmergencyMessagePackageNum = 4;
-/*
-* 紧急事每个数据包的bit数量
-*/
-const int gc_EmergencyMessageBitNumPerPackage[gc_EmergencyMessagePackageNum] = { 1520,1520,1520,2400 };
+const std::vector<std::vector<int>> gc_MessageBitNumPerPackage{
+	{ 1520,1520,1520,2400 },
+	{ 1520,1520,1520,2400 },
+	{ 1520,1520,1520,2400 },
+};
 
 /*
-* 数据业务事件数据包数量
+* 紧急事件/周期事件/数据业务事件 初始的退避窗大小
+* 下标以MessageType的定义为准
 */
-const int gc_DataMessagePackageNum = 4;
+const std::vector<int> gc_InitialWindowSize = { 5,5,5 };
+
 /*
-* 数据业务事每个数据包的bit数量
+* 紧急事件/周期事件/数据业务事件 最大的退避窗大小
+* 下标以MessageType的定义为准
 */
-const int gc_DataMessageBitNumPerPackage[gc_DataMessagePackageNum] = { 1520,1520,1520,2400 };
+const std::vector<int> gc_MaxWindowSize = { 20,20,20 };
+
 
 
 

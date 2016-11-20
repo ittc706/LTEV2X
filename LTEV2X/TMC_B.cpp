@@ -137,7 +137,7 @@ void TMC_B::buildEventList(ofstream& out) {
 					*-----------------------ATTENTION-----------------------*/
 					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, EMERGENCY);
 					m_EventVec.push_back(evt);
-					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.eventId);
+					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
 					--countEmergency;
 				}
 			}
@@ -155,7 +155,7 @@ void TMC_B::buildEventList(ofstream& out) {
 					*-----------------------ATTENTION-----------------------*/
 					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, DATA);
 					m_EventVec.push_back(evt);
-					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.eventId);
+					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
 					--countData;
 				}
 			}
@@ -167,7 +167,7 @@ void TMC_B::buildEventList(ofstream& out) {
 				for (int VeUEId : periodList) {
 					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, PERIOD);
 					m_EventVec.push_back(evt);
-					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.eventId);
+					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
 				}
 			}
 		}
@@ -192,12 +192,12 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	//统计成功传输的事件数目
 	m_TransimitSucceedEventNumPerEventType = vector<int>(3);
 	for (Event &event : m_EventVec) {
-		if (event.isSuccessded) {
-			switch (event.message.getMessageType()) {
-			case PERIOD:
+		if (event.isFinished()) {
+			switch (event.getMessageType()) {
+			case EMERGENCY:
 				m_TransimitSucceedEventNumPerEventType[0]++;
 				break;
-			case EMERGENCY:
+			case PERIOD:
 				m_TransimitSucceedEventNumPerEventType[1]++;
 				break;
 			case DATA:
@@ -208,9 +208,9 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	}
 	int totalSucceededPackageNum = [=] {
 		int res = 0;
-		res += m_TransimitSucceedEventNumPerEventType[0] * gc_PeriodMessagePackageNum;
-		res += m_TransimitSucceedEventNumPerEventType[1] * gc_EmergencyMessagePackageNum;
-		res += m_TransimitSucceedEventNumPerEventType[2] * gc_DataMessagePackageNum;
+		res += m_TransimitSucceedEventNumPerEventType[0] * gc_MessagePackageNum[0];
+		res += m_TransimitSucceedEventNumPerEventType[1] * gc_MessagePackageNum[1];
+		res += m_TransimitSucceedEventNumPerEventType[2] * gc_MessagePackageNum[2];
 		return res;
 	}();
 
@@ -221,16 +221,16 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	
 	//统计等待时延
 	for (Event &event : m_EventVec)
-		if (event.isSuccessded) {
-			switch (event.message.getMessageType()) {
-			case PERIOD:
-				ssPeriod << event.queuingDelay << " ";
-				break;
+		if (event.isFinished()) {
+			switch (event.getMessageType()) {
 			case EMERGENCY:
-				ssEmergency << event.queuingDelay << " ";
+				ssEmergency << event.getQueueDelay() << " ";
+				break;
+			case PERIOD:
+				ssPeriod << event.getQueueDelay() << " ";
 				break;
 			case DATA:
-				ssData << event.queuingDelay << " ";
+				ssData << event.getQueueDelay() << " ";
 				break;
 			default:
 				throw Exp("非法消息类型");
@@ -246,16 +246,16 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	ssEmergency.str("");
 	ssData.str("");
 	for (Event &event : m_EventVec)
-		if (event.isSuccessded) {
-			switch (event.message.getMessageType()) {
+		if (event.isFinished()) {
+			switch (event.getMessageType()) {
 			case PERIOD:
-				ssPeriod << event.sendDelay << " ";
+				ssPeriod << event.getSendDelay() << " ";
 				break;
 			case EMERGENCY:
-				ssEmergency << event.sendDelay << " ";
+				ssEmergency << event.getSendDelay() << " ";
 				break;
 			case DATA:
-				ssData << event.sendDelay << " ";
+				ssData << event.getSendDelay() << " ";
 				break;
 			default:
 				throw Exp("非法消息类型");
@@ -280,15 +280,15 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	ssEmergency.str("");
 	ssData.str("");
 	for (Event &event : m_EventVec) {
-		switch (event.message.getMessageType()) {
+		switch (event.getMessageType()) {
 		case PERIOD:
-			ssPeriod << event.conflictNum << " ";
+			ssPeriod << event.getConflictNum() << " ";
 			break;
 		case EMERGENCY:
-			ssEmergency << event.conflictNum << " ";
+			ssEmergency << event.getConflictNum() << " ";
 			break;
 		case DATA:
-			ssData << event.conflictNum << " ";
+			ssData << event.getConflictNum() << " ";
 			break;
 		default:
 			throw Exp("非法消息类型");
@@ -323,8 +323,8 @@ void TMC_B::processStatistics(ofstream& outDelay, ofstream& outEmergencyPossion,
 	//统计丢包率
 	int lossPacketNum = 0;
 	for (int eventId = 0; eventId < Event::s_EventCount; eventId++) {
-		if (m_EventVec[eventId].message.isFinished()) {
-			lossPacketNum += m_EventVec[eventId].message.getPacketLossCnt();
+		if (m_EventVec[eventId].isFinished()) {
+			lossPacketNum += m_EventVec[eventId].getPacketLossCnt();
 		}
 	}
 	cout << "丢包率: " << (double)lossPacketNum / (double)totalSucceededPackageNum;
@@ -344,12 +344,12 @@ void TMC_B::writeEventListInfo(ofstream &out) {
 void TMC_B::writeEventLogInfo(ofstream &out) {
 	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
 		string s;
-		switch (m_EventVec[eventId].message.getMessageType()) {
-		case PERIOD:
-			s = "PERIOD";
-			break;
+		switch (m_EventVec[eventId].getMessageType()) {
 		case EMERGENCY:
 			s = "EMERGENCY";
+			break;
+		case PERIOD:
+			s = "PERIOD";
 			break;
 		case DATA:
 			s = "DATA";
@@ -357,10 +357,10 @@ void TMC_B::writeEventLogInfo(ofstream &out) {
 		}
 		out << "EventId = " << eventId << endl;
 		out << "{" << endl;
-		out << "    " << "VeUEId = " << m_EventVec[eventId].VeUEId << endl;
+		out << "    " << "VeUEId = " << m_EventVec[eventId].getVeUEId() << endl;
 		out << "    " << "MessageType = " << s << endl;
-		out << "    " << "SendDelay = " << m_EventVec[eventId].sendDelay << "(TTI)" << endl;
-		out << "    " << "QueuingDelay = " << m_EventVec[eventId].queuingDelay << "(TTI)" << endl;
+		out << "    " << "SendDelay = " << m_EventVec[eventId].getSendDelay() << "(TTI)" << endl;
+		out << "    " << "QueuingDelay = " << m_EventVec[eventId].getQueueDelay() << "(TTI)" << endl;
 		out << m_EventVec[eventId].toLogString(1);
 		out << "}" << endl;
 	}

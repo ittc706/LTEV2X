@@ -119,12 +119,12 @@ void RRM_RR::updateAdmitEventIdList(bool t_ClusterFlag) {
 void RRM_RR::processEventList() {
 	for (int eventId : m_EventTTIList[m_TTI]) {
 		Event event = m_EventVec[eventId];
-		int VeUEId = event.VeUEId;
+		int VeUEId = event.getVeUEId();
 		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
 		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
 		RSU &_RSU = m_RSUAry[RSUId];
 		//将事件压入等待链表
-		bool isEmergency = event.message.getMessageType() == EMERGENCY;
+		bool isEmergency = event.getMessageType() == EMERGENCY;
 		_RSU.m_RRM_RR->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//更新日志
@@ -143,8 +143,8 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 			list<int>::iterator it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].begin();
 			while (it != _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end()) {
 				int eventId = *it;
-				int VeUEId = m_EventVec[eventId].VeUEId;
-				bool isEmergency = m_EventVec[eventId].message.getMessageType() == EMERGENCY;
+				int VeUEId = m_EventVec[eventId].getVeUEId();
+				bool isEmergency = m_EventVec[eventId].getMessageType() == EMERGENCY;
 				if (m_VeUEAry[VeUEId].m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {//该VeUE已经不在该RSU范围内
 
 					//将其添加到System级别的RSU切换链表中
@@ -154,7 +154,7 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 					it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
 
 					//将剩余待传bit重置
-					m_EventVec[eventId].message.reset();
+					m_EventVec[eventId].reset();
 
 					//更新日志
 					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
@@ -185,12 +185,12 @@ void RRM_RR::processSwitchListWhenLocationUpdate() {
 	list<int>::iterator it = m_SwitchEventIdList.begin();
 	while (it != m_SwitchEventIdList.end()) {
 		int eventId = *it;
-		int VeUEId = m_EventVec[eventId].VeUEId;
+		int VeUEId = m_EventVec[eventId].getVeUEId();
 		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
 		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
 		RSU &_RSU = m_RSUAry[RSUId];
 
-		bool isEmergency = m_EventVec[eventId].message.getMessageType() == EMERGENCY;
+		bool isEmergency = m_EventVec[eventId].getMessageType() == EMERGENCY;
 		_RSU.m_RRM_RR->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//从Switch链表中删除
@@ -212,7 +212,7 @@ void RRM_RR::roundRobin() {
 			list<int>::iterator it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].begin();
 			while (it!= _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end() && patternIdx < ns_RRM_RR::gc_TotalPatternNum) {
 				int eventId = *it;
-				int VeUEId = m_EventVec[eventId].VeUEId;
+				int VeUEId = m_EventVec[eventId].getVeUEId();
 				_RSU.m_RRM_RR->pushToTransimitScheduleInfoTable(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx));
 				it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].erase(it);
 				patternIdx++;
@@ -229,12 +229,12 @@ void RRM_RR::delaystatistics() {
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			//处理等待链表
 			for (int eventId : _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx])
-				m_EventVec[eventId].queuingDelay++;
+				m_EventVec[eventId].increaseQueueDelay();
 
 			//处理此刻正在将要传输的调度表
 			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
 				if (_RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx] == nullptr)continue;
-				m_EventVec[_RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx]->eventId].sendDelay++;
+				m_EventVec[_RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx]->eventId].increaseSendDelay();
 			}
 		}
 	}
@@ -335,13 +335,13 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					curSINR = m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx];
 
 				//记录调度信息
-				if (curSINR < gc_CriticalPoint) m_EventVec[info->eventId].message.packetLoss();//记录丢包
+				if (curSINR < gc_CriticalPoint) m_EventVec[info->eventId].packetLoss();//记录丢包
 				info->transimitBitNum = maxEquivalentBitNum;
-				info->currentPackageIdx = m_EventVec[info->eventId].message.getCurrentPackageIdx();
-				info->remainBitNum = m_EventVec[info->eventId].message.getRemainBitNum();
+				info->currentPackageIdx = m_EventVec[info->eventId].getCurrentPackageIdx();
+				info->remainBitNum = m_EventVec[info->eventId].getRemainBitNum();
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量，并更新信息状态
-				int realEquivalentBitNum = m_EventVec[info->eventId].message.transimit(maxEquivalentBitNum);
+				int realEquivalentBitNum = m_EventVec[info->eventId].transimit(maxEquivalentBitNum);
 
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSU.m_GTT->m_RSUId] += realEquivalentBitNum;
@@ -435,10 +435,7 @@ void RRM_RR::transimitEnd() {
 				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
 
-				if (m_EventVec[info->eventId].message.isFinished()) {//说明已经传输完毕
-
-					//设置传输成功标记
-					m_EventVec[info->eventId].isSuccessded = true;
+				if (m_EventVec[info->eventId].isFinished()) {//说明已经传输完毕
 
 					//更新日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
@@ -448,7 +445,7 @@ void RRM_RR::transimitEnd() {
 					Delete::safeDelete(info);
 				}
 				else {//没有传输完毕，转到Wait链表，等待下一次调度
-					bool isEmergency = m_EventVec[info->eventId].message.getMessageType() == EMERGENCY;
+					bool isEmergency = m_EventVec[info->eventId].getMessageType() == EMERGENCY;
 					_RSU.m_RRM_RR->pushToWaitEventIdList(isEmergency, clusterIdx, info->eventId);
 
 					//更新日志

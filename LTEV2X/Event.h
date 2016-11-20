@@ -3,12 +3,39 @@
 #include<list>
 #include<string>
 #include<utility>
+#include<random>
 #include"Global.h"
 #include"Enumeration.h"
 
-class Message {
+
+class Event {
+	/*------------------静态------------------*/
+public:
+	/*
+	* 用于自动分配EventId的静态计数
+	*/
+	static int s_EventCount;
+
+	/*
+	* 用于生成随机退避时间的随机数种子，该类共享
+	*/
+	static std::default_random_engine s_Engine;
 	/*------------------域------------------*/
 private:
+	/*
+	* 每个事件都有唯一的Id，Id从0开始编号
+	*/
+	const int m_EventId;
+
+	/*
+	* 该事件对应的用户的Id
+	*/
+	const int m_VeUEId;
+
+	/*
+	* 事件触发的TTI时刻
+	*/
+	const int m_TriggerTTI;
 	/*
 	* 该消息的类型
 	*/
@@ -45,45 +72,69 @@ private:
 	*/
 	std::vector<bool> m_PackageIsLoss;
 
+	/*
+	* 回退窗初始大小
+	*/
+	const int m_InitialWindowSize;
+
+	/*
+	* 回退窗最大初始大小
+	*/
+	const int m_MaxWindowSize;
+
+	/*
+	* 回退窗当前大小
+	* 初始化为初始窗大小，调用一次退避后变为两倍或者最大窗大小
+	*/
+	int m_CurWindowSize;
+
+	/*
+	* 还需退避多少TTI
+	*/
+	int m_WithdrawalTime;
+
+	/*
+	* 记录该事件的所有日志
+	*/
+	std::list<std::string> m_LogTrackList;
+
+	/*
+	* 冲突次数
+	*/
+	int m_ConflictNum;
+
+	/*
+	* 发送时延
+	* 发送节点在传输链路上开始发送第一个比特至发送完该组最后一个比特所需要的时间
+	*/
+	int m_SendDelay;
+
+	/*
+	* 排队时延
+	* 传输或处理前等待的时间
+	*/
+	int m_QueueDelay;
+
+	/*
+	* 处理时延
+	* 从一个节点的输入端到达该节点的输出端所经历的时延
+	* <<我好像不明白这个含义>>
+	* <<暂时理解为，在信道上占用的时间段>>
+	*/
+	int m_ProcessDelay;
+
 	/*------------------方法------------------*/
 public:
 	/*
 	* 默认构造函数定义为删除
 	*/
-	Message() = delete;
+	Event() = delete;
 
 	/*
-	* 接受消息类型为参数的构造函数
-	* 禁止隐式转换的发生
+	* 构造函数，接受参数分别为
+	*	车辆Id，事件触发事件，消息类型
 	*/
-	explicit Message(MessageType t_MessageType);
-
-	/*
-	* 生成格式化字符串
-	*/
-	std::string toString();
-
-	/*
-	* 重新发送该消息时，重置信息各个状态
-	*/
-	void reset();
-
-	/*
-	* 更新信息状态
-	* transimitMaxBitNum为本次该时频资源可传输的最大bit数
-	* 但本次传输的实际bit数可以小于该值，并返回实际传输的bit数量
-	*/
-	int transimit(int t_TransimitMaxBitNum);
-
-	/*
-	* 记录当前传输的包发生丢包
-	*/
-	void packetLoss() { m_PackageIsLoss[m_CurrentPackageIdx] = true; }
-
-	/*
-	* 判断是否完成事件的传输
-	*/
-	bool isFinished() { return m_IsFinished; }
+	Event(int t_VeUEId, int t_TTI, MessageType t_MessageType);
 
 	/*
 	* 返回消息类型
@@ -111,97 +162,83 @@ public:
 			return res;
 		}();
 	}
-private:/*---实现---*/
-		/*
-		* 构造函数初始化列表调用的函数，用于初始化const成员
-		*/
-	std::pair<int, std::vector<int>> constMemberInitialize(MessageType t_MessageType);
-};
-
-class Event {
-	/*------------------静态------------------*/
-public:
-	/*
-	* 用于自动分配EventId的静态计数
-	*/
-	static int s_EventCount;
-
-	/*------------------域------------------*/
-public:
-	/*
-	* 每个事件都有唯一的Id，Id从0开始编号
-	*/
-	const int eventId = s_EventCount++;
 
 	/*
-	* 消息对象
+	* 判断是否完成事件的传输
 	*/
-	Message message;
+	bool isFinished() { return m_IsFinished; }
 
 	/*
-	* 该事件对应的用户的Id
+	* 返回事件Id
 	*/
-	int VeUEId;
+	int getEventId() { return m_EventId; }
 
 	/*
-	* 事件触发的TTI时刻
+	* 返回车辆Id
 	*/
-	int TTI;
+	int getVeUEId() { return m_VeUEId; }
 
 	/*
-	* 是否传输成功
+	* 返回事件触发时间
 	*/
-	bool isSuccessded;
+	int getTriggerTTI() { return m_TriggerTTI; }
 
 	/*
-	* 冲突次数
+	* 返回冲突次数
 	*/
-	int conflictNum;
+	int getConflictNum() { return m_ConflictNum; }
 
 	/*
-	* 传播时延
-	* 第一个比特从发送节点到接收节点在传输链路上经历的时间
-	* <<计算出来的？（还是仿真真实测得的时延？)>>
+	* 返回传输时延
 	*/
-	int propagationDelay;
+	int getSendDelay() { return m_SendDelay; }
 
 	/*
-	* 发送时延
-	* 发送节点在传输链路上开始发送第一个比特至发送完该组最后一个比特所需要的时间
+	* 递增传输时延
 	*/
-	int sendDelay;
+	void increaseSendDelay() { ++m_SendDelay; ++m_ProcessDelay; }
 
 	/*
-	* 处理时延
-	* 从一个节点的输入端到达该节点的输出端所经历的时延
-	* <<我好像不明白这个含义>>
-	* <<暂时理解为，在信道上占用的时间段>>
+	* 返回等待时延
 	*/
-	int processingDelay;
+	int getQueueDelay() { return m_QueueDelay; }
 
 	/*
-	* 排队时延
-	* 传输或处理前等待的时间
+	* 递增等待时延
 	*/
-	int queuingDelay;
-private:
-	/*
-	* 记录该事件的所有日志
-	*/
-	std::list<std::string> logTrackList;
-
-	/*------------------方法------------------*/
-public:
-	/*
-	* 默认构造函数定义为删除
-	*/
-	Event() = delete;
+	void increaseQueueDelay() { ++m_QueueDelay;  ++m_ProcessDelay; }
 
 	/*
-	* 构造函数，接受参数分别为
-	*	车辆Id，事件触发事件，消息类型
+	* 返回处理时延
 	*/
-	Event(int t_VeUEId, int t_TTI, MessageType t_MessageType);
+	int getProcessDelay() { return m_ProcessDelay; }
+
+	/*
+	* 重新发送该消息时，重置信息各个状态
+	*/
+	void reset();
+
+	/*
+	* 尝试接入，并更新状态
+	*/
+	bool tryAcccess();
+
+	/*
+	* 更新信息状态
+	* transimitMaxBitNum为本次该时频资源可传输的最大bit数
+	* 但本次传输的实际bit数可以小于该值，并返回实际传输的bit数量
+	*/
+	int transimit(int t_TransimitMaxBitNum);
+
+	/*
+	* 冲突之后更新信息状态
+	*/
+	void conflict();
+
+	/*
+	* 记录当前传输的包发生丢包
+	*/
+	void packetLoss() { m_PackageIsLoss[m_CurrentPackageIdx] = true; }
 
 	/*
 	* 生成格式化的字符串
