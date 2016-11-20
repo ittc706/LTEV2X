@@ -370,6 +370,13 @@ public:
 		RSU* m_This;
 
 		/*
+		* RSU级别的待接入列表
+		* 外层下标为簇编号
+		* 内层list存放的是对应簇的VeUEId
+		*/
+		std::vector<std::list<int>> m_AccessEventIdList;
+
+		/*
 		* RSU级别的等待列表
 		* 外层下标为簇编号
 		* 内层list存放的是对应簇的VeUEId

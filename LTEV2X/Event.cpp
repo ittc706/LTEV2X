@@ -9,9 +9,7 @@ using namespace std;
 
 int Event::s_EventCount = 0;
 
-
 default_random_engine Event::s_Engine(0);
-
 
 Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
 	m_EventId(s_EventCount++),

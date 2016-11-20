@@ -69,7 +69,7 @@ void RRM_ICC_DRA::schedule() {
 	informationClean();
 
 	//更新等待链表
-	updateWaitEventIdList(isLocationUpdate);
+	updateAccessEventIdList(isLocationUpdate);
 
 	//资源选择
 	selectRBBasedOnP123();
@@ -95,11 +95,16 @@ void RRM_ICC_DRA::schedule() {
 
 
 void RRM_ICC_DRA::informationClean() {
-
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		RSU &_RSU = m_RSUAry[RSUId];
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+			_RSU.m_RRM_ICC_DRA->m_AccessEventIdList[clusterIdx].clear();
+		}
+	}
 }
 
 
-void RRM_ICC_DRA::updateWaitEventIdList(bool t_ClusterFlag) {
+void RRM_ICC_DRA::updateAccessEventIdList(bool t_ClusterFlag) {
 	//首先，处理System级别的事件触发链表
 	processEventList();
 	//其次，如果当前TTI进行了位置更新，需要处理调度表
@@ -113,6 +118,8 @@ void RRM_ICC_DRA::updateWaitEventIdList(bool t_ClusterFlag) {
 		//处理System级别的切换链表
 		processSwitchListWhenLocationUpdate();
 	}
+	//最后，由等待表生成接入表
+	processWaitEventIdList();
 }
 
 
@@ -250,6 +257,34 @@ void RRM_ICC_DRA::processSwitchListWhenLocationUpdate() {
 }
 
 
+void RRM_ICC_DRA::processWaitEventIdList() {
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+		RSU &_RSU = m_RSUAry[RSUId];
+
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+			list<int>::iterator it = _RSU.m_RRM_ICC_DRA->m_WaitEventIdList[clusterIdx].begin();
+			while (it != _RSU.m_RRM_ICC_DRA->m_WaitEventIdList[clusterIdx].end()) {
+				int eventId = *it;
+				//如果该事件不需要退避，则转入接入表
+				if (m_EventVec[eventId].tryAcccess()) {
+					_RSU.m_RRM_ICC_DRA->m_AccessEventIdList[clusterIdx].push_back(eventId);
+					//更新日志
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ACCESS, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "CanAccess");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ACCESS, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "CanAccess");
+
+					//将该事件从等代表中删除
+					it = _RSU.m_RRM_ICC_DRA->m_WaitEventIdList[clusterIdx].erase(it);
+				}
+				else {
+					//更新日志
+					m_EventVec[eventId].addEventLog(m_TTI, WITHDRAWING, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WITHDRAWING, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
+				}
+			}	
+		}
+	}
+}
+
 
 void RRM_ICC_DRA::selectRBBasedOnP123() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
@@ -269,9 +304,8 @@ void RRM_ICC_DRA::selectRBBasedOnP123() {
 				}
 			}
 
-			list<int>::iterator it = _RSU.m_RRM_ICC_DRA->m_WaitEventIdList[clusterIdx].begin();
-			while (it!= _RSU.m_RRM_ICC_DRA->m_WaitEventIdList[clusterIdx].end()) {//遍历该簇内接纳链表中的事件
-				int eventId = *it;
+			for (int eventId:_RSU.m_RRM_ICC_DRA->m_AccessEventIdList[clusterIdx]) {//遍历该簇内接纳链表中的事件
+
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 
 				//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
@@ -279,10 +313,9 @@ void RRM_ICC_DRA::selectRBBasedOnP123() {
 
 				if (patternIdx == -1) {//该用户传输的信息类型没有pattern剩余了
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "AllBusy");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "AllBusy");
-					
-					it++;
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ACCESS, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ACCESS, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
+								
 					continue;
 				}
 
@@ -292,7 +325,6 @@ void RRM_ICC_DRA::selectRBBasedOnP123() {
 				//将调度信息压入m_TransimitEventIdList中
 				_RSU.m_RRM_ICC_DRA->pushToTransmitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx));
 
-				it = _RSU.m_RRM_ICC_DRA->m_WaitEventIdList[clusterIdx].erase(it);
 			}
 		}
 		//将调度表中当前可以继续传输的用户压入传输链表中
@@ -333,6 +365,9 @@ void RRM_ICC_DRA::conflictListener() {
 					for (RSU::RRM::ScheduleInfo* &info : lst) {
 						//首先将事件压入等待列表
 						_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(clusterIdx, info->eventId);
+
+						//冲突后更新事件的状态
+						m_EventVec[info->eventId].conflict();
 
 						//更新日志
 						m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Conflict");
