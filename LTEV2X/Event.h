@@ -47,6 +47,20 @@ private:
 	const int m_PackageNum;
 
 	/*
+	* 实际传输的数据包总包数
+	* 由于可能发生RSU切换，因此传输的总包数可能大于数据包的总包数
+	* 累积状态，reset不重置
+	*/
+	int m_TransimitPackageNum;
+
+	/*
+	* 实际发生丢包的数据包总包数
+	* 由于可能发生RSU切换，因此丢包总包数可能大于数据包的总包数
+	* 累积状态，reset不重置
+	*/
+	int m_PackageLossNum;
+
+	/*
 	* 每个包的bit数量
 	*/
 	const std::vector<int> m_BitNumPerPackage;
@@ -71,6 +85,15 @@ private:
 	* 一个包只能被丢一次，因此用布尔值来标记，而不是用丢包次数来标记
 	*/
 	std::vector<bool> m_PackageIsLoss;
+
+	/*
+	* 丢包时距离信宿的距离
+	* 当没有发生RSU切换时，丢包次数不会超过总包数
+	* 但是当发生RSU切换时，由于需要重置，因此传输的总包数会大于总包数
+	* 此时丢包的总包数会大于总包数
+	* 累积状态，reset不重置
+	*/
+	std::vector<double> m_PackageLossDistance;
 
 	/*
 	* 回退窗初始大小
@@ -137,38 +160,6 @@ public:
 	Event(int t_VeUEId, int t_TTI, MessageType t_MessageType);
 
 	/*
-	* 返回消息类型
-	*/
-	MessageType getMessageType() { return m_MessageType; }
-
-	/*
-	* 返回剩余bit数量
-	*/
-	int getRemainBitNum() { return m_RemainBitNum; }
-
-	/*
-	* 返回当前包编号
-	*/
-	int getCurrentPackageIdx() { return m_CurrentPackageIdx; }
-
-	/*
-	* 返回丢包总数
-	*/
-	int getPacketLossCnt() {
-		return [=] {
-			int res = 0;
-			for (bool isLoss : m_PackageIsLoss)
-				res += isLoss ? 1 : 0;
-			return res;
-		}();
-	}
-
-	/*
-	* 判断是否完成事件的传输
-	*/
-	bool isFinished() { return m_IsFinished; }
-
-	/*
 	* 返回事件Id
 	*/
 	int getEventId() { return m_EventId; }
@@ -182,6 +173,41 @@ public:
 	* 返回事件触发时间
 	*/
 	int getTriggerTTI() { return m_TriggerTTI; }
+
+	/*
+	* 返回消息类型
+	*/
+	MessageType getMessageType() { return m_MessageType; }
+
+	/*
+	* 返回事件传输的包数目
+	*/
+	int getTransimitPackageNum() { return m_TransimitPackageNum; }
+
+	/*
+	* 返回总丢包数
+	*/
+	int getPacketLossNum() { return m_PackageLossNum; }
+
+	/*
+	* 判断是否完成事件的传输
+	*/
+	bool isFinished() { return m_IsFinished; }
+
+	/*
+	* 返回当前包编号
+	*/
+	int getCurrentPackageIdx() { return m_CurrentPackageIdx; }
+
+	/*
+	* 返回剩余bit数量
+	*/
+	int getRemainBitNum() { return m_RemainBitNum; }
+
+	/*
+	* 返回记录丢包时的距离的容器，返回一个拷贝，避免对原对象更改
+	*/
+	std::vector<double> getPackageLossDistanceVec() { return m_PackageLossDistance; }
 
 	/*
 	* 返回冲突次数
@@ -236,9 +262,9 @@ public:
 	void conflict();
 
 	/*
-	* 记录当前传输的包发生丢包
+	* 当前传输的包发生丢包的状态更新
 	*/
-	void packetLoss() { m_PackageIsLoss[m_CurrentPackageIdx] = true; }
+	void packetLoss(double t_Distance);
 
 	/*
 	* 生成格式化的字符串

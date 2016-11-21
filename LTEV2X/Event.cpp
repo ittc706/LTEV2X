@@ -17,6 +17,8 @@ Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
 	m_TriggerTTI(t_TTI),
 	m_MessageType(t_MessageType),
 	m_PackageNum(gc_MessagePackageNum[t_MessageType]),
+	m_TransimitPackageNum(0),
+	m_PackageLossNum(0),
 	m_BitNumPerPackage(gc_MessageBitNumPerPackage[t_MessageType]),
 	m_IsFinished(false),
 	m_CurrentPackageIdx(0),
@@ -49,17 +51,9 @@ bool Event::tryAcccess() {
 	return false;
 }
 
-
-void Event::conflict() {
-	uniform_int_distribution<int> u(1, m_CurWindowSize);
-	m_CurWindowSize = min(m_MaxWindowSize, m_CurWindowSize * 2);
-	m_WithdrawalTime = u(s_Engine);
-	m_ConflictNum++;
-}
-
-
 int Event::transimit(int t_TransimitMaxBitNum) {
 	if (t_TransimitMaxBitNum >= m_RemainBitNum) {//当前package传输完毕
+		++m_TransimitPackageNum;
 		int temp = m_RemainBitNum;
 		if (++m_CurrentPackageIdx == m_PackageNum) {//若当前package是最后一个package，那么说明传输成功
 			m_RemainBitNum = 0;
@@ -75,6 +69,20 @@ int Event::transimit(int t_TransimitMaxBitNum) {
 	}
 }
 
+void Event::conflict() {
+	uniform_int_distribution<int> u(1, m_CurWindowSize);
+	m_CurWindowSize = min(m_MaxWindowSize, m_CurWindowSize * 2);
+	m_WithdrawalTime = u(s_Engine);
+	m_ConflictNum++;
+}
+
+void Event::packetLoss(double t_Distance) {
+	if (!m_PackageIsLoss[m_CurrentPackageIdx]) {
+		m_PackageIsLoss[m_CurrentPackageIdx] = true;
+		m_PackageLossDistance.push_back(t_Distance);
+		++m_PackageLossNum;
+	}
+}
 
 string Event::toString() {
 	string s;

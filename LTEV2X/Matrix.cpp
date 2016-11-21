@@ -563,7 +563,7 @@ string Matrix::toString() {
 void Matrix::print(ostream&t_Out, int t_NumEnter) {
 	t_Out << toString();
 	for (int i = 0; i < t_NumEnter; i++)
-		cout << endl;
+		t_Out << endl;
 }
 
 

@@ -25,15 +25,15 @@
 
 using namespace std;
 
-TMC_B::TMC_B(int &t_TTI, 
-	SystemConfig& t_Config, 
-	RSU* t_RSUAry, 
-	VeUE* t_VeUEAry, 
-	vector<Event>& t_EventVec, 
-	vector<list<int>>& t_EventTTIList, 
+TMC_B::TMC_B(int &t_TTI,
+	SystemConfig& t_Config,
+	RSU* t_RSUAry,
+	VeUE* t_VeUEAry,
+	vector<Event>& t_EventVec,
+	vector<list<int>>& t_EventTTIList,
 	vector<vector<int>>& t_TTIRSUThroughput) :
 	TMC_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput) {
-	
+
 	//事件链表容器初始化
 	m_EventTTIList = vector<list<int>>(m_Config.NTTI);
 
@@ -60,7 +60,7 @@ void TMC_B::buildEventList(ofstream& t_File) {
 
 	default_random_engine dre;//随机数引擎
 	dre.seed((unsigned)time(NULL));//iomanip
-	uniform_real_distribution<double> urd(0, 1);//随机数分布
+	uniform_real_distribution<double> urd(0, 1);
 
 
 	//首先生成各个车辆的周期性事件的起始时刻(相对时刻，即[0 , m_Config.periodicEventNTTI)
@@ -173,7 +173,7 @@ void TMC_B::buildEventList(ofstream& t_File) {
 		}
 		startTTIOfEachPeriod += m_Config.periodicEventNTTI;
 	}
-	
+
 	//打印事件链表
 	writeEventListInfo(t_File);
 }
@@ -192,7 +192,6 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	* 否则当数据量不大时，可能写完数据，文件还是空的
 	*-----------------------ATTENTION-----------------------*/
 
-
 	//统计成功传输的事件数目
 	m_TransimitSucceedEventNumPerEventType = vector<int>(3);
 	for (Event &event : m_EventVec) {
@@ -208,21 +207,15 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 				m_TransimitSucceedEventNumPerEventType[2]++;
 				break;
 			}
-		}	
+		}
 	}
-	int totalSucceededPackageNum = [=] {
-		int res = 0;
-		res += m_TransimitSucceedEventNumPerEventType[0] * gc_MessagePackageNum[0];
-		res += m_TransimitSucceedEventNumPerEventType[1] * gc_MessagePackageNum[1];
-		res += m_TransimitSucceedEventNumPerEventType[2] * gc_MessagePackageNum[2];
-		return res;
-	}();
+
 
 	cout << "成功传输统计" << endl;
 	for (int num : m_TransimitSucceedEventNumPerEventType)
 		cout << num << endl;
 
-	
+
 	//统计等待时延
 	for (Event &event : m_EventVec)
 		if (event.isFinished()) {
@@ -244,7 +237,7 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	t_FilePeriodDelay << ssPeriod.str() << endl;
 	t_FileDataDelay << ssData.str() << endl;
 
-	
+
 	//统计传输时延
 	ssPeriod.str("");
 	ssEmergency.str("");
@@ -274,12 +267,12 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 		t_FileEmergencyPossion << num << " ";
 	t_FileEmergencyPossion << endl;//这里很关键，将缓存区的数据刷新到流中
 
-	//统计数据业务事件分布情况
+								   //统计数据业务事件分布情况
 	for (int num : m_VeUEDataNum)
 		t_FileDataPossion << num << " ";
 	t_FileDataPossion << endl;//这里很关键，将缓存区的数据刷新到流中
 
-	//统计冲突情况
+							  //统计冲突情况
 	ssPeriod.str("");
 	ssEmergency.str("");
 	ssData.str("");
@@ -309,29 +302,30 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	for (int tmpTTI = 0; tmpTTI < m_Config.NTTI; tmpTTI++) {
 		for (int tmpRSUId = 0; tmpRSUId < m_Config.RSUNum; tmpRSUId++) {
 			tmpTTIThroughput[tmpTTI] += m_TTIRSUThroughput[tmpTTI][tmpRSUId];
-			tmpRSUThroughput[tmpRSUId]+= m_TTIRSUThroughput[tmpTTI][tmpRSUId];
+			tmpRSUThroughput[tmpRSUId] += m_TTIRSUThroughput[tmpTTI][tmpRSUId];
 		}
 	}
 
 	//以TTI为单位统计吞吐率
-	for (int throughput : tmpTTIThroughput) 
+	for (int throughput : tmpTTIThroughput)
 		g_FileTTIThroughput << throughput << " ";
 	g_FileTTIThroughput << endl;
 
 	//以RSU为单位统计吞吐率
-	for (int throughput : tmpRSUThroughput) 
-		g_FileRSUThroughput<< throughput << " ";
+	for (int throughput : tmpRSUThroughput)
+		g_FileRSUThroughput << throughput << " ";
 	g_FileRSUThroughput << endl;
 
 
 	//统计丢包率
+	int transimitPackageNum = 0;
 	int lossPacketNum = 0;
-	for (int eventId = 0; eventId < Event::s_EventCount; eventId++) {
-		if (m_EventVec[eventId].isFinished()) {
-			lossPacketNum += m_EventVec[eventId].getPacketLossCnt();
-		}
+	for (Event &event : m_EventVec) {
+		transimitPackageNum += event.getTransimitPackageNum();
+		lossPacketNum += event.getPacketLossNum();
 	}
-	cout << "丢包率: " << (double)lossPacketNum / (double)totalSucceededPackageNum;
+
+	cout << "丢包率: " << (double)lossPacketNum / (double)transimitPackageNum;
 }
 
 void TMC_B::writeEventListInfo(ofstream &t_File) {
@@ -345,6 +339,7 @@ void TMC_B::writeEventListInfo(ofstream &t_File) {
 		t_File << "}\n\n" << endl;
 	}
 }
+
 void TMC_B::writeEventLogInfo(ofstream &t_File) {
 	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
 		string s;

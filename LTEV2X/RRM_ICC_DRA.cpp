@@ -83,13 +83,13 @@ void RRM_ICC_DRA::schedule() {
 	//请求地理拓扑单元计算干扰响应矩阵
 	transimitPreparation();
 
-	//模拟传输开始，更新调度信息
+	//传输开始
 	transimitStart();
 
 	//写入调度信息
 	writeScheduleInfo(g_FileScheduleInfo);
 
-	//模拟传输结束，统计吞吐量
+	//传输结束
 	transimitEnd();
 }
 
@@ -499,7 +499,12 @@ void RRM_ICC_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 						curSINR = m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx];
 
 					//记录调度信息
-					if (curSINR < gc_CriticalPoint) m_EventVec[info->eventId].packetLoss();//记录丢包
+					if (curSINR < gc_CriticalPoint) {
+						//记录丢包
+						double tmpDistance = 0;//<UNDONE>
+						m_EventVec[info->eventId].packetLoss(tmpDistance);
+					}
+
 					info->transimitBitNum = maxEquivalentBitNum;
 					info->currentPackageIdx = m_EventVec[info->eventId].getCurrentPackageIdx();
 					info->remainBitNum = m_EventVec[info->eventId].getRemainBitNum();
@@ -513,12 +518,42 @@ void RRM_ICC_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					//更新日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMITTING, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMITTING, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+
 				}
 			}
 		}
-
 	}
 	Delete::safeDelete(copyWTPoint);//getCopy是通过new创建的，因此这里释放资源
+}
+
+
+void RRM_ICC_DRA::writeScheduleInfo(ofstream& t_File) {
+	t_File << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
+	t_File << "{" << endl;
+	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+
+		RSU &_RSU = m_RSUAry[RSUId];
+		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+			t_File << "    RSU[" << _RSU.m_GTT->m_RSUId << "] :" << endl;
+			t_File << "    {" << endl;
+			t_File << "        Cluster[" << clusterIdx << "] :" << endl;
+			t_File << "        {" << endl;
+			for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
+				t_File << "            Pattern[ " << left << setw(3) << patternIdx << "] : " << endl;
+				bool isAvaliable = _RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx];
+				if (!isAvaliable) {
+					RSU::RRM::ScheduleInfo* &info = *(_RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
+					if (info == nullptr) throw Exp("logic error");
+					t_File << info->toScheduleString(3) << endl;
+				}
+			}
+			t_File << "        }" << endl;
+			t_File << "    }" << endl;
+		}
+
+	}
+	t_File << "}" << endl;
+	t_File << "\n\n" << endl;
 }
 
 
@@ -556,37 +591,6 @@ void RRM_ICC_DRA::transimitEnd() {
 		}
 	}
 }
-
-
-void RRM_ICC_DRA::writeScheduleInfo(ofstream& t_File) {
-	t_File << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
-	t_File << "{" << endl;
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-
-		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			t_File << "    RSU[" << _RSU.m_GTT->m_RSUId << "] :" << endl;
-			t_File << "    {" << endl;
-			t_File << "        Cluster[" << clusterIdx << "] :" << endl;
-			t_File << "        {" << endl;
-			for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
-				t_File << "            Pattern[ " << left << setw(3) << patternIdx << "] : " << endl;
-				bool isAvaliable = _RSU.m_RRM_ICC_DRA->m_PatternIsAvailable[clusterIdx][patternIdx];
-				if (!isAvaliable) {
-					RSU::RRM::ScheduleInfo* &info = *(_RSU.m_RRM_ICC_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
-					if (info == nullptr) throw Exp("logic error");
-					t_File << info->toScheduleString(3) << endl;
-				}
-			}
-			t_File << "        }" << endl;
-			t_File << "    }" << endl;
-		}
-
-	}
-	t_File << "}" << endl;
-	t_File << "\n\n" << endl;
-}
-
 
 void RRM_ICC_DRA::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description) {
 	stringstream ss;

@@ -151,13 +151,13 @@ private:
 	void transimitPreparation();
 
 	/*
-	* 模拟传输开始，更新调度信息，累计吞吐量
+	* 传输开始
 	*/
 	void transimitStart();
 	void transimitStartThread(int t_FromRSUId, int t_ToRSUId);
 
 	/*
-	* 模拟传输结束，更新状态
+	* 传输结束
 	*/
 	void transimitEnd();
 

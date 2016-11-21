@@ -769,7 +769,11 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 						curSINR = m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx];
 
 					//记录调度信息
-					if (curSINR < gc_CriticalPoint) m_EventVec[info->eventId].packetLoss();//记录丢包
+					if (curSINR < gc_CriticalPoint) {
+						//记录丢包
+						double tmpDistance = 0;//<UNDONE>
+						m_EventVec[info->eventId].packetLoss(tmpDistance);
+					}
 					info->transimitBitNum = maxEquivalentBitNum;
 					info->currentPackageIdx = m_EventVec[info->eventId].getCurrentPackageIdx();
 					info->remainBitNum = m_EventVec[info->eventId].getRemainBitNum();
@@ -819,7 +823,11 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					curSINR = m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx];
 
 				//记录调度信息
-				if (curSINR < gc_CriticalPoint) m_EventVec[info->eventId].packetLoss();//记录丢包
+				if (curSINR < gc_CriticalPoint) {
+					//记录丢包
+					double tmpDistance = 0;//<UNDONE>
+					m_EventVec[info->eventId].packetLoss(tmpDistance);
+				}
 				info->transimitBitNum = maxEquivalentBitNum;
 				info->currentPackageIdx = m_EventVec[info->eventId].getCurrentPackageIdx();
 				info->remainBitNum = m_EventVec[info->eventId].getRemainBitNum();
