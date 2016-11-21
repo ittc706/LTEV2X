@@ -29,8 +29,8 @@ using namespace std;
 
 RRM_RR::RRM_RR(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
 	RRM_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
-	
-	m_InterferenceVec = vector<vector<list<int>>>(m_Config.VeUENum,vector<list<int>>(ns_RRM_RR::gc_TotalPatternNum));
+
+	m_InterferenceVec = vector<vector<list<int>>>(m_Config.VeUENum, vector<list<int>>(ns_RRM_RR::gc_TotalPatternNum));
 
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
@@ -79,7 +79,7 @@ void RRM_RR::schedule() {
 	//开始本次调度
 	roundRobin();
 
-    //统计时延信息
+	//统计时延信息
 	delaystatistics();
 
 	//统计干扰信息
@@ -98,7 +98,7 @@ void RRM_RR::schedule() {
 
 
 void RRM_RR::informationClean() {
-	
+
 }
 
 
@@ -145,7 +145,8 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 				int eventId = *it;
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 				bool isEmergency = m_EventVec[eventId].getMessageType() == EMERGENCY;
-				if (m_VeUEAry[VeUEId].m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {//该VeUE已经不在该RSU范围内
+				//该VeUE已经不在该RSU范围内
+				if (m_VeUEAry[VeUEId].m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {
 
 					//将其添加到System级别的RSU切换链表中
 					_RSU.m_RRM_RR->pushToSwitchEventIdList(eventId, m_SwitchEventIdList);
@@ -160,8 +161,9 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
 				}
-				else if (m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx != clusterIdx) {//仍然处于当前RSU范围内，但是位于不同的簇
-				   //将其转移到当前RSU的其他簇内
+				//仍然处于当前RSU范围内，但是位于不同的簇
+				else if (m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx != clusterIdx) {
+					//将其转移到当前RSU的其他簇内
 					_RSU.m_RRM_RR->pushToWaitEventIdList(isEmergency, m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId);
 
 					//将其从等待链表中删除
@@ -210,7 +212,7 @@ void RRM_RR::roundRobin() {
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
 			int patternIdx = 0;
 			list<int>::iterator it = _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].begin();
-			while (it!= _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end() && patternIdx < ns_RRM_RR::gc_TotalPatternNum) {
+			while (it != _RSU.m_RRM_RR->m_WaitEventIdList[clusterIdx].end() && patternIdx < ns_RRM_RR::gc_TotalPatternNum) {
 				int eventId = *it;
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 				_RSU.m_RRM_RR->pushToTransimitScheduleInfoTable(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx));
@@ -256,11 +258,11 @@ void RRM_RR::transimitPreparation() {
 				int curVeUEId = curInfo->VeUEId;
 				for (int otherClusterIdx = 0; otherClusterIdx < _RSU.m_GTT->m_ClusterNum; otherClusterIdx++) {
 					if (otherClusterIdx == clusterIdx)continue;
-					RSU::RRM::ScheduleInfo *&otherInfo= _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[otherClusterIdx][patternIdx];
+					RSU::RRM::ScheduleInfo *&otherInfo = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[otherClusterIdx][patternIdx];
 					if (otherInfo == nullptr) continue;
 					int otherVeUEId = otherInfo->VeUEId;
 					m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
-				}		
+				}
 			}
 		}
 	}
@@ -274,7 +276,7 @@ void RRM_RR::transimitPreparation() {
 			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
 
 			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
-			
+
 			if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx]>0) {
 				g_FileTemp << "VeUEId: " << VeUEId << " [";
 				for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
@@ -435,7 +437,8 @@ void RRM_RR::transimitEnd() {
 				RSU::RRM::ScheduleInfo* &info = _RSU.m_RRM_RR->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
 
-				if (m_EventVec[info->eventId].isFinished()) {//说明已经传输完毕
+				//说明已经传输完毕
+				if (m_EventVec[info->eventId].isFinished()) {
 
 					//更新日志
 					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
