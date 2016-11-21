@@ -56,10 +56,14 @@ public:
 	/*
 	* 仿真结束后统计各种数据
 	*/
-	void processStatistics(std::ofstream& t_FileEmergencyDelay, std::ofstream& t_FilePeriodDelay, std::ofstream& t_FileDataDelay,
+	void processStatistics(
+		std::ofstream& t_FileStatisticsDescription,
+		std::ofstream& t_FileEmergencyDelay, std::ofstream& t_FilePeriodDelay, std::ofstream& t_FileDataDelay,
 		std::ofstream& t_FileEmergencyPossion, std::ofstream& t_FileDataPossion,
 		std::ofstream& t_FileEmergencyConflict, std::ofstream& t_FilePeriodConflict, std::ofstream& t_FileDataConflict,
-		std::ofstream& t_FileEventLog) override;
+		std::ofstream& t_FilePackageLoss,
+		std::ofstream& t_FileEventLog
+	) override;
 
 private:
 	/*

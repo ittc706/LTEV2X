@@ -28,13 +28,11 @@ public:
 	*/
 	double m_AbsX, m_AbsY;
 	
-    //<UNDONE>
 	/*
 	* 该基站中的RSU容器(存储RSU的Id)
 	*/
 	std::list<int> m_RSUIdList;
 
-	//<UNDONE>
 	/*
 	* 该基站中的VeUE容器(存储VeUE的Id)
 	*/

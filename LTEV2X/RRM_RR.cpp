@@ -377,7 +377,7 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				//记录调度信息
 				if (curSINR < gc_CriticalPoint) {
 					//记录丢包
-					double tmpDistance = 0;//<UNDONE>
+					double tmpDistance = m_VeUEAry[VeUEId].m_GTT->m_Distance[RSUId];
 					m_EventVec[info->eventId].packetLoss(tmpDistance);
 				}
 				info->transimitBitNum = maxEquivalentBitNum;

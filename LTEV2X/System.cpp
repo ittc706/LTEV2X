@@ -46,9 +46,12 @@ void System::process() {
 	cout.unsetf(ios::fixed);
 
 	//处理各项业务时延数据
-	m_TMCPoint->processStatistics(g_FileEmergencyDelayStatistics, g_FilePeriodDelayStatistics, g_FileDataDelayStatistics,
+	m_TMCPoint->processStatistics(
+		g_FileStatisticsDescription,
+		g_FileEmergencyDelayStatistics, g_FilePeriodDelayStatistics, g_FileDataDelayStatistics,
 		g_FileEmergencyPossion, g_FileDataPossion,
 		g_FileEmergencyConflictNum, g_FilePeriodConflictNum, g_FileDataConflictNum,
+		g_FilePackageLoss,
 		g_FileEventLogInfo);
 
 	//打印车辆地理位置更新日志信息

@@ -78,8 +78,12 @@ public:
 	/*
 	* 仿真结束后统计各种数据
 	*/
-	virtual void processStatistics(std::ofstream& t_FileEmergencyDelay, std::ofstream& t_FilePeriodDelay, std::ofstream& t_FileDataDelay, 
+	virtual void processStatistics(
+		std::ofstream& t_FileStatisticsDescription,
+		std::ofstream& t_FileEmergencyDelay, std::ofstream& t_FilePeriodDelay, std::ofstream& t_FileDataDelay, 
 		std::ofstream& t_FileEmergencyPossion, std::ofstream& t_FileDataPossion, 
 		std::ofstream& t_FileEmergencyConflict, std::ofstream& t_FilePeriodConflict, std::ofstream& t_FileDataConflict,
-		std::ofstream& t_FileEventLog)=0;
+		std::ofstream& t_FilePackageLoss,
+		std::ofstream& t_FileEventLog
+	)=0;
 };

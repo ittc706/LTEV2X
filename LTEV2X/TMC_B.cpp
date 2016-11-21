@@ -178,9 +178,12 @@ void TMC_B::buildEventList(ofstream& t_File) {
 	writeEventListInfo(t_File);
 }
 
-void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePeriodDelay, ofstream& t_FileDataDelay,
+void TMC_B::processStatistics(
+	ofstream& t_FileStatisticsDescription,
+	ofstream& t_FileEmergencyDelay, ofstream& t_FilePeriodDelay, ofstream& t_FileDataDelay,
 	ofstream& t_FileEmergencyPossion, ofstream& t_FileDataPossion,
 	ofstream& t_FileEmergencyConflict, ofstream& t_FilePeriodConflict, ofstream& t_FileDataConflict,
+	ofstream& t_FilePackageLoss,
 	ofstream& t_FileEventLog) {
 
 	stringstream ssPeriod;
@@ -192,7 +195,7 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	* 否则当数据量不大时，可能写完数据，文件还是空的
 	*-----------------------ATTENTION-----------------------*/
 
-	//统计成功传输的事件数目
+	/*------------------统计成功传输的事件数目------------------*/
 	m_TransimitSucceedEventNumPerEventType = vector<int>(3);
 	for (Event &event : m_EventVec) {
 		if (event.isFinished()) {
@@ -211,12 +214,11 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	}
 
 
-	cout << "成功传输统计" << endl;
-	for (int num : m_TransimitSucceedEventNumPerEventType)
-		cout << num << endl;
+	t_FileStatisticsDescription << "<EmergencyEventNum>" << m_TransimitSucceedEventNumPerEventType[EMERGENCY] << "</EmergencyEventNum>" << endl;
+	t_FileStatisticsDescription << "<PeriodEventNum>" << m_TransimitSucceedEventNumPerEventType[PERIOD] << "</PeriodEventNum>" << endl;
+	t_FileStatisticsDescription << "<DataEventNum>" << m_TransimitSucceedEventNumPerEventType[DATA] << "</DataEventNum>" << endl;
 
-
-	//统计等待时延
+	/*------------------统计等待时延------------------*/
 	for (Event &event : m_EventVec)
 		if (event.isFinished()) {
 			switch (event.getMessageType()) {
@@ -238,7 +240,7 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	t_FileDataDelay << ssData.str() << endl;
 
 
-	//统计传输时延
+	/*------------------统计传输时延------------------*/
 	ssPeriod.str("");
 	ssEmergency.str("");
 	ssData.str("");
@@ -262,7 +264,8 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	t_FilePeriodDelay << ssPeriod.str() << endl;
 	t_FileDataDelay << ssData.str() << endl;
 
-	//统计紧急事件分布情况
+
+	/*------------------统计紧急事件分布情况------------------*/
 	for (int num : m_VeUEEmergencyNum)
 		t_FileEmergencyPossion << num << " ";
 	t_FileEmergencyPossion << endl;//这里很关键，将缓存区的数据刷新到流中
@@ -296,7 +299,7 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	t_FileDataConflict << ssData.str() << endl;
 	writeEventLogInfo(t_FileEventLog);
 
-	//统计吞吐率
+	/*------------------统计吞吐率------------------*/
 	vector<int> tmpTTIThroughput(m_Config.NTTI);
 	vector<int> tmpRSUThroughput(m_Config.RSUNum);
 	for (int tmpTTI = 0; tmpTTI < m_Config.NTTI; tmpTTI++) {
@@ -317,15 +320,17 @@ void TMC_B::processStatistics(ofstream& t_FileEmergencyDelay, ofstream& t_FilePe
 	g_FileRSUThroughput << endl;
 
 
-	//统计丢包率
+	/*------------------统计丢包率------------------*/
 	int transimitPackageNum = 0;
 	int lossPacketNum = 0;
 	for (Event &event : m_EventVec) {
 		transimitPackageNum += event.getTransimitPackageNum();
 		lossPacketNum += event.getPacketLossNum();
+		for (double &d : event.getPackageLossDistanceVec())
+			t_FilePackageLoss << d << endl;
 	}
-
-	cout << "丢包率: " << (double)lossPacketNum / (double)transimitPackageNum;
+	t_FileStatisticsDescription << "<TransimitPackageNum>" << transimitPackageNum <<"</TransimitPackageNum>"<< endl;
+	t_FileStatisticsDescription << "<PackageLossRate>" << (double)lossPacketNum / (double)transimitPackageNum << "</PackageLossRate>" << endl;
 }
 
 void TMC_B::writeEventListInfo(ofstream &t_File) {

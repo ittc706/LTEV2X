@@ -166,7 +166,7 @@ void GTT_Urban::channelGeneration() {
 	m_VeUENumPerRSU.push_back(curVeUENum);
 
 
-	//<UNDONE>
+	//<UNDONE>:基站类的RSUIDList在哪里维护的?
 	//更新基站的VeUE容器
 	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
 		eNB &_eNB = m_eNBAry[eNBId];
@@ -176,7 +176,6 @@ void GTT_Urban::channelGeneration() {
 			}
 		}
 	}
-	//<UNDONE>
 }
 
 

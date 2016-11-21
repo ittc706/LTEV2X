@@ -2,7 +2,11 @@ clear all;
 close all;
 clc;
 
+%% 解析标签数据
+fid=fopen('StatisticsDescription.txt','r');
+Description=fscanf(fid,'%s');
 
+[start,endd,extents,match,tokens,names]=regexp(Description,'<([^<>]*)>([^<>]*)</([^<>]*)>')
 
 figId=1;%图的Id
 
@@ -151,3 +155,17 @@ grid on;
 
 
 
+
+%% PRR
+PackageLossDistance=load('PackageLoss.txt');
+[numPackageLossDistance,centerPackageLossDistance]=hist(PackageLossDistance',0:10:500);
+
+numPackageLossDistance=numPackageLossDistance/6307;
+
+figure(figId)
+figId=figId+1;
+plot(centerPackageLossDistance,numPackageLossDistance,'bo-','LineWidth',2);
+title('PDR','LineWidth',2);
+xlabel('Drop Rate','LineWidth',2);
+ylabel('Distance(m)','LineWidth',2);
+grid on;

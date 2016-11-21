@@ -23,6 +23,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileTTILogInfo.open("Log\\RRMLog\\TTILogInfo.txt");
 		g_FileEventLogInfo.open("Log\\RRMLog\\EventLogInfo.txt");
 		//TMC_BÄ£¿é
+		g_FileStatisticsDescription.open("Log\\TMCLog\\StatisticsDescription.txt");
 		g_FileEmergencyDelayStatistics.open("Log\\TMCLog\\EmergencyDelayStatistics.txt");
 		g_FilePeriodDelayStatistics.open("Log\\TMCLog\\PeriodDelayStatistics.txt");
 		g_FileDataDelayStatistics.open("Log\\TMCLog\\DataDelayStatistics.txt");
@@ -33,6 +34,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileDataConflictNum.open("Log\\TMCLog\\DataConflictNum.txt");
 		g_FileTTIThroughput.open("Log\\TMCLog\\TTIThroughput.txt");
 		g_FileRSUThroughput.open("Log\\TMCLog\\RSUThroughput.txt");
+		g_FilePackageLoss.open("Log\\TMCLog\\PackageLoss.txt");
 	}
 	else {
 		/*===========================================
@@ -50,6 +52,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileTTILogInfo.open("Log/RRMLog/TTILogInfo.txt");
 		g_FileEventLogInfo.open("Log/RRMLog/EventLogInfo.txt");
 		//TMC_BÄ£¿é
+		g_FileStatisticsDescription.open("Log/TMCLog/StatisticsDescription.txt");
 		g_FileEmergencyDelayStatistics.open("Log/TMCLog/EmergencyDelayStatistics.txt");
 		g_FilePeriodDelayStatistics.open("Log/TMCLog/PeriodDelayStatistics.txt");
 		g_FileDataDelayStatistics.open("Log/TMCLog/DataDelayStatistics.txt");
@@ -60,6 +63,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileDataConflictNum.open("Log/TMCLog/DataConflictNum.txt");
 		g_FileTTIThroughput.open("Log/TMCLog/TTIThroughput.txt");
 		g_FileRSUThroughput.open("Log/TMCLog/RSUThroughput.txt");
+		g_FilePackageLoss.open("Log/TMCLog/PackageLoss.txt");
 	}
 
 }
@@ -75,6 +79,7 @@ ofstream g_FileEventListInfo;
 ofstream g_FileTTILogInfo;
 ofstream g_FileEventLogInfo;
 //TMC_BÄ£¿é
+ofstream g_FileStatisticsDescription;
 ofstream g_FileEmergencyDelayStatistics;
 ofstream g_FilePeriodDelayStatistics;
 ofstream g_FileDataDelayStatistics;
@@ -85,6 +90,7 @@ ofstream g_FilePeriodConflictNum;
 ofstream g_FileDataConflictNum;
 ofstream g_FileTTIThroughput;
 ofstream g_FileRSUThroughput;
+ofstream g_FilePackageLoss;
 
 
 
