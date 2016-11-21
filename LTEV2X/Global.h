@@ -32,6 +32,7 @@ extern std::ofstream g_FileDataConflictNum;
 extern std::ofstream g_FileTTIThroughput;
 extern std::ofstream g_FileRSUThroughput;
 extern std::ofstream g_FilePackageLoss;
+extern std::ofstream g_FilePackageTransimit;
 
 void logFileConfig(Platform t_Platform);
 

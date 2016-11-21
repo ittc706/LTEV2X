@@ -35,6 +35,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileTTIThroughput.open("Log\\TMCLog\\TTIThroughput.txt");
 		g_FileRSUThroughput.open("Log\\TMCLog\\RSUThroughput.txt");
 		g_FilePackageLoss.open("Log\\TMCLog\\PackageLoss.txt");
+		g_FilePackageTransimit.open("Log\\TMCLog\\PackageTransimit.txt");
 	}
 	else {
 		/*===========================================
@@ -64,6 +65,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileTTIThroughput.open("Log/TMCLog/TTIThroughput.txt");
 		g_FileRSUThroughput.open("Log/TMCLog/RSUThroughput.txt");
 		g_FilePackageLoss.open("Log/TMCLog/PackageLoss.txt");
+		g_FilePackageTransimit.open("Log/TMCLog/PackageTransimit.txt");
 	}
 
 }
@@ -91,6 +93,7 @@ ofstream g_FileDataConflictNum;
 ofstream g_FileTTIThroughput;
 ofstream g_FileRSUThroughput;
 ofstream g_FilePackageLoss;
+ofstream g_FilePackageTransimit;
 
 
 

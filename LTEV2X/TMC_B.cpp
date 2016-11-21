@@ -183,7 +183,7 @@ void TMC_B::processStatistics(
 	ofstream& t_FileEmergencyDelay, ofstream& t_FilePeriodDelay, ofstream& t_FileDataDelay,
 	ofstream& t_FileEmergencyPossion, ofstream& t_FileDataPossion,
 	ofstream& t_FileEmergencyConflict, ofstream& t_FilePeriodConflict, ofstream& t_FileDataConflict,
-	ofstream& t_FilePackageLoss,
+	ofstream& t_FilePackageLoss, ofstream& t_FilePackageTransimit,
 	ofstream& t_FileEventLog) {
 
 	stringstream ssPeriod;
@@ -328,6 +328,8 @@ void TMC_B::processStatistics(
 		lossPacketNum += event.getPacketLossNum();
 		for (double &d : event.getPackageLossDistanceVec())
 			t_FilePackageLoss << d << endl;
+		for (double &d : event.getPackageTransimitDistanceVec())
+			g_FilePackageTransimit << d << endl;
 	}
 	t_FileStatisticsDescription << "<TransimitPackageNum>" << transimitPackageNum <<"</TransimitPackageNum>"<< endl;
 	t_FileStatisticsDescription << "<PackageLossRate>" << (double)lossPacketNum / (double)transimitPackageNum << "</PackageLossRate>" << endl;

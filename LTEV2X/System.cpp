@@ -51,7 +51,7 @@ void System::process() {
 		g_FileEmergencyDelayStatistics, g_FilePeriodDelayStatistics, g_FileDataDelayStatistics,
 		g_FileEmergencyPossion, g_FileDataPossion,
 		g_FileEmergencyConflictNum, g_FilePeriodConflictNum, g_FileDataConflictNum,
-		g_FilePackageLoss,
+		g_FilePackageLoss, g_FilePackageTransimit,
 		g_FileEventLogInfo);
 
 	//打印车辆地理位置更新日志信息

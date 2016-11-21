@@ -164,14 +164,19 @@ grid on;
 
 %% PRR
 PackageLossDistance=load('PackageLoss.txt');
-[numPackageLossDistance,centerPackageLossDistance]=hist(PackageLossDistance',0:10:500);
+PackageTransimitDistance=load('PackageTransimit.txt');
 
-numPackageLossDistance=numPackageLossDistance/DescriptionMap('TransimitPackageNum');
+IntersectDistance=intersect(unique(PackageLossDistance),unique(PackageTransimitDistance));
+
+[numPackageLossDistance,centerPackageLossDistance]=hist(PackageLossDistance',IntersectDistance);
+[numPackageTransimitDistance,centerPackageTransimitDistance]=hist(PackageTransimitDistance',IntersectDistance);
+
+numPackageLossDistance=numPackageLossDistance./numPackageTransimitDistance;
 
 figure(figId)
 figId=figId+1;
 plot(centerPackageLossDistance,numPackageLossDistance,'bo-','LineWidth',2);
 title('PDR','LineWidth',2);
-xlabel('Drop Rate','LineWidth',2);
-ylabel('Distance(m)','LineWidth',2);
+xlabel('Distance(m)','LineWidth',2);
+ylabel('Drop Rate','LineWidth',2);
 grid on;

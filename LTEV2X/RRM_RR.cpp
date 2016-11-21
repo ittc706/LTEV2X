@@ -375,9 +375,9 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					curSINR = m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx];
 
 				//记录调度信息
+				double tmpDistance = m_VeUEAry[VeUEId].m_GTT->m_Distance[RSUId];
 				if (curSINR < gc_CriticalPoint) {
-					//记录丢包
-					double tmpDistance = m_VeUEAry[VeUEId].m_GTT->m_Distance[RSUId];
+					//记录丢包			
 					m_EventVec[info->eventId].packetLoss(tmpDistance);
 				}
 				info->transimitBitNum = maxEquivalentBitNum;
@@ -385,7 +385,7 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				info->remainBitNum = m_EventVec[info->eventId].getRemainBitNum();
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量，并更新信息状态
-				int realEquivalentBitNum = m_EventVec[info->eventId].transimit(maxEquivalentBitNum);
+				int realEquivalentBitNum = m_EventVec[info->eventId].transimit(maxEquivalentBitNum, tmpDistance);
 
 				//累计吞吐率
 				m_TTIRSUThroughput[m_TTI][_RSU.m_GTT->m_RSUId] += realEquivalentBitNum;

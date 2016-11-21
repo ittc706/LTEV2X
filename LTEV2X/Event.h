@@ -87,11 +87,23 @@ private:
 	std::vector<bool> m_PackageIsLoss;
 
 	/*
-	* 丢包时距离信宿的距离
+	* 记录包传输完毕后，车辆距离信宿的距离
+	* 注意，丢包也算是包传输完毕，只不过传输完毕后无法解码而已
+	* 包含m_PackageLossDistance
+	* 累积状态，reset不重置
+	*/
+	std::vector<double> m_PackageTransimitDistance;
+
+	/*
+	* 丢包时距离信宿的距离，用于分析PDR之用
 	* 当没有发生RSU切换时，丢包次数不会超过总包数
 	* 但是当发生RSU切换时，由于需要重置，因此传输的总包数会大于总包数
 	* 此时丢包的总包数会大于总包数
 	* 累积状态，reset不重置
+	* 于是对于给定一个距离d
+	*	m_PackageLossDistance中该值出现的次数为n1
+	*	m_PackageTransimitDistance中该值出现的次数为n2
+	*	n1/n2就是该距离下的一个丢包率
 	*/
 	std::vector<double> m_PackageLossDistance;
 
@@ -205,6 +217,11 @@ public:
 	int getRemainBitNum() { return m_RemainBitNum; }
 
 	/*
+	* 返回记录包传输完毕时的距离的容器，返回一个拷贝，避免对原对象更改
+	*/
+	std::vector<double> getPackageTransimitDistanceVec() { return m_PackageTransimitDistance; }
+
+	/*
 	* 返回记录丢包时的距离的容器，返回一个拷贝，避免对原对象更改
 	*/
 	std::vector<double> getPackageLossDistanceVec() { return m_PackageLossDistance; }
@@ -254,7 +271,7 @@ public:
 	* transimitMaxBitNum为本次该时频资源可传输的最大bit数
 	* 但本次传输的实际bit数可以小于该值，并返回实际传输的bit数量
 	*/
-	int transimit(int t_TransimitMaxBitNum);
+	int transimit(int t_TransimitMaxBitNum, double t_Distance);
 
 	/*
 	* 冲突之后更新信息状态

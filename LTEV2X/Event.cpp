@@ -51,8 +51,9 @@ bool Event::tryAcccess() {
 	return false;
 }
 
-int Event::transimit(int t_TransimitMaxBitNum) {
+int Event::transimit(int t_TransimitMaxBitNum, double t_Distance) {
 	if (t_TransimitMaxBitNum >= m_RemainBitNum) {//当前package传输完毕
+		m_PackageTransimitDistance.push_back(t_Distance);
 		++m_TransimitPackageNum;
 		int temp = m_RemainBitNum;
 		if (++m_CurrentPackageIdx == m_PackageNum) {//若当前package是最后一个package，那么说明传输成功
