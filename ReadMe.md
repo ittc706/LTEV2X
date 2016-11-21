@@ -1,9 +1,13 @@
-## version_2016_11_20(修改了TMC输出)
+## version_2016_11_21(修改matlab作图)
+* 增加了标签的解析
+* matlab的正则表达式类库是真他妈费劲
 
-## version_2016_11_20(修改了Event)
+## version_2016_11_21(修改了TMC输出)
+
+## version_2016_11_21(修改了Event)
 * 增加传输的总包数，以及丢包总包数的域，以及丢包时离RSU的距离，这些域都是累积的，reset不改变其状态
 
-## version_2016_11_20(RRM_RR增加了Access表)
+## version_2016_11_21(RRM_RR增加了Access表)
 
 ## version_2016_11_20(RRM_TDM_DRA模式也增加了冲突避让机制)
 * 有待检查

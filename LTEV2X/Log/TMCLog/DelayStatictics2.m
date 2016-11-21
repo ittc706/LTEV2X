@@ -6,7 +6,13 @@ clc;
 fid=fopen('StatisticsDescription.txt','r');
 Description=fscanf(fid,'%s');
 
-[start,endd,extents,match,tokens,names]=regexp(Description,'<([^<>]*)>([^<>]*)</([^<>]*)>')
+[tokens]=regexp(Description,'<([^<>]*)>([^<>]*)</([^<>]*)>', 'tokens');
+DescriptionNum=length(tokens);
+DescriptionMap=containers.Map();
+for iter=1:length(tokens)
+    DescriptionMap(cell2mat(tokens{iter}(1)))=str2double(cell2mat(tokens{iter}(2)));
+end
+
 
 figId=1;%Í¼µÄId
 
@@ -160,7 +166,7 @@ grid on;
 PackageLossDistance=load('PackageLoss.txt');
 [numPackageLossDistance,centerPackageLossDistance]=hist(PackageLossDistance',0:10:500);
 
-numPackageLossDistance=numPackageLossDistance/6307;
+numPackageLossDistance=numPackageLossDistance/DescriptionMap('TransimitPackageNum');
 
 figure(figId)
 figId=figId+1;
