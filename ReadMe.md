@@ -1,3 +1,5 @@
+## version_2016_11_20(RRM_RR增加了Access表)
+
 ## version_2016_11_20(RRM_TDM_DRA模式也增加了冲突避让机制)
 * 有待检查
 

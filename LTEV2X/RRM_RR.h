@@ -98,7 +98,7 @@ private:
 	/*
 	* 更新等待链表
 	*/
-	void updateAdmitEventIdList(bool t_ClusterFlag);
+	void updateAccessEventIdList(bool t_ClusterFlag);
 
 	/*
 	* 处理事件链表
@@ -115,6 +115,11 @@ private:
 	* 地理位置更新时，处理转接表
 	*/
 	void processSwitchListWhenLocationUpdate();
+
+	/*
+	* 处理等待链表，生成接入链表
+	*/
+	void processWaitEventIdList();
 
 	/*
 	* 轮询调度，分配当前TTI的资源(就是更新ScheduleTable)

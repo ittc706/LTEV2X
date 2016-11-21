@@ -475,6 +475,13 @@ public:
 		RSU* m_This;
 
 		/*
+		* RSU级别的接入列表
+		* 外层下标为簇编号
+		* 内层list存放的是处于等待接入状态的VeUEId
+		*/
+		std::vector<std::list<int>> m_AccessEventIdList;
+
+		/*
 		* RSU级别的等待列表
 		* 外层下标为簇编号
 		* 内层list存放的是处于等待接入状态的VeUEId
@@ -502,6 +509,11 @@ public:
 		* 生成格式化字符串
 		*/
 		std::string toString(int t_NumTab);
+
+		/*
+		* 将AccessVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+		*/
+		void pushToAccessEventIdList(int t_ClusterIdx, int t_EventId);
 
 		/*
 		* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
@@ -627,7 +639,10 @@ void RSU::RRM_ICC_DRA::pullFromScheduleInfoTable(int t_TTI) {
 }
 
 
-
+inline
+void RSU::RRM_RR::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
+	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
+}
 
 inline
 void RSU::RRM_RR::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
