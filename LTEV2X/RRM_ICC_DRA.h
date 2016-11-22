@@ -44,13 +44,13 @@ public:
 	* 地理拓扑单元模块指针
 	* 期间会调用地理拓扑单元来计算干扰信道响应
 	*/
-	GTT_Basic* m_GTTPoint;
+	GTT* m_GTTPoint;
 
 	/*
 	* 无线传输单元模块指针
 	* 期间会调用无线传输单元来计算SINR
 	*/
-	WT_Basic* m_WTPoint;
+	WT* m_WTPoint;
 
 	/*
 	* 用于存放进行RSU切换的车辆，暂时保存的作用
@@ -97,8 +97,8 @@ public:
 		std::vector<Event>& t_EventVec,
 		std::vector<std::list<int>>& t_EventTTIList,
 		std::vector<std::vector<int>>& t_TTIRSUThroughput,
-		GTT_Basic* t_GTTPoint,
-		WT_Basic* t_WTPoint,
+		GTT* t_GTTPoint,
+		WT* t_WTPoint,
 		int t_ThreadNum
 	);
 

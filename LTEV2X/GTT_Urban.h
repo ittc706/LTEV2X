@@ -18,7 +18,7 @@ public:
 };
 
 
-class GTT_Urban :public GTT_Basic {
+class GTT_Urban :public GTT {
 	/*------------------¾²Ì¬------------------*/
 public:
 	/*

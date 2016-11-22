@@ -1,9 +1,9 @@
 /*
 * =====================================================================================
 *
-*       Filename:  RRM_ICC_DRA.cpp
+*       Filename:  RRM.cpp
 *
-*    Description:  RRM_ICC_DRAÄ£¿é
+*    Description:  TMCÄ£¿é
 *
 *        Version:  1.0
 *        Created:
@@ -16,9 +16,11 @@
 * =====================================================================================
 */
 
+
 #include"RRM.h"
 #include"Function.h"
 
+using namespace std;
 
 RRM::~RRM() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)

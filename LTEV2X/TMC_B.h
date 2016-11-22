@@ -4,7 +4,7 @@
 
 //<TMC_B>: Traffic Model and Control Base
 
-class TMC_B :public TMC_Basic {
+class TMC_B :public TMC {
 	/*------------------”Ú------------------*/
 public:
 	/*

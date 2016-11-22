@@ -21,7 +21,7 @@
 
 using namespace std;
 
-WT_Basic::~WT_Basic() {
+WT::~WT() {
 	if (m_VeUEAry != nullptr) {
 		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
 			Delete::safeDelete(m_VeUEAry[VeUEId]);

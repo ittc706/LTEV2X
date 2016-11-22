@@ -131,7 +131,7 @@ public:
 };
 
 
-class GTT_Basic {
+class GTT {
 	/*------------------域------------------*/
 public:
 	/*
@@ -170,20 +170,20 @@ public:
 	/*
 	* 默认构造函数定义为删除
 	*/
-	GTT_Basic() = delete;
+	GTT() = delete;
 
 	/*
 	* 构造函数
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT_Basic(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry) :
+	GTT(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry) :
 		m_TTI(t_TTI), m_Config(t_Config), m_eNBAry(t_eNBAry), m_RoadAry(t_RoadAry), m_RSUAry(t_RSUAry) {}
 
 	/*
 	* 析构函数
 	*/
-	~GTT_Basic();
+	~GTT();
 
 	/*
 	* 模块参数配置

@@ -13,7 +13,7 @@ public:
 };
 
 
-class GTT_HighSpeed :public GTT_Basic {
+class GTT_HighSpeed :public GTT {
 	/*------------------¾²Ì¬------------------*/
 public:
 	/*

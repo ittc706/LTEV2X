@@ -1,3 +1,21 @@
+/*
+* =====================================================================================
+*
+*       Filename:  GTT_Urban.cpp
+*
+*    Description:  TMCÄ£¿é
+*
+*        Version:  1.0
+*        Created:
+*       Revision:
+*       Compiler:  VS_2015
+*
+*         Author:  LK,WYB
+*            LIB:  ITTC
+*
+* =====================================================================================
+*/
+
 #include<tuple>
 #include<iomanip>
 #include<iostream>
@@ -42,7 +60,7 @@ void GTT_Urban_VeUE::initialize(VeUEConfig &t_VeUEConfig) {
 default_random_engine GTT_Urban::s_Engine((unsigned)time(NULL));
 
 GTT_Urban::GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry) :
-	GTT_Basic(t_TTI, t_Config, t_eNBAry, t_RoadAry, t_RSUAry) {}
+	GTT(t_TTI, t_Config, t_eNBAry, t_RoadAry, t_RSUAry) {}
 
 
 void GTT_Urban::configure() {

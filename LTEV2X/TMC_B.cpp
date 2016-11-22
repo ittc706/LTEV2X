@@ -31,7 +31,7 @@ TMC_B::TMC_B(int &t_TTI,
 	vector<Event>& t_EventVec,
 	vector<list<int>>& t_EventTTIList,
 	vector<vector<int>>& t_TTIRSUThroughput) :
-	TMC_Basic(t_TTI, t_Config, t_RSUAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput) {
+	TMC(t_TTI, t_Config, t_RSUAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput) {
 
 	//事件链表容器初始化
 	m_EventTTIList = vector<list<int>>(m_Config.NTTI);

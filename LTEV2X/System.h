@@ -64,10 +64,10 @@ public:
 	* 模块控制器
 	* GTT模块，RRM模块，WT模块，TMC模块
 	*/
-	GTT_Basic* m_GTTPoint = nullptr;
+	GTT* m_GTTPoint = nullptr;
 	RRM* m_RRMPoint = nullptr;
-	TMC_Basic* m_TMCPoint = nullptr;
-	WT_Basic* m_WTPoint = nullptr;
+	TMC* m_TMCPoint = nullptr;
+	WT* m_WTPoint = nullptr;
 
 	/*
 	* 模块实现的具体类别

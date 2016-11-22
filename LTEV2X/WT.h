@@ -15,7 +15,7 @@ public:
 	void initialize() {}
 };
 
-class WT_Basic {
+class WT {
 	/*------------------域------------------*/
 public:
 	VeUE* m_This;
@@ -43,20 +43,20 @@ public:
 	/*
 	* 默认构造函数定义为删除
 	*/
-	WT_Basic() = delete;
+	WT() = delete;
 
 	/*
 	* 构造函数
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	WT_Basic(SystemConfig& t_Config, RSU* t_RSUAry, WTMode t_SINRMode) :
+	WT(SystemConfig& t_Config, RSU* t_RSUAry, WTMode t_SINRMode) :
 		m_Config(t_Config), m_RSUAry(t_RSUAry), m_SINRMode(t_SINRMode) {}
 
 	/*
 	* 析构函数
 	*/
-	~WT_Basic();
+	~WT();
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类
@@ -66,7 +66,7 @@ public:
 	/*
 	* 获取该模块的一个拷贝
 	*/
-	virtual WT_Basic* getCopy() = 0;
+	virtual WT* getCopy() = 0;
 
 	/*
 	* 释放该模块的拷贝

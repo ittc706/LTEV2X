@@ -30,9 +30,9 @@ using namespace std;
 
 default_random_engine WT_B::s_Engine(0);
 
-WT_B::WT_B(SystemConfig& t_Config, RSU* t_RSUAry, WTMode t_SINRMode) :WT_Basic(t_Config, t_RSUAry, t_SINRMode) {}
+WT_B::WT_B(SystemConfig& t_Config, RSU* t_RSUAry, WTMode t_SINRMode) :WT(t_Config, t_RSUAry, t_SINRMode) {}
 
-WT_B::WT_B(const WT_B& t_WT_B) : WT_Basic(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_SINRMode) {
+WT_B::WT_B(const WT_B& t_WT_B) : WT(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_SINRMode) {
 	m_QPSK_MI = t_WT_B.m_QPSK_MI;
 	m_VeUEAry = t_WT_B.m_VeUEAry;
 }
@@ -66,7 +66,7 @@ void WT_B::initialize() {
 }
 
 
-WT_Basic* WT_B::getCopy() {
+WT* WT_B::getCopy() {
 	return new WT_B(*this);
 }
 

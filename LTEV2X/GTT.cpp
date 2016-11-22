@@ -1,3 +1,21 @@
+/*
+* =====================================================================================
+*
+*       Filename:  GTT.cpp
+*
+*    Description:  TMCÄ£¿é
+*
+*        Version:  1.0
+*        Created:
+*       Revision:
+*       Compiler:  VS_2015
+*
+*         Author:  LK,WYB
+*            LIB:  ITTC
+*
+* =====================================================================================
+*/
+
 #include"GTT.h"
 #include"Function.h"
 
@@ -16,7 +34,7 @@ GTT_VeUE::~GTT_VeUE() {
 }
 
 
-GTT_Basic::~GTT_Basic(){
+GTT::~GTT(){
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
 		Delete::safeDelete(m_VeUEAry[VeUEId]);
 	Delete::safeDelete(m_VeUEAry, true);

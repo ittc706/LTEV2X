@@ -7,7 +7,7 @@
 
 //<WT_B>: Wireless Transmission Base
 
-class WT_B :public WT_Basic {
+class WT_B :public WT {
 	/*------------------静态------------------*/
 public:
 	static std::default_random_engine s_Engine;
@@ -82,7 +82,7 @@ public:
 	/*
 	* 获取该模块的一个拷贝
 	*/
-	WT_Basic* getCopy()override;
+	WT* getCopy()override;
 
 	/*
 	* 释放该模块的拷贝

@@ -1,3 +1,21 @@
+/*
+* =====================================================================================
+*
+*       Filename:  GTT_HighSpeed.cpp
+*
+*    Description:  TMCÄ£¿é
+*
+*        Version:  1.0
+*        Created:
+*       Revision:
+*       Compiler:  VS_2015
+*
+*         Author:  LK,WYB
+*            LIB:  ITTC
+*
+* =====================================================================================
+*/
+
 #include<tuple>
 #include<iomanip>
 #include<iostream>
@@ -36,7 +54,7 @@ void GTT_HighSpeed_VeUE::initialize(VeUEConfig &t_VeUEConfig) {
 default_random_engine GTT_HighSpeed::s_Engine((unsigned)time(NULL));
 
 GTT_HighSpeed::GTT_HighSpeed(int &t_TTI, SystemConfig& t_Config, eNB* &t_NBAry, Road* &t_RoadAry, RSU* &t_RSUAry) :
-	GTT_Basic(t_TTI, t_Config, t_NBAry, t_RoadAry, t_RSUAry) {}
+	GTT(t_TTI, t_Config, t_NBAry, t_RoadAry, t_RSUAry) {}
 
 
 void GTT_HighSpeed::configure() {

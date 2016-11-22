@@ -1,3 +1,21 @@
+/*
+* =====================================================================================
+*
+*       Filename:  eNB.cpp
+*
+*    Description:  TMCÄ£¿é
+*
+*        Version:  1.0
+*        Created:
+*       Revision:
+*       Compiler:  VS_2015
+*
+*         Author:  LK,WYB
+*            LIB:  ITTC
+*
+* =====================================================================================
+*/
+
 #include<sstream>
 #include<iomanip>
 #include"eNB.h"

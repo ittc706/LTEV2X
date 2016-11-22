@@ -10,7 +10,7 @@ public:
 	void initialize() {}
 };
 
-class TMC_Basic {
+class TMC {
 	/*------------------域------------------*/
 public:
 	VeUE* m_This;
@@ -57,14 +57,14 @@ public:
 	/*
 	* 默认构造函数定义为删除
 	*/
-	TMC_Basic() = delete;
+	TMC() = delete;
 
 	/*
 	* 构造函数
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	TMC_Basic(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
+	TMC(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
 		m_TTI(t_TTI),
 		m_Config(t_Config),
 		m_RSUAry(t_RSUAry),
@@ -75,7 +75,7 @@ public:
 	/*
 	* 析构函数
 	*/
-	~TMC_Basic();
+	~TMC();
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

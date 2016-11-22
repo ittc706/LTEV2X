@@ -48,7 +48,7 @@ std::string RRM_RR_VeUE::toString(int t_NumTab) {
 }
 
 
-RRM_RR::RRM_RR(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
+RRM_RR::RRM_RR(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT* t_GTTPoint, WT* t_WTPoint, int t_ThreadNum) :
 	RRM(t_TTI, t_Config, t_RSUAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 
 	m_InterferenceVec = vector<vector<list<int>>>(m_Config.VeUENum, vector<list<int>>(ns_RRM_RR::gc_TotalPatternNum));
@@ -368,7 +368,7 @@ void RRM_RR::transimitStart() {
 
 
 void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
-	WT_Basic* copyWTPoint = m_WTPoint->getCopy();//由于每个线程的该模块会有不同的状态且无法共享，因此这里拷贝该模块用于本次计算
+	WT* copyWTPoint = m_WTPoint->getCopy();//由于每个线程的该模块会有不同的状态且无法共享，因此这里拷贝该模块用于本次计算
 	for (int RSUId = t_FromRSUId; RSUId <= t_ToRSUId; RSUId++) {
 		RSU &_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
