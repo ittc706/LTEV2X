@@ -7,7 +7,14 @@
 class GTT_HighSpeed_VeUE:public GTT_VeUE {
 	/*------------------方法------------------*/
 public:
+	/*
+	* 初始化实体类容器
+	*/
 	void initialize(VeUEConfig &t_VeUEConfig) override;
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
 	GTT_Urban_VeUE  *const getUrbanPoint()override { throw Exp("RuntimeException"); }
 	GTT_HighSpeed_VeUE  *const getHighSpeedPoint()override { return this; }
 };

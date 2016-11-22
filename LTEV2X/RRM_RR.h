@@ -12,18 +12,24 @@
 
 
 class RRM_RR_VeUE :public RRM_VeUE {
+	/*------------------方法------------------*/
 public:
-
-	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { throw Exp("RuntimeException"); }
-	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw Exp("RuntimeException"); }
-	RRM_RR_VeUE *const getRRPoint()override { return this; }
-
+	/*
+	* 初始化实体类容器
+	*/
 	void initialize()override;
 
 	/*
 	* 生成格式化字符串
 	*/
 	std::string toString(int t_NumTab);
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_RR_VeUE *const getRRPoint()override { return this; }
 };
 
 

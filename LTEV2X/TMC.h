@@ -13,6 +13,9 @@ public:
 class TMC {
 	/*------------------域------------------*/
 public:
+	/*
+	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
+	*/
 	VeUE* m_This;
 
 	/*
@@ -31,7 +34,9 @@ public:
 	RSU* m_RSUAry;
 
 	/*
-	* VeUE容器,指向系统的该参数
+	* VeUE容器
+	* 第一维度的指针指向数组，该数组存放指向TMC_VeUE实体的指针
+	* 为什么数组存的是指针，因为需要实现多态(虽然暂时TMC单元并没有多态)
 	*/
 	TMC_VeUE** m_VeUEAry;
 

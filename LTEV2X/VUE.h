@@ -13,12 +13,16 @@
 
 /*
 * 前置声明
-* 每一个类都有该类对应的VeUE视图
 */
 class GTT_VeUE;
 class RRM_VeUE;
 class WT_VeUE;
 class TMC_VeUE;
+
+/*
+* 每一个单元都有该单元对应的VeUE视图
+* 该类的作用就是提供不同单元之间VeUE实体的信息交互
+*/
 
 class VeUE {
 	/*------------------域------------------*/

@@ -12,7 +12,14 @@ public:
 	int m_LocationId;
 	/*------------------方法------------------*/
 public:
+	/*
+	* 初始化实体类容器
+	*/
 	void initialize(VeUEConfig &t_VeUEConfig) override;
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
 	GTT_Urban_VeUE  *const getUrbanPoint()override { return this; }
 	GTT_HighSpeed_VeUE  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
 };

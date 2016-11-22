@@ -22,6 +22,9 @@ public:
 	static int s_VeUECount;
 	/*------------------域------------------*/
 public:
+	/*
+	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
+	*/
 	VeUE* m_This=nullptr;
 
 	/*
@@ -124,8 +127,15 @@ public:
 	* 析构函数，释放指针
 	*/
 	~GTT_VeUE();
+
+	/*
+	* 初始化实体类容器
+	*/
 	virtual void initialize(VeUEConfig &t_VeUEConfig) = 0;
 
+	/*
+	* 用于取得指向实际类型的指针
+	*/
 	virtual GTT_Urban_VeUE  *const getUrbanPoint() = 0;
 	virtual GTT_HighSpeed_VeUE  *const getHighSpeedPoint() = 0;
 };
@@ -161,7 +171,9 @@ public:
 	RSU* &m_RSUAry;
 
 	/*
-	* VeUE容器,指向系统的该参数
+	* VeUE容器
+	* 第一维度的指针指向数组，该数组存放指向GTT_VeUE实体的指针
+	* 为什么数组存的是指针，因为需要实现多态
 	*/
 	GTT_VeUE** m_VeUEAry;
 

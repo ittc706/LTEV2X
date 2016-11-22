@@ -11,6 +11,9 @@ class RRM_RR_VeUE;
 class RRM_VeUE {
 	/*------------------域------------------*/
 public:
+	/*
+	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
+	*/
 	VeUE* m_This;
 
 	/*
@@ -48,11 +51,10 @@ public:
 
 	/*------------------方法------------------*/
 public:
+	/*
+	* 初始化实体类容器
+	*/
 	virtual void initialize() = 0;
-
-	virtual RRM_TDM_DRA_VeUE *const getTDM_DRAPoint() = 0;
-	virtual RRM_ICC_DRA_VeUE *const getICC_DRAPoint() = 0;
-	virtual RRM_RR_VeUE *const getRRPoint() = 0;
 
 	/*
 	* 判断是否需要重新计算SINR
@@ -65,6 +67,13 @@ public:
 	*/
 	bool isAlreadyCalculateSINR(int t_PatternIdx) { return m_PreSINR[t_PatternIdx] != (std::numeric_limits<double>::min)(); }
 
+	/*
+	* 用于取得指向实际类型的指针
+	* 由于静态类型为RRM_VeUE
+	*/
+	virtual RRM_TDM_DRA_VeUE *const getTDM_DRAPoint() = 0;
+	virtual RRM_ICC_DRA_VeUE *const getICC_DRAPoint() = 0;
+	virtual RRM_RR_VeUE *const getRRPoint() = 0;
 };
 
 class RRM {
@@ -86,7 +95,9 @@ public:
 	RSU* m_RSUAry;
 
 	/*
-	* VeUE容器,指向系统的该参数
+	* VeUE容器
+	* 第一维度的指针指向数组，该数组存放指向RRM_VeUE实体的指针
+	* 为什么数组存的是指针，因为需要实现多态
 	*/
 	RRM_VeUE** m_VeUEAry;
 

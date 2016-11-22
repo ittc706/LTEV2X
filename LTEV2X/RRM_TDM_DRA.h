@@ -17,9 +17,9 @@ class RRM_TDM_DRA_VeUE:public RRM_VeUE {
 	/*------------------静态------------------*/
 public:
 	static std::default_random_engine s_Engine;
+
 	/*------------------域------------------*/
 public:
-
 	/*
 	* 该VeUE所在簇的当前地理位置的相对调度区间
 	*/
@@ -27,11 +27,9 @@ public:
 
 	/*------------------方法------------------*/
 public:
-
-	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { return this; }
-	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw Exp("RuntimeException"); }
-	RRM_RR_VeUE *const getRRPoint()override { throw Exp("RuntimeException"); }
-
+	/*
+	* 初始化实体类容器
+	*/
 	void initialize()override;
 
 	/*
@@ -43,6 +41,13 @@ public:
 	* 生成格式化字符串
 	*/
 	std::string toString(int t_NumTab);
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { return this; }
+	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_RR_VeUE *const getRRPoint()override { throw Exp("RuntimeException"); }
 };
 
 
