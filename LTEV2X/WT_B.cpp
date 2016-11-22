@@ -30,9 +30,9 @@ using namespace std;
 
 default_random_engine WT_B::s_Engine(0);
 
-WT_B::WT_B(SystemConfig& t_Config, RSU* t_RSUAry, WTMode t_SINRMode) :WT(t_Config, t_RSUAry, t_SINRMode) {}
+WT_B::WT_B(SystemConfig& t_Config, WTMode t_SINRMode) :WT(t_Config, t_SINRMode) {}
 
-WT_B::WT_B(const WT_B& t_WT_B) : WT(t_WT_B.m_Config, t_WT_B.m_RSUAry, t_WT_B.m_SINRMode) {
+WT_B::WT_B(const WT_B& t_WT_B) : WT(t_WT_B.m_Config, t_WT_B.m_SINRMode) {
 	m_QPSK_MI = t_WT_B.m_QPSK_MI;
 	m_VeUEAry = t_WT_B.m_VeUEAry;
 }
@@ -59,8 +59,9 @@ void WT_B::initialize() {
 	}
 
 	//初始化RSU的该模块参数部分
+	m_RSUAry = new WT_RSU*[m_Config.RSUNum];
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		m_RSUAry[RSUId].initializeWT();
+		m_RSUAry[RSUId] = new WT_RSU();
 	}
 }
 

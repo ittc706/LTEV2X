@@ -1,5 +1,6 @@
 #pragma once
 #include"GTT.h"
+#include"Config.h"
 
 // <GTT_HighSpeed>: Geographical Topology and Transport HighSpeed
 
@@ -18,6 +19,15 @@ public:
 	*/
 	GTT_Urban_VeUE  *const getUrbanPoint()override { throw Exp("RuntimeException"); }
 	GTT_HighSpeed_VeUE  *const getHighSpeedPoint()override { return this; }
+};
+
+
+class  GTT_HighSpeed_RSU :public GTT_RSU {
+public:
+	/*
+	* 构造函数
+	*/
+	GTT_HighSpeed_RSU();
 };
 
 
@@ -65,7 +75,7 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT_HighSpeed(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry);
+	GTT_HighSpeed(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry);
 
 	/*
 	* 模块参数配置

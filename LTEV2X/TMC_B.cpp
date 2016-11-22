@@ -27,11 +27,10 @@ using namespace std;
 
 TMC_B::TMC_B(int &t_TTI,
 	SystemConfig& t_Config,
-	RSU* t_RSUAry,
 	vector<Event>& t_EventVec,
 	vector<list<int>>& t_EventTTIList,
 	vector<vector<int>>& t_TTIRSUThroughput) :
-	TMC(t_TTI, t_Config, t_RSUAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput) {
+	TMC(t_TTI, t_Config, t_EventVec, t_EventTTIList, t_TTIRSUThroughput) {
 
 	//事件链表容器初始化
 	m_EventTTIList = vector<list<int>>(m_Config.NTTI);
@@ -49,8 +48,9 @@ void TMC_B::initialize() {
 	}
 
 	//初始化RSU的该模块参数部分
+	m_RSUAry = new TMC_RSU*[m_Config.RSUNum];
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		m_RSUAry[RSUId].initializeTMC();
+		m_RSUAry[RSUId] = new TMC_RSU();
 	}
 }
 

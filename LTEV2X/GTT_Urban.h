@@ -26,6 +26,15 @@ public:
 };
 
 
+class GTT_Urban_RSU :public GTT_RSU {
+public:
+	/*
+	* 构造函数
+	*/
+	GTT_Urban_RSU();
+};
+
+
 class GTT_Urban :public GTT {
 	/*------------------静态------------------*/
 public:
@@ -89,7 +98,7 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry);
+	GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry);
 
 	/*
 	* 参数配置

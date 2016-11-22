@@ -152,6 +152,80 @@ public:
 };
 
 
+class GTT_RSU {
+	/*------------------静态------------------*/
+public:
+	/*
+	* 车辆计数
+	*/
+	static int s_RSUCount;
+	/*------------------域------------------*/
+private:
+	/*
+	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
+	*/
+	RSU* m_This = nullptr;
+
+public:
+	/*
+	* RSUId
+	*/
+	int m_RSUId = s_RSUCount++;
+
+	/*
+	* 绝对横坐标，纵坐标
+	*/
+	double m_AbsX;
+	double m_AbsY;
+
+	/*
+	* <?>
+	*/
+	IMTA *m_IMTA = nullptr;
+
+	/*
+	* <?>
+	*/
+	double m_FantennaAngle;
+
+	/*
+	* 当前RSU范围内的VeUEId编号容器,RRM模块需要
+	*/
+	std::list<int> m_VeUEIdList;
+
+	/*
+	* 一个RSU覆盖范围内的簇的个数,RRM模块需要
+	*/
+	int m_ClusterNum;
+
+	/*
+	* 存放每个簇的VeUE的Id的容器,下标代表簇的编号
+	*/
+	std::vector<std::list<int>> m_ClusterVeUEIdList;
+
+	/*------------------方法------------------*/
+	/*
+	* 析构函数，释放指针
+	*/
+	~GTT_RSU();
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+
+	/*
+	* 取得系统级System的RSU的指针
+	*/
+	RSU* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的RSU的指针
+	*/
+	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
+};
+
+
 class GTT {
 	/*------------------域------------------*/
 public:
@@ -179,7 +253,7 @@ public:
 	/*
 	* RSU容器,指向系统的该参数
 	*/
-	RSU* &m_RSUAry;
+	GTT_RSU** m_RSUAry;
 
 	/*
 	* VeUE容器
@@ -200,8 +274,8 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry) :
-		m_TTI(t_TTI), m_Config(t_Config), m_eNBAry(t_eNBAry), m_RoadAry(t_RoadAry), m_RSUAry(t_RSUAry) {}
+	GTT(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry) :
+		m_TTI(t_TTI), m_Config(t_Config), m_eNBAry(t_eNBAry), m_RoadAry(t_RoadAry) {}
 
 	/*
 	* 析构函数

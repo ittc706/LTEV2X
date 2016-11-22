@@ -44,6 +44,108 @@ public:
 };
 
 
+class RRM_ICC_DRA_RSU :public RRM_RSU {
+	/*------------------域------------------*/
+public:
+	/*
+	* RSU级别的待接入列表
+	* 外层下标为簇编号
+	* 内层list存放的是对应簇的VeUEId
+	*/
+	std::vector<std::list<int>> m_AccessEventIdList;
+
+	/*
+	* RSU级别的等待列表
+	* 外层下标为簇编号
+	* 内层list存放的是对应簇的VeUEId
+	* 其来源有：
+	*		1、分簇后，由System级的切换链表转入该RSU级别的等待链表
+	*		2、事件链表中当前的事件触发
+	*		3、VeUE在传输消息后，发生冲突，解决冲突后，转入等待链表
+	*/
+	std::vector<std::list<int>> m_WaitEventIdList;
+
+	/*
+	* Pattern块释是否可用的标记
+	* 外层下标代表簇编号
+	* 内层下标代表Pattern编号
+	* 若"m_PatternIsAvailable[i][j]==true"代表簇i的Pattern块j可用
+	*/
+	std::vector<std::vector<bool>> m_PatternIsAvailable;
+
+	/*
+	* 存放调度调度信息
+	* 外层下标代表簇编号
+	* 内层下标代表Pattern编号
+	*/
+	std::vector<std::vector<ScheduleInfo*>> m_ScheduleInfoTable;
+
+	/*
+	* 当前时刻当前RSU内处于传输状态的调度信息链表
+	* 外层下标代表簇编号
+	* 内层下标代表Pattern编号
+	* 最内层用list用于处理冲突
+	*/
+	std::vector<std::vector<std::list<ScheduleInfo*>>> m_TransimitScheduleInfoList;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 构造函数
+	*/
+	RRM_ICC_DRA_RSU();
+
+	/*
+	* 初始化
+	* 部分成员需要等到GTT模块初始化完毕后，有了簇的数量才能进行本单元RSU的初始化
+	*/
+	void initialize() override;
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+
+	/*
+	* 将AccessVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToAccessEventIdList(int t_ClusterIdx, int t_EventId);
+
+	/*
+	* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToWaitEventIdList(int t_ClusterIdx, int t_EventId);
+
+	/*
+	* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToSwitchEventIdList(std::list<int>& t_SwitchVeUEIdList, int t_EventId);
+
+	/*
+	* 将TransimitScheduleInfo的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToTransmitScheduleInfoList(ScheduleInfo* t_Info);
+
+	/*
+	* 将ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToScheduleInfoTable(ScheduleInfo* t_Info);
+
+	/*
+	* 将RSU级别的ScheduleInfoTable的弹出封装起来，便于查看哪里调用，利于调试
+	*/
+	void pullFromScheduleInfoTable(int t_TTI);
+
+	/*
+	* 用于取得指向实际类型的指针
+	* 由于静态类型为RRM_VeUE
+	*/
+	RRM_TDM_DRA_RSU *const getTDM_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_ICC_DRA_RSU *const getICC_DRAPoint() override { return this; }
+	RRM_RR_RSU *const getRRPoint() override { throw Exp("RuntimeException"); }
+};
+
+
 class RRM_ICC_DRA :public RRM {
 	/*------------------域------------------*/
 public:
@@ -100,7 +202,6 @@ public:
 	*/
 	RRM_ICC_DRA(int &t_TTI,
 		SystemConfig& t_Config,
-		RSU* t_RSUAry,
 		std::vector<Event>& t_EventVec,
 		std::vector<std::list<int>>& t_EventTTIList,
 		std::vector<std::vector<int>>& t_TTIRSUThroughput,
@@ -220,4 +321,42 @@ int RRM_ICC_DRA_VeUE::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePat
 	if (size == 0) return -1;
 	std::uniform_int_distribution<int> u(0, size - 1);
 	return t_CurAvaliablePatternIdx[u(s_Engine)];
+}
+
+
+inline
+void RRM_ICC_DRA_RSU::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
+	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
+}
+
+inline
+void RRM_ICC_DRA_RSU::pushToWaitEventIdList(int t_ClusterIdx, int t_EventId) {
+	m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
+}
+
+inline
+void RRM_ICC_DRA_RSU::pushToSwitchEventIdList(std::list<int>& t_SwitchVeUEIdList, int t_EventId) {
+	t_SwitchVeUEIdList.push_back(t_EventId);
+}
+
+inline
+void RRM_ICC_DRA_RSU::pushToTransmitScheduleInfoList(ScheduleInfo* t_Info) {
+	m_TransimitScheduleInfoList[t_Info->clusterIdx][t_Info->patternIdx].push_back(t_Info);
+}
+
+inline
+void RRM_ICC_DRA_RSU::pushToScheduleInfoTable(ScheduleInfo* t_Info) {
+	m_ScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
+}
+
+inline
+void RRM_ICC_DRA_RSU::pullFromScheduleInfoTable(int t_TTI) {
+	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+		for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
+			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
+				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
+				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+			}
+		}
+	}
 }

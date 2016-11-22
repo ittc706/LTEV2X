@@ -25,6 +25,28 @@ public:
 	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 };
 
+
+class TMC_RSU {
+	/*------------------域------------------*/
+private:
+	/*
+	* 指向用于不同单元RSU数据交互的系统级RSU对象
+	*/
+	RSU* m_This;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 取得系统级System的RSU的指针
+	*/
+	RSU* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的RSU的指针
+	*/
+	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
+};
+
 class TMC {
 	/*------------------域------------------*/
 public:
@@ -41,7 +63,7 @@ public:
 	/*
 	* RSU容器,指向系统的该参数
 	*/
-	RSU* m_RSUAry;
+	TMC_RSU** m_RSUAry;
 
 	/*
 	* VeUE容器
@@ -79,10 +101,9 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	TMC(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
+	TMC(int &t_TTI, SystemConfig& t_Config, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
 		m_TTI(t_TTI),
 		m_Config(t_Config),
-		m_RSUAry(t_RSUAry),
 		m_EventVec(t_EventVec),
 		m_EventTTIList(t_EventTTIList),
 		m_TTIRSUThroughput(t_TTIRSUThroughput) {}

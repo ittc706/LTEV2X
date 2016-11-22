@@ -51,6 +51,120 @@ public:
 };
 
 
+class RRM_TDM_DRA_RSU :public RRM_RSU{
+	/*------------------域------------------*/
+public:
+	/*
+	* TDR:Time Domain Resource
+	* 下标代表簇编号
+	* tuple存储的变量的含义依次为：存储每个簇所分配时间数量区间的左端点，右端点以及区间长度
+	*/
+	std::vector<std::tuple<int, int, int>> m_ClusterTDRInfo;
+
+	/*
+	* Pattern块释是否可用的标记
+	* 外层下标代表簇编号
+	* 内层下标代表Pattern编号
+	* 若"m_PatternIsAvailable[i][j]==true"代表簇i的Pattern块j可用
+	*/
+	std::vector<std::vector<bool>> m_PatternIsAvailable;
+
+	/*
+	* 接入列表
+	* 存放的是VeUEId
+	* 外层下标代表簇编号
+	* 内层first代表Emergency，second代表非Emergency
+	*/
+	std::vector<std::pair<std::list<int>, std::list<int>>> m_AccessEventIdList;
+
+	/*
+	* 等待列表
+	* 存放的是VeUEId
+	* 外层下标代表簇编号
+	* 内层first代表Emergency，second代表非Emergency
+	*/
+	std::vector<std::pair<std::list<int>, std::list<int>>> m_WaitEventIdList;
+
+	/*
+	* 存放调度调度信息(已经成功接入，但尚未传输完毕，在其传输完毕之前会一直占用该资源块)
+	* 外层下标代表簇编号
+	* 内层下标代表Pattern编号
+	*/
+	std::vector<std::vector<ScheduleInfo*>> m_ScheduleInfoTable;
+
+	/*
+	* 当前时刻当前RSU内处于传输状态的调度信息链表
+	* 外层下标为簇编号
+	* 中层下标代表Pattern编号
+	* 内层用list用于处理冲突，即对应簇对应Pattern下的当前进行传输的事件的调度信息
+	* 对于紧急事件，所有簇都有效
+	* 对于非紧急事件，仅当前时刻对应的簇有效
+	*/
+	std::vector<std::vector<std::list<ScheduleInfo*>>>  m_TransimitScheduleInfoList;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 构造函数
+	*/
+	RRM_TDM_DRA_RSU();
+
+	/*
+	* 初始化
+	* 部分成员需要等到GTT模块初始化完毕后，有了簇的数量才能进行本单元RSU的初始化
+	*/
+	void initialize() override;
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+
+	/*
+	* 返回当前TTI可以进行事件传输的簇编号
+	*/
+	int getClusterIdx(int t_TTI);
+
+	/*
+	* 将AccessVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToAccessEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId);
+
+	/*
+	* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId);
+
+	/*
+	* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToSwitchEventIdList(std::list<int>& t_SwitchVeUEIdList, int t_EventId);
+
+	/*
+	* 将TransimitScheduleInfo的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToTransimitScheduleInfoList(ScheduleInfo* t_Info);
+
+	/*
+	* 将ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToScheduleInfoTable(ScheduleInfo* t_Info);
+
+	/*
+	* 将RSU级别的ScheduleInfoTable的弹出封装起来，便于查看哪里调用，利于调试
+	*/
+	void pullFromScheduleInfoTable(int t_TTI);
+
+	/*
+	* 用于取得指向实际类型的指针
+	* 由于静态类型为RRM_VeUE
+	*/
+	RRM_TDM_DRA_RSU *const getTDM_DRAPoint()override { return this; }
+	RRM_ICC_DRA_RSU *const getICC_DRAPoint() override { throw Exp("RuntimeException"); }
+	RRM_RR_RSU *const getRRPoint() override { throw Exp("RuntimeException"); }
+};
+
+
 class RRM_TDM_DRA :public RRM {
 	/*------------------域------------------*/
 public:
@@ -107,7 +221,6 @@ public:
 	*/
 	RRM_TDM_DRA(int &t_TTI,
 		SystemConfig& t_Config,
-		RSU* t_RSUAry,
 		std::vector<Event>& t_EventVec,
 		std::vector<std::list<int>>& t_EventTTIList,
 		std::vector<std::vector<int>>& t_TTIRSUThroughput,
@@ -251,3 +364,63 @@ int RRM_TDM_DRA_VeUE::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePat
 	std::uniform_int_distribution<int> u(0, size - 1);
 	return t_CurAvaliablePatternIdx[u(s_Engine)];
 }
+
+
+inline
+void RRM_TDM_DRA_RSU::pushToAccessEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
+		m_AccessEventIdList[t_ClusterIdx].first.push_back(t_EventId);
+	else
+		m_AccessEventIdList[t_ClusterIdx].second.push_back(t_EventId);
+}
+
+inline
+void RRM_TDM_DRA_RSU::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
+		m_WaitEventIdList[t_ClusterIdx].first.push_back(t_EventId);
+	else
+		m_WaitEventIdList[t_ClusterIdx].second.push_back(t_EventId);
+}
+
+
+inline
+void RRM_TDM_DRA_RSU::pushToSwitchEventIdList(std::list<int>& t_SwitchVeUEIdList, int t_EventId) {
+	t_SwitchVeUEIdList.push_back(t_EventId);
+}
+
+inline
+void RRM_TDM_DRA_RSU::pushToTransimitScheduleInfoList(ScheduleInfo* t_Info) {
+	m_TransimitScheduleInfoList[t_Info->clusterIdx][t_Info->patternIdx].push_back(t_Info);
+}
+
+
+inline
+void RRM_TDM_DRA_RSU::pushToScheduleInfoTable(ScheduleInfo* t_Info) {
+	m_ScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
+}
+
+
+inline
+void RRM_TDM_DRA_RSU::pullFromScheduleInfoTable(int t_TTI) {
+	/*将处于调度表中当前可以传输的信息压入m_TransimitEventIdList*/
+
+	/*  EMERGENCY  */
+	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+		for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
+			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
+				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
+				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+			}
+		}
+	}
+	/*  EMERGENCY  */
+
+	int clusterIdx = getClusterIdx(t_TTI);
+	for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
+		if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
+			m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
+			m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+		}
+	}
+}
+

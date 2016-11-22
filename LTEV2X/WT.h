@@ -30,6 +30,28 @@ public:
 	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 };
 
+
+class WT_RSU {
+	/*------------------域------------------*/
+private:
+	/*
+	* 指向用于不同单元RSU数据交互的系统级RSU对象
+	*/
+	RSU* m_This;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 取得系统级System的RSU的指针
+	*/
+	RSU* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的RSU的指针
+	*/
+	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
+};
+
 class WT {
 	/*------------------域------------------*/
 public:
@@ -39,9 +61,11 @@ public:
 	SystemConfig& m_Config;
 
 	/*
-	* RSU容器,指向系统的该参数
+	* RSU容器
+	* 第一维度的指针指向数组，该数组存放指向WT_RSU实体的指针
+	* 为什么数组存的是指针，因为需要实现多态(虽然暂时WT单元并没有多态)
 	*/
-	RSU* m_RSUAry;
+	WT_RSU** m_RSUAry;
 
 	/*
 	* VeUE容器
@@ -67,8 +91,8 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	WT(SystemConfig& t_Config, RSU* t_RSUAry, WTMode t_SINRMode) :
-		m_Config(t_Config), m_RSUAry(t_RSUAry), m_SINRMode(t_SINRMode) {}
+	WT(SystemConfig& t_Config, WTMode t_SINRMode) :
+		m_Config(t_Config), m_SINRMode(t_SINRMode) {}
 
 	/*
 	* 析构函数

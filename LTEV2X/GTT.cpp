@@ -33,6 +33,23 @@ GTT_VeUE::~GTT_VeUE() {
 }
 
 
+GTT_RSU::~GTT_RSU() {
+	Delete::safeDelete(m_IMTA, true);
+}
+
+int GTT_RSU::s_RSUCount = 0;
+
+std::string GTT_RSU::toString(int t_NumTab) {
+	string indent;
+	for (int i = 0; i < t_NumTab; i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	ss << indent << "Road[" << m_RSUId << "]: (" << m_AbsX << "," << m_AbsY << ")" << endl;
+	return ss.str();
+}
+
+
 GTT::~GTT(){
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
 		Delete::safeDelete(m_VeUEAry[VeUEId]);

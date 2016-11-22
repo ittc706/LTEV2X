@@ -33,6 +33,81 @@ public:
 };
 
 
+class RRM_RR_RSU :public RRM_RSU {
+	/*------------------域------------------*/
+public:
+	/*
+	* RSU级别的接入列表
+	* 外层下标为簇编号
+	* 内层list存放的是处于等待接入状态的VeUEId
+	*/
+	std::vector<std::list<int>> m_AccessEventIdList;
+
+	/*
+	* RSU级别的等待列表
+	* 外层下标为簇编号
+	* 内层list存放的是处于等待接入状态的VeUEId
+	* 其来源有：
+	*		1、分簇后，由System级的切换链表转入该RSU级别的等待链表
+	*		2、事件链表中当前的事件触发，转入等待链表
+	*/
+	std::vector<std::list<int>> m_WaitEventIdList;
+
+	/*
+	* 存放调度调度信息，本次进行传输
+	* 外层下标代表簇编号
+	* 内层下标代表Pattern编号
+	*/
+	std::vector<std::vector<ScheduleInfo*>> m_TransimitScheduleInfoTable;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 构造函数
+	*/
+	RRM_RR_RSU();
+
+	/*
+	* 初始化
+	* 部分成员需要等到GTT模块初始化完毕后，有了簇的数量才能进行本单元RSU的初始化
+	*/
+	void initialize() override;
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+
+	/*
+	* 将AccessVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToAccessEventIdList(int t_ClusterIdx, int t_EventId);
+
+	/*
+	* 将WaitVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId);
+
+	/*
+	* 将SwitchVeUEIdList的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToSwitchEventIdList(int t_EventId, std::list<int>& t_SwitchVeUEIdList);
+
+	/*
+	* 将ScheduleInfoTable的添加封装起来，便于查看哪里调用，利于调试
+	*/
+	void pushToTransimitScheduleInfoTable(ScheduleInfo* t_Info);
+
+	/*
+	* 用于取得指向实际类型的指针
+	* 由于静态类型为RRM_VeUE
+	*/
+	RRM_TDM_DRA_RSU *const getTDM_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_ICC_DRA_RSU *const getICC_DRAPoint() override { throw Exp("RuntimeException"); }
+	RRM_RR_RSU *const getRRPoint() override { return this; }
+};
+
+
 class RRM_RR :public RRM {
 	/*------------------域------------------*/
 public:
@@ -87,7 +162,6 @@ public:
 	*/
 	RRM_RR(int &t_TTI,
 		SystemConfig& t_Config,
-		RSU* t_RSUAry,
 		std::vector<Event>& t_EventVec,
 		std::vector<std::list<int>>& t_EventTTIList,
 		std::vector<std::vector<int>>& t_TTIRSUThroughput,
@@ -192,3 +266,27 @@ private:
 
 
 
+inline
+void RRM_RR_RSU::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
+	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
+}
+
+inline
+void RRM_RR_RSU::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
+		m_WaitEventIdList[t_ClusterIdx].insert(m_WaitEventIdList[t_ClusterIdx].begin(), t_EventId);
+	else
+		m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
+}
+
+
+inline
+void RRM_RR_RSU::pushToSwitchEventIdList(int t_EventId, std::list<int>& t_SwitchVeUEIdList) {
+	t_SwitchVeUEIdList.push_back(t_EventId);
+}
+
+
+inline
+void RRM_RR_RSU::pushToTransimitScheduleInfoTable(ScheduleInfo* t_Info) {
+	m_TransimitScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
+}

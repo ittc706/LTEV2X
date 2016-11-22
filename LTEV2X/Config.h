@@ -97,10 +97,6 @@ struct VeUEConfig {
 	int VeUENum;
 };
 
-//RSU配置参数
-struct RSUConfig {
-	int RSUId;
-};
 
 //地理位置配置参数
 struct Location {

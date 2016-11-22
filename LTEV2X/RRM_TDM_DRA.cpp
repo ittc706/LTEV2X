@@ -49,8 +49,77 @@ string RRM_TDM_DRA_VeUE::toString(int t_NumTab) {
 }
 
 
-RRM_TDM_DRA::RRM_TDM_DRA(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT* t_GTTPoint, WT* t_WTPoint, int t_ThreadNum) :
-	RRM(t_TTI, t_Config, t_RSUAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
+RRM_TDM_DRA_RSU::RRM_TDM_DRA_RSU() {}
+
+
+void RRM_TDM_DRA_RSU::initialize() {
+	m_AccessEventIdList = vector<pair<list<int>, list<int>>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
+	m_WaitEventIdList = vector<pair<list<int>, list<int>>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
+	m_PatternIsAvailable = vector<vector<bool>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<bool>(ns_RRM_TDM_DRA::gc_TotalPatternNum, true));
+	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_TDM_DRA::gc_TotalPatternNum, nullptr));
+	m_TransimitScheduleInfoList = vector<vector<list<ScheduleInfo*>>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<list<ScheduleInfo*>>(ns_RRM_TDM_DRA::gc_TotalPatternNum));
+}
+
+
+int RRM_TDM_DRA_RSU::getClusterIdx(int t_TTI) {
+	int roundATTI = t_TTI%ns_RRM_TDM_DRA::gc_NTTI; //将TTI映射到[0-gc_DRA_NTTI)的范围
+	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++)
+		if (roundATTI <= get<1>(m_ClusterTDRInfo[clusterIdx])) return clusterIdx;
+	return -1;
+}
+
+
+string RRM_TDM_DRA_RSU::toString(int t_NumTab) {
+	string indent;
+	for (int i = 0; i < t_NumTab; i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	//主干信息
+	ss << indent << "RSU[" << getSystemPoint()->getGTTPoint()->m_RSUId << "] :" << endl;
+	ss << indent << "{" << endl;
+
+	//开始打印VeUEIdList
+	ss << indent << "    " << "VeUEIdList :" << endl;
+	ss << indent << "    " << "{" << endl;
+	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
+		ss << indent << "        " << "{" << endl;
+		int cnt = 0;
+		for (int RSUId : getSystemPoint()->getGTTPoint()->m_ClusterVeUEIdList[clusterIdx]) {
+			if (cnt % 10 == 0)
+				ss << indent << "            [ ";
+			ss << left << setw(3) << RSUId << " , ";
+			if (cnt % 10 == 9)
+				ss << " ]" << endl;
+			cnt++;
+		}
+		if (cnt != 0 && cnt % 10 != 0)
+			ss << " ]" << endl;
+		ss << indent << "        " << "}" << endl;
+	}
+	ss << indent << "    " << "}" << endl;
+
+	//开始打印clusterInfo
+	ss << indent << "    " << "clusterInfo :" << endl;
+	ss << indent << "    " << "{" << endl;
+
+	ss << indent << "        ";
+	for (const tuple<int, int, int>&t : getTDM_DRAPoint()->m_ClusterTDRInfo)
+		ss << "[ " << get<0>(t) << " , " << get<1>(t) << " ] ,";
+	ss << endl;
+	ss << indent << "    " << "}" << endl;
+
+
+	//主干信息
+	ss << indent << "}" << endl;
+	return ss.str();
+}
+
+
+
+RRM_TDM_DRA::RRM_TDM_DRA(int &t_TTI, SystemConfig& t_Config, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT* t_GTTPoint, WT* t_WTPoint, int t_ThreadNum) :
+	RRM(t_TTI, t_Config, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 
 	m_InterferenceVec = vector<vector<list<int>>>(m_Config.VeUENum, vector<list<int>>(ns_RRM_TDM_DRA::gc_TotalPatternNum));
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
@@ -71,8 +140,9 @@ void RRM_TDM_DRA::initialize() {
 	}
 
 	//初始化RSU的该模块参数部分
+	m_RSUAry = new RRM_RSU*[m_Config.RSUNum];
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		m_RSUAry[RSUId].initializeRRM_TDM_DRA();
+		m_RSUAry[RSUId] = new RRM_TDM_DRA_RSU();
 	}
 }
 
@@ -125,10 +195,10 @@ void RRM_TDM_DRA::schedule() {
 
 void RRM_TDM_DRA::informationClean() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			_RSU.m_RRM_TDM_DRA->m_AccessEventIdList[clusterIdx].first.clear();
-			_RSU.m_RRM_TDM_DRA->m_AccessEventIdList[clusterIdx].second.clear();
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+			_RSU->getTDM_DRAPoint()->m_AccessEventIdList[clusterIdx].first.clear();
+			_RSU->getTDM_DRAPoint()->m_AccessEventIdList[clusterIdx].second.clear();
 		}
 	}
 }
@@ -137,37 +207,37 @@ void RRM_TDM_DRA::informationClean() {
 void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 	if (!t_ClusterFlag)return;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		//特殊情况，当该RSU内无一辆车时
-		if (_RSU.m_GTT->m_VeUEIdList.size() == 0) {
+		if (_RSU->getSystemPoint()->getGTTPoint()->m_VeUEIdList.size() == 0) {
 			/*-----------------------ATTENTION-----------------------
 			* 若赋值为(0,-1,0)会导致获取当前簇编号失败，导致其他地方需要讨论
 			* 因此直接给每个簇都赋值为整个区间，反正也没有任何作用，免得其他部分讨论
 			*------------------------ATTENTION-----------------------*/
-			_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTT->m_ClusterNum, tuple<int, int, int>(0, ns_RRM_TDM_DRA::gc_NTTI - 1, ns_RRM_TDM_DRA::gc_NTTI));
+			_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo = vector<tuple<int, int, int>>(_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum, tuple<int, int, int>(0, ns_RRM_TDM_DRA::gc_NTTI - 1, ns_RRM_TDM_DRA::gc_NTTI));
 			continue;
 		}
 
 		//初始化
-		_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTT->m_ClusterNum, tuple<int, int, int>(0, 0, 0));
+		_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo = vector<tuple<int, int, int>>(_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum, tuple<int, int, int>(0, 0, 0));
 
 		//计算每个TTI时隙对应的VeUE数目(double)，!!!浮点数!!！
-		double VeUESizePerTTI = static_cast<double>(_RSU.m_GTT->m_VeUEIdList.size()) / static_cast<double>(ns_RRM_TDM_DRA::gc_NTTI);
+		double VeUESizePerTTI = static_cast<double>(_RSU->getSystemPoint()->getGTTPoint()->m_VeUEIdList.size()) / static_cast<double>(ns_RRM_TDM_DRA::gc_NTTI);
 
 		//clusterSize存储每个簇的VeUE数目(double)，!!!浮点数!!！
-		vector<double> clusterSize(_RSU.m_GTT->m_ClusterNum, 0);
+		vector<double> clusterSize(_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum, 0);
 
 		//初始化clusterSize
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++)
-			clusterSize[clusterIdx] = static_cast<double>(_RSU.m_GTT->m_ClusterVeUEIdList[clusterIdx].size());
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++)
+			clusterSize[clusterIdx] = static_cast<double>(_RSU->getSystemPoint()->getGTTPoint()->m_ClusterVeUEIdList[clusterIdx].size());
 
 		//首先给至少有一辆车的簇分配一份TTI
 		int basicNTTI = 0;
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			//如果该簇内至少有一辆VeUE，直接分配给一个单位的时域资源
-			if (_RSU.m_GTT->m_ClusterVeUEIdList[clusterIdx].size() != 0) {
-				get<2>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]) = 1;
+			if (_RSU->getSystemPoint()->getGTTPoint()->m_ClusterVeUEIdList[clusterIdx].size() != 0) {
+				get<2>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]) = 1;
 				clusterSize[clusterIdx] -= VeUESizePerTTI;
 				basicNTTI++;
 			}
@@ -180,24 +250,24 @@ void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 		while (remainNTTI > 0) {
 			int dex = getMaxIndex(clusterSize);
 			if (dex == -1) throw Exp("还存在没有分配的时域资源，但是每个簇内的VeUE已经为负数");
-			get<2>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[dex])++;
+			get<2>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[dex])++;
 			remainNTTI--;
 			clusterSize[dex] -= VeUESizePerTTI;
 		}
 
 		//开始生成区间范围，闭区间
-		get<0>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[0]) = 0;
-		get<1>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[0]) = get<0>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[0]) + get<2>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[0]) - 1;
-		for (int clusterIdx = 1; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			get<0>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]) = get<1>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx - 1]) + 1;
-			get<1>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]) = get<0>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]) + get<2>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]) - 1;
+		get<0>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[0]) = 0;
+		get<1>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[0]) = get<0>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[0]) + get<2>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[0]) - 1;
+		for (int clusterIdx = 1; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+			get<0>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]) = get<1>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx - 1]) + 1;
+			get<1>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]) = get<0>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]) + get<2>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]) - 1;
 		}
 
 
 		//将调度区间写入该RSU内的每一个车辆
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; ++clusterIdx) {
-			for (int VeUEId : _RSU.m_GTT->m_ClusterVeUEIdList[clusterIdx])
-				m_VeUEAry[VeUEId]->getTDM_DRAPoint()->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]));
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; ++clusterIdx) {
+			for (int VeUEId : _RSU->getSystemPoint()->getGTTPoint()->m_ClusterVeUEIdList[clusterIdx])
+				m_VeUEAry[VeUEId]->getTDM_DRAPoint()->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]), get<1>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]));
 		}
 	}
 	writeClusterPerformInfo(g_FileClasterPerformInfo);
@@ -207,29 +277,29 @@ void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 void RRM_TDM_DRA::uniformTDM(bool t_ClusterFlag) {
 	if (!t_ClusterFlag)return;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		//初始化
-		_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo = vector<tuple<int, int, int>>(_RSU.m_GTT->m_ClusterNum, tuple<int, int, int>(0, 0, 0));
+		_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo = vector<tuple<int, int, int>>(_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum, tuple<int, int, int>(0, 0, 0));
 
-		int equalTimeLength = ns_RRM_TDM_DRA::gc_NTTI / _RSU.m_GTT->m_ClusterNum;
+		int equalTimeLength = ns_RRM_TDM_DRA::gc_NTTI / _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum;
 
-		int lastClusterLength = ns_RRM_TDM_DRA::gc_NTTI - equalTimeLength*_RSU.m_GTT->m_ClusterNum + equalTimeLength;
+		int lastClusterLength = ns_RRM_TDM_DRA::gc_NTTI - equalTimeLength*_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum + equalTimeLength;
 
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx] = tuple<int, int, int>(equalTimeLength*clusterIdx, equalTimeLength*(clusterIdx + 1) - 1, equalTimeLength);
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+			_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx] = tuple<int, int, int>(equalTimeLength*clusterIdx, equalTimeLength*(clusterIdx + 1) - 1, equalTimeLength);
 		}
 
 		//修复最后一个簇的时域长度，因为平均簇长可能被四舍五入了，因此，平均簇长度*簇数并不等于总调度时间，因此将差异填入最后一个簇
-		get<1>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[_RSU.m_GTT->m_ClusterNum - 1]) = ns_RRM_TDM_DRA::gc_NTTI - 1;
-		get<2>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[_RSU.m_GTT->m_ClusterNum - 1]) = lastClusterLength;
+		get<1>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum - 1]) = ns_RRM_TDM_DRA::gc_NTTI - 1;
+		get<2>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum - 1]) = lastClusterLength;
 
 
 
 		//将调度区间写入该RSU内的每一个车辆
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; ++clusterIdx) {
-			for (int VeUEId : _RSU.m_GTT->m_ClusterVeUEIdList[clusterIdx])
-				m_VeUEAry[VeUEId]->getTDM_DRAPoint()->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]), get<1>(_RSU.m_RRM_TDM_DRA->m_ClusterTDRInfo[clusterIdx]));
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; ++clusterIdx) {
+			for (int VeUEId : _RSU->getSystemPoint()->getGTTPoint()->m_ClusterVeUEIdList[clusterIdx])
+				m_VeUEAry[VeUEId]->getTDM_DRAPoint()->m_ScheduleInterval = tuple<int, int>(get<0>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]), get<1>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[clusterIdx]));
 		}
 	}
 	writeClusterPerformInfo(g_FileClasterPerformInfo);
@@ -260,65 +330,65 @@ void RRM_TDM_DRA::processEventList() {
 		Event &event = m_EventVec[eventId];
 		int VeUEId = event.getVeUEId();
 		int RSUId = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId;
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		int clusterIdx = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx;
 
 		//将该事件压入紧急事件等待链表
 		bool isEmergency = event.getMessageType() == EMERGENCY;
-		_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
+		_RSU->getTDM_DRAPoint()->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//更新日志
-		m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, -1, -1, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Trigger");
-		writeTTILogInfo(g_FileTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, -1, -1, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Trigger");
+		m_EventVec[eventId].addEventLog(m_TTI, EVENT_TO_WAIT, -1, -1, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "Trigger");
+		writeTTILogInfo(g_FileTTILogInfo, m_TTI, EVENT_TO_WAIT, eventId, -1, -1, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "Trigger");
 	}
 }
 
 
 void RRM_TDM_DRA::processScheduleInfoTableWhenLocationUpdate() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		//开始处理 m_ScheduleInfoTable
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
-				if (_RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx] == nullptr) continue;
+				if (_RSU->getTDM_DRAPoint()->m_ScheduleInfoTable[clusterIdx][patternIdx] == nullptr) continue;
 
-				int eventId = _RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]->eventId;
+				int eventId = _RSU->getTDM_DRAPoint()->m_ScheduleInfoTable[clusterIdx][patternIdx]->eventId;
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 				//该VeUE不在当前RSU中，应将其压入System级别的切换链表
-				if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId != _RSU.m_GTT->m_RSUId) {
+				if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId != _RSU->getSystemPoint()->getGTTPoint()->m_RSUId) {
 					//压入Switch链表
-					_RSU.m_RRM_TDM_DRA->pushToSwitchEventIdList(m_SwitchEventIdList, eventId);
+					_RSU->getTDM_DRAPoint()->pushToSwitchEventIdList(m_SwitchEventIdList, eventId);
 
 					//将剩余待传bit重置
 					m_EventVec[eventId].reset();
 
 					//并释放该调度信息的资源
-					Delete::safeDelete(_RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]);
+					Delete::safeDelete(_RSU->getTDM_DRAPoint()->m_ScheduleInfoTable[clusterIdx][patternIdx]);
 
 					//释放Pattern资源
-					_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
+					_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
 
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "LocationUpdate");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "LocationUpdate");
+					m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_SWITCH, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "LocationUpdate");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_SWITCH, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "LocationUpdate");
 				}
 				else {
 					//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
 					if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx != clusterIdx) {
 						//压入该RSU的等待链表
 						bool isEmergency = m_EventVec[eventId].getMessageType() == EMERGENCY;
-						_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(isEmergency, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, eventId);
+						_RSU->getTDM_DRAPoint()->pushToWaitEventIdList(isEmergency, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, eventId);
 
 						//并释放该调度信息的资源
-						Delete::safeDelete(_RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]);
+						Delete::safeDelete(_RSU->getTDM_DRAPoint()->m_ScheduleInfoTable[clusterIdx][patternIdx]);
 
 						//释放Pattern资源
-						_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
+						_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
 
 						//更新日志
-						m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
-						writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
+						m_EventVec[eventId].addEventLog(m_TTI, SCHEDULETABLE_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
+						writeTTILogInfo(g_FileTTILogInfo, m_TTI, SCHEDULETABLE_TO_WAIT, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
 					}
 				}
 			}
@@ -329,43 +399,43 @@ void RRM_TDM_DRA::processScheduleInfoTableWhenLocationUpdate() {
 
 void RRM_TDM_DRA::processWaitEventIdListWhenLocationUpdate() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		//开始处理 m_WaitEventIdList
 
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			/*  EMERGENCY  */
-			list<int>::iterator it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].first.begin();
-			while (it != _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].first.end()) {
+			list<int>::iterator it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].first.begin();
+			while (it != _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].first.end()) {
 				int eventId = *it;
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 				//该VeUE已经不在该RSU范围内
-				if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId != _RSU.m_GTT->m_RSUId) {
+				if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId != _RSU->getSystemPoint()->getGTTPoint()->m_RSUId) {
 
 					//将其添加到System级别的RSU切换链表中
-					_RSU.m_RRM_TDM_DRA->pushToSwitchEventIdList(m_SwitchEventIdList, eventId);
+					_RSU->getTDM_DRAPoint()->pushToSwitchEventIdList(m_SwitchEventIdList, eventId);
 
 					//将其从等待链表中删除
-					it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].first.erase(it);
+					it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].first.erase(it);
 
 					//将剩余待传bit重置
 					m_EventVec[eventId].reset();
 
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
 				}
 				//仍然处于当前RSU范围内，但位于不同的簇
 				else if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx != clusterIdx) {
 
 					//将其添加到所在簇的等待链表
-					_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(true, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, eventId);
+					_RSU->getTDM_DRAPoint()->pushToWaitEventIdList(true, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, eventId);
 
 					//将其从等待链表中的当前簇删除
-					it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].first.erase(it);
+					it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].first.erase(it);
 
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
 				}
 				else {
 					it++;
@@ -374,38 +444,38 @@ void RRM_TDM_DRA::processWaitEventIdListWhenLocationUpdate() {
 			}
 			/*  EMERGENCY  */
 
-			it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].second.begin();
-			while (it != _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].second.end()) {
+			it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].second.begin();
+			while (it != _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].second.end()) {
 				int eventId = *it;
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 				//该VeUE已经不在该RSU范围内
-				if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId != _RSU.m_GTT->m_RSUId) {
+				if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId != _RSU->getSystemPoint()->getGTTPoint()->m_RSUId) {
 
 					//将其添加到System级别的RSU切换链表中
-					_RSU.m_RRM_TDM_DRA->pushToSwitchEventIdList(m_SwitchEventIdList, eventId);
+					_RSU->getTDM_DRAPoint()->pushToSwitchEventIdList(m_SwitchEventIdList, eventId);
 
 					//将其从等待链表中删除
-					it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].second.erase(it);
+					it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].second.erase(it);
 
 					//将剩余待传bit重置
 					m_EventVec[eventId].reset();
 
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_SWITCH, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
 				}
 				//仍然处于当前RSU范围内，但位于不同的簇
 				else if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx != clusterIdx) {
 
 					//将其添加到所在簇的等待链表
-					_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(false, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, eventId);
+					_RSU->getTDM_DRAPoint()->pushToWaitEventIdList(false, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, eventId);
 
 					//将其从等待链表中的当前簇删除
-					it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].second.erase(it);
+					it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].second.erase(it);
 
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
 				}
 				else {
 					it++;
@@ -424,75 +494,75 @@ void RRM_TDM_DRA::processSwitchListWhenLocationUpdate() {
 		int eventId = *it;
 		int VeUEId = m_EventVec[eventId].getVeUEId();
 		int RSUId = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId;
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		int clusterIdx = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx;
 
 		//转入等待链表
 		bool isEmergency = m_EventVec[eventId].getMessageType() == EMERGENCY;
-		_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
+		_RSU->getTDM_DRAPoint()->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//从Switch表中将其删除
 		it = m_SwitchEventIdList.erase(it);
 
 		//更新日志
-		m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, -1, -1, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "LocationUpdate");
-		writeTTILogInfo(g_FileTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, -1, -1, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "LocationUpdate");
+		m_EventVec[eventId].addEventLog(m_TTI, SWITCH_TO_WAIT, -1, -1, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "LocationUpdate");
+		writeTTILogInfo(g_FileTTILogInfo, m_TTI, SWITCH_TO_WAIT, eventId, -1, -1, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "LocationUpdate");
 	}
 }
 
 
 void RRM_TDM_DRA::processWaitEventIdList() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		/*  EMERGENCY  */
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			list<int>::iterator it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].first.begin();
-			while (it != _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].first.end()) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+			list<int>::iterator it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].first.begin();
+			while (it != _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].first.end()) {
 				int eventId = *it;
 				//如果该事件不需要退避，则转入接入表
 				if (m_EventVec[eventId].tryAcccess()) {
 
 					//压入接入链表
-					_RSU.m_RRM_TDM_DRA->pushToAccessEventIdList(true, clusterIdx, eventId);
+					_RSU->getTDM_DRAPoint()->pushToAccessEventIdList(true, clusterIdx, eventId);
 
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ACCESS, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "CanAccess");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ACCESS, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "CanAccess");
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ACCESS, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "CanAccess");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ACCESS, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "CanAccess");
 
 					//将该事件从等代表中删除
-					it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].first.erase(it);
+					it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].first.erase(it);
 				}
 				else {
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WITHDRAWING, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WITHDRAWING, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
+					m_EventVec[eventId].addEventLog(m_TTI, WITHDRAWING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WITHDRAWING, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
 
 					it++;
 				}
 			}
 		}
 		/*  EMERGENCY  */
-		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
-		list<int>::iterator it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].second.begin();
-		while (it != _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].second.end()) {
+		int clusterIdx = _RSU->getTDM_DRAPoint()->getClusterIdx(m_TTI);
+		list<int>::iterator it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].second.begin();
+		while (it != _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].second.end()) {
 			int eventId = *it;
 			//如果该事件不需要退避，则转入接入表
 			if (m_EventVec[eventId].tryAcccess()) {
 
 				//压入接入链表
-				_RSU.m_RRM_TDM_DRA->pushToAccessEventIdList(false, clusterIdx, eventId);
+				_RSU->getTDM_DRAPoint()->pushToAccessEventIdList(false, clusterIdx, eventId);
 
 				//更新日志
-				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ACCESS, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "CanAccess");
-				writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ACCESS, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "CanAccess");
+				m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_ACCESS, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "CanAccess");
+				writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_ACCESS, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "CanAccess");
 
 				//将该事件从等代表中删除
-				it = _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].second.erase(it);
+				it = _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].second.erase(it);
 			}
 			else {
 				//更新日志
-				m_EventVec[eventId].addEventLog(m_TTI, WITHDRAWING, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
-				writeTTILogInfo(g_FileTTILogInfo, m_TTI, WITHDRAWING, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
+				m_EventVec[eventId].addEventLog(m_TTI, WITHDRAWING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
+				writeTTILogInfo(g_FileTTILogInfo, m_TTI, WITHDRAWING, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "Withdraw");
 
 				it++;
 			}
@@ -503,19 +573,19 @@ void RRM_TDM_DRA::processWaitEventIdList() {
 
 void RRM_TDM_DRA::selectRBBasedOnP123() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			vector<int> curAvaliableEmergencyPatternIdx;//当前簇可用的EmergencyPattern编号
 
 			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-				if (_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx]) {
+				if (_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx]) {
 					curAvaliableEmergencyPatternIdx.push_back(patternIdx);
 				}
 			}
 
-			for (int eventId : _RSU.m_RRM_TDM_DRA->m_AccessEventIdList[clusterIdx].first) {
+			for (int eventId : _RSU->getTDM_DRAPoint()->m_AccessEventIdList[clusterIdx].first) {
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 
 				//为当前用户在可用的EmergencyPattern块中随机选择一个，每个用户自行随机选择可用EmergencyPattern块
@@ -524,16 +594,16 @@ void RRM_TDM_DRA::selectRBBasedOnP123() {
 				//无对应Pattern类型的pattern资源可用
 				if (patternIdx == -1) {
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, ACCESS_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, ACCESS_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
+					m_EventVec[eventId].addEventLog(m_TTI, ACCESS_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "AllBusy");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, ACCESS_TO_WAIT, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "AllBusy");
 
 					continue;
 				}
 				//将资源标记为占用
-				_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = false;
+				_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = false;
 
 				//将调度信息压入m_EmergencyTransimitEventIdList中
-				_RSU.m_RRM_TDM_DRA->pushToTransimitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, -1, patternIdx));
+				_RSU->getTDM_DRAPoint()->pushToTransimitScheduleInfoList(new RRM_RSU::ScheduleInfo(eventId, VeUEId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, -1, patternIdx));
 
 			}
 
@@ -541,7 +611,7 @@ void RRM_TDM_DRA::selectRBBasedOnP123() {
 		/*  EMERGENCY  */
 
 		//开始处理非Emergency的事件
-		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
+		int clusterIdx = _RSU->getTDM_DRAPoint()->getClusterIdx(m_TTI);
 
 		/*
 		* 当前TTI可用的Pattern块编号
@@ -552,13 +622,13 @@ void RRM_TDM_DRA::selectRBBasedOnP123() {
 
 		for (int patternTypeIdx = 1; patternTypeIdx < ns_RRM_TDM_DRA::gc_PatternTypeNum; patternTypeIdx++) {
 			for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[patternTypeIdx][0]; patternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[patternTypeIdx][1]; patternIdx++) {
-				if (_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx]) {
+				if (_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx]) {
 					curAvaliablePatternIdx[patternTypeIdx].push_back(patternIdx);
 				}
 			}
 		}
 
-		for (int eventId : _RSU.m_RRM_TDM_DRA->m_AccessEventIdList[clusterIdx].second) {
+		for (int eventId : _RSU->getTDM_DRAPoint()->m_AccessEventIdList[clusterIdx].second) {
 			int VeUEId = m_EventVec[eventId].getVeUEId();
 
 			//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
@@ -568,59 +638,59 @@ void RRM_TDM_DRA::selectRBBasedOnP123() {
 			//该用户传输的信息类型没有pattern剩余了
 			if (patternIdx == -1) {
 				//更新日志
-				m_EventVec[eventId].addEventLog(m_TTI, ACCESS_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
-				writeTTILogInfo(g_FileTTILogInfo, m_TTI, ACCESS_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "AllBusy");
+				m_EventVec[eventId].addEventLog(m_TTI, ACCESS_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "AllBusy");
+				writeTTILogInfo(g_FileTTILogInfo, m_TTI, ACCESS_TO_WAIT, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "AllBusy");
 
 				continue;
 			}
 
 			//将资源标记为占用
-			_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = false;
+			_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = false;
 
 			//将调度信息压入m_TransimitEventIdList中
-			_RSU.m_RRM_TDM_DRA->pushToTransimitScheduleInfoList(new RSU::RRM::ScheduleInfo(eventId, VeUEId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx));
+			_RSU->getTDM_DRAPoint()->pushToTransimitScheduleInfoList(new RRM_RSU::ScheduleInfo(eventId, VeUEId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx));
 
 		}
 		//将调度表中当前可以继续传输的用户压入传输链表中(包括紧急和非紧急)
-		_RSU.m_RRM_TDM_DRA->pullFromScheduleInfoTable(m_TTI);
+		_RSU->getTDM_DRAPoint()->pullFromScheduleInfoTable(m_TTI);
 	}
 }
 
 
 void RRM_TDM_DRA::delaystatistics() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			//处理等待链表
-			for (int eventId : _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].first)
+			for (int eventId : _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].first)
 				m_EventVec[eventId].increaseQueueDelay();
 			//处理此刻正在将要传输的传输链表
 			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++)
-				for (RSU::RRM::ScheduleInfo* &p : _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx])
+				for (RRM_RSU::ScheduleInfo* &p : _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx])
 					m_EventVec[p->eventId].increaseSendDelay();
 		}
 		/*  EMERGENCY  */
 
 
 		//处理等待链表
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
-			for (int eventId : _RSU.m_RRM_TDM_DRA->m_WaitEventIdList[clusterIdx].second)
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+			for (int eventId : _RSU->getTDM_DRAPoint()->m_WaitEventIdList[clusterIdx].second)
 				m_EventVec[eventId].increaseQueueDelay();
 		}
 
 		//处理此刻正在将要传输的传输链表
-		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
+		int clusterIdx = _RSU->getTDM_DRAPoint()->getClusterIdx(m_TTI);
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
-			for (RSU::RRM::ScheduleInfo* &p : _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx])
+			for (RRM_RSU::ScheduleInfo* &p : _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx])
 				m_EventVec[p->eventId].increaseSendDelay();
 		}
 
 		//处理此刻位于调度表中，但不属于当前簇的事件
-		for (int otherClusterIdx = 0; otherClusterIdx < _RSU.m_GTT->m_ClusterNum; otherClusterIdx++) {
+		for (int otherClusterIdx = 0; otherClusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; otherClusterIdx++) {
 			if (otherClusterIdx == clusterIdx) continue;
-			for (RSU::RRM::ScheduleInfo *p : _RSU.m_RRM_TDM_DRA->m_ScheduleInfoTable[otherClusterIdx]) {
+			for (RRM_RSU::ScheduleInfo *p : _RSU->getTDM_DRAPoint()->m_ScheduleInfoTable[otherClusterIdx]) {
 				if (p == nullptr) continue;
 				m_EventVec[p->eventId].increaseQueueDelay();
 			}
@@ -630,30 +700,30 @@ void RRM_TDM_DRA::delaystatistics() {
 
 void RRM_TDM_DRA::conflictListener() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-				list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+				list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
 				if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
-					for (RSU::RRM::ScheduleInfo* &info : lst) {
+					for (RRM_RSU::ScheduleInfo* &info : lst) {
 						//首先将事件压入等待列表
-						_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(true, clusterIdx, info->eventId);
+						_RSU->getTDM_DRAPoint()->pushToWaitEventIdList(true, clusterIdx, info->eventId);
 
 						//冲突后更新事件的状态
 						m_EventVec[info->eventId].conflict();
 
 						//更新日志
-						m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Conflict");
-						writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Conflict");
+						m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "Conflict");
+						writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "Conflict");
 
 						//释放调度信息对象的内存资源
 						Delete::safeDelete(info);
 					}
 
 					//释放Pattern资源
-					_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
+					_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
 
 					lst.clear();
 				}
@@ -662,27 +732,27 @@ void RRM_TDM_DRA::conflictListener() {
 		/*  EMERGENCY  */
 
 
-		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
+		int clusterIdx = _RSU->getTDM_DRAPoint()->getClusterIdx(m_TTI);
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
 
-			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+			list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
 			if (lst.size() > 1) {//多于一个VeUE在当前TTI，该Pattern上传输，即发生了冲突，将其添加到等待列表
-				for (RSU::RRM::ScheduleInfo* &info : lst) {
+				for (RRM_RSU::ScheduleInfo* &info : lst) {
 					//首先将事件压入等待列表
-					_RSU.m_RRM_TDM_DRA->pushToWaitEventIdList(false, clusterIdx, info->eventId);
+					_RSU->getTDM_DRAPoint()->pushToWaitEventIdList(false, clusterIdx, info->eventId);
 
 					//冲突后更新事件的状态
 					m_EventVec[info->eventId].conflict();
 
 					//更新日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Conflict");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, _RSU.m_GTT->m_RSUId, clusterIdx, -1, "Conflict");
+					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMIT_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "Conflict");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMIT_TO_WAIT, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "Conflict");
 
 					//释放调度信息对象的内存资源
 					Delete::safeDelete(info);
 				}
 				//释放Pattern资源
-				_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
+				_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
 
 				lst.clear();
 			}
@@ -699,19 +769,19 @@ void RRM_TDM_DRA::transimitPreparation() {
 
 	//统计本次的干扰信息
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
-				list<RSU::RRM::ScheduleInfo*> &curList = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+				list<RRM_RSU::ScheduleInfo*> &curList = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
 				if (curList.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-					RSU::RRM::ScheduleInfo *curInfo = *curList.begin();
+					RRM_RSU::ScheduleInfo *curInfo = *curList.begin();
 					int curVeUEId = curInfo->VeUEId;
-					for (int otherClusterIdx = 0; otherClusterIdx < _RSU.m_GTT->m_ClusterNum; otherClusterIdx++) {
+					for (int otherClusterIdx = 0; otherClusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; otherClusterIdx++) {
 						if (otherClusterIdx == clusterIdx)continue;
-						list<RSU::RRM::ScheduleInfo*> &otherList = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
+						list<RRM_RSU::ScheduleInfo*> &otherList = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
 						if (otherList.size() == 1) {//其他簇中该pattern下有车辆在传输，那么将该车辆作为干扰车辆
-							RSU::RRM::ScheduleInfo *otherInfo = *otherList.begin();
+							RRM_RSU::ScheduleInfo *otherInfo = *otherList.begin();
 							int otherVeUEId = otherInfo->VeUEId;
 							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
 						}
@@ -761,14 +831,14 @@ void RRM_TDM_DRA::transimitStart() {
 void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 	WT* copyWTPoint = m_WTPoint->getCopy();//由于每个线程的该模块会有不同的状态且无法共享，因此这里拷贝该模块用于本次计算
 	for (int RSUId = t_FromRSUId; RSUId <= t_ToRSUId; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-				list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+				list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
 				if (lst.size() == 1) {
-					RSU::RRM::ScheduleInfo *info = *lst.begin();
+					RRM_RSU::ScheduleInfo *info = *lst.begin();
 					int VeUEId = info->VeUEId;
 
 					//计算SINR，获取调制编码方式
@@ -804,23 +874,23 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					int realEquivalentBitNum = m_EventVec[info->eventId].transimit(maxEquivalentBitNum, tmpDistance);
 
 					//累计吞吐率
-					m_TTIRSUThroughput[m_TTI][_RSU.m_GTT->m_RSUId] += realEquivalentBitNum;
+					m_TTIRSUThroughput[m_TTI][_RSU->getSystemPoint()->getGTTPoint()->m_RSUId] += realEquivalentBitNum;
 
 					//更新日志
-					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMITTING, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMITTING, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+					m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMITTING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMITTING, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 				}
 			}
 		}
 		/*  EMERGENCY  */
 
 
-		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
+		int clusterIdx = _RSU->getTDM_DRAPoint()->getClusterIdx(m_TTI);
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
 
-			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+			list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRM::ScheduleInfo *info = *lst.begin();
+				RRM_RSU::ScheduleInfo *info = *lst.begin();
 				int VeUEId = info->VeUEId;
 
 				int patternType = getPatternType(patternIdx);
@@ -858,11 +928,11 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				int realEquivalentBitNum = m_EventVec[info->eventId].transimit(maxEquivalentBitNum, tmpDistance);
 
 				//累计吞吐率
-				m_TTIRSUThroughput[m_TTI][_RSU.m_GTT->m_RSUId] += realEquivalentBitNum;
+				m_TTIRSUThroughput[m_TTI][_RSU->getSystemPoint()->getGTTPoint()->m_RSUId] += realEquivalentBitNum;
 
 				//更新日志
-				m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMITTING, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
-				writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMITTING, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+				m_EventVec[info->eventId].addEventLog(m_TTI, TRANSIMITTING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+				writeTTILogInfo(g_FileTTILogInfo, m_TTI, TRANSIMITTING, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 			}
 		}
 	}
@@ -873,41 +943,41 @@ void RRM_TDM_DRA::writeScheduleInfo(ofstream& t_File) {
 	t_File << "[ TTI = " << left << setw(3) << m_TTI << "]" << endl;
 	t_File << "{" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
-		int NonEmergencyClusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
+		int NonEmergencyClusterIdx = _RSU->getTDM_DRAPoint()->getClusterIdx(m_TTI);
 
-		t_File << "    RSU[" << _RSU.m_GTT->m_RSUId << "][TTI = " << m_TTI << "]" << endl;
+		t_File << "    RSU[" << _RSU->getSystemPoint()->getGTTPoint()->m_RSUId << "][TTI = " << m_TTI << "]" << endl;
 		t_File << "    {" << endl;
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			t_File << "        Cluster[" << clusterIdx << "]" << endl;
 			t_File << "        {" << endl;
 
 			t_File << "            EMERGENCY:" << endl;
 			for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[EMERGENCY][0]; patternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[EMERGENCY][1]; patternIdx++) {
-				bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx];
+				bool isAvaliable = _RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx];
 				t_File << "                Pattern[" << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 				if (!isAvaliable) {
-					RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
+					RRM_RSU::ScheduleInfo *info = *(_RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
 					t_File << info->toScheduleString(5) << endl;
 				}
 			}
 			if (clusterIdx != NonEmergencyClusterIdx)continue;
 			t_File << "            PERIOD:" << endl;
 			for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[PERIOD][0]; patternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[PERIOD][1]; patternIdx++) {
-				bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx];
+				bool isAvaliable = _RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx];
 				t_File << "                Pattern[" << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 				if (!isAvaliable) {
-					RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
+					RRM_RSU::ScheduleInfo *info = *(_RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
 					t_File << info->toScheduleString(5) << endl;
 				}
 			}
 			t_File << "            DATA:" << endl;
 			for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[DATA][0]; patternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[DATA][1]; patternIdx++) {
-				bool isAvaliable = _RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx];
+				bool isAvaliable = _RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx];
 				t_File << "                Pattern[" << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 				if (!isAvaliable) {
-					RSU::RRM::ScheduleInfo *info = *(_RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
+					RRM_RSU::ScheduleInfo *info = *(_RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
 					t_File << info->toScheduleString(5) << endl;
 				}
 			}
@@ -921,29 +991,29 @@ void RRM_TDM_DRA::writeScheduleInfo(ofstream& t_File) {
 
 void RRM_TDM_DRA::transimitEnd() {
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
-		for (int clusterIdx = 0; clusterIdx < _RSU.m_GTT->m_ClusterNum; clusterIdx++) {
+		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx++) {
-				list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+				list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
 				if (lst.size() == 1) {
-					RSU::RRM::ScheduleInfo* &info = *lst.begin();
+					RRM_RSU::ScheduleInfo* &info = *lst.begin();
 					//已经传输完毕，将资源释放
 					if (m_EventVec[info->eventId].isFinished()) {
 
 						//更新日志
-						m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
-						writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
+						m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
+						writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
 						//释放调度信息对象的内存资源
 						Delete::safeDelete(info);
 
 						//释放Pattern资源
-						_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
+						_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
 					}
 					else {//尚未传输完毕
-						_RSU.m_RRM_TDM_DRA->pushToScheduleInfoTable(info);
+						_RSU->getTDM_DRAPoint()->pushToScheduleInfoTable(info);
 						info = nullptr;
 					}
 				}
@@ -953,27 +1023,27 @@ void RRM_TDM_DRA::transimitEnd() {
 		/*  EMERGENCY  */
 
 
-		int clusterIdx = _RSU.m_RRM_TDM_DRA->getClusterIdx(m_TTI);
+		int clusterIdx = _RSU->getTDM_DRAPoint()->getClusterIdx(m_TTI);
 		for (int patternIdx = ns_RRM_TDM_DRA::gc_PatternNumPerPatternType[EMERGENCY]; patternIdx < ns_RRM_TDM_DRA::gc_TotalPatternNum; patternIdx++) {
 
-			list<RSU::RRM::ScheduleInfo*> &lst = _RSU.m_RRM_TDM_DRA->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
+			list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
 			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RSU::RRM::ScheduleInfo* &info = *lst.begin();
+				RRM_RSU::ScheduleInfo* &info = *lst.begin();
 				//说明该数据已经传输完毕
 				if (m_EventVec[info->eventId].isFinished()) {
 
 					//更新日志								
-					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU.m_GTT->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
+					m_EventVec[info->eventId].addEventLog(m_TTI, SUCCEED, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, SUCCEED, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
 					//释放调度信息对象的内存资源
 					Delete::safeDelete(info);
 
 					//释放Pattern资源
-					_RSU.m_RRM_TDM_DRA->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
+					_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = true;
 				}
 				else {//该数据仍未传完，将其压回m_ScheduleInfoTable
-					_RSU.m_RRM_TDM_DRA->pushToScheduleInfoTable(info);
+					_RSU->getTDM_DRAPoint()->pushToScheduleInfoTable(info);
 					info = nullptr;
 				}
 			}
@@ -1065,8 +1135,8 @@ void RRM_TDM_DRA::writeClusterPerformInfo(ofstream &t_File) {
 	t_File << "    RSU Info: " << endl;
 	t_File << "    {" << endl;
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
-		RSU &_RSU = m_RSUAry[RSUId];
-		t_File << _RSU.m_RRM_TDM_DRA->toString(2) << endl;
+		RRM_RSU *_RSU = m_RSUAry[RSUId];
+		t_File << _RSU->getTDM_DRAPoint()->toString(2) << endl;
 	}
 	t_File << "    }" << endl;
 
