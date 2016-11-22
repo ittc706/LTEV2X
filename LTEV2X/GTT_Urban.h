@@ -3,6 +3,22 @@
 
 // <GTT_Urban>: Geographical Topology and Transport Urban
 
+class GTT_Urban_VeUE :public GTT_VeUE {
+	/*------------------”Ú------------------*/
+public:
+	/*
+	* <?>
+	*/
+	int m_LocationId;
+
+	/*------------------∑Ω∑®------------------*/
+public:
+	void initialize(VeUEConfig &t_VeUEConfig) override;
+	GTT_Urban_VeUE  *const getUrbanPoint()override { return this; }
+	GTT_HighSpeed_VeUE  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
+};
+
+
 class GTT_Urban :public GTT_Basic {
 	/*------------------æ≤Ã¨------------------*/
 public:

@@ -13,6 +13,48 @@
 
 //<RRM_ICC_DRA> :Radio Resource Management Inter-Cluster Concurrency based Distributed Resource Allocation
 
+class RRM_ICC_DRA_VeUE :public RRM_VeUE{
+	/*------------------静态------------------*/
+public:
+	static std::default_random_engine s_Engine;
+	/*------------------域------------------*/
+public:
+	/*
+	* RRM_ICC_DRA会用到GTT的相关参数
+	* 而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+	*/
+	VeUE* m_This;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 默认构造函数定义为删除
+	*/
+	RRM_ICC_DRA_VeUE() = delete;
+
+	/*
+	* 构造函数
+	*/
+	RRM_ICC_DRA_VeUE(VeUE* t_This) :m_This(t_This) {}
+
+	void initialize()override;
+
+	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { return this; }
+	RRM_RR_VeUE *const getRRPoint()override { throw Exp("RuntimeException"); }
+
+	/*
+	* 随机选择资源块
+	*/
+	int selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx);
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+};
+
+
 class RRM_ICC_DRA :public RRM_Basic {
 	/*------------------域------------------*/
 public:
@@ -182,3 +224,12 @@ private:
 	*/
 	std::pair<int, int> getOccupiedSubCarrierRange(int t_PatternIdx);
 };
+
+
+inline
+int RRM_ICC_DRA_VeUE::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx) {
+	int size = static_cast<int>(t_CurAvaliablePatternIdx.size());
+	if (size == 0) return -1;
+	std::uniform_int_distribution<int> u(0, size - 1);
+	return t_CurAvaliablePatternIdx[u(s_Engine)];
+}

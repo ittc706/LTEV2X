@@ -4,6 +4,69 @@
 
 //<RRM>: Radio Resource Management
 
+class RRM_TDM_DRA_VeUE;
+class RRM_ICC_DRA_VeUE;
+class RRM_RR_VeUE;
+
+class RRM_VeUE {
+	/*------------------域------------------*/
+public:
+	VeUE* m_This;
+
+	/*
+	* 下标对应的Pattern下，同频干扰数量
+	*/
+	std::vector<int> m_InterferenceVeUENum;
+
+	/*
+	* 下标对应的Pattern下，同频干扰车辆ID
+	* 不包含当前车辆
+	*/
+	std::vector<std::vector<int>> m_InterferenceVeUEIdVec;
+
+	/*
+	* 含义同上，上一次的干扰车辆
+	* 用于判断是否相同，从而决定是否需要再算一次信道以及载干比
+	*/
+	std::vector<std::vector<int>> m_PreInterferenceVeUEIdVec;
+
+	/*
+	* 调制方式
+	*/
+	const ModulationType m_ModulationType = gc_ModulationType;
+
+	/*
+	* 信道编码码率
+	*/
+	const double m_CodeRate = gc_CodeRate;
+
+	/*
+	* 上次计算的载干比
+	* 若为最小值((std::numeric_limits<double>::min)())则说明之前没有计算过
+	*/
+	std::vector<double> m_PreSINR;
+
+	/*------------------方法------------------*/
+public:
+	virtual void initialize() = 0;
+
+	virtual RRM_TDM_DRA_VeUE *const getTDM_DRAPoint() = 0;
+	virtual RRM_ICC_DRA_VeUE *const getICC_DRAPoint() = 0;
+	virtual RRM_RR_VeUE *const getRRPoint() = 0;
+
+	/*
+	* 判断是否需要重新计算SINR
+	* 取决于干扰列表是否相同
+	*/
+	bool isNeedRecalculateSINR(int t_PatternIdx);
+
+	/*
+	* 判断之前是否已经算过SINR
+	*/
+	bool isAlreadyCalculateSINR(int t_PatternIdx) { return m_PreSINR[t_PatternIdx] != (std::numeric_limits<double>::min)(); }
+
+};
+
 class RRM_Basic {
 	/*------------------域------------------*/
 public:
@@ -25,7 +88,7 @@ public:
 	/*
 	* VeUE容器,指向系统的该参数
 	*/
-	VeUE* m_VeUEAry;
+	RRM_VeUE* m_VeUEAry;
 
 	/*
 	* 事件容器,指向系统的该参数
@@ -65,7 +128,6 @@ public:
 		m_TTI(t_TTI),
 		m_Config(t_Config),
 		m_RSUAry(t_RSUAry),
-		m_VeUEAry(t_VeUEAry),
 		m_EventVec(t_EventVec),
 		m_EventTTIList(t_EventTTIList),
 		m_TTIRSUThroughput(t_TTIRSUThroughput) {}

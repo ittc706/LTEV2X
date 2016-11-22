@@ -154,9 +154,11 @@
   <ItemGroup>
     <ClCompile Include="Complex.cpp" />
     <ClCompile Include="ConfigLoader.cpp" />
+    <ClCompile Include="GTT.cpp" />
     <ClCompile Include="GTT_HighSpeed.cpp" />
     <ClCompile Include="GTT_Urban.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="RRM.cpp" />
     <ClCompile Include="RRM_ICC_DRA.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="TMC_B.cpp" />

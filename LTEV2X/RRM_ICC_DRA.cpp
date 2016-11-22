@@ -22,6 +22,33 @@
 
 using namespace std;
 
+default_random_engine RRM_ICC_DRA_VeUEs_Engine((unsigned)time(NULL));
+
+void RRM_ICC_DRA_VeUE::initialize() {
+	m_InterferenceVeUENum = vector<int>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
+	m_InterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
+	m_PreInterferenceVeUEIdVec = vector<vector<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum);
+	m_PreSINR = vector<double>(ns_RRM_ICC_DRA::gc_TotalPatternNum, (numeric_limits<double>::min)());
+
+	//这两个数据比较特殊，必须等到GTT模块初始化完毕后，车辆的数目才能确定下来
+	m_GTT->m_InterferencePloss = vector<double>(m_VeUECount, 0);
+	m_GTT->m_InterferenceH = vector<double*>(m_VeUECount, nullptr);
+}
+
+
+std::string RRM_ICC_DRA_VeUE::toString(int t_NumTab) {
+	string indent;
+	for (int i = 0; i < t_NumTab; i++)
+		indent.append("    ");
+
+	ostringstream ss;
+	ss << indent << "{ VeUEId = " << left << setw(3) << m_This->m_GTT->m_VeUEId;
+	ss << " , RSUId = " << left << setw(3) << m_This->m_GTT->m_RSUId;
+	ss << " , ClusterIdx = " << left << setw(3) << m_This->m_GTT->m_ClusterIdx << " }";
+	return ss.str();
+}
+
+
 RRM_ICC_DRA::RRM_ICC_DRA(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, vector<Event>& t_EventVec, vector<list<int>>& t_EventTTIList, vector<vector<int>>& t_TTIRSUThroughput, GTT_Basic* t_GTTPoint, WT_Basic* t_WTPoint, int t_ThreadNum) :
 	RRM_Basic(t_TTI, t_Config, t_RSUAry, t_VeUEAry, t_EventVec, t_EventTTIList, t_TTIRSUThroughput), m_GTTPoint(t_GTTPoint), m_WTPoint(t_WTPoint), m_ThreadNum(t_ThreadNum) {
 
@@ -39,7 +66,7 @@ RRM_ICC_DRA::RRM_ICC_DRA(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, VeUE
 void RRM_ICC_DRA::initialize() {
 	//初始化VeUE的该模块参数部分
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		m_VeUEAry[VeUEId].initializeRRM_ICC_DRA();
+		m_VeUEAry[VeUEId].initialize();
 	}
 
 	//初始化RSU的该模块参数部分
@@ -51,10 +78,10 @@ void RRM_ICC_DRA::initialize() {
 
 void RRM_ICC_DRA::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		for (vector<int>& preInterferenceVeUEIdVec : m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec)
+		for (vector<int>& preInterferenceVeUEIdVec : m_VeUEAry[VeUEId].m_PreInterferenceVeUEIdVec)
 			preInterferenceVeUEIdVec.clear();
 
-		m_VeUEAry[VeUEId].m_RRM->m_PreSINR.assign(ns_RRM_ICC_DRA::gc_TotalPatternNum, (numeric_limits<double>::min)());
+		m_VeUEAry[VeUEId].m_PreSINR.assign(ns_RRM_ICC_DRA::gc_TotalPatternNum, (numeric_limits<double>::min)());
 	}
 }
 
@@ -127,9 +154,9 @@ void RRM_ICC_DRA::processEventList() {
 	for (int eventId : m_EventTTIList[m_TTI]) {
 		Event &event = m_EventVec[eventId];
 		int VeUEId = event.getVeUEId();
-		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
+		int RSUId = m_VeUEAry[VeUEId].m_This->m_GTT->m_RSUId;
 		RSU &_RSU = m_RSUAry[RSUId];
-		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
+		int clusterIdx = m_VeUEAry[VeUEId].m_This->m_GTT->m_ClusterIdx;
 
 		//将该事件压入等待链表
 		_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(clusterIdx, eventId);
@@ -152,7 +179,7 @@ void RRM_ICC_DRA::processScheduleInfoTableWhenLocationUpdate() {
 				int eventId = _RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]->eventId;
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 				//该VeUE不在当前RSU中，应将其压入System级别的切换链表
-				if (m_VeUEAry[VeUEId].m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {
+				if (m_VeUEAry[VeUEId].m_This->m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {
 					//压入Switch链表
 					_RSU.m_RRM_ICC_DRA->pushToSwitchEventIdList(m_SwitchEventIdList, eventId);
 
@@ -171,9 +198,9 @@ void RRM_ICC_DRA::processScheduleInfoTableWhenLocationUpdate() {
 				}
 				else {
 					//RSU内部发生了簇切换，将其从调度表中取出，压入等待链表
-					if (m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx != clusterIdx) {
+					if (m_VeUEAry[VeUEId].m_This->m_GTT->m_ClusterIdx != clusterIdx) {
 						//压入该RSU的等待链表
-						_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId);
+						_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_This->m_GTT->m_ClusterIdx, eventId);
 
 						//并释放该调度信息的资源
 						Delete::safeDelete(_RSU.m_RRM_ICC_DRA->m_ScheduleInfoTable[clusterIdx][patternIdx]);
@@ -202,7 +229,7 @@ void RRM_ICC_DRA::processWaitEventIdListWhenLocationUpdate() {
 				int eventId = *it;
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 				//该VeUE已经不在该RSU范围内
-				if (m_VeUEAry[VeUEId].m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {
+				if (m_VeUEAry[VeUEId].m_This->m_GTT->m_RSUId != _RSU.m_GTT->m_RSUId) {
 					//将其添加到System级别的RSU切换链表中
 					_RSU.m_RRM_ICC_DRA->pushToSwitchEventIdList(m_SwitchEventIdList, eventId);
 
@@ -217,17 +244,17 @@ void RRM_ICC_DRA::processWaitEventIdListWhenLocationUpdate() {
 					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_SWITCH, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
 				}
 				//仍然处于当前RSU范围内，但位于不同的簇
-				else if (m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx != clusterIdx) {
+				else if (m_VeUEAry[VeUEId].m_This->m_GTT->m_ClusterIdx != clusterIdx) {
 
 					//将其添加到所在簇的等待链表
-					_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, eventId);
+					_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(m_VeUEAry[VeUEId].m_This->m_GTT->m_ClusterIdx, eventId);
 
 					//将其从等待链表中的当前簇删除
 					it = _RSU.m_RRM_ICC_DRA->m_WaitEventIdList[clusterIdx].erase(it);
 
 					//更新日志
-					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, -1, "LocationUpdate");
-					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx, -1, "LocationUpdate");
+					m_EventVec[eventId].addEventLog(m_TTI, WAIT_TO_WAIT, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId].m_This->m_GTT->m_ClusterIdx, -1, "LocationUpdate");
+					writeTTILogInfo(g_FileTTILogInfo, m_TTI, WAIT_TO_WAIT, eventId, _RSU.m_GTT->m_RSUId, clusterIdx, -1, _RSU.m_GTT->m_RSUId, m_VeUEAry[VeUEId].m_This->m_GTT->m_ClusterIdx, -1, "LocationUpdate");
 				}
 				//仍然处于当前RSU范围内
 				else {
@@ -245,9 +272,9 @@ void RRM_ICC_DRA::processSwitchListWhenLocationUpdate() {
 	while (it != m_SwitchEventIdList.end()) {
 		int eventId = *it;
 		int VeUEId = m_EventVec[eventId].getVeUEId();
-		int RSUId = m_VeUEAry[VeUEId].m_GTT->m_RSUId;
+		int RSUId = m_VeUEAry[VeUEId].m_This->m_GTT->m_RSUId;
 		RSU &_RSU = m_RSUAry[RSUId];
-		int clusterIdx = m_VeUEAry[VeUEId].m_GTT->m_ClusterIdx;
+		int clusterIdx = m_VeUEAry[VeUEId].m_This->m_GTT->m_ClusterIdx;
 
 		//转入等待链表
 		_RSU.m_RRM_ICC_DRA->pushToWaitEventIdList(clusterIdx, eventId);
@@ -319,7 +346,7 @@ void RRM_ICC_DRA::selectRBBasedOnP123() {
 				int VeUEId = m_EventVec[eventId].getVeUEId();
 
 				//为当前用户在可用的对应其事件类型的Pattern块中随机选择一个，每个用户自行随机选择可用Pattern块
-				int patternIdx = m_VeUEAry[VeUEId].m_RRM_ICC_DRA->selectRBBasedOnP2(curAvaliablePatternIdx);
+				int patternIdx = m_VeUEAry[VeUEId].getICC_DRAPoint()->selectRBBasedOnP2(curAvaliablePatternIdx);
 
 				//该用户传输的信息类型没有pattern剩余了
 				if (patternIdx == -1) {
@@ -433,13 +460,13 @@ void RRM_ICC_DRA::transimitPreparation() {
 		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 			list<int>& interList = m_InterferenceVec[VeUEId][patternIdx];
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
+			m_VeUEAry[VeUEId].m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
 
-			m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
+			m_VeUEAry[VeUEId].m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
 
-			if (m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUENum[patternIdx]>0) {
+			if (m_VeUEAry[VeUEId].m_InterferenceVeUENum[patternIdx]>0) {
 				g_FileTemp << "VeUEId: " << VeUEId << " [";
-				for (auto c : m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx])
+				for (auto c : m_VeUEAry[VeUEId].m_InterferenceVeUEIdVec[patternIdx])
 					g_FileTemp << c << ", ";
 				g_FileTemp << " ]" << endl;
 			}
@@ -483,23 +510,23 @@ void RRM_ICC_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(patternIdx);
 					g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << endl;
 
-					double factor = m_VeUEAry[VeUEId].m_RRM->m_ModulationType * m_VeUEAry[VeUEId].m_RRM->m_CodeRate;
+					double factor = m_VeUEAry[VeUEId].m_ModulationType * m_VeUEAry[VeUEId].m_CodeRate;
 
 					//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
 					int maxEquivalentBitNum = (int)((double)(ns_RRM_ICC_DRA::gc_RBNumPerPattern * gc_BitNumPerRB)* factor);
 
 					//计算SINR
 					double curSINR = 0;
-					if (m_VeUEAry[VeUEId].m_RRM->isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].m_RRM->isAlreadyCalculateSINR(patternIdx)) {//调制编码方式需要更新时
+					if (m_VeUEAry[VeUEId].isNeedRecalculateSINR(patternIdx) || !m_VeUEAry[VeUEId].isAlreadyCalculateSINR(patternIdx)) {//调制编码方式需要更新时
 						curSINR = copyWTPoint->SINRCalculate(info->VeUEId, subCarrierIdxRange.first, subCarrierIdxRange.second, patternIdx);
-						m_VeUEAry[VeUEId].m_RRM->m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_RRM->m_InterferenceVeUEIdVec[patternIdx];
-						m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx] = curSINR;
+						m_VeUEAry[VeUEId].m_PreInterferenceVeUEIdVec[patternIdx] = m_VeUEAry[VeUEId].m_InterferenceVeUEIdVec[patternIdx];
+						m_VeUEAry[VeUEId].m_PreSINR[patternIdx] = curSINR;
 					}
 					else
-						curSINR = m_VeUEAry[VeUEId].m_RRM->m_PreSINR[patternIdx];
+						curSINR = m_VeUEAry[VeUEId].m_PreSINR[patternIdx];
 
 					//记录调度信息
-					double tmpDistance = m_VeUEAry[VeUEId].m_GTT->m_Distance[RSUId];
+					double tmpDistance = m_VeUEAry[VeUEId].m_This->m_GTT->m_Distance[RSUId];
 					if (curSINR < gc_CriticalPoint) {
 						//记录丢包
 						m_EventVec[info->eventId].packetLoss(tmpDistance);
@@ -656,8 +683,8 @@ void RRM_ICC_DRA::writeClusterPerformInfo(bool isLocationUpdate, ofstream& t_Fil
 	t_File << "    VUE Info: " << endl;
 	t_File << "    {" << endl;
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
-		VeUE &_VeUE = m_VeUEAry[VeUEId];
-		t_File << _VeUE.m_RRM_ICC_DRA->toString(2) << endl;
+		RRM_VeUE &_VeUE = m_VeUEAry[VeUEId];
+		t_File << _VeUE.getICC_DRAPoint()->toString(2) << endl;
 	}
 	t_File << "    }\n" << endl;
 

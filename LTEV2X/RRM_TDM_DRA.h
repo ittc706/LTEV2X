@@ -12,6 +12,54 @@
 
 //<RRM_TDM_DRA> :Radio Resource Management Time Division Dultiplexing based Distributed Resource Allocation
 
+
+class RRM_TDM_DRA_VeUE:public RRM_VeUE {
+	/*------------------静态------------------*/
+public:
+	static std::default_random_engine s_Engine;
+	/*------------------域------------------*/
+public:
+	/*
+	* RRM_TDM_DRA会用到GTT的相关参数
+	* 而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+	*/
+	VeUE* m_This;
+
+	/*
+	* 该VeUE所在簇的当前地理位置的相对调度区间
+	*/
+	std::tuple<int, int> m_ScheduleInterval;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 默认构造函数定义为删除
+	*/
+	RRM_TDM_DRA_VeUE() = delete;
+
+	/*
+	* 构造函数
+	*/
+	RRM_TDM_DRA_VeUE(VeUE* t_This) :m_This(t_This) {}
+
+	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { return this; }
+	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_RR_VeUE *const getRRPoint()override { throw Exp("RuntimeException"); }
+
+	void initialize()override;
+
+	/*
+	* 随机选取可用资源快
+	*/
+	int selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx);
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+};
+
+
 class RRM_TDM_DRA :public RRM_Basic {
 	/*------------------域------------------*/
 public:
@@ -205,3 +253,11 @@ private:
 
 };
 
+
+inline
+int RRM_TDM_DRA_VeUE::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx) {
+	int size = static_cast<int>(t_CurAvaliablePatternIdx.size());
+	if (size == 0) return -1;
+	std::uniform_int_distribution<int> u(0, size - 1);
+	return t_CurAvaliablePatternIdx[u(s_Engine)];
+}

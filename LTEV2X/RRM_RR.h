@@ -10,6 +10,41 @@
 
 //<RRM_RR>: Radio Resource Management Round-Robin
 
+
+class RRM_RR_VeUE :public RRM_VeUE {
+	/*------------------域------------------*/
+public:
+	/*
+	* RRM_RR会用到GTT的相关参数
+	* 而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
+	*/
+	VeUE* m_This;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 默认构造函数定义为删除
+	*/
+	RRM_RR_VeUE() = delete;
+
+	/*
+	* 构造函数
+	*/
+	RRM_RR_VeUE(VeUE* t_This) :m_This(t_This) {}
+
+	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_RR_VeUE *const getRRPoint()override { return this; }
+
+	void initialize()override;
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+};
+
+
 class RRM_RR :public RRM_Basic {
 	/*------------------域------------------*/
 public:

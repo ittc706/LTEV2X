@@ -155,5 +155,11 @@
     <ClCompile Include="GTT_HighSpeed.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="GTT.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RRM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

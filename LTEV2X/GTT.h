@@ -9,6 +9,123 @@
 
 // <GTT>: Geographical Topology and Transport
 
+class GTT_Urban_VeUE;
+class GTT_HighSpeed_VeUE;
+
+class GTT_VeUE {
+	/*------------------静态------------------*/
+public:
+	/*
+	* 车辆计数
+	*/
+	static int m_VeUECount;
+	/*------------------域------------------*/
+public:
+	VeUE* m_This;
+
+	/*
+	* 车辆ID
+	*/
+	const int m_VeUEId = m_VeUECount++;
+
+	/*
+	* 所在道路的RoadId
+	*/
+	int m_RoadId;
+
+	/*
+	* 相对横坐标，纵坐标
+	*/
+	double m_X;
+	double m_Y;
+
+	/*
+	* 绝对横坐标，纵坐标
+	*/
+	double m_AbsX;
+	double m_AbsY;
+
+	/*
+	* 车辆速度
+	*/
+	double m_V;
+
+	/*
+	* <?>
+	*/
+	double m_VAngle;
+
+	/*
+	* <?>
+	*/
+	double m_FantennaAngle;
+
+	/*
+	* <?>
+	*/
+	IMTA *m_IMTA = nullptr;
+
+	/*
+	* 车辆所在的RSUId
+	*/
+	int m_RSUId;
+
+	/*
+	* 车辆所在簇编号
+	*/
+	int m_ClusterIdx;
+
+	/*
+	* 发送天线数目
+	*/
+	int m_Nt;
+
+	/*
+	* 接收天线数目
+	*/
+	int m_Nr;
+
+	/*
+	* 路径损耗
+	*/
+	double m_Ploss;
+
+	/*
+	* 信道响应矩阵
+	*/
+	double* m_H;
+
+	/*
+	* 车辆与所有RSU之间的距离
+	*/
+	double* m_Distance;
+
+	/*
+	* 其他车辆，对当前车辆的干扰路径损耗，WT_B模块需要
+	* 下标：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
+	*/
+	std::vector<double> m_InterferencePloss;
+
+	/*
+	* 其他车辆，对当前车辆的信道响应矩阵，WT_B模块需要
+	* 下标：干扰车辆的VeUEId：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
+	*/
+	std::vector<double*> m_InterferenceH;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 析构函数，释放指针
+	*/
+	~GTT_VeUE();
+
+	virtual void initialize(VeUEConfig &t_VeUEConfig) = 0;
+
+	virtual GTT_Urban_VeUE  *const getUrbanPoint() = 0;
+	virtual GTT_HighSpeed_VeUE  *const getHighSpeedPoint() = 0;
+};
+
+
 class GTT_Basic {
 	/*------------------域------------------*/
 public:
@@ -41,7 +158,7 @@ public:
 	/*
 	* VeUE容器,指向系统的该参数
 	*/
-	VeUE* &m_VeUEAry;
+	GTT_VeUE* m_VeUEAry;
 
 	/*------------------接口------------------*/
 public:
@@ -56,7 +173,7 @@ public:
 	* 该构造函数也定义了该模块的视图
 	*/
 	GTT_Basic(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
-		m_TTI(t_TTI), m_Config(t_Config), m_eNBAry(t_eNBAry), m_RoadAry(t_RoadAry), m_RSUAry(t_RSUAry), m_VeUEAry(t_VeUEAry) {}
+		m_TTI(t_TTI), m_Config(t_Config), m_eNBAry(t_eNBAry), m_RoadAry(t_RoadAry), m_RSUAry(t_RSUAry) {}
 
 	/*
 	* 模块参数配置

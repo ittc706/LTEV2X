@@ -17,3 +17,12 @@
 */
 
 #include"RRM.h"
+
+
+bool RRM_VeUE::isNeedRecalculateSINR(int t_PatternIdx) {
+	if (m_InterferenceVeUEIdVec[t_PatternIdx].size() != m_PreInterferenceVeUEIdVec[t_PatternIdx].size()) return true;
+	for (int i = 0; i < m_InterferenceVeUEIdVec[t_PatternIdx].size(); i++) {
+		if (m_InterferenceVeUEIdVec[t_PatternIdx][i] != m_PreInterferenceVeUEIdVec[t_PatternIdx][i]) return true;
+	}
+	return false;
+}
