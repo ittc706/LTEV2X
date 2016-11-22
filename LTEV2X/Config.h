@@ -88,7 +88,6 @@ struct HighSpeedRodeConfig {
 //VeUE≈‰÷√≤Œ ˝
 struct VeUEConfig {
 	int roadId;
-	int laneId;
 	int locationId;
 	double X;
 	double Y;

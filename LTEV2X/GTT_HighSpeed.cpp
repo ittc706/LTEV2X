@@ -28,8 +28,8 @@ using namespace std;
 using namespace ns_GTT_HighSpeed;
 
 
-void GTT_HighSpeed_VeUE::initialize(VeUEConfig &t_VeUEConfig) {
-	m_RoadId = t_VeUEConfig.laneId;
+GTT_HighSpeed_VeUE::GTT_HighSpeed_VeUE(VeUEConfig &t_VeUEConfig) {
+	m_RoadId = t_VeUEConfig.roadId;
 	m_X = t_VeUEConfig.X;
 	m_Y = t_VeUEConfig.Y;
 	m_AbsX = t_VeUEConfig.AbsX;
@@ -115,17 +115,16 @@ void GTT_HighSpeed::initialize() {
 	VeUEConfig _VeUEConfig;
 	int VeUEId = 0;
 
-	for (int LaneIdx = 0; LaneIdx != m_HighSpeedRodeNum; LaneIdx++) {
-		for (int uprIdx = 0; uprIdx != m_pupr[LaneIdx]; uprIdx++) {
-			_VeUEConfig.laneId = LaneIdx;
+	for (int roadId = 0; roadId != m_HighSpeedRodeNum; roadId++) {
+		for (int uprIdx = 0; uprIdx != m_pupr[roadId]; uprIdx++) {
+			_VeUEConfig.roadId = roadId;
 			_VeUEConfig.X = -1732 + rand() % 3465;
 			_VeUEConfig.Y = 0.0f;
-			_VeUEConfig.AbsX = m_RoadAry[LaneIdx].m_GTT->m_AbsX + _VeUEConfig.X;
-			_VeUEConfig.AbsY = m_RoadAry[LaneIdx].m_GTT->m_AbsY + _VeUEConfig.Y;
+			_VeUEConfig.AbsX = m_RoadAry[roadId].m_GTT->m_AbsX + _VeUEConfig.X;
+			_VeUEConfig.AbsY = m_RoadAry[roadId].m_GTT->m_AbsY + _VeUEConfig.Y;
 			_VeUEConfig.V = m_Speed;
 			_VeUEConfig.VeUENum = m_Config.VeUENum;
-			m_VeUEAry[VeUEId] = new GTT_HighSpeed_VeUE();
-			m_VeUEAry[VeUEId++]->initialize(_VeUEConfig);
+			m_VeUEAry[VeUEId++] = new GTT_HighSpeed_VeUE(_VeUEConfig);
 		}
 	}
 

@@ -125,14 +125,14 @@ public:
 	/*------------------方法------------------*/
 public:
 	/*
+	* 构造函数
+	*/
+	GTT_VeUE() {}
+
+	/*
 	* 析构函数，释放指针
 	*/
 	~GTT_VeUE();
-
-	/*
-	* 初始化
-	*/
-	virtual void initialize(VeUEConfig &t_VeUEConfig) = 0;
 
 	/*
 	* 用于取得指向实际类型的指针

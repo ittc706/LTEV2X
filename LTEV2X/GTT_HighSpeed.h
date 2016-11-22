@@ -8,9 +8,10 @@ class GTT_HighSpeed_VeUE:public GTT_VeUE {
 	/*------------------方法------------------*/
 public:
 	/*
-	* 初始化实体类容器
+	* 构造函数
 	*/
-	void initialize(VeUEConfig &t_VeUEConfig) override;
+	GTT_HighSpeed_VeUE() = delete;
+	GTT_HighSpeed_VeUE(VeUEConfig &t_VeUEConfig);
 
 	/*
 	* 用于取得指向实际类型的指针

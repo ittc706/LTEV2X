@@ -23,7 +23,6 @@ using namespace std;
 
 int GTT_VeUE::s_VeUECount = 0;
 
-
 GTT_VeUE::~GTT_VeUE() {
 	Delete::safeDelete(m_IMTA, true);
 	Delete::safeDelete(m_H, true);

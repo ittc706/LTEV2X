@@ -28,7 +28,7 @@ using namespace std;
 using namespace ns_GTT_Urban;
 
 
-void GTT_Urban_VeUE::initialize(VeUEConfig &t_VeUEConfig) {
+GTT_Urban_VeUE::GTT_Urban_VeUE(VeUEConfig &t_VeUEConfig) {
 
 	m_RoadId = t_VeUEConfig.roadId;
 	m_LocationId = t_VeUEConfig.locationId;
@@ -156,8 +156,7 @@ void GTT_Urban::initialize() {
 			_VeUEConfig.AbsY = m_RoadAry[RoadIdx].m_GTT->m_AbsY + _VeUEConfig.Y;
 			_VeUEConfig.V = m_Speed;
 			_VeUEConfig.VeUENum = m_Config.VeUENum;
-			m_VeUEAry[VeUEId] = new GTT_Urban_VeUE();
-			m_VeUEAry[VeUEId++]->initialize(_VeUEConfig);
+			m_VeUEAry[VeUEId++] = new GTT_Urban_VeUE(_VeUEConfig);
 		}
 	}
 	//初始化车辆与RSU的距离
