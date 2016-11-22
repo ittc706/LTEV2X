@@ -21,12 +21,13 @@ public:
 	*/
 	static int s_VeUECount;
 	/*------------------域------------------*/
-public:
+private:
 	/*
 	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
 	*/
 	VeUE* m_This=nullptr;
 
+public:
 	/*
 	* 车辆ID
 	*/
@@ -129,7 +130,7 @@ public:
 	~GTT_VeUE();
 
 	/*
-	* 初始化实体类容器
+	* 初始化
 	*/
 	virtual void initialize(VeUEConfig &t_VeUEConfig) = 0;
 
@@ -138,6 +139,16 @@ public:
 	*/
 	virtual GTT_Urban_VeUE  *const getUrbanPoint() = 0;
 	virtual GTT_HighSpeed_VeUE  *const getHighSpeedPoint() = 0;
+
+	/*
+	* 取得系统级System的VeUE的指针
+	*/
+	VeUE* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的VeUE的指针
+	*/
+	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 };
 
 

@@ -16,11 +16,18 @@
 * =====================================================================================
 */
 
-
+#include<limits>
 #include"RRM.h"
 #include"Function.h"
 
 using namespace std;
+
+RRM_VeUE::RRM_VeUE(int t_TotalPatternNum){
+	m_InterferenceVeUENum = vector<int>(t_TotalPatternNum);
+	m_InterferenceVeUEIdVec = vector<vector<int>>(t_TotalPatternNum);
+	m_PreInterferenceVeUEIdVec = vector<vector<int>>(t_TotalPatternNum);
+	m_PreSINR = vector<double>(t_TotalPatternNum, (numeric_limits<double>::min)());
+}
 
 RRM::~RRM() {
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)

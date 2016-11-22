@@ -46,7 +46,6 @@ void TMC_B::initialize() {
 	m_VeUEAry = new TMC_VeUE*[m_Config.VeUENum];
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId] = new TMC_VeUE();
-		m_VeUEAry[VeUEId]->initialize();
 	}
 
 	//初始化RSU的该模块参数部分

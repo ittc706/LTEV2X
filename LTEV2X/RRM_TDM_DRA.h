@@ -28,9 +28,9 @@ public:
 	/*------------------方法------------------*/
 public:
 	/*
-	* 初始化实体类容器
+	* 构造函数
 	*/
-	void initialize()override;
+	RRM_TDM_DRA_VeUE();
 
 	/*
 	* 随机选取可用资源快

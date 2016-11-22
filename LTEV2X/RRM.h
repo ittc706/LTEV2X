@@ -10,12 +10,13 @@ class RRM_RR_VeUE;
 
 class RRM_VeUE {
 	/*------------------域------------------*/
-public:
+private:
 	/*
 	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
 	*/
 	VeUE* m_This;
 
+public:
 	/*
 	* 下标对应的Pattern下，同频干扰数量
 	*/
@@ -52,9 +53,16 @@ public:
 	/*------------------方法------------------*/
 public:
 	/*
-	* 初始化实体类容器
+	* 构造函数
 	*/
-	virtual void initialize() = 0;
+	RRM_VeUE() = delete;
+	RRM_VeUE(int t_TotalPatternNum);
+
+	/*
+	* 析构函数
+	* 没有需要清理的资源
+	*/
+	~RRM_VeUE(){}
 
 	/*
 	* 判断是否需要重新计算SINR
@@ -74,6 +82,16 @@ public:
 	virtual RRM_TDM_DRA_VeUE *const getTDM_DRAPoint() = 0;
 	virtual RRM_ICC_DRA_VeUE *const getICC_DRAPoint() = 0;
 	virtual RRM_RR_VeUE *const getRRPoint() = 0;
+
+	/*
+	* 取得系统级System的VeUE的指针
+	*/
+	VeUE* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的VeUE的指针
+	*/
+	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 };
 
 class RRM {

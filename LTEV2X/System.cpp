@@ -289,16 +289,16 @@ void System::initializeNON() {
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId].m_GTT = m_GTTPoint->m_VeUEAry[VeUEId];
-		m_GTTPoint->m_VeUEAry[VeUEId]->m_This = &m_VeUEAry[VeUEId];
+		m_GTTPoint->m_VeUEAry[VeUEId]->setSystemPoint(&m_VeUEAry[VeUEId]);
 
 		m_VeUEAry[VeUEId].m_RRM = m_RRMPoint->m_VeUEAry[VeUEId];
-		m_RRMPoint->m_VeUEAry[VeUEId]->m_This= &m_VeUEAry[VeUEId];
+		m_RRMPoint->m_VeUEAry[VeUEId]->setSystemPoint(&m_VeUEAry[VeUEId]);
 
 		m_VeUEAry[VeUEId].m_WT = m_WTPoint->m_VeUEAry[VeUEId];
-		(m_WTPoint->m_VeUEAry[VeUEId])->m_This= &m_VeUEAry[VeUEId];
+		(m_WTPoint->m_VeUEAry[VeUEId])->setSystemPoint(&m_VeUEAry[VeUEId]);
 
 		m_VeUEAry[VeUEId].m_TMC= m_TMCPoint->m_VeUEAry[VeUEId];
-		m_TMCPoint->m_VeUEAry[VeUEId]->m_This= &m_VeUEAry[VeUEId];
+		m_TMCPoint->m_VeUEAry[VeUEId]->setSystemPoint(&m_VeUEAry[VeUEId]);
 	}
 }
 

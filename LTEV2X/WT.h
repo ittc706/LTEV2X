@@ -10,19 +10,29 @@
 //<WT>: Wireless Transmission
 
 class WT_VeUE {
-public:
-	VeUE* m_This;
-	void initialize() {}
-};
-
-class WT {
 	/*------------------域------------------*/
-public:
+private:
 	/*
 	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
 	*/
 	VeUE* m_This;
 
+	/*------------------方法------------------*/
+public:
+	/*
+	* 取得系统级System的VeUE的指针
+	*/
+	VeUE* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的VeUE的指针
+	*/
+	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
+};
+
+class WT {
+	/*------------------域------------------*/
+public:
 	/*
 	* 系统配置参数,指向系统的该参数
 	*/

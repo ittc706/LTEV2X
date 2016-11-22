@@ -15,9 +15,9 @@ class RRM_RR_VeUE :public RRM_VeUE {
 	/*------------------方法------------------*/
 public:
 	/*
-	* 初始化实体类容器
+	* 构造函数
 	*/
-	void initialize()override;
+	RRM_RR_VeUE();
 
 	/*
 	* 生成格式化字符串

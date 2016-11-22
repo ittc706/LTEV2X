@@ -56,7 +56,6 @@ void WT_B::initialize() {
 	m_VeUEAry = new WT_VeUE*[m_Config.VeUENum];
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId] = new WT_VeUE();
-		m_VeUEAry[VeUEId]->initialize();
 	}
 
 	//初始化RSU的该模块参数部分
@@ -231,15 +230,15 @@ double WT_B::SINRCalculateMMSE(int t_VeUEId,int t_SubCarrierIdxStart,int t_SubCa
 
 
 void WT_B::configuration(int t_VeUEId, int t_PatternIdx, int t_SubCarrierNum){
-	m_Nr = m_VeUEAry[t_VeUEId]->m_This->m_GTT->m_Nr;
-	m_Nt = m_VeUEAry[t_VeUEId]->m_This->m_GTT->m_Nt;
-	m_Ploss = m_VeUEAry[t_VeUEId]->m_This->m_GTT->m_Ploss;
+	m_Nr = m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_Nr;
+	m_Nt = m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_Nt;
+	m_Ploss = m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_Ploss;
 	m_Pt = pow(10, (23 - 10 * log10(t_SubCarrierNum * 15 * 1000))/10);
 	m_Sigma = pow(10,-17.4);
 
 	m_PlossInterference.clear();
-	for (int interferenceVeUEId : m_VeUEAry[t_VeUEId]->m_This->m_RRM->m_InterferenceVeUEIdVec[t_PatternIdx]) {
-		m_PlossInterference .push_back(m_VeUEAry[t_VeUEId]->m_This->m_GTT->m_InterferencePloss[interferenceVeUEId]);
+	for (int interferenceVeUEId : m_VeUEAry[t_VeUEId]->getSystemPoint()->getRRMPoint()->m_InterferenceVeUEIdVec[t_PatternIdx]) {
+		m_PlossInterference .push_back(m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_InterferencePloss[interferenceVeUEId]);
 	}
 }
 
@@ -250,7 +249,7 @@ Matrix WT_B::readH(int t_VeUEId,int t_SubCarrierIdx) {
 	Matrix res(m_Nr, m_Nt);
 	for (int row = 0; row < m_Nr; row++) {
 		for (int col = 0; col < m_Nt; col++) {
-			res[row][col] = Complex(m_VeUEAry[t_VeUEId]->m_This->m_GTT->m_H[row * 2048 + t_SubCarrierIdx * 2], m_VeUEAry[t_VeUEId]->m_This->m_GTT->m_H[row * 2048 + t_SubCarrierIdx * 2 + 1]);
+			res[row][col] = Complex(m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_H[row * 2048 + t_SubCarrierIdx * 2], m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_H[row * 2048 + t_SubCarrierIdx * 2 + 1]);
 		}
 	}
 	return res;
@@ -259,12 +258,12 @@ Matrix WT_B::readH(int t_VeUEId,int t_SubCarrierIdx) {
 
 vector<Matrix> WT_B::readInterferenceH(int t_VeUEId, int t_SubCarrierIdx, int t_PatternIdx) {
 	vector<Matrix> res;
-	for (int interferenceVeUEId : m_VeUEAry[t_VeUEId]->m_This->m_RRM->m_InterferenceVeUEIdVec[t_PatternIdx]) {
+	for (int interferenceVeUEId : m_VeUEAry[t_VeUEId]->getSystemPoint()->getRRMPoint()->m_InterferenceVeUEIdVec[t_PatternIdx]) {
 		Matrix m(m_Nr, m_Nt);
 		for (int row = 0; row < m_Nr; row++) {
 			for (int col = 0; col < m_Nt; col++) {
-				m[row][col] = Complex(m_VeUEAry[t_VeUEId]->m_This->m_GTT->m_InterferenceH[interferenceVeUEId][row * 2048 + t_SubCarrierIdx * 2],
-					m_VeUEAry[t_VeUEId]->m_This->m_GTT->m_InterferenceH[interferenceVeUEId][row * 2048 + t_SubCarrierIdx * 2 + 1]);
+				m[row][col] = Complex(m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_InterferenceH[interferenceVeUEId][row * 2048 + t_SubCarrierIdx * 2],
+					m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_InterferenceH[interferenceVeUEId][row * 2048 + t_SubCarrierIdx * 2 + 1]);
 			}
 		}
 		res.push_back(m);

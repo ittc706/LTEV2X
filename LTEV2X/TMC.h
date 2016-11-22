@@ -5,19 +5,29 @@
 //<TMC>: Traffic Model and Control
 
 class TMC_VeUE {
-public:
-	VeUE* m_This;
-	void initialize() {}
-};
-
-class TMC {
 	/*------------------域------------------*/
-public:
+private:
 	/*
 	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
 	*/
 	VeUE* m_This;
 
+	/*------------------方法------------------*/
+public:
+	/*
+	* 取得系统级System的VeUE的指针
+	*/
+	VeUE* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的VeUE的指针
+	*/
+	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
+};
+
+class TMC {
+	/*------------------域------------------*/
+public:
 	/*
 	* 系统当前的TTI时刻
 	*/
