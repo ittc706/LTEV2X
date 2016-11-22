@@ -95,6 +95,7 @@ struct VeUEConfig {
 	double AbsX;
 	double AbsY;
 	double V;
+	int VeUENum;
 };
 
 //RSUÅäÖÃ²ÎÊı

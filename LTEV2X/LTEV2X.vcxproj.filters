@@ -98,9 +98,6 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="VUE.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="RSU.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -159,6 +156,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RRM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WT.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TMC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VeUE.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -218,16 +218,18 @@ void System::initialization() {
 
 	//TMC模块初始化
 	initializeTMCModule();
+
+	initializeNON();
 }
 
 
 void System::initializeGTTModule() {
 	switch (m_GTTMode) {
 	case URBAN:
-		m_GTTPoint = new GTT_Urban(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
+		m_GTTPoint = new GTT_Urban(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry);
 		break;
 	case HIGHSPEED:
-		m_GTTPoint = new GTT_HighSpeed(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry, m_VeUEAry);
+		m_GTTPoint = new GTT_HighSpeed(m_TTI, m_Config, m_eNBAry, m_RoadAry, m_RSUAry);
 		break;
 	}
 	//初始化地理拓扑参数
@@ -238,7 +240,7 @@ void System::initializeGTTModule() {
 }
 
 void System::initializeWTModule() {
-	m_WTPoint = new WT_B(m_Config, m_RSUAry, m_VeUEAry, m_WTMode);
+	m_WTPoint = new WT_B(m_Config, m_RSUAry, m_WTMode);
 	m_WTPoint->initialize();//模块初始化
 }
 
@@ -246,13 +248,13 @@ void System::initializeWTModule() {
 void System::initializeRRMModule() {
 	switch (m_RRMMode) {
 	case RR:
-		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
+		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_RSUAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
 		break;
 	case TDM_DRA:
-		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
+		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_RSUAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
 		break;
 	case ICC_DRA:
-		m_RRMPoint = new RRM_ICC_DRA(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
+		m_RRMPoint = new RRM_ICC_DRA(m_TTI, m_Config, m_RSUAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
 		break;
 	default:
 		break;
@@ -262,8 +264,26 @@ void System::initializeRRMModule() {
 
 
 void System::initializeTMCModule() {
-	m_TMCPoint = new TMC_B(m_TTI, m_Config, m_RSUAry, m_VeUEAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
+	m_TMCPoint = new TMC_B(m_TTI, m_Config, m_RSUAry, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
 	m_TMCPoint->initialize();//模块初始化
+}
+
+
+void System::initializeNON() {
+	m_VeUEAry = new VeUE[m_Config.VeUENum];
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+		m_VeUEAry[VeUEId].m_GTT = m_GTTPoint->m_VeUEAry[VeUEId];
+		m_GTTPoint->m_VeUEAry[VeUEId]->m_This = &m_VeUEAry[VeUEId];
+
+		m_VeUEAry[VeUEId].m_RRM = m_RRMPoint->m_VeUEAry[VeUEId];
+		m_RRMPoint->m_VeUEAry[VeUEId]->m_This= &m_VeUEAry[VeUEId];
+
+		m_VeUEAry[VeUEId].m_WT = m_WTPoint->m_VeUEAry[VeUEId];
+		(m_WTPoint->m_VeUEAry[VeUEId])->m_This= &m_VeUEAry[VeUEId];
+
+		m_VeUEAry[VeUEId].m_TMC= m_TMCPoint->m_VeUEAry[VeUEId];
+		m_TMCPoint->m_VeUEAry[VeUEId]->m_This= &m_VeUEAry[VeUEId];
+	}
 }
 
 

@@ -2,7 +2,8 @@
 #include<fstream>
 #include<random>
 #include<memory>
-#include "WT.h"
+#include"WT.h"
+
 
 //<WT_B>: Wireless Transmission Base
 
@@ -66,7 +67,7 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	WT_B(SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, WTMode t_SINRMode);
+	WT_B(SystemConfig& t_Config, RSU* t_RSUAry, WTMode t_SINRMode);
 
 	/*
 	* 拷贝构造函数
@@ -82,6 +83,11 @@ public:
 	* 获取该模块的一个拷贝
 	*/
 	WT_Basic* getCopy()override;
+
+	/*
+	* 释放该模块的拷贝
+	*/
+	void freeCopy()override;
 
 	/*
 	* 计算载干比
@@ -107,12 +113,12 @@ private:
 	/*
 	* 读取对应子载波的信道响应矩阵
 	*/
-	Matrix readH(int t_VeUEIdx, int t_SubCarrierIdx);
+	Matrix readH(int t_VeUEId, int t_SubCarrierIdx);
 
 	/*
 	* 读取对应车辆在对应子载波上的干扰矩阵数组
 	*/
-	std::vector<Matrix> readInterferenceH(int t_VeUEIdx, int t_SubCarrierIdx, int t_PatternIdx);
+	std::vector<Matrix> readInterferenceH(int t_VeUEId, int t_SubCarrierIdx, int t_PatternIdx);
 
 	/*
 	* 二分法查找算法

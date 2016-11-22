@@ -161,6 +161,7 @@
     <ClCompile Include="RRM.cpp" />
     <ClCompile Include="RRM_ICC_DRA.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="TMC.cpp" />
     <ClCompile Include="TMC_B.cpp" />
     <ClCompile Include="eNB.cpp" />
     <ClCompile Include="Global.cpp" />
@@ -172,7 +173,8 @@
     <ClCompile Include="RSU.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="Event.cpp" />
-    <ClCompile Include="VUE.cpp" />
+    <ClCompile Include="VeUE.cpp" />
+    <ClCompile Include="WT.cpp" />
     <ClCompile Include="WT_B.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -17,6 +17,14 @@
 */
 
 #include"RRM.h"
+#include"Function.h"
+
+
+RRM::~RRM() {
+	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
+		Delete::safeDelete(m_VeUEAry[VeUEId]);
+	Delete::safeDelete(m_VeUEAry, true);
+}
 
 
 bool RRM_VeUE::isNeedRecalculateSINR(int t_PatternIdx) {

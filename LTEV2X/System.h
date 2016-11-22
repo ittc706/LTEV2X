@@ -65,7 +65,7 @@ public:
 	* GTT模块，RRM模块，WT模块，TMC模块
 	*/
 	GTT_Basic* m_GTTPoint = nullptr;
-	RRM_Basic* m_RRMPoint = nullptr;
+	RRM* m_RRMPoint = nullptr;
 	TMC_Basic* m_TMCPoint = nullptr;
 	WT_Basic* m_WTPoint = nullptr;
 
@@ -122,6 +122,11 @@ private:
 	* 被initialization()调用
 	*/
 	void initializeTMCModule();
+
+	/*
+	* 建立中转实体对象初始化
+	*/
+	void initializeNON();
 };
 
 

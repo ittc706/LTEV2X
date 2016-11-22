@@ -5,12 +5,21 @@
 #include"VUE.h"
 #include"RSU.h"
 #include"Enumeration.h"
-
+#include"GTT.h"
+#include"RRM.h"
 //<WT>: Wireless Transmission
+
+class WT_VeUE {
+public:
+	VeUE* m_This;
+	void initialize() {}
+};
 
 class WT_Basic {
 	/*------------------域------------------*/
 public:
+	VeUE* m_This;
+
 	/*
 	* 系统配置参数,指向系统的该参数
 	*/
@@ -21,10 +30,8 @@ public:
 	*/
 	RSU* m_RSUAry;
 
-	/*
-	* VeUE容器,指向系统的该参数
-	*/
-	VeUE* m_VeUEAry;
+	
+	WT_VeUE** m_VeUEAry;
 
 	/*
 	* 计算SINR的模式
@@ -43,8 +50,13 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	WT_Basic(SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, WTMode t_SINRMode) :
-		m_Config(t_Config), m_RSUAry(t_RSUAry), m_VeUEAry(t_VeUEAry), m_SINRMode(t_SINRMode) {}
+	WT_Basic(SystemConfig& t_Config, RSU* t_RSUAry, WTMode t_SINRMode) :
+		m_Config(t_Config), m_RSUAry(t_RSUAry), m_SINRMode(t_SINRMode) {}
+
+	/*
+	* 析构函数
+	*/
+	~WT_Basic();
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类
@@ -55,6 +67,11 @@ public:
 	* 获取该模块的一个拷贝
 	*/
 	virtual WT_Basic* getCopy() = 0;
+
+	/*
+	* 释放该模块的拷贝
+	*/
+	virtual void freeCopy() = 0;
 
 	/*
 	* 计算载干比

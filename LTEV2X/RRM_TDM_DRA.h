@@ -19,11 +19,6 @@ public:
 	static std::default_random_engine s_Engine;
 	/*------------------域------------------*/
 public:
-	/*
-	* RRM_TDM_DRA会用到GTT的相关参数
-	* 而C++内部类是静态的，因此传入一个外围类实例的引用，建立联系
-	*/
-	VeUE* m_This;
 
 	/*
 	* 该VeUE所在簇的当前地理位置的相对调度区间
@@ -32,15 +27,6 @@ public:
 
 	/*------------------方法------------------*/
 public:
-	/*
-	* 默认构造函数定义为删除
-	*/
-	RRM_TDM_DRA_VeUE() = delete;
-
-	/*
-	* 构造函数
-	*/
-	RRM_TDM_DRA_VeUE(VeUE* t_This) :m_This(t_This) {}
 
 	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { return this; }
 	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw Exp("RuntimeException"); }
@@ -60,7 +46,7 @@ public:
 };
 
 
-class RRM_TDM_DRA :public RRM_Basic {
+class RRM_TDM_DRA :public RRM {
 	/*------------------域------------------*/
 public:
 	/*
@@ -117,7 +103,6 @@ public:
 	RRM_TDM_DRA(int &t_TTI,
 		SystemConfig& t_Config,
 		RSU* t_RSUAry,
-		VeUE* t_VeUEAry,
 		std::vector<Event>& t_EventVec,
 		std::vector<std::list<int>>& t_EventTTIList,
 		std::vector<std::vector<int>>& t_TTIRSUThroughput,

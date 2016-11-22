@@ -4,9 +4,17 @@
 
 //<TMC>: Traffic Model and Control
 
+class TMC_VeUE {
+public:
+	VeUE* m_This;
+	void initialize() {}
+};
+
 class TMC_Basic {
 	/*------------------域------------------*/
 public:
+	VeUE* m_This;
+
 	/*
 	* 系统当前的TTI时刻
 	*/
@@ -25,7 +33,7 @@ public:
 	/*
 	* VeUE容器,指向系统的该参数
 	*/
-	VeUE* m_VeUEAry;
+	TMC_VeUE** m_VeUEAry;
 
 	/*
 	* 事件容器，下标代表事件ID
@@ -56,14 +64,18 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	TMC_Basic(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
+	TMC_Basic(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
 		m_TTI(t_TTI),
 		m_Config(t_Config),
 		m_RSUAry(t_RSUAry),
-		m_VeUEAry(t_VeUEAry),
 		m_EventVec(t_EventVec),
 		m_EventTTIList(t_EventTTIList),
 		m_TTIRSUThroughput(t_TTIRSUThroughput) {}
+
+	/*
+	* 析构函数
+	*/
+	~TMC_Basic();
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

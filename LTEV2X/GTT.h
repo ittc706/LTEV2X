@@ -1,6 +1,7 @@
 #pragma once
 #include<random>
 #include<set>
+#include<tuple>
 #include"RSU.h"
 #include"VUE.h"
 #include"eNB.h"
@@ -18,15 +19,15 @@ public:
 	/*
 	* 车辆计数
 	*/
-	static int m_VeUECount;
+	static int s_VeUECount;
 	/*------------------域------------------*/
 public:
-	VeUE* m_This;
+	VeUE* m_This=nullptr;
 
 	/*
 	* 车辆ID
 	*/
-	const int m_VeUEId = m_VeUECount++;
+	const int m_VeUEId = s_VeUECount++;
 
 	/*
 	* 所在道路的RoadId
@@ -93,12 +94,12 @@ public:
 	/*
 	* 信道响应矩阵
 	*/
-	double* m_H;
+	double* m_H = nullptr;
 
 	/*
 	* 车辆与所有RSU之间的距离
 	*/
-	double* m_Distance;
+	double* m_Distance = nullptr;
 
 	/*
 	* 其他车辆，对当前车辆的干扰路径损耗，WT_B模块需要
@@ -112,13 +113,17 @@ public:
 	*/
 	std::vector<double*> m_InterferenceH;
 
+	/*
+	* 地理位置更新日志信息
+	*/
+	std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;
+
 	/*------------------方法------------------*/
 public:
 	/*
 	* 析构函数，释放指针
 	*/
 	~GTT_VeUE();
-
 	virtual void initialize(VeUEConfig &t_VeUEConfig) = 0;
 
 	virtual GTT_Urban_VeUE  *const getUrbanPoint() = 0;
@@ -158,7 +163,7 @@ public:
 	/*
 	* VeUE容器,指向系统的该参数
 	*/
-	GTT_VeUE* m_VeUEAry;
+	GTT_VeUE** m_VeUEAry;
 
 	/*------------------接口------------------*/
 public:
@@ -172,8 +177,13 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT_Basic(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry) :
+	GTT_Basic(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry) :
 		m_TTI(t_TTI), m_Config(t_Config), m_eNBAry(t_eNBAry), m_RoadAry(t_RoadAry), m_RSUAry(t_RSUAry) {}
+
+	/*
+	* 析构函数
+	*/
+	~GTT_Basic();
 
 	/*
 	* 模块参数配置

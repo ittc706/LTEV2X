@@ -11,55 +11,22 @@
 #include"Config.h"
 #include"IMTA.h"
 
+/*
+* 前置声明
+* 每一个类都有该类对应的VeUE视图
+*/
 class GTT_VeUE;
 class RRM_VeUE;
+class WT_VeUE;
+class TMC_VeUE;
 
 class VeUE {
-	
-	
-
-	/*---------------前置声明---------------*/
-public:
-	class TMC;
-
 	/*------------------域------------------*/
 public:
-
 	GTT_VeUE * m_GTT = nullptr;
 	RRM_VeUE * m_RRM = nullptr;
-
-
-	/*
-	* TMC内部类指针
-	* 用于存储不同实现的共同参数
-	*/
-	TMC* m_TMC = nullptr;
-
-	/*------------------方法------------------*/
-public:
-	/*
-	* 析构函数
-	* 析构内部类指针
-	*/
-	~VeUE();
-	
-	/*
-	* TMC模块视图中，RSU对象初始化方法
-	* 在WT模块初始化时调用
-	*/
-	void initializeTMC();
-
-	/*-----------------内部类-----------------*/
-public:
-
-	class TMC {
-		/*--------域--------*/
-	public:
-		/*
-		* 地理位置更新日志信息
-		*/
-		std::list<std::tuple<int, int>> m_LocationUpdateLogInfoList;
-	};
+	WT_VeUE * m_WT = nullptr;
+	TMC_VeUE * m_TMC = nullptr;
 };
 
 

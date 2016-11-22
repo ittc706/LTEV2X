@@ -10,7 +10,6 @@ public:
 	* <?>
 	*/
 	int m_LocationId;
-
 	/*------------------方法------------------*/
 public:
 	void initialize(VeUEConfig &t_VeUEConfig) override;
@@ -82,7 +81,7 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry, VeUE* &t_VeUEAry);
+	GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry, RSU* &t_RSUAry);
 
 	/*
 	* 参数配置

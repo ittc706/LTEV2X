@@ -38,7 +38,6 @@ public:
 	TMC_B(int &t_TTI, 
 		SystemConfig& t_Config, 
 		RSU* t_RSUAry, 
-		VeUE* t_VeUEAry, 
 		std::vector<Event>& t_EventVec, 
 		std::vector<std::list<int>>& t_EventTTIList, 
 		std::vector<std::vector<int>>& t_TTIRSUThroughput);

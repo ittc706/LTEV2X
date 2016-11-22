@@ -67,7 +67,7 @@ public:
 
 };
 
-class RRM_Basic {
+class RRM {
 	/*------------------域------------------*/
 public:
 	/*
@@ -88,7 +88,7 @@ public:
 	/*
 	* VeUE容器,指向系统的该参数
 	*/
-	RRM_VeUE* m_VeUEAry;
+	RRM_VeUE** m_VeUEAry;
 
 	/*
 	* 事件容器,指向系统的该参数
@@ -117,14 +117,14 @@ public:
 	/*
 	* 默认构造函数定义为删除
 	*/
-	RRM_Basic() = delete;
+	RRM() = delete;
 
 	/*
 	* 构造函数
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	RRM_Basic(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, VeUE* t_VeUEAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
+	RRM(int &t_TTI, SystemConfig& t_Config, RSU* t_RSUAry, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
 		m_TTI(t_TTI),
 		m_Config(t_Config),
 		m_RSUAry(t_RSUAry),
@@ -132,6 +132,10 @@ public:
 		m_EventTTIList(t_EventTTIList),
 		m_TTIRSUThroughput(t_TTIRSUThroughput) {}
 
+	/*
+	* 析构函数
+	*/
+	~RRM();
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类
