@@ -20,7 +20,6 @@
 #include<memory.h>
 #include<iostream>
 #include"IMTA.h"
-#include"Global.h"
 #include"Function.h"
 
 using namespace std;

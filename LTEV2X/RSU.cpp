@@ -7,8 +7,6 @@
 #include<iomanip>
 #include"RSU.h"
 #include"Exception.h"
-#include"Event.h"
-#include"Global.h"
 #include"Function.h"
 
 

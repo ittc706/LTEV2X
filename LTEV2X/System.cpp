@@ -20,8 +20,6 @@
 #include<fstream>
 #include<stdlib.h>
 #include"System.h"
-#include"Global.h"
-#include"RSU.h"
 #include"Function.h"
 
 

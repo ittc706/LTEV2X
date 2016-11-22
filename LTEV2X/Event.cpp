@@ -18,10 +18,10 @@
 
 #include<iomanip>
 #include<cmath>
+#include<algorithm>
+#include<sstream>
 #include"Event.h"
-#include"Enumeration.h"
-#include"Global.h"
-#include"System.h"
+#include"Exception.h"
 
 using namespace std;
 
