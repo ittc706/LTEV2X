@@ -13,6 +13,7 @@ extern std::ofstream g_FileTemp;
 extern std::ofstream g_FileVeUELocationUpdateLogInfo;
 extern std::ofstream g_FileVeUENumPerRSULogInfo;
 extern std::ofstream g_FileLocationInfo;
+extern std::ofstream g_FileVeUEMessage;
 //RRMÄ£¿é
 extern std::ofstream g_FileScheduleInfo;
 extern std::ofstream g_FileClasterPerformInfo;

@@ -1,7 +1,7 @@
 %高速公路场景
 
 % 显示某个RSU下不同簇下的车辆拓扑
-[data1,data2,data3,data4,data5] = textread('VeUE_message_HIGHSPEED.txt','%n%n%n%n%n');
+[data1,data2,data3,data4,data5] = textread('VeUEMessage.txt','%n%n%n%n%n');
 dim = length(data1);
 ClusterNumber = 2;
 RandomColor = rand(ClusterNumber,3);

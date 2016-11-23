@@ -14,7 +14,7 @@
 %  end
  
 % 显示不同RSU下车辆的拓扑
-[data1,data2,data3,data4,data5] = textread('VeUE_message_URBAN.txt','%n%n%n%n%n');
+[data1,data2,data3,data4,data5] = textread('VeUEMessage.txt','%n%n%n%n%n');
 dim = length(data1);
 RSUNumber = 24;
 RandomColor = rand(RSUNumber,3);

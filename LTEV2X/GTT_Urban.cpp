@@ -282,10 +282,6 @@ void GTT_Urban::channelGeneration() {
 
 
 void GTT_Urban::freshLoc() {
-	//输出VeUE信息的文件流
-	FILE *stream;
-	fopen_s(&stream, "Log\\TMCLog\\VeUE_message_URBAN.txt", "w+");
-
 	for (int UserIdx = 0; UserIdx != getContext()->m_Config.VeUENum; UserIdx++)
 	{
 		bool RoadChangeFlag = false;
@@ -538,11 +534,11 @@ void GTT_Urban::freshLoc() {
 		m_RSUAry[RSUIdx]->m_VeUEIdList.push_back(UserIdx1);
 
 		//输出VeUE信息到文档
-		fprintf(stream, "%d\t", UserIdx1);
-		fprintf(stream, "%d\t", m_VeUEAry[UserIdx1]->m_RSUId);
-		fprintf(stream, "%d\t", m_VeUEAry[UserIdx1]->m_ClusterIdx);
-		fprintf(stream, "%f\t", m_VeUEAry[UserIdx1]->m_AbsX);
-		fprintf(stream, "%f\n", m_VeUEAry[UserIdx1]->m_AbsY);
+		g_FileVeUEMessage << UserIdx1 << " ";
+		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_RSUId << " ";
+		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_ClusterIdx << " ";
+		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsX << " ";
+		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsY << endl;
 
 		location.locationType = None;
 		location.distance = 0;
@@ -619,7 +615,6 @@ void GTT_Urban::freshLoc() {
 		Delete::safeDelete(FFT, true);
 		Delete::safeDelete(t_HAfterFFT, true);
 	}
-	fclose(stream);
 }
 
 

@@ -16,6 +16,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileVeUELocationUpdateLogInfo.open("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");
 		g_FileVeUENumPerRSULogInfo.open("Log\\GTTLog\\VeUENumPerRSULogInfo.txt");
 		g_FileLocationInfo.open("Log\\GTTLog\\LocationInfo.txt");
+		g_FileVeUEMessage.open("Log\\GTTLog\\VeUEMessage.txt");
 		//RRMÄ£¿é
 		g_FileScheduleInfo.open("Log\\RRMLog\\ScheduleInfo.txt");
 		g_FileClasterPerformInfo.open("Log\\RRMLog\\ClasterPerformInfo.txt");
@@ -46,6 +47,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileVeUELocationUpdateLogInfo.open("Log/GTTLog/VeUELocationUpdateLogInfo.txt");
 		g_FileVeUENumPerRSULogInfo.open("Log/GTTLog/VeUENumPerRSULogInfo.txt");
 		g_FileLocationInfo.open("Log/GTTLog/LocationInfo.txt");
+		g_FileVeUEMessage.open("Log/GTTLog/VeUEMessage.txt");
 		//RRMÄ£¿é
 		g_FileScheduleInfo.open("Log/RRMLog/ScheduleInfo.txt");
 		g_FileClasterPerformInfo.open("Log/RRMLog/ClasterPerformInfo.txt");
@@ -74,6 +76,7 @@ ofstream g_FileTemp;
 ofstream g_FileVeUELocationUpdateLogInfo;
 ofstream g_FileVeUENumPerRSULogInfo;
 ofstream g_FileLocationInfo;
+ofstream g_FileVeUEMessage;
 //RRMÄ£¿é
 ofstream g_FileScheduleInfo;
 ofstream g_FileClasterPerformInfo;
