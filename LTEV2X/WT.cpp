@@ -23,7 +23,7 @@
 using namespace std;
 
 WT::WT(System* t_Context) : m_Context(t_Context) {
-	m_SINRMode = m_Context->m_Config.WTMode;
+	m_SINRMode = m_Context->m_Config._WTMode;
 }
 
 WT::~WT() {

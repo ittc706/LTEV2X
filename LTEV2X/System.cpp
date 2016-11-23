@@ -169,11 +169,11 @@ void System::configure() {//系统仿真参数配置
 
 	if ((temp = configLoader.getParam("GTTMode")) != nullString) {
 		if (temp == "URBAN") {
-			m_Config.GTTMode = URBAN;
+			m_Config._GTTMode = URBAN;
 			cout << "GTT单元：URBAN模式" << endl;
 		}
 		else if (temp == "HIGHSPEED") {
-			m_Config.GTTMode = HIGHSPEED;
+			m_Config._GTTMode = HIGHSPEED;
 			cout << "GTT单元：HIGHSPEED模式" << endl;
 		}
 		else
@@ -184,15 +184,15 @@ void System::configure() {//系统仿真参数配置
 
 	if ((temp = configLoader.getParam("RRMMode")) != nullString) {
 		if (temp == "TDM_DRA") {
-			m_Config.RRMMode = TDM_DRA;
+			m_Config._RRMMode = TDM_DRA;
 			cout << "RRM单元：TDM_DRA模式" << endl;
 		}
 		else if (temp == "ICC_DRA") {
-			m_Config.RRMMode = ICC_DRA;
+			m_Config._RRMMode = ICC_DRA;
 			cout << "RRM单元：ICC_DRA模式" << endl;
 		}
 		else if (temp == "RR") {
-			m_Config.RRMMode = RR;
+			m_Config._RRMMode = RR;
 			cout << "RRM单元：RR模式" << endl;
 		}
 		else
@@ -213,11 +213,11 @@ void System::configure() {//系统仿真参数配置
 
 	if ((temp = configLoader.getParam("WTMode")) != nullString) {
 		if (temp == "SINR_MRC") {
-			m_Config.WTMode = SINR_MRC;
+			m_Config._WTMode = SINR_MRC;
 			cout << "WT单元：SINR_MRC模式" << endl;
 		}
 		else if (temp == "SINR_MMSE") {
-			m_Config.WTMode = SINR_MMSE;
+			m_Config._WTMode = SINR_MMSE;
 			cout << "WT单元：SINR_MMSE模式" << endl;
 		}
 		else
@@ -301,7 +301,7 @@ void System::initialization() {
 
 
 void System::initializeGTTModule() {
-	switch (m_Config.GTTMode) {
+	switch (m_Config._GTTMode) {
 	case URBAN:
 		m_GTTPoint = new GTT_Urban(this);
 		break;
@@ -323,7 +323,7 @@ void System::initializeWTModule() {
 
 
 void System::initializeRRMModule() {
-	switch (m_Config.RRMMode) {
+	switch (m_Config._RRMMode) {
 	case RR:
 		m_RRMPoint = new RRM_RR(this);
 		break;

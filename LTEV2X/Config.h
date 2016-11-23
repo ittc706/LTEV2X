@@ -11,17 +11,17 @@ struct SystemConfig {
 	/*
 	* GTT模块实现的具体类别
 	*/
-	GTTMode GTTMode;
+	GTTMode _GTTMode;
 
 	/*
 	* RRM模块实现的具体类别
 	*/
-	RRMMode RRMMode;
+	RRMMode _RRMMode;
 
 	/*
 	* WT模块实现的具体类别
 	*/
-	WTMode WTMode;
+	WTMode _WTMode;
 
 	/*
 	* 仿真总共的TTI
