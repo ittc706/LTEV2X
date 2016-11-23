@@ -67,13 +67,16 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	WT_B(System* t_Context, WTMode t_SINRMode);
+	WT_B(System* t_Context);
 
+private:
 	/*
 	* 拷贝构造函数
+	* 定义为私有避免误用
 	*/
 	WT_B(const WT_B& t_WT_B);
 
+public:
 	/*
 	* 初始化RSU VeUE内该单元的内部类
 	*/

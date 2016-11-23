@@ -22,6 +22,10 @@
 
 using namespace std;
 
+WT::WT(System* t_Context) : m_Context(t_Context) {
+	m_SINRMode = m_Context->m_WTMode;
+}
+
 WT::~WT() {
 	if (m_VeUEAry != nullptr) {
 		for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)

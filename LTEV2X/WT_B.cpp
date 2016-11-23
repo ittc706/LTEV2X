@@ -31,7 +31,8 @@ using namespace std;
 
 default_random_engine WT_B::s_Engine(0);
 
-WT_B::WT_B(System* t_Context, WTMode t_SINRMode) :WT(t_Context) {}
+WT_B::WT_B(System* t_Context) :WT(t_Context) {}
+
 
 WT_B::WT_B(const WT_B& t_WT_B) : WT(t_WT_B.m_Context) {
 	m_QPSK_MI = t_WT_B.m_QPSK_MI;

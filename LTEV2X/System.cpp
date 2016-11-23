@@ -257,7 +257,7 @@ void System::initializeGTTModule() {
 }
 
 void System::initializeWTModule() {
-	m_WTPoint = new WT_B(this, m_WTMode);
+	m_WTPoint = new WT_B(this);
 	m_WTPoint->initialize();//Ä£¿é³õÊ¼»¯
 }
 

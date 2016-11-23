@@ -1,3 +1,5 @@
+## version_2016_11_23(DebugWT)
+
 ## version_2016_11_23(Debug)
 * WT模块拷贝的时候，计算SINR的模式也要拷贝
 
