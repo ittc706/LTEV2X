@@ -61,10 +61,26 @@ GTT_HighSpeed_RSU::GTT_HighSpeed_RSU() {
 }
 
 
+void GTT_HighSpeed_eNB::initialize(eNBConfig &t_eNBConfig) {
+	m_eNBId = t_eNBConfig.eNBId;
+	m_AbsX = ns_GTT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 0];
+	m_AbsY = ns_GTT_HighSpeed::gc_eNBTopo[m_eNBId * 2 + 1];
+	g_FileLocationInfo << toString(0);
+}
+
+
+GTT_HighSpeed_Road::GTT_HighSpeed_Road(HighSpeedRodeConfig &t_RoadHighSpeedConfig) {
+	m_RoadId = t_RoadHighSpeedConfig.roadId;
+	m_AbsX = 0.0f;
+	m_AbsY = ns_GTT_HighSpeed::gc_LaneTopoRatio[m_RoadId * 2 + 1] * ns_GTT_HighSpeed::gc_LaneWidth;
+}
+
+
 default_random_engine GTT_HighSpeed::s_Engine((unsigned)time(NULL));
 
-GTT_HighSpeed::GTT_HighSpeed(int &t_TTI, SystemConfig& t_Config, eNB* &t_NBAry, Road* &t_RoadAry) :
-	GTT(t_TTI, t_Config, t_NBAry, t_RoadAry) {}
+
+GTT_HighSpeed::GTT_HighSpeed(int &t_TTI, SystemConfig& t_Config) :
+	GTT(t_TTI, t_Config) {}
 
 
 void GTT_HighSpeed::configure() {
@@ -95,20 +111,20 @@ void GTT_HighSpeed::configure() {
 
 void GTT_HighSpeed::initialize() {
 	//初始化m_eNBAry
-	m_eNBAry = new eNB[m_Config.eNBNum];
+	m_eNBAry = new GTT_eNB*[m_Config.eNBNum];
 	eNBConfig _eNBConfig;
-	for (int temp = 0; temp != m_Config.eNBNum; ++temp)
-	{
-		_eNBConfig.eNBId = temp;
-		m_eNBAry[temp].initializeHighSpeed(_eNBConfig);
+	for (int eNBId = 0; eNBId != m_Config.eNBNum; ++eNBId) {
+		_eNBConfig.eNBId = eNBId;
+		m_eNBAry[eNBId] = new GTT_HighSpeed_eNB();
+		m_eNBAry[eNBId]->initialize(_eNBConfig);
 	}
 
 	//初始化m_RoadAry
-	m_RoadAry = new Road[m_HighSpeedRodeNum];
+	m_RoadAry = new GTT_Road*[m_HighSpeedRodeNum];
 	HighSpeedRodeConfig highSpeedRodeConfig;
-	for (int temp = 0; temp != m_HighSpeedRodeNum; ++temp) {
-		highSpeedRodeConfig.roadId = temp;
-		m_RoadAry[temp].initializeHighSpeed(highSpeedRodeConfig);
+	for (int roadId = 0; roadId != m_HighSpeedRodeNum; ++roadId) {
+		highSpeedRodeConfig.roadId = roadId;
+		m_RoadAry[roadId] = new GTT_HighSpeed_Road(highSpeedRodeConfig);
 	}
 
 	
@@ -128,8 +144,8 @@ void GTT_HighSpeed::initialize() {
 			_VeUEConfig.roadId = roadId;
 			_VeUEConfig.X = -1732 + rand() % 3465;
 			_VeUEConfig.Y = 0.0f;
-			_VeUEConfig.AbsX = m_RoadAry[roadId].m_GTT->m_AbsX + _VeUEConfig.X;
-			_VeUEConfig.AbsY = m_RoadAry[roadId].m_GTT->m_AbsY + _VeUEConfig.Y;
+			_VeUEConfig.AbsX = m_RoadAry[roadId]->m_AbsX + _VeUEConfig.X;
+			_VeUEConfig.AbsY = m_RoadAry[roadId]->m_AbsY + _VeUEConfig.Y;
 			_VeUEConfig.V = m_Speed;
 			_VeUEConfig.VeUENum = m_Config.VeUENum;
 			m_VeUEAry[VeUEId++] = new GTT_HighSpeed_VeUE(_VeUEConfig);
@@ -166,7 +182,7 @@ void GTT_HighSpeed::channelGeneration() {
 	}
 	//同时也清除eNB.m_VeUEIdList
 	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++)
-		m_eNBAry[eNBId].m_VeUEIdList.clear();
+		m_eNBAry[eNBId]->m_VeUEIdList.clear();
 
 	//运动模型
 	freshLoc();
@@ -196,10 +212,10 @@ void GTT_HighSpeed::channelGeneration() {
 	//<UNDONE>:基站类的RSUIDList在哪里维护的?
 	//更新基站的VeUE容器
 	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
-		eNB &_eNB = m_eNBAry[eNBId];
-		for (int RSUId : _eNB.m_RSUIdList) {
+		GTT_eNB *_eNB = m_eNBAry[eNBId];
+		for (int RSUId : _eNB->m_RSUIdList) {
 			for (int VeUEId : m_RSUAry[RSUId]->m_VeUEIdList) {
-				_eNB.m_VeUEIdList.push_back(VeUEId);
+				_eNB->m_VeUEIdList.push_back(VeUEId);
 			}
 		}
 	}

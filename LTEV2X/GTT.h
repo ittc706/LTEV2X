@@ -1,12 +1,16 @@
 #pragma once
 #include<random>
 #include<set>
+#include<vector>
+#include<list>
 #include<tuple>
 #include"RSU.h"
 #include"VUE.h"
 #include"eNB.h"
 #include"Road.h"
 #include"Config.h"
+#include"IMTA.h"
+#include"Exception.h"
 
 // <GTT>: Geographical Topology and Transport
 
@@ -152,6 +156,9 @@ public:
 };
 
 
+class GTT_Urban_RSU;
+class GTT_HighSpeed_RSU;
+
 class GTT_RSU {
 	/*------------------静态------------------*/
 public:
@@ -162,7 +169,7 @@ public:
 	/*------------------域------------------*/
 private:
 	/*
-	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
+	* 指向用于不同单元RSU数据交互的系统级RSU对象
 	*/
 	RSU* m_This = nullptr;
 
@@ -215,6 +222,12 @@ public:
 	std::string toString(int t_NumTab);
 
 	/*
+	* 用于取得指向实际类型的指针
+	*/
+	virtual GTT_Urban_RSU  *const getUrbanPoint() = 0;
+	virtual GTT_HighSpeed_RSU  *const getHighSpeedPoint() = 0;
+
+	/*
 	* 取得系统级System的RSU的指针
 	*/
 	RSU* getSystemPoint() { return m_This; }
@@ -223,6 +236,130 @@ public:
 	* 设置系统级System的RSU的指针
 	*/
 	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
+};
+
+class GTT_Urban_eNB;
+class GTT_HighSpeed_eNB;
+
+class GTT_eNB {
+	/*------------------域------------------*/
+private:
+	/*
+	* 指向用于不同单元eNB数据交互的系统级eNB对象
+	*/
+	eNB* m_This = nullptr;
+public:
+	/*
+	* 所在道路Id
+	*/
+	int m_RoadId;
+
+	/*
+	* 基站Id
+	*/
+	int m_eNBId;
+
+	/*
+	* 基站相对横纵坐标
+	*/
+	double m_X, m_Y;
+
+	/*
+	* 基站绝对横纵坐标
+	*/
+	double m_AbsX, m_AbsY;
+
+	/*
+	* 该基站中的RSU容器(存储RSU的Id)
+	*/
+	std::list<int> m_RSUIdList;
+
+	/*
+	* 该基站中的VeUE容器(存储VeUE的Id)
+	*/
+	std::list<int> m_VeUEIdList;
+
+
+	/*------------------方法------------------*/
+public:
+
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+
+	/*
+	* 初始化方法
+	* 不用构造函数的原因是构造的时刻其依赖项还没创建完毕
+	*/
+	virtual void initialize(eNBConfig &t_eNBConfig) = 0;
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	virtual GTT_Urban_eNB  *const getUrbanPoint() = 0;
+	virtual GTT_HighSpeed_eNB  *const getHighSpeedPoint() = 0;
+
+	/*
+	* 取得系统级System的eNB的指针
+	*/
+	eNB* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的eNB的指针
+	*/
+	void setSystemPoint(eNB* t_Point) { m_This = t_Point; }
+};
+
+class GTT_Urban_Road;
+class GTT_HighSpeed_Road;
+
+class GTT_Road {
+	/*------------------域------------------*/
+private:
+	/*
+	* 指向用于不同单元Road数据交互的系统级Road对象
+	*/
+	Road* m_This = nullptr;
+public:
+	/*
+	* 道路Id
+	*/
+	int m_RoadId;
+
+	/*
+	* 绝对横坐标与纵坐标
+	*/
+	double m_AbsX;
+	double m_AbsY;
+
+	/*
+	* <?>
+	*/
+	int  m_upr;
+
+	/*------------------方法------------------*/
+public:
+	/*
+	* 生成格式化字符串
+	*/
+	std::string toString(int t_NumTab);
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	virtual GTT_Urban_Road  *const getUrbanPoint() = 0;
+	virtual GTT_HighSpeed_Road  *const getHighSpeedPoint() = 0;
+
+	/*
+	* 取得系统级System的Road的指针
+	*/
+	Road* getSystemPoint() { return m_This; }
+
+	/*
+	* 设置系统级System的Road的指针
+	*/
+	void setSystemPoint(Road* t_Point) { m_This = t_Point; }
 };
 
 
@@ -243,12 +380,12 @@ public:
 	* 基站容器,指向系统的该参数
 	* 这里为什么必须是引用类型，因为系统的这些数组指针必须靠该模块来初始化，因此不能传入拷贝
 	*/
-	eNB* &m_eNBAry;
+	GTT_eNB** m_eNBAry;
 
 	/*
 	* 道路容器,指向系统的该参数
 	*/
-	Road* &m_RoadAry;
+	GTT_Road** m_RoadAry;
 
 	/*
 	* RSU容器,指向系统的该参数
@@ -274,8 +411,8 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry) :
-		m_TTI(t_TTI), m_Config(t_Config), m_eNBAry(t_eNBAry), m_RoadAry(t_RoadAry) {}
+	GTT(int &t_TTI, SystemConfig& t_Config) :
+		m_TTI(t_TTI), m_Config(t_Config) {}
 
 	/*
 	* 析构函数

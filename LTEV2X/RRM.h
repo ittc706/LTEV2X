@@ -1,6 +1,10 @@
 #pragma once
+#include<vector>
+#include<list>
 #include"VUE.h"
 #include"RSU.h"
+#include"Event.h"
+#include"Config.h"
 
 //<RRM>: Radio Resource Management
 
@@ -180,7 +184,7 @@ public:
 	/*------------------域------------------*/
 private:
 	/*
-	* 指向用于不同单元RSU数据交互的系统级VeUE对象
+	* 指向用于不同单元RSU数据交互的系统级RSU对象
 	*/
 	RSU* m_This;
 
@@ -194,7 +198,7 @@ public:
 
 	/*
 	* 用于取得指向实际类型的指针
-	* 由于静态类型为RRM_VeUE
+	* 由于静态类型为RRM_RSU
 	*/
 	virtual RRM_TDM_DRA_RSU *const getTDM_DRAPoint() = 0;
 	virtual RRM_ICC_DRA_RSU *const getICC_DRAPoint() = 0;

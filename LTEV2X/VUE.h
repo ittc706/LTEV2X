@@ -1,15 +1,4 @@
 #pragma once
-#include<vector>
-#include<list>
-#include<string>
-#include<utility>
-#include<tuple>
-#include<random>
-#include<map>
-#include"Global.h"
-#include"Enumeration.h"
-#include"Config.h"
-#include"IMTA.h"
 
 /*
 * Ç°ÖÃÉùÃ÷

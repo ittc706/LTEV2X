@@ -163,11 +163,9 @@
     <ClCompile Include="test.cpp" />
     <ClCompile Include="TMC.cpp" />
     <ClCompile Include="TMC_B.cpp" />
-    <ClCompile Include="eNB.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="IMTA.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Road.cpp" />
     <ClCompile Include="RRM_TDM_DRA.cpp" />
     <ClCompile Include="RRM_RR.cpp" />
     <ClCompile Include="System.cpp" />

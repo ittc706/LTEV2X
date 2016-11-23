@@ -53,6 +53,11 @@ struct SystemConfig {
 	* 基站总数
 	*/
 	int eNBNum;
+
+	/*
+	* RoadNum
+	*/
+	int RoadNum;
 };
 
 //eNB配置参数

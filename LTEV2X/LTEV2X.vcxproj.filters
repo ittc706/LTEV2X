@@ -104,13 +104,7 @@
     <ClCompile Include="System.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="eNB.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="IMTA.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Road.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RRM_RR.cpp">

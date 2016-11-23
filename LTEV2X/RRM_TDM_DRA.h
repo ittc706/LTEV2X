@@ -156,7 +156,6 @@ public:
 
 	/*
 	* 用于取得指向实际类型的指针
-	* 由于静态类型为RRM_VeUE
 	*/
 	RRM_TDM_DRA_RSU *const getTDM_DRAPoint()override { return this; }
 	RRM_ICC_DRA_RSU *const getICC_DRAPoint() override { throw Exp("RuntimeException"); }

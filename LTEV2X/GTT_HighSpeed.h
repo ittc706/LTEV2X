@@ -27,6 +27,43 @@ public:
 	* 构造函数
 	*/
 	GTT_HighSpeed_RSU();
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	GTT_Urban_RSU  *const getUrbanPoint()override { throw Exp("RuntimeException"); }
+	GTT_HighSpeed_RSU  *const getHighSpeedPoint()override { return this; }
+};
+
+
+class  GTT_HighSpeed_eNB :public GTT_eNB {
+public:
+	/*
+	* 初始化方法
+	* 不用构造函数的原因是构造的时刻其依赖项还没创建完毕
+	*/
+	void initialize(eNBConfig &t_eNBConfig)override;
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	GTT_Urban_eNB  *const getUrbanPoint()override { throw Exp("RuntimeException"); }
+	GTT_HighSpeed_eNB  *const getHighSpeedPoint()override { return this; }
+};
+
+ 
+class GTT_HighSpeed_Road :public GTT_Road {
+public:
+	/*
+	* 构造函数
+	*/
+	GTT_HighSpeed_Road(HighSpeedRodeConfig &t_RoadHighSpeedConfig);
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	GTT_Urban_Road  *const getUrbanPoint()override { throw Exp("RuntimeException"); }
+	GTT_HighSpeed_Road  *const getHighSpeedPoint()override { return this; }
 };
 
 
@@ -74,7 +111,7 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT_HighSpeed(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry);
+	GTT_HighSpeed(int &t_TTI, SystemConfig& t_Config);
 
 	/*
 	* 模块参数配置

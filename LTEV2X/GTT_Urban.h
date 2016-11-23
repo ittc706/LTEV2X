@@ -32,6 +32,61 @@ public:
 	* 构造函数
 	*/
 	GTT_Urban_RSU();
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	GTT_Urban_RSU  *const getUrbanPoint()override { return this; }
+	GTT_HighSpeed_RSU  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
+};
+
+
+class GTT_Urban_eNB :public GTT_eNB {
+public:
+	/*
+	* 初始化方法
+	* 不用构造函数的原因是构造的时刻其依赖项还没创建完毕
+	*/
+	void initialize(eNBConfig &t_eNBConfig)override;
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	GTT_Urban_eNB  *const getUrbanPoint()override { return this; }
+	GTT_HighSpeed_eNB  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
+};
+
+
+class GTT_Urban_Road :public GTT_Road {
+	/*------------------域------------------*/
+public:
+	/*
+	* 基站数目
+	*/
+	int m_eNBNum;
+
+	/*
+	* 基站Id
+	*/
+	int m_eNBId;
+
+	/*
+	* 持有指向其所在基站对象的指针
+	*/
+	GTT_eNB *m_eNB;
+
+public:
+	/*
+	* 初始化方法
+	* 不用构造函数的原因是构造的时刻其依赖项还没创建完毕
+	*/
+	GTT_Urban_Road(UrbanRoadConfig &t_RoadConfig);
+
+	/*
+	* 用于取得指向实际类型的指针
+	*/
+	GTT_Urban_Road  *const getUrbanPoint()override { return this; }
+	GTT_HighSpeed_Road  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
 };
 
 
@@ -65,11 +120,6 @@ private:
 	double *m_pueTopo;
 
 	/*
-	* 城镇Road总数
-	*/
-	int m_UrbanRoadNum;
-
-	/*
 	* user per road array
 	*/
 	int* m_pupr;
@@ -98,7 +148,7 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT_Urban(int &t_TTI, SystemConfig& t_Config, eNB* &t_eNBAry, Road* &t_RoadAry);
+	GTT_Urban(int &t_TTI, SystemConfig& t_Config);
 
 	/*
 	* 参数配置

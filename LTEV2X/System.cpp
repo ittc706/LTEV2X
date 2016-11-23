@@ -18,6 +18,7 @@
 
 #include<iomanip>
 #include<fstream>
+#include<sstream>
 #include<stdlib.h>
 #include"System.h"
 #include"Function.h"
@@ -242,10 +243,10 @@ void System::initialization() {
 void System::initializeGTTModule() {
 	switch (m_GTTMode) {
 	case URBAN:
-		m_GTTPoint = new GTT_Urban(m_TTI, m_Config, m_eNBAry, m_RoadAry);
+		m_GTTPoint = new GTT_Urban(m_TTI, m_Config);
 		break;
 	case HIGHSPEED:
-		m_GTTPoint = new GTT_HighSpeed(m_TTI, m_Config, m_eNBAry, m_RoadAry);
+		m_GTTPoint = new GTT_HighSpeed(m_TTI, m_Config);
 		break;
 	}
 	//初始化地理拓扑参数
@@ -286,6 +287,7 @@ void System::initializeTMCModule() {
 
 
 void System::initializeNON() {
+	//系统VeUE与各个单元中VeUE视图建立关联
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId].m_GTT = m_GTTPoint->m_VeUEAry[VeUEId];
@@ -301,6 +303,7 @@ void System::initializeNON() {
 		m_TMCPoint->m_VeUEAry[VeUEId]->setSystemPoint(&m_VeUEAry[VeUEId]);
 	}
 
+	//系统RSU与各个单元中RSU视图建立关联
 	m_RSUAry = new RSU[m_Config.RSUNum];
 	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
 		m_RSUAry[RSUId].m_GTT = m_GTTPoint->m_RSUAry[RSUId];
@@ -317,6 +320,20 @@ void System::initializeNON() {
 
 		//必须等到各个单元的RSU建立连接后，才能对RRM单元内的RSU对象进行初始化
 		m_RRMPoint->m_RSUAry[RSUId]->initialize();
+	}
+
+	//系统eNB与各个单元中eNB视图建立关联
+	m_eNBAry = new eNB[m_Config.eNBNum];
+	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
+		m_eNBAry[eNBId].m_GTT = m_GTTPoint->m_eNBAry[eNBId];
+		m_GTTPoint->m_eNBAry[eNBId]->setSystemPoint(&m_eNBAry[eNBId]);
+	}
+
+	//系统Road与各个单元中Road视图建立关联
+	m_RoadAry = new Road[m_Config.RoadNum];
+	for (int roadId = 0; roadId < m_Config.RoadNum; roadId++) {
+		m_RoadAry[roadId].m_GTT = m_GTTPoint->m_RoadAry[roadId];
+		m_GTTPoint->m_RoadAry[roadId]->setSystemPoint(&m_RoadAry[roadId]);
 	}
 }
 
