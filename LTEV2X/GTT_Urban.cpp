@@ -679,6 +679,7 @@ void GTT_Urban::calculateInterference(const vector<vector<list<int>>>& t_RRMInte
 				}
 				location.eNBAntH = 5;
 				location.VeUEAntH = 1.5;
+				location.RSUAntH = 5;
 				randomGaussian(location.posCor, 5, 0.0f, 1.0f);//产生高斯随机数，为后面信道系数使用。
 
 				antenna.TxAngle = angle - m_VeUEAry[interferenceVeUEId]->m_FantennaAngle;
