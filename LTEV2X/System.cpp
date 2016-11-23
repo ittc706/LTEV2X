@@ -265,13 +265,13 @@ void System::initializeWTModule() {
 void System::initializeRRMModule() {
 	switch (m_RRMMode) {
 	case RR:
-		m_RRMPoint = new RRM_RR(this, m_Config.threadNum);
+		m_RRMPoint = new RRM_RR(this);
 		break;
 	case TDM_DRA:
-		m_RRMPoint = new RRM_TDM_DRA(this, m_Config.threadNum);
+		m_RRMPoint = new RRM_TDM_DRA(this);
 		break;
 	case ICC_DRA:
-		m_RRMPoint = new RRM_ICC_DRA(this, m_Config.threadNum);
+		m_RRMPoint = new RRM_ICC_DRA(this);
 		break;
 	default:
 		break;

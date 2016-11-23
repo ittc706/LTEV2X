@@ -145,7 +145,7 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	RRM_RR(System* t_Context, int t_ThreadNum);
+	RRM_RR(System* t_Context);
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

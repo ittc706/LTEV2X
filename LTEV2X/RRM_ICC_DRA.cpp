@@ -94,8 +94,9 @@ string RRM_ICC_DRA_RSU::toString(int t_NumTab) {
 
 
 
-RRM_ICC_DRA::RRM_ICC_DRA(System* t_Context, int t_ThreadNum) :
-	RRM(t_Context), m_ThreadNum(t_ThreadNum) {
+RRM_ICC_DRA::RRM_ICC_DRA(System* t_Context) :
+	RRM(t_Context) {
+	m_ThreadNum = t_Context->m_Config.threadNum;
 
 	m_InterferenceVec = vector<vector<list<int>>>(getContext()->m_Config.VeUENum, vector<list<int>>(ns_RRM_ICC_DRA::gc_TotalPatternNum));
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
