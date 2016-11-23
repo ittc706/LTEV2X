@@ -3,7 +3,6 @@
 #include<random>
 #include<thread>
 #include"RRM.h"
-#include"WT.h"
 #include"GTT.h"
 #include"Enumeration.h"
 #include"Exception.h"

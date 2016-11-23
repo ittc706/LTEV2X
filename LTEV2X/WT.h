@@ -5,8 +5,7 @@
 #include"VUE.h"
 #include"RSU.h"
 #include"Enumeration.h"
-#include"GTT.h"
-#include"RRM.h"
+
 //<WT>: Wireless Transmission
 
 class WT_VeUE {

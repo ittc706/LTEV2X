@@ -3,8 +3,6 @@
 #include<list>
 #include<thread>
 #include"RRM.h"
-#include"GTT.h"
-#include"WT.h"
 #include"Exception.h"
 #include"Global.h"
 
