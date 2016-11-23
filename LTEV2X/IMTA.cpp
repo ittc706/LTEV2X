@@ -205,7 +205,8 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	double fSFSTD;
 	double fPL1;
 	double fPL2;
-	double fDistanceBP = 4 * (t_eLocation.VeUEAntH - 1)*(t_eLocation.VeUEAntH - 1)*t_fFrequency / gc_C;
+	double fDistanceBP = 4 * (t_eLocation.VeUEAntH - 1)*(t_eLocation.RSUAntH - 1)*t_fFrequency / gc_C;
+
 	switch (t_eLocation.locationType)
 	{
 	case Los:
@@ -218,15 +219,13 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 		{
 			if (fDistanceBP < t_eLocation.distance&&t_eLocation.distance < 5000)
 			{
-				m_fPLSF = 40.0f * log10(t_eLocation.distance) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH - 1) + 2.7f *(log10(t_fFrequency) - 9.0f);
+				m_fPLSF = 40.0f * log10(t_eLocation.distance) + 7.56f - 17.3f * log10(t_eLocation.VeUEAntH - 1) - 17.3 * log10(t_eLocation.RSUAntH -1) + 2.7f *(log10(t_fFrequency) - 9.0f);
 			}
 			else if (t_eLocation.distance<3)
 			{
-				m_fPLSF = 22.7f * log10(t_eLocation.distance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
+				m_fPLSF = 22.7f * log10(3) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 			}
 		}
-
-
 		break;
 	case Nlos:
 		fTemp = (2.8f - 0.0024f * t_eLocation.distance1) > 1.84f ? (2.8f - 0.0024f * t_eLocation.distance1) : 1.84f;
@@ -238,14 +237,14 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 		{
 			if (fDistanceBP < t_eLocation.distance1&&t_eLocation.distance1 < 5000)
 			{
-				fPL1 = 40.0f * log10(t_eLocation.distance1) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH - 1) + 2.7f * (log10(t_fFrequency) - 9.0f);
+				fPL1 = 40.0f * log10(t_eLocation.distance1) + 7.56f - 17.3f * log10(t_eLocation.VeUEAntH - 1) - 17.3 * log10(t_eLocation.RSUAntH - 1) + 2.7f * (log10(t_fFrequency) - 9.0f);
 			}
 			else if (t_eLocation.distance1<3)
 			{
-				fPL1 = 22.7f * log10(t_eLocation.distance1) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
+				fPL1 = 22.7f * log10(3) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);
 			}
 		}
-		fPL1 = fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance1) + 3 * (log10(t_fFrequency) - 9.0f);
+		fPL1 = fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance2) + 3 * (log10(t_fFrequency) - 9.0f);
 		fTemp = (2.8f - 0.0024f * t_eLocation.distance2) > 1.84f ? (2.8f - 0.0024f * t_eLocation.distance2) : 1.84f;
 		if (3 < t_eLocation.distance2&&t_eLocation.distance2 < fDistanceBP)
 		{
@@ -255,14 +254,14 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 		{
 			if (fDistanceBP < t_eLocation.distance2&&t_eLocation.distance2 < 5000)
 			{
-				fPL2 = 40.0f * log10(t_eLocation.distance2) + 7.56f - 2 * 17.3f * log10(t_eLocation.VeUEAntH - 1) + 2.7f * (log10(t_fFrequency) - 9.0f);
+				fPL2 = 40.0f * log10(t_eLocation.distance2) + 7.56f - 17.3f * log10(t_eLocation.VeUEAntH - 1) - 17.3 * log10(t_eLocation.RSUAntH - 1) + 2.7f * (log10(t_fFrequency) - 9.0f);
 			}
-			else if (t_eLocation.distance1 < 3)
+			else if (t_eLocation.distance2 < 3)
 			{
-				fPL2 = 22.7f * log10(t_eLocation.distance2) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
+				fPL2 = 22.7f * log10(3) + 27.0f + 20.0f *(log10(t_fFrequency) - 9.0f);
 			}
 		}
-		fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance2) + 3 * (log10(t_fFrequency) - 9.0f);
+		fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(t_eLocation.distance1) + 3 * (log10(t_fFrequency) - 9.0f);
 		m_fPLSF = fPL1 < fPL2 ? fPL1 : fPL2;
 	default:
 		break;

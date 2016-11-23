@@ -282,6 +282,10 @@ void GTT_Urban::channelGeneration() {
 
 
 void GTT_Urban::freshLoc() {
+	//输出VeUE信息的文件流
+	FILE *stream;
+	fopen_s(&stream, "Log\\TMCLog\\VeUE_message_URBAN.txt", "w+");
+
 	for (int UserIdx = 0; UserIdx != getContext()->m_Config.VeUENum; UserIdx++)
 	{
 		bool RoadChangeFlag = false;
@@ -413,24 +417,71 @@ void GTT_Urban::freshLoc() {
 	for (int UserIdx1 = 0; UserIdx1 != getContext()->m_Config.VeUENum; UserIdx1++)
 	{
 		//计算车辆与所有RSU之间的路径损耗
-		double wPL[gc_RSUNumber] = {0};
+		double wPL[gc_RSUNumber] = { 0 };
 		for (int RSUIdx = 0; RSUIdx != gc_RSUNumber; RSUIdx++) {
-			double wSFSTD = 0;
+
+			double absX = abs(m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX);
+			double absY = abs(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY);
+
 			double wDistanceBP = 4 * (location.VeUEAntH - 1)*(location.RSUAntH - 1)*gc_FC / gc_C;
-			if (m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] > 3 && m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < wDistanceBP)
-			{
-				wPL[RSUIdx] = 22.7f * log10(m_VeUEAry[UserIdx1]->m_Distance[RSUIdx]) + 27.0f + 20.0f * (log10(gc_FC) - 9.0f);//转换为GHz
+			//LOS
+			if (absX <= 3.5 || absY <= 3.5) {
+
+				if (m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] > 3 && m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < wDistanceBP)
+				{
+					wPL[RSUIdx] = 22.7f * log10(m_VeUEAry[UserIdx1]->m_Distance[RSUIdx]) + 27.0f + 20.0f * (log10(gc_FC) - 9.0f);//转换为GHz
+				}
+				else
+				{
+					if (wDistanceBP < m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] && m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < 5000)
+					{
+						wPL[RSUIdx] = 40.0f * log10(m_VeUEAry[UserIdx1]->m_Distance[RSUIdx]) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f *(log10(gc_FC) - 9.0f);
+					}
+					else if (m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < 3)
+					{
+						wPL[RSUIdx] = 22.7f * log10(3) + 27.0f + 20.0f * (log10(gc_FC) - 9.0f);
+					}
+				}
 			}
-			else
-			{
-				if (wDistanceBP < m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] && m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < 5000)
+			//Nlos
+			else {
+				double fTemp;
+				double fPL1, fPL2;
+				fTemp = (2.8f - 0.0024f * absX) > 1.84f ? (2.8f - 0.0024f * absX) : 1.84f;
+				if (3 < absX&&absX < wDistanceBP)
 				{
-					wPL[RSUIdx] = 40.0f * log10(m_VeUEAry[UserIdx1]->m_Distance[RSUIdx]) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f *(log10(gc_FC) - 9.0f);
+					fPL1 = 22.7f * log10(absX) + 27.0f + 20.0f *(log10(gc_FC) - 9.0f);
 				}
-				else if (m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < 3)
+				else
 				{
-					wPL[RSUIdx] = 22.7f * log10(3) + 27.0f + 20.0f * (log10(gc_FC) - 9.0f);
+					if (wDistanceBP < absX&&absX < 5000)
+					{
+						fPL1 = 40.0f * log10(absX) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f * (log10(gc_FC) - 9.0f);
+					}
+					else if (absX<3)
+					{
+						fPL1 = 22.7f * log10(3) + 27.0f + 20.0f * (log10(gc_FC) - 9.0f);
+					}
 				}
+				fPL1 = fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(absY) + 3 * (log10(gc_FC) - 9.0f);
+				fTemp = (2.8f - 0.0024f * absY) > 1.84f ? (2.8f - 0.0024f * absY) : 1.84f;
+				if (3 < absY&&absY < wDistanceBP)
+				{
+					fPL2 = 22.7f * log10(absY) + 27.0f + 20.0f * (log10(gc_FC) - 9.0f);
+				}
+				else
+				{
+					if (wDistanceBP < absY&&absY < 5000)
+					{
+						fPL2 = 40.0f * log10(absY) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f * (log10(gc_FC) - 9.0f);
+					}
+					else if (absY < 3)
+					{
+						fPL2 = 22.7f * log10(3) + 27.0f + 20.0f *(log10(gc_FC) - 9.0f);
+					}
+				}
+				fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(absX) + 3 * (log10(gc_FC) - 9.0f);
+				wPL[RSUIdx] = fPL1 < fPL2 ? fPL1 : fPL2;
 			}
 		}
 
@@ -485,19 +536,36 @@ void GTT_Urban::freshLoc() {
 		m_VeUEAry[UserIdx1]->m_RSUId = RSUIdx;
 		m_VeUEAry[UserIdx1]->m_ClusterIdx = ClusterID;
 		m_RSUAry[RSUIdx]->m_VeUEIdList.push_back(UserIdx1);
+
+		//输出VeUE信息到文档
+		fprintf(stream, "%d\t", UserIdx1);
+		fprintf(stream, "%d\t", m_VeUEAry[UserIdx1]->m_RSUId);
+		fprintf(stream, "%d\t", m_VeUEAry[UserIdx1]->m_ClusterIdx);
+		fprintf(stream, "%f\t", m_VeUEAry[UserIdx1]->m_AbsX);
+		fprintf(stream, "%f\n", m_VeUEAry[UserIdx1]->m_AbsY);
+
 		location.locationType = None;
 		location.distance = 0;
 		location.distance1 = 0;
 		location.distance2 = 0;
 
 		double angle = 0;
-		if (location.manhattan == true)  //计算location distance
-		{
-		
-			location.locationType = Los;// 车辆与所对应的RSU之间均为LOS
+
+		//判断LOS还是NLOS
+		double absX1 = abs(m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX);
+		double absY1 = abs(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY);
+
+		if (absX1 <= 3.5 || absY1 <= 3.5) {
+			location.locationType = Los;// 在同一条道路上即为LOS
 			location.distance = sqrt(pow((m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY), 2.0f));
 			angle = atan2(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY, m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX) / gc_Degree2PI;
-
+		}
+		else
+		{
+			location.locationType = Nlos;
+			location.distance1 = absX1;
+			location.distance2 = absY1;
+			angle = atan2(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY, m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX) / gc_Degree2PI;
 		}
 	
 		
@@ -551,6 +619,7 @@ void GTT_Urban::freshLoc() {
 		Delete::safeDelete(FFT, true);
 		Delete::safeDelete(t_HAfterFFT, true);
 	}
+	fclose(stream);
 }
 
 
