@@ -38,7 +38,6 @@ WT_B::WT_B(const WT_B& t_WT_B) : WT(t_WT_B.m_Context) {
 	m_QPSK_MI = t_WT_B.m_QPSK_MI;
 	m_VeUEAry = t_WT_B.m_VeUEAry;
 	m_RSUAry = t_WT_B.m_RSUAry;
-	m_SINRMode = t_WT_B.m_SINRMode;
 }
 
 
