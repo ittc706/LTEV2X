@@ -20,6 +20,11 @@ public:
 	* 用于生成随机退避时间的随机数种子，该类共享
 	*/
 	static std::default_random_engine s_Engine;
+
+	/*
+	* 日志记录开关控制
+	*/
+	static bool s_LogIsOn;
 	/*------------------域------------------*/
 private:
 	/*

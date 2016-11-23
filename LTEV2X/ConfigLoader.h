@@ -26,15 +26,10 @@ public:
 	/*
 	* 接受文件名的构造函数
 	*/
-	void initialize(std::string t_FilePath);
+	void resolvConfigPath(std::string t_FilePath);
 
 	/*
 	* 从m_TagContentMap根据标签名取出值
 	*/
 	std::string getParam(std::string t_Param);
-
-	/*
-	* 解析配置文件
-	*/
-	void load();
 };

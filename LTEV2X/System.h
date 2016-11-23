@@ -86,14 +86,6 @@ private:
 	TMC* m_TMCPoint = nullptr;
 	WT* m_WTPoint = nullptr;
 
-	/*
-	* 模块实现的具体类别
-	*/
-	GTTMode m_GTTMode;
-	WTMode m_WTMode;
-	RRMMode m_RRMMode;
-
-
 	/*------------------方法------------------*/
 public:
 	/*

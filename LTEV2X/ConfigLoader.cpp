@@ -21,14 +21,18 @@
 
 using namespace std;
 
-void ConfigLoader::initialize(string t_FilePath) {
+void ConfigLoader::resolvConfigPath(string t_FilePath) {
+	//Çå¿Õ»º´æ
+	m_Content.clear();
+	m_TagContentMap.clear();
+
+	//¶ÁÈ¡´ý½âÎö×Ö·û´®
 	ifstream in(t_FilePath);
 	istream_iterator<char> if_it(in), if_eof;
 	m_Content.assign(if_it, if_eof);
 	in.close();
-}
 
-void ConfigLoader::load() {
+	//½âÎö£¬²¢´æ´¢
 	regex r("<([^<>]*)>([^<>]*)</([^<>]*)>");
 	for (sregex_iterator it(m_Content.begin(), m_Content.end(), r), eof; it != eof; ++it) {
 		string leftTag = it->operator[](1);
@@ -39,8 +43,6 @@ void ConfigLoader::load() {
 		}
 		m_TagContentMap[leftTag] = content;
 	}
-	/*for (pair<string, string> p : m_TagContentMap) 
-		cout << "[" << p.first << "," << p.second <<"]"<< endl;*/
 }
 
 std::string ConfigLoader::getParam(std::string t_Param) {

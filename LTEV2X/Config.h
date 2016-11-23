@@ -9,6 +9,21 @@ struct SystemConfig {
 	Platform platform;
 
 	/*
+	* GTT模块实现的具体类别
+	*/
+	GTTMode GTTMode;
+
+	/*
+	* RRM模块实现的具体类别
+	*/
+	RRMMode RRMMode;
+
+	/*
+	* WT模块实现的具体类别
+	*/
+	WTMode WTMode;
+
+	/*
 	* 仿真总共的TTI
 	*/
 	int NTTI;
@@ -17,7 +32,6 @@ struct SystemConfig {
 	* 线程数量
 	*/
 	int threadNum;
-
 
 	/*
 	* 车辆刷新位置的周期
@@ -58,6 +72,22 @@ struct SystemConfig {
 	* RoadNum
 	*/
 	int RoadNum;
+
+	/*
+	* TTI日志开关
+	*/
+	bool TTILogIsOn = false;
+
+	/*
+	* Event日志开关
+	*/
+	bool eventLogIsOn = false;
+
+	/*
+	* Schedule日志开关
+	*/
+	bool scheduleLogIsOn = false;
+
 };
 
 //eNB配置参数

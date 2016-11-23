@@ -29,6 +29,8 @@ int Event::s_EventCount = 0;
 
 default_random_engine Event::s_Engine(0);
 
+bool Event::s_LogIsOn = false;
+
 Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
 	m_EventId(s_EventCount++),
 	m_VeUEId(t_VeUEId),
@@ -144,6 +146,7 @@ string Event::toLogString(int t_NumTab) {
 
 
 void Event::addEventLog(int t_TTI, EventLogType t_EventLogType, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, string t_Description) {
+	if (!s_LogIsOn) return;
 	stringstream ss;
 	switch (t_EventLogType) {
 	case TRANSIMITTING:

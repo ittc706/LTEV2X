@@ -92,13 +92,11 @@ void System::configure() {//系统仿真参数配置
 	
 	if (inPlatformWindows.is_open()) {
 		m_Config.platform = Windows;
-		cout << "您当前的平台为：Windows" << endl;
-		configLoader.initialize("Config\\systemConfig.html");
+		cout << "您当前的平台为：Windows" << endl;	
 	}
 	else if (inPlatformLinux.is_open()) {
 		m_Config.platform = Linux;
-		cout << "您当前的平台为：Linux" << endl;
-		configLoader.initialize("Config/systemConfig.html");
+		cout << "您当前的平台为：Linux" << endl;	
 	}
 	else
 		throw Exp("PlatformError");
@@ -106,8 +104,17 @@ void System::configure() {//系统仿真参数配置
 	//初始化输出流对象
 	logFileConfig(m_Config.platform);
 
-	//开始解析配置文件
-	configLoader.load();//解析配置文件
+	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析系统配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+	switch (m_Config.platform) {
+	case Windows:
+		configLoader.resolvConfigPath("Config\\systemConfig.html");
+		break;
+	case Linux:
+		configLoader.resolvConfigPath("Config/systemConfig.html");
+		break;
+	default:
+		throw Exp("Platform Config Error!");
+	}
 
 	stringstream ss;
 
@@ -162,11 +169,11 @@ void System::configure() {//系统仿真参数配置
 
 	if ((temp = configLoader.getParam("GTTMode")) != nullString) {
 		if (temp == "URBAN") {
-			m_GTTMode = URBAN;
+			m_Config.GTTMode = URBAN;
 			cout << "GTT单元：URBAN模式" << endl;
 		}
 		else if (temp == "HIGHSPEED") {
-			m_GTTMode = HIGHSPEED;
+			m_Config.GTTMode = HIGHSPEED;
 			cout << "GTT单元：HIGHSPEED模式" << endl;
 		}
 		else
@@ -177,15 +184,15 @@ void System::configure() {//系统仿真参数配置
 
 	if ((temp = configLoader.getParam("RRMMode")) != nullString) {
 		if (temp == "TDM_DRA") {
-			m_RRMMode = TDM_DRA;
+			m_Config.RRMMode = TDM_DRA;
 			cout << "RRM单元：TDM_DRA模式" << endl;
 		}
 		else if (temp == "ICC_DRA") {
-			m_RRMMode = ICC_DRA;
+			m_Config.RRMMode = ICC_DRA;
 			cout << "RRM单元：ICC_DRA模式" << endl;
 		}
 		else if (temp == "RR") {
-			m_RRMMode = RR;
+			m_Config.RRMMode = RR;
 			cout << "RRM单元：RR模式" << endl;
 		}
 		else
@@ -206,15 +213,68 @@ void System::configure() {//系统仿真参数配置
 
 	if ((temp = configLoader.getParam("WTMode")) != nullString) {
 		if (temp == "SINR_MRC") {
-			m_WTMode = SINR_MRC;
+			m_Config.WTMode = SINR_MRC;
 			cout << "WT单元：SINR_MRC模式" << endl;
 		}
 		else if (temp == "SINR_MMSE") {
-			m_WTMode = SINR_MMSE;
+			m_Config.WTMode = SINR_MMSE;
 			cout << "WT单元：SINR_MMSE模式" << endl;
 		}
 		else
 			throw Exp("无线传输单元参数配置错误");
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
+
+	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析日志配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+	switch (m_Config.platform) {
+	case Windows:
+		configLoader.resolvConfigPath("Config\\LogControlConfig.html");
+		break;
+	case Linux:
+		configLoader.resolvConfigPath("Config/LogControlConfig.html");
+		break;
+	default:
+		throw Exp("Platform Config Error!");
+	}
+
+	if ((temp = configLoader.getParam("TTILog")) != nullString) {
+		if (temp == "ON")
+			m_Config.TTILogIsOn = true;
+		else if (temp == "OFF")
+			m_Config.TTILogIsOn = false;
+		else
+			throw Exp("TTI日志参数配置错误");
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("EventLog")) != nullString) {
+		if (temp == "ON")
+			m_Config.eventLogIsOn = true;
+		else if (temp == "OFF")
+			m_Config.eventLogIsOn = false;
+		else
+			throw Exp("Event日志参数配置错误");
+		ss.clear();//清除标志位
+		ss.str("");
+		Event::s_LogIsOn = m_Config.eventLogIsOn;
+	}
+	else
+		throw Exp("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("ScheduleLog")) != nullString) {
+		if (temp == "ON")
+			m_Config.scheduleLogIsOn = true;
+		else if (temp == "OFF")
+			m_Config.scheduleLogIsOn = false;
+		else
+			throw Exp("Schedule日志参数配置错误");
+		ss.clear();//清除标志位
+		ss.str("");
 	}
 	else
 		throw Exp("ConfigLoaderError");
@@ -241,7 +301,7 @@ void System::initialization() {
 
 
 void System::initializeGTTModule() {
-	switch (m_GTTMode) {
+	switch (m_Config.GTTMode) {
 	case URBAN:
 		m_GTTPoint = new GTT_Urban(this);
 		break;
@@ -263,7 +323,7 @@ void System::initializeWTModule() {
 
 
 void System::initializeRRMModule() {
-	switch (m_RRMMode) {
+	switch (m_Config.RRMMode) {
 	case RR:
 		m_RRMPoint = new RRM_RR(this);
 		break;

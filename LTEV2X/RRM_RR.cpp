@@ -467,6 +467,7 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 
 
 void RRM_RR::writeScheduleInfo(ofstream& t_File) {
+	if (!getContext()->m_Config.scheduleLogIsOn)return;
 	t_File << "[ TTI = " << left << setw(3) << getContext()->m_TTI << "]" << endl;
 	t_File << "{" << endl;
 	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
@@ -493,6 +494,7 @@ void RRM_RR::writeScheduleInfo(ofstream& t_File) {
 
 
 void RRM_RR::writeTTILogInfo(ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description) {
+	if (!getContext()->m_Config.scheduleLogIsOn)return;
 	stringstream ss;
 	switch (t_EventLogType) {
 	case TRANSIMITTING:
