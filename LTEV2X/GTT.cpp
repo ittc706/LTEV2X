@@ -20,6 +20,7 @@
 #include<sstream>
 #include"GTT.h"
 #include"Function.h"
+#include"System.h"
 
 using namespace std;
 
@@ -107,7 +108,19 @@ std::string GTT_Road::toString(int t_NumTab) {
 }
 
 GTT::~GTT(){
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
+	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
 		Delete::safeDelete(m_VeUEAry[VeUEId]);
 	Delete::safeDelete(m_VeUEAry, true);
+
+	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++)
+		Delete::safeDelete(m_RSUAry[RSUId]);
+	Delete::safeDelete(m_RSUAry, true);
+
+	for (int eNBId = 0; eNBId < getContext()->m_Config.eNBNum; eNBId++)
+		Delete::safeDelete(m_eNBAry[eNBId]);
+	Delete::safeDelete(m_eNBAry,true);
+
+	for (int roadId = 0; roadId < getContext()->m_Config.RoadNum; roadId++)
+		Delete::safeDelete(m_RoadAry[roadId]);
+	Delete::safeDelete(m_RoadAry, true);
 }

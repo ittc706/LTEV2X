@@ -67,7 +67,7 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	WT_B(SystemConfig& t_Config, WTMode t_SINRMode);
+	WT_B(System* t_Context, WTMode t_SINRMode);
 
 	/*
 	* 拷贝构造函数

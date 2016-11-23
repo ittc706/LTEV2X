@@ -23,6 +23,7 @@
 #include<iostream>
 #include<math.h>
 #include"WT_B.h"
+#include"System.h"
 
 
 
@@ -30,18 +31,20 @@ using namespace std;
 
 default_random_engine WT_B::s_Engine(0);
 
-WT_B::WT_B(SystemConfig& t_Config, WTMode t_SINRMode) :WT(t_Config, t_SINRMode) {}
+WT_B::WT_B(System* t_Context, WTMode t_SINRMode) :WT(t_Context) {}
 
-WT_B::WT_B(const WT_B& t_WT_B) : WT(t_WT_B.m_Config, t_WT_B.m_SINRMode) {
+WT_B::WT_B(const WT_B& t_WT_B) : WT(t_WT_B.m_Context) {
 	m_QPSK_MI = t_WT_B.m_QPSK_MI;
 	m_VeUEAry = t_WT_B.m_VeUEAry;
+	m_RSUAry = t_WT_B.m_RSUAry;
+	
 }
 
 
 void WT_B::initialize() {
 	//读入信噪比和互信息的对应表(QPSK),维度是1*95
 	ifstream in;
-	if (m_Config.platform == Windows) {
+	if (getContext()->m_Config.platform == Windows) {
 		in.open("WT\\QPSK_MI.md");
 	}
 	else{
@@ -53,14 +56,14 @@ void WT_B::initialize() {
 	in.close();
 
 	//初始化VeUE的该模块参数部分
-	m_VeUEAry = new WT_VeUE*[m_Config.VeUENum];
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+	m_VeUEAry = new WT_VeUE*[getContext()->m_Config.VeUENum];
+	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId] = new WT_VeUE();
 	}
 
 	//初始化RSU的该模块参数部分
-	m_RSUAry = new WT_RSU*[m_Config.RSUNum];
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+	m_RSUAry = new WT_RSU*[getContext()->m_Config.RSUNum];
+	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
 		m_RSUAry[RSUId] = new WT_RSU();
 	}
 }
@@ -72,6 +75,7 @@ WT* WT_B::getCopy() {
 
 void WT_B::freeCopy() {
 	m_VeUEAry = nullptr;
+	m_RSUAry = nullptr;
 }
 
 double WT_B::SINRCalculate(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) {

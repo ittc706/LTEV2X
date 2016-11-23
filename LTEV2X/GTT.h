@@ -363,32 +363,27 @@ public:
 };
 
 
+class System;
 class GTT {
 	/*------------------域------------------*/
+private:
+	/*
+	* 指向系统的指针
+	*/
+	System* m_Context;
 public:
 	/*
-	* 当前的TTI时刻,指向系统的该参数
-	*/
-	int& m_TTI;
-
-	/*
-	* 系统配置参数,指向系统的该参数
-	*/
-	SystemConfig& m_Config;
-
-	/*
-	* 基站容器,指向系统的该参数
-	* 这里为什么必须是引用类型，因为系统的这些数组指针必须靠该模块来初始化，因此不能传入拷贝
+	* GTT单元视图下的基站容器
 	*/
 	GTT_eNB** m_eNBAry;
 
 	/*
-	* 道路容器,指向系统的该参数
+	* GTT单元视图下的道路容器
 	*/
 	GTT_Road** m_RoadAry;
 
 	/*
-	* RSU容器,指向系统的该参数
+	* GTT单元视图下的RSU容器
 	*/
 	GTT_RSU** m_RSUAry;
 
@@ -408,16 +403,18 @@ public:
 
 	/*
 	* 构造函数
-	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
-	* 该构造函数也定义了该模块的视图
 	*/
-	GTT(int &t_TTI, SystemConfig& t_Config) :
-		m_TTI(t_TTI), m_Config(t_Config) {}
+	GTT(System* t_Context) : m_Context(t_Context) {}
 
 	/*
 	* 析构函数
 	*/
 	~GTT();
+
+	/*
+	* 获取系统类的指针
+	*/
+	System* getContext() { return m_Context; }
 
 	/*
 	* 模块参数配置

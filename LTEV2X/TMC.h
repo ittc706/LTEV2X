@@ -50,47 +50,24 @@ public:
 	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
 };
 
+class System;
 class TMC {
 	/*------------------域------------------*/
+private:
+	/*
+	* 指向系统的指针
+	*/
+	System* m_Context;
 public:
 	/*
-	* 系统当前的TTI时刻
-	*/
-	int& m_TTI;
-
-	/*
-	* 系统配置参数,指向系统的该参数
-	*/
-	SystemConfig& m_Config;
-
-	/*
-	* RSU容器,指向系统的该参数
+	* TMC视图下的RSU容器
 	*/
 	TMC_RSU** m_RSUAry;
 
 	/*
-	* VeUE容器
-	* 第一维度的指针指向数组，该数组存放指向TMC_VeUE实体的指针
-	* 为什么数组存的是指针，因为需要实现多态(虽然暂时TMC单元并没有多态)
+	* TMC视图下的VeUE容器
 	*/
 	TMC_VeUE** m_VeUEAry;
-
-	/*
-	* 事件容器，下标代表事件ID
-	*/
-	std::vector<Event>& m_EventVec;
-
-	/*
-	* 以TTI为下标的事件容器
-	* 事件触发链表，m_EventTTIList[i]代表第i个TTI的事件表
-	*/
-	std::vector<std::list<int>>& m_EventTTIList;
-
-	/*
-	* 吞吐率
-	* 外层下标为TTI，内层下标为RSUId
-	*/
-	std::vector<std::vector<int>>& m_TTIRSUThroughput;
 
 	/*------------------接口------------------*/
 public:
@@ -101,20 +78,18 @@ public:
 
 	/*
 	* 构造函数
-	* 该构造函数定义了该模块的视图
-	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	TMC(int &t_TTI, SystemConfig& t_Config, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
-		m_TTI(t_TTI),
-		m_Config(t_Config),
-		m_EventVec(t_EventVec),
-		m_EventTTIList(t_EventTTIList),
-		m_TTIRSUThroughput(t_TTIRSUThroughput) {}
+	TMC(System* t_Context) : m_Context(t_Context) {}
 
 	/*
 	* 析构函数
 	*/
 	~TMC();
+
+	/*
+	* 获取系统类的指针
+	*/
+	System* getContext() { return m_Context; }
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

@@ -21,6 +21,7 @@
 #include<iomanip>
 #include"RRM.h"
 #include"Function.h"
+#include"System.h"
 
 using namespace std;
 
@@ -59,9 +60,13 @@ string RRM_RSU::ScheduleInfo::toScheduleString(int t_NumTab) {
 
 
 RRM::~RRM() {
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++)
+	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
 		Delete::safeDelete(m_VeUEAry[VeUEId]);
 	Delete::safeDelete(m_VeUEAry, true);
+
+	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++)
+		Delete::safeDelete(m_RSUAry[RSUId]);
+	Delete::safeDelete(m_RSUAry, true);
 }
 
 

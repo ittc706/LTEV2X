@@ -215,46 +215,24 @@ public:
 	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
 };
 
+class System;
 class RRM {
 	/*------------------域------------------*/
+private:
+	/*
+	* 指向系统的指针
+	*/
+	System* m_Context;
 public:
 	/*
-	* 当前的TTI时刻,指向系统的该参数
-	*/
-	int& m_TTI;
-
-	/*
-	* 系统配置参数,指向系统的该参数
-	*/
-	SystemConfig& m_Config;
-
-	/*
-	* RSU容器,指向系统的该参数
+	* RRM视图下的RSU容器
 	*/
 	RRM_RSU** m_RSUAry;
 
 	/*
-	* VeUE容器
-	* 第一维度的指针指向数组，该数组存放指向RRM_VeUE实体的指针
-	* 为什么数组存的是指针，因为需要实现多态
+	* RRM视图下的VeUE容器
 	*/
 	RRM_VeUE** m_VeUEAry;
-
-	/*
-	* 事件容器,指向系统的该参数
-	*/
-	std::vector<Event>& m_EventVec;
-
-	/*
-	* 事件触发链表,指向系统的该参数
-	*/
-	std::vector<std::list<int>>& m_EventTTIList;
-
-	/*
-	* 吞吐率，外层下标为TTI，内层下标为RSUId,指向系统的该参数
-	*/
-	std::vector<std::vector<int>>& m_TTIRSUThroughput;
-
 													  
 	/*
 	* 其他模块调用时间记录
@@ -271,20 +249,18 @@ public:
 
 	/*
 	* 构造函数
-	* 该构造函数定义了该模块的视图
-	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	RRM(int &t_TTI, SystemConfig& t_Config, std::vector<Event>& t_EventVec, std::vector<std::list<int>>& t_EventTTIList, std::vector<std::vector<int>>& t_TTIRSUThroughput) :
-		m_TTI(t_TTI),
-		m_Config(t_Config),
-		m_EventVec(t_EventVec),
-		m_EventTTIList(t_EventTTIList),
-		m_TTIRSUThroughput(t_TTIRSUThroughput) {}
+	RRM(System* t_Context) : m_Context(t_Context) {}
 
 	/*
 	* 析构函数
 	*/
 	~RRM();
+
+	/*
+	* 获取系统类的指针
+	*/
+	System* getContext() { return m_Context; }
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

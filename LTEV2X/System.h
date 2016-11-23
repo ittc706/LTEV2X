@@ -4,26 +4,42 @@
 #include"ConfigLoader.h"
 #include"Config.h"
 #include"Global.h"
+
 #include"eNB.h"
 #include"RSU.h"
 #include"VUE.h"
-#include"Event.h"
 #include"Road.h"
+#include"Event.h"
+
 #include"GTT.h"
 #include"GTT_Urban.h"
 #include"GTT_HighSpeed.h"
-#include"WT.h"
-#include"WT_B.h"
+
 #include"RRM.h"
 #include"RRM_TDM_DRA.h"
 #include"RRM_ICC_DRA.h"
 #include"RRM_RR.h"
+
+#include"WT.h"
+#include"WT_B.h"
+
 #include"TMC.h"
 #include"TMC_B.h"
 
 class System{
+	friend class GTT;
+	friend class GTT_Urban;
+	friend class GTT_HighSpeed;
+	friend class RRM;
+	friend class RRM_TDM_DRA;
+	friend class RRM_ICC_DRA;
+	friend class RRM_RR;
+	friend class TMC;
+	friend class TMC_B;
+	friend class WT;
+	friend class WT_B;
 	/*------------------域------------------*/
-public:
+private:
 	/*
 	* 系统当前的TTI时刻
 	*/

@@ -243,10 +243,10 @@ void System::initialization() {
 void System::initializeGTTModule() {
 	switch (m_GTTMode) {
 	case URBAN:
-		m_GTTPoint = new GTT_Urban(m_TTI, m_Config);
+		m_GTTPoint = new GTT_Urban(this);
 		break;
 	case HIGHSPEED:
-		m_GTTPoint = new GTT_HighSpeed(m_TTI, m_Config);
+		m_GTTPoint = new GTT_HighSpeed(this);
 		break;
 	}
 	//初始化地理拓扑参数
@@ -257,7 +257,7 @@ void System::initializeGTTModule() {
 }
 
 void System::initializeWTModule() {
-	m_WTPoint = new WT_B(m_Config, m_WTMode);
+	m_WTPoint = new WT_B(this, m_WTMode);
 	m_WTPoint->initialize();//模块初始化
 }
 
@@ -265,13 +265,13 @@ void System::initializeWTModule() {
 void System::initializeRRMModule() {
 	switch (m_RRMMode) {
 	case RR:
-		m_RRMPoint = new RRM_RR(m_TTI, m_Config, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
+		m_RRMPoint = new RRM_RR(this, m_Config.threadNum);
 		break;
 	case TDM_DRA:
-		m_RRMPoint = new RRM_TDM_DRA(m_TTI, m_Config, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
+		m_RRMPoint = new RRM_TDM_DRA(this, m_Config.threadNum);
 		break;
 	case ICC_DRA:
-		m_RRMPoint = new RRM_ICC_DRA(m_TTI, m_Config, m_EventVec, m_EventTTIList, m_TTIRSUThroughput, m_GTTPoint, m_WTPoint, m_Config.threadNum);
+		m_RRMPoint = new RRM_ICC_DRA(this, m_Config.threadNum);
 		break;
 	default:
 		break;
@@ -281,7 +281,7 @@ void System::initializeRRMModule() {
 
 
 void System::initializeTMCModule() {
-	m_TMCPoint = new TMC_B(m_TTI, m_Config, m_EventVec, m_EventTTIList, m_TTIRSUThroughput);
+	m_TMCPoint = new TMC_B(this);
 	m_TMCPoint->initialize();//模块初始化
 }
 

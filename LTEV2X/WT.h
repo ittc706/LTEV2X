@@ -52,25 +52,23 @@ public:
 	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
 };
 
+class System;
 class WT {
 	/*------------------域------------------*/
+private:
+	friend class WT_B;
+	/*
+	* 指向系统的指针
+	*/
+	System* m_Context;
 public:
 	/*
-	* 系统配置参数,指向系统的该参数
-	*/
-	SystemConfig& m_Config;
-
-	/*
-	* RSU容器
-	* 第一维度的指针指向数组，该数组存放指向WT_RSU实体的指针
-	* 为什么数组存的是指针，因为需要实现多态(虽然暂时WT单元并没有多态)
+	* WT视图下的RSU容器
 	*/
 	WT_RSU** m_RSUAry;
 
 	/*
-	* VeUE容器
-	* 第一维度的指针指向数组，该数组存放指向WT_VeUE实体的指针
-	* 为什么数组存的是指针，因为需要实现多态(虽然暂时WT单元并没有多态)
+	* WT视图下的VeUE容器
 	*/
 	WT_VeUE** m_VeUEAry;
 
@@ -91,13 +89,17 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	WT(SystemConfig& t_Config, WTMode t_SINRMode) :
-		m_Config(t_Config), m_SINRMode(t_SINRMode) {}
+	WT(System* t_Context) : m_Context(t_Context) {}
 
 	/*
 	* 析构函数
 	*/
 	~WT();
+
+	/*
+	* 获取系统类的指针
+	*/
+	System* getContext() { return m_Context; }
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

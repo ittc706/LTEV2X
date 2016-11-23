@@ -111,18 +111,6 @@ class RRM_RR :public RRM {
 	/*------------------域------------------*/
 public:
 	/*
-	* 地理拓扑单元模块指针
-	* 期间会调用地理拓扑单元来计算干扰信道响应
-	*/
-	GTT* m_GTTPoint;
-
-	/*
-	* 无线传输单元模块指针
-	* 期间会调用无线传输单元来计算SINR
-	*/
-	WT* m_WTPoint;
-
-	/*
 	* 用于存放进行RSU切换的车辆，暂时保存的作用
 	*/
 	std::list<int> m_SwitchEventIdList;
@@ -159,15 +147,7 @@ public:
 	* 该构造函数定义了该模块的视图
 	* 所有指针成员拷贝系统类中的对应成员指针，共享同一实体
 	*/
-	RRM_RR(int &t_TTI,
-		SystemConfig& t_Config,
-		std::vector<Event>& t_EventVec,
-		std::vector<std::list<int>>& t_EventTTIList,
-		std::vector<std::vector<int>>& t_TTIRSUThroughput,
-		GTT* t_GTTPoint,
-		WT* t_WTPoint,
-		int t_ThreadNum
-	);
+	RRM_RR(System* t_Context, int t_ThreadNum);
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

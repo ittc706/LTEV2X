@@ -35,11 +35,7 @@ public:
 	/*
 	* 构造函数
 	*/
-	TMC_B(int &t_TTI, 
-		SystemConfig& t_Config, 
-		std::vector<Event>& t_EventVec, 
-		std::vector<std::list<int>>& t_EventTTIList, 
-		std::vector<std::vector<int>>& t_TTIRSUThroughput);
+	TMC_B(System* t_Context);
 
 	/*
 	* 初始化RSU VeUE内该单元的内部类

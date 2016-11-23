@@ -22,34 +22,31 @@
 #include<sstream>
 #include"Exception.h"
 #include"TMC_B.h"
+#include"System.h"
 
 using namespace std;
 
-TMC_B::TMC_B(int &t_TTI,
-	SystemConfig& t_Config,
-	vector<Event>& t_EventVec,
-	vector<list<int>>& t_EventTTIList,
-	vector<vector<int>>& t_TTIRSUThroughput) :
-	TMC(t_TTI, t_Config, t_EventVec, t_EventTTIList, t_TTIRSUThroughput) {
+TMC_B::TMC_B(System* t_Context):
+	TMC(t_Context) {
 
 	//事件链表容器初始化
-	m_EventTTIList = vector<list<int>>(m_Config.NTTI);
+	getContext()->m_EventTTIList = vector<list<int>>(getContext()->m_Config.NTTI);
 
 	//吞吐率容器初始化
-	m_TTIRSUThroughput = vector<vector<int>>(m_Config.NTTI, vector<int>(m_Config.RSUNum));
+	getContext()->m_TTIRSUThroughput = vector<vector<int>>(getContext()->m_Config.NTTI, vector<int>(getContext()->m_Config.RSUNum));
 }
 
 
 void TMC_B::initialize() {
 	//初始化VeUE的该模块参数部分
-	m_VeUEAry = new TMC_VeUE*[m_Config.VeUENum];
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+	m_VeUEAry = new TMC_VeUE*[getContext()->m_Config.VeUENum];
+	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
 		m_VeUEAry[VeUEId] = new TMC_VeUE();
 	}
 
 	//初始化RSU的该模块参数部分
-	m_RSUAry = new TMC_RSU*[m_Config.RSUNum];
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+	m_RSUAry = new TMC_RSU*[getContext()->m_Config.RSUNum];
+	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
 		m_RSUAry[RSUId] = new TMC_RSU();
 	}
 }
@@ -64,27 +61,27 @@ void TMC_B::buildEventList(ofstream& t_File) {
 
 
 	//首先生成各个车辆的周期性事件的起始时刻(相对时刻，即[0 , m_Config.periodicEventNTTI)
-	vector<list<int>> startTTIVec(m_Config.periodicEventNTTI, list<int>());
-	uniform_int_distribution<int> uid(0, m_Config.periodicEventNTTI - 1);
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+	vector<list<int>> startTTIVec(getContext()->m_Config.periodicEventNTTI, list<int>());
+	uniform_int_distribution<int> uid(0, getContext()->m_Config.periodicEventNTTI - 1);
+	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
 		int startTTI = uid(dre);
 		startTTIVec[startTTI].push_back(VeUEId);
 	}
 
 	//生成紧急事件的发生时刻，每个时间槽存放该时刻发生紧急事件的车辆
-	m_VeUEEmergencyNum = vector<int>(m_Config.VeUENum, 0);//初始化统计量
+	m_VeUEEmergencyNum = vector<int>(getContext()->m_Config.VeUENum, 0);//初始化统计量
 	int countEmergency = 0;
-	vector<list<int>> emergencyEventTriggerTTI(m_Config.NTTI);
-	if (m_Config.emergencyLambda != 0) {
-		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+	vector<list<int>> emergencyEventTriggerTTI(getContext()->m_Config.NTTI);
+	if (getContext()->m_Config.emergencyLambda != 0) {
+		for (int VeUEId = 0; VeUEId <getContext()->m_Config.VeUENum; VeUEId++) {
 			//依次生成每个车辆的紧急事件到达时刻
 			double T = 0;
-			while (T < m_Config.NTTI) {
+			while (T <getContext()->m_Config.NTTI) {
 				double u = urd(dre);
 				if (u == 0) throw Exp("uniform_real_distribution生成范围包含边界");
-				T = T - (1 / m_Config.emergencyLambda)*log(u);
+				T = T - (1 / getContext()->m_Config.emergencyLambda)*log(u);
 				int IntegerT = static_cast<int>(T);
-				if (IntegerT < m_Config.NTTI) {
+				if (IntegerT < getContext()->m_Config.NTTI) {
 					emergencyEventTriggerTTI[IntegerT].push_back(VeUEId);
 					++m_VeUEEmergencyNum[VeUEId];
 					++countEmergency;
@@ -96,19 +93,19 @@ void TMC_B::buildEventList(ofstream& t_File) {
 
 
 	//生成数据业务事件的发生时刻，每个时间槽存放该时刻发生数据业务事件的车辆
-	m_VeUEDataNum = vector<int>(m_Config.VeUENum, 0);//初始化统计量
+	m_VeUEDataNum = vector<int>(getContext()->m_Config.VeUENum, 0);//初始化统计量
 	int countData = 0;
-	vector<list<int>> dataEventTriggerTTI(m_Config.NTTI);
-	if (m_Config.dataLambda != 0) {
-		for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+	vector<list<int>> dataEventTriggerTTI(getContext()->m_Config.NTTI);
+	if (getContext()->m_Config.dataLambda != 0) {
+		for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
 			//依次生成每个车辆的紧急事件到达时刻
 			double T = 0;
-			while (T < m_Config.NTTI) {
+			while (T < getContext()->m_Config.NTTI) {
 				double u = urd(dre);
 				if (u == 0) throw Exp("uniform_real_distribution生成范围包含边界");
-				T = T - (1 / m_Config.dataLambda)*log(u);
+				T = T - (1 / getContext()->m_Config.dataLambda)*log(u);
 				int IntegerT = static_cast<int>(T);
-				if (IntegerT < m_Config.NTTI) {
+				if (IntegerT < getContext()->m_Config.NTTI) {
 					dataEventTriggerTTI[IntegerT].push_back(VeUEId);
 					++m_VeUEDataNum[VeUEId];
 					++countData;
@@ -122,11 +119,11 @@ void TMC_B::buildEventList(ofstream& t_File) {
 	//根据startTTIVec依次填充PERIOD事件并在其中插入服从泊松分布的紧急事件
 
 	int startTTIOfEachPeriod = 0;//每个周期的起始时刻
-	while (startTTIOfEachPeriod < m_Config.NTTI) {
+	while (startTTIOfEachPeriod < getContext()->m_Config.NTTI) {
 		//TTIOffset为相对于startTTIOfEachPeriod的偏移量
-		for (int TTIOffset = 0; TTIOffset < m_Config.periodicEventNTTI; TTIOffset++) {
+		for (int TTIOffset = 0; TTIOffset <getContext()->m_Config.periodicEventNTTI; TTIOffset++) {
 			//压入紧急事件
-			if (startTTIOfEachPeriod + TTIOffset < m_Config.NTTI) {
+			if (startTTIOfEachPeriod + TTIOffset < getContext()->m_Config.NTTI) {
 				list<int> &emergencyList = emergencyEventTriggerTTI[startTTIOfEachPeriod + TTIOffset];
 				for (int VeUEId : emergencyList) {
 					/*-----------------------ATTENTION-----------------------
@@ -136,15 +133,15 @@ void TMC_B::buildEventList(ofstream& t_File) {
 					*sEvent如果自定义拷贝构造函数，必须在构造函数的初始化部分拷贝id成员
 					*-----------------------ATTENTION-----------------------*/
 					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, EMERGENCY);
-					m_EventVec.push_back(evt);
-					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
+					getContext()->m_EventVec.push_back(evt);
+					getContext()->m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
 					--countEmergency;
 				}
 			}
 
 
 			//压入数据业务事件
-			if (startTTIOfEachPeriod + TTIOffset < m_Config.NTTI) {
+			if (startTTIOfEachPeriod + TTIOffset < getContext()->m_Config.NTTI) {
 				list<int> &dataList = dataEventTriggerTTI[startTTIOfEachPeriod + TTIOffset];
 				for (int VeUEId : dataList) {
 					/*-----------------------ATTENTION-----------------------
@@ -154,24 +151,24 @@ void TMC_B::buildEventList(ofstream& t_File) {
 					*sEvent如果自定义拷贝构造函数，必须在构造函数的初始化部分拷贝id成员
 					*-----------------------ATTENTION-----------------------*/
 					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, DATA);
-					m_EventVec.push_back(evt);
-					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
+					getContext()->m_EventVec.push_back(evt);
+					getContext()->m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
 					--countData;
 				}
 			}
 
 
 			//产生周期性事件
-			if (startTTIOfEachPeriod + TTIOffset < m_Config.NTTI) {
+			if (startTTIOfEachPeriod + TTIOffset < getContext()->m_Config.NTTI) {
 				list<int> &periodList = startTTIVec[TTIOffset];
 				for (int VeUEId : periodList) {
 					Event evt = Event(VeUEId, startTTIOfEachPeriod + TTIOffset, PERIOD);
-					m_EventVec.push_back(evt);
-					m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
+					getContext()->m_EventVec.push_back(evt);
+					getContext()->m_EventTTIList[startTTIOfEachPeriod + TTIOffset].push_back(evt.getEventId());
 				}
 			}
 		}
-		startTTIOfEachPeriod += m_Config.periodicEventNTTI;
+		startTTIOfEachPeriod += getContext()->m_Config.periodicEventNTTI;
 	}
 
 	//打印事件链表
@@ -197,7 +194,7 @@ void TMC_B::processStatistics(
 
 	/*------------------统计成功传输的事件数目------------------*/
 	m_TransimitSucceedEventNumPerEventType = vector<int>(3);
-	for (Event &event : m_EventVec) {
+	for (Event &event : getContext()->m_EventVec) {
 		if (event.isFinished()) {
 			switch (event.getMessageType()) {
 			case EMERGENCY:
@@ -219,7 +216,7 @@ void TMC_B::processStatistics(
 	t_FileStatisticsDescription << "<DataEventNum>" << m_TransimitSucceedEventNumPerEventType[DATA] << "</DataEventNum>" << endl;
 
 	/*------------------统计等待时延------------------*/
-	for (Event &event : m_EventVec)
+	for (Event &event : getContext()->m_EventVec)
 		if (event.isFinished()) {
 			switch (event.getMessageType()) {
 			case EMERGENCY:
@@ -244,7 +241,7 @@ void TMC_B::processStatistics(
 	ssPeriod.str("");
 	ssEmergency.str("");
 	ssData.str("");
-	for (Event &event : m_EventVec)
+	for (Event &event : getContext()->m_EventVec)
 		if (event.isFinished()) {
 			switch (event.getMessageType()) {
 			case EMERGENCY:
@@ -279,7 +276,7 @@ void TMC_B::processStatistics(
 	ssPeriod.str("");
 	ssEmergency.str("");
 	ssData.str("");
-	for (Event &event : m_EventVec) {
+	for (Event &event : getContext()->m_EventVec) {
 		switch (event.getMessageType()) {
 		case EMERGENCY:
 			ssEmergency << event.getConflictNum() << " ";
@@ -300,12 +297,12 @@ void TMC_B::processStatistics(
 	writeEventLogInfo(t_FileEventLog);
 
 	/*------------------统计吞吐率------------------*/
-	vector<int> tmpTTIThroughput(m_Config.NTTI);
-	vector<int> tmpRSUThroughput(m_Config.RSUNum);
-	for (int tmpTTI = 0; tmpTTI < m_Config.NTTI; tmpTTI++) {
-		for (int tmpRSUId = 0; tmpRSUId < m_Config.RSUNum; tmpRSUId++) {
-			tmpTTIThroughput[tmpTTI] += m_TTIRSUThroughput[tmpTTI][tmpRSUId];
-			tmpRSUThroughput[tmpRSUId] += m_TTIRSUThroughput[tmpTTI][tmpRSUId];
+	vector<int> tmpTTIThroughput(getContext()->m_Config.NTTI);
+	vector<int> tmpRSUThroughput(getContext()->m_Config.RSUNum);
+	for (int tmpTTI = 0; tmpTTI < getContext()->m_Config.NTTI; tmpTTI++) {
+		for (int tmpRSUId = 0; tmpRSUId < getContext()->m_Config.RSUNum; tmpRSUId++) {
+			tmpTTIThroughput[tmpTTI] += getContext()->m_TTIRSUThroughput[tmpTTI][tmpRSUId];
+			tmpRSUThroughput[tmpRSUId] += getContext()->m_TTIRSUThroughput[tmpTTI][tmpRSUId];
 		}
 	}
 
@@ -323,7 +320,7 @@ void TMC_B::processStatistics(
 	/*------------------统计丢包率------------------*/
 	int transimitPackageNum = 0;
 	int lossPacketNum = 0;
-	for (Event &event : m_EventVec) {
+	for (Event &event : getContext()->m_EventVec) {
 		transimitPackageNum += event.getTransimitPackageNum();
 		lossPacketNum += event.getPacketLossNum();
 		for (double &d : event.getPackageLossDistanceVec())
@@ -336,11 +333,11 @@ void TMC_B::processStatistics(
 }
 
 void TMC_B::writeEventListInfo(ofstream &t_File) {
-	for (int i = 0; i < m_Config.NTTI; i++) {
+	for (int i = 0; i < getContext()->m_Config.NTTI; i++) {
 		t_File << "[ TTI = " << left << setw(3) << i << " ]" << endl;
 		t_File << "{" << endl;
-		for (int eventId : m_EventTTIList[i]) {
-			Event& e = m_EventVec[eventId];
+		for (int eventId : getContext()->m_EventTTIList[i]) {
+			Event& e = getContext()->m_EventVec[eventId];
 			t_File << "    " << e.toString() << endl;
 		}
 		t_File << "}\n\n" << endl;
@@ -348,9 +345,9 @@ void TMC_B::writeEventListInfo(ofstream &t_File) {
 }
 
 void TMC_B::writeEventLogInfo(ofstream &t_File) {
-	for (int eventId = 0; eventId < static_cast<int>(m_EventVec.size()); eventId++) {
+	for (int eventId = 0; eventId < static_cast<int>(getContext()->m_EventVec.size()); eventId++) {
 		string s;
-		switch (m_EventVec[eventId].getMessageType()) {
+		switch (getContext()->m_EventVec[eventId].getMessageType()) {
 		case EMERGENCY:
 			s = "EMERGENCY";
 			break;
@@ -363,12 +360,12 @@ void TMC_B::writeEventLogInfo(ofstream &t_File) {
 		}
 		t_File << "EventId = " << eventId << endl;
 		t_File << "{" << endl;
-		t_File << "    " << "VeUEId = " << m_EventVec[eventId].getVeUEId() << endl;
+		t_File << "    " << "VeUEId = " << getContext()->m_EventVec[eventId].getVeUEId() << endl;
 		t_File << "    " << "MessageType = " << s << endl;
-		t_File << "    " << "SendDelay = " << m_EventVec[eventId].getSendDelay() << "(TTI)" << endl;
-		t_File << "    " << "QueueDelay = " << m_EventVec[eventId].getQueueDelay() << "(TTI)" << endl;
-		t_File << "    " << "ProcessDelay = " << m_EventVec[eventId].getProcessDelay() << "(TTI)" << endl;
-		t_File << m_EventVec[eventId].toLogString(1);
+		t_File << "    " << "SendDelay = " << getContext()->m_EventVec[eventId].getSendDelay() << "(TTI)" << endl;
+		t_File << "    " << "QueueDelay = " << getContext()->m_EventVec[eventId].getQueueDelay() << "(TTI)" << endl;
+		t_File << "    " << "ProcessDelay = " << getContext()->m_EventVec[eventId].getProcessDelay() << "(TTI)" << endl;
+		t_File << getContext()->m_EventVec[eventId].toLogString(1);
 		t_File << "}" << endl;
 	}
 }

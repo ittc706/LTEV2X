@@ -148,7 +148,7 @@ public:
 	* 这里指针都是引用类型，因为需要初始化系统的各个实体数组
 	* 该构造函数也定义了该模块的视图
 	*/
-	GTT_Urban(int &t_TTI, SystemConfig& t_Config);
+	GTT_Urban(System* t_Context);
 
 	/*
 	* 参数配置
