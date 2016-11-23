@@ -1,6 +1,5 @@
 #pragma once
 #include"GTT.h"
-#include"Config.h"
 
 // <GTT_HighSpeed>: Geographical Topology and Transport HighSpeed
 
