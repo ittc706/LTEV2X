@@ -35,9 +35,9 @@ public:
 	/*
 	* 用于取得指向实际类型的指针
 	*/
-	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { throw LTEV2X_Exception("RuntimeException"); }
 	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { return this; }
-	RRM_RR_VeUE *const getRRPoint()override { throw Exp("RuntimeException"); }
+	RRM_RR_VeUE *const getRRPoint()override { throw LTEV2X_Exception("RuntimeException"); }
 };
 
 
@@ -136,9 +136,9 @@ public:
 	/*
 	* 用于取得指向实际类型的指针
 	*/
-	RRM_TDM_DRA_RSU *const getTDM_DRAPoint()override { throw Exp("RuntimeException"); }
+	RRM_TDM_DRA_RSU *const getTDM_DRAPoint()override { throw LTEV2X_Exception("RuntimeException"); }
 	RRM_ICC_DRA_RSU *const getICC_DRAPoint() override { return this; }
-	RRM_RR_RSU *const getRRPoint() override { throw Exp("RuntimeException"); }
+	RRM_RR_RSU *const getRRPoint() override { throw LTEV2X_Exception("RuntimeException"); }
 };
 
 

@@ -99,7 +99,7 @@ void System::configure() {//系统仿真参数配置
 		cout << "您当前的平台为：Linux" << endl;	
 	}
 	else
-		throw Exp("PlatformError");
+		throw LTEV2X_Exception("PlatformError");
 
 	//初始化输出流对象
 	logFileConfig(m_Config.platform);
@@ -113,7 +113,7 @@ void System::configure() {//系统仿真参数配置
 		configLoader.resolvConfigPath("Config/systemConfig.html");
 		break;
 	default:
-		throw Exp("Platform Config Error!");
+		throw LTEV2X_Exception("Platform Config Error!");
 	}
 
 	stringstream ss;
@@ -128,7 +128,7 @@ void System::configure() {//系统仿真参数配置
 		ss.str("");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("periodicEventNTTI")) != nullString) {
 		ss << temp;
@@ -137,7 +137,7 @@ void System::configure() {//系统仿真参数配置
 		ss.str("");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 
 	if ((temp = configLoader.getParam("emergencyLambda")) != nullString) {
@@ -147,7 +147,7 @@ void System::configure() {//系统仿真参数配置
 		ss.str("");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("dataLambda")) != nullString) {
 		ss << temp;
@@ -156,7 +156,7 @@ void System::configure() {//系统仿真参数配置
 		ss.str("");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("locationUpdateNTTI")) != nullString) {
 		ss << temp;
@@ -165,7 +165,7 @@ void System::configure() {//系统仿真参数配置
 		ss.str("");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("GTTMode")) != nullString) {
 		if (temp == "URBAN") {
@@ -177,10 +177,10 @@ void System::configure() {//系统仿真参数配置
 			cout << "GTT单元：HIGHSPEED模式" << endl;
 		}
 		else
-			throw Exp("地理拓扑单元参数配置错误");
+			throw LTEV2X_Exception("地理拓扑单元参数配置错误");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("RRMMode")) != nullString) {
 		if (temp == "TDM_DRA") {
@@ -196,10 +196,10 @@ void System::configure() {//系统仿真参数配置
 			cout << "RRM单元：RR模式" << endl;
 		}
 		else
-			throw Exp("无限资源管理单元参数配置错误");
+			throw LTEV2X_Exception("无限资源管理单元参数配置错误");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("ThreadNum")) != nullString) {
 		ss << temp;
@@ -209,7 +209,7 @@ void System::configure() {//系统仿真参数配置
 		cout << "开辟的线程数量为: " << m_Config.threadNum << endl;
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("WTMode")) != nullString) {
 		if (temp == "SINR_MRC") {
@@ -221,10 +221,10 @@ void System::configure() {//系统仿真参数配置
 			cout << "WT单元：SINR_MMSE模式" << endl;
 		}
 		else
-			throw Exp("无线传输单元参数配置错误");
+			throw LTEV2X_Exception("无线传输单元参数配置错误");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 
 	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析日志配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
@@ -236,7 +236,7 @@ void System::configure() {//系统仿真参数配置
 		configLoader.resolvConfigPath("Config/LogControlConfig.html");
 		break;
 	default:
-		throw Exp("Platform Config Error!");
+		throw LTEV2X_Exception("Platform Config Error!");
 	}
 
 	if ((temp = configLoader.getParam("TTILog")) != nullString) {
@@ -245,12 +245,12 @@ void System::configure() {//系统仿真参数配置
 		else if (temp == "OFF")
 			m_Config.TTILogIsOn = false;
 		else
-			throw Exp("TTI日志参数配置错误");
+			throw LTEV2X_Exception("TTI日志参数配置错误");
 		ss.clear();//清除标志位
 		ss.str("");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("EventLog")) != nullString) {
 		if (temp == "ON")
@@ -258,13 +258,13 @@ void System::configure() {//系统仿真参数配置
 		else if (temp == "OFF")
 			m_Config.eventLogIsOn = false;
 		else
-			throw Exp("Event日志参数配置错误");
+			throw LTEV2X_Exception("Event日志参数配置错误");
 		ss.clear();//清除标志位
 		ss.str("");
 		Event::s_LogIsOn = m_Config.eventLogIsOn;
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("ScheduleLog")) != nullString) {
 		if (temp == "ON")
@@ -272,12 +272,12 @@ void System::configure() {//系统仿真参数配置
 		else if (temp == "OFF")
 			m_Config.scheduleLogIsOn = false;
 		else
-			throw Exp("Schedule日志参数配置错误");
+			throw LTEV2X_Exception("Schedule日志参数配置错误");
 		ss.clear();//清除标志位
 		ss.str("");
 	}
 	else
-		throw Exp("ConfigLoaderError");
+		throw LTEV2X_Exception("ConfigLoaderError");
 }
 
 

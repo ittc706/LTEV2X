@@ -49,7 +49,7 @@ Complex::Complex(const Complex& c) :
 
 
 Complex::Complex(const initializer_list<double> il) {
-	if (il.size() > 2) throw Exp("Complex初始化列表元素数目错误：应该为两个double类型的元素");
+	if (il.size() > 2) throw LTEV2X_Exception("Complex初始化列表元素数目错误：应该为两个double类型的元素");
 	initializer_list<double>::iterator it = il.begin();
 	switch (il.size()) {
 	case 0:
@@ -134,7 +134,7 @@ Complex operator*(const Complex& c1, const Complex& c2) {
 Complex operator/(const Complex& c1, const Complex& c2) {
 	double tmp = Complex::abs(c2);
 	double denominator = tmp*tmp;//分母
-	if (denominator == 0) throw Exp("Complex.cpp->Complex operator/(const Complex& c1, const Complex& c2)");
+	if (denominator == 0) throw LTEV2X_Exception("Complex.cpp->Complex operator/(const Complex& c1, const Complex& c2)");
 
 	double realPart = 0;
 	double imagPart = 0;

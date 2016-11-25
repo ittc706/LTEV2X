@@ -619,7 +619,7 @@ void RRM_ICC_DRA::writeScheduleInfo(ofstream& t_File) {
 				bool isAvaliable = _RSU->getICC_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx];
 				if (!isAvaliable) {
 					RRM_RSU::ScheduleInfo* &info = *(_RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
-					if (info == nullptr) throw Exp("logic error");
+					if (info == nullptr) throw LTEV2X_Exception("logic error");
 					t_File << info->toScheduleString(3) << endl;
 				}
 			}

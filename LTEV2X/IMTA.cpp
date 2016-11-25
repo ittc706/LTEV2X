@@ -691,25 +691,13 @@ void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, d
 			t_HAfterFFT[HAfterFFT_Iter++] = (double)out2[row][0];
 			t_HAfterFFT[HAfterFFT_Iter++] = (double)out2[row][1];
 		}
-		
-
-		/*FILE *fpp;
-		errno_t err;
-		err = fopen_s(&fpp, "Log\\GTTLog\\HF.txt", "w+");
-		for (int pp = 0; pp<1024; pp++)
-		{
-			fprintf(fpp, "%f\n", out1[pp][0]);
-			fprintf(fpp, "%f\n", out1[pp][1]);
-		}
-		fclose(fpp);*/
-
+	
 		fftw_destroy_plan(ptemp1);
 		fftw_destroy_plan(ptemp2);
 		fftw_free(in1);
 		fftw_free(in2);
 		fftw_free(out1);
 		fftw_free(out2);
-		//int checkpoint = 1;
 	return;
 }
 

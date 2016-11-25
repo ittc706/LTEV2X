@@ -39,7 +39,7 @@ void ConfigLoader::resolvConfigPath(string t_FilePath) {
 		string rightTag = it->operator[](3);
 		string content = it->operator[](2);
 		if (leftTag != rightTag) {
-			throw Exp("tag not match");
+			throw LTEV2X_Exception("tag not match");
 		}
 		m_TagContentMap[leftTag] = content;
 	}

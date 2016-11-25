@@ -44,7 +44,7 @@ RowVector::RowVector() :
 
 RowVector::RowVector(int t_Col) :
 	col(t_Col) {
-	if (col < 0) throw Exp("向量的维度必须是非负的");
+	if (col < 0) throw LTEV2X_Exception("向量的维度必须是非负的");
 	rowVector = new Complex[col]();
 }
 
@@ -105,7 +105,7 @@ const Complex& RowVector::operator[](int t_Pos) const {
 
 
 void RowVector::resize(int t_Size) {
-	if (t_Size < 0) throw Exp("向量的维度必须是非负的");
+	if (t_Size < 0) throw LTEV2X_Exception("向量的维度必须是非负的");
 	int preCol = col;
 	Complex* preRowVector = rowVector;
 	col = t_Size;
@@ -147,7 +147,7 @@ RowVector operator-(const RowVector& t_RowVector) {
 
 //行向量与行向量的运算
 RowVector operator+(const RowVector& t_RowVector1, const RowVector& t_RowVector2) {
-	if (t_RowVector1.col != t_RowVector2.col) throw Exp("向量维度不同，无法相加");
+	if (t_RowVector1.col != t_RowVector2.col) throw LTEV2X_Exception("向量维度不同，无法相加");
 	RowVector res(t_RowVector1.col);
 	for (int c = 0; c < t_RowVector1.col; c++) {
 		res[c] = t_RowVector1[c] + t_RowVector2[c];
@@ -158,7 +158,7 @@ RowVector operator+(const RowVector& t_RowVector1, const RowVector& t_RowVector2
 
 //行向量与行向量的运算
 RowVector operator-(const RowVector& t_RowVector1, const RowVector& t_RowVector2) {
-	if (t_RowVector1.col != t_RowVector2.col) throw Exp("向量维度不同，无法相减");
+	if (t_RowVector1.col != t_RowVector2.col) throw LTEV2X_Exception("向量维度不同，无法相减");
 	RowVector res(t_RowVector1.col);
 	for (int c = 0; c < t_RowVector1.col; c++) {
 		res[c] = t_RowVector1[c] - t_RowVector2[c];
@@ -205,7 +205,7 @@ RowVector operator*(const Complex&t_Complex, const RowVector& t_RowVector) {
 
 
 RowVector operator/(const RowVector& t_RowVector, const Complex&t_Complex) {
-	if (Complex::abs(t_Complex) == 0) throw Exp("除数模值不能为0");
+	if (Complex::abs(t_Complex) == 0) throw LTEV2X_Exception("除数模值不能为0");
 	RowVector res(t_RowVector.col);
 	for (int c = 0; c < t_RowVector.col; c++) {
 		res[c] = t_RowVector[c] / t_Complex;
@@ -215,7 +215,7 @@ RowVector operator/(const RowVector& t_RowVector, const Complex&t_Complex) {
 RowVector operator/(const Complex&t_Complex, const RowVector& t_RowVector) {
 	RowVector res(t_RowVector.col);
 	for (int c = 0; c < t_RowVector.col; c++) {
-		if (Complex::abs(t_RowVector[c]) == 0) throw Exp("向量中含有模值为0的元素，不能作为分母");
+		if (Complex::abs(t_RowVector[c]) == 0) throw LTEV2X_Exception("向量中含有模值为0的元素，不能作为分母");
 		res[c] = t_Complex / t_RowVector[c];
 	}
 	return res;
@@ -223,7 +223,7 @@ RowVector operator/(const Complex&t_Complex, const RowVector& t_RowVector) {
 
 
 RowVector elementProduct(const RowVector& t_RowVector1, const RowVector& t_RowVector2) {
-	if (t_RowVector1.col != t_RowVector2.col) throw Exp("向量维度不匹配");
+	if (t_RowVector1.col != t_RowVector2.col) throw LTEV2X_Exception("向量维度不匹配");
 	RowVector res(t_RowVector1.col);
 	for (int c = 0; c < t_RowVector1.col; c++) {
 		res[c] = t_RowVector1[c] * t_RowVector2[c];
@@ -231,10 +231,10 @@ RowVector elementProduct(const RowVector& t_RowVector1, const RowVector& t_RowVe
 	return res;
 }
 RowVector elementDivide(const RowVector& t_RowVector1, const RowVector& t_RowVector2) {
-	if (t_RowVector1.col != t_RowVector2.col) throw Exp("向量维度不匹配");
+	if (t_RowVector1.col != t_RowVector2.col) throw LTEV2X_Exception("向量维度不匹配");
 	RowVector res(t_RowVector1.col);
 	for (int c = 0; c < t_RowVector1.col; c++) {
-		if (Complex::abs(t_RowVector2[c]) == 0) throw Exp("元素模值为0，不可作为除数");
+		if (Complex::abs(t_RowVector2[c]) == 0) throw LTEV2X_Exception("元素模值为0，不可作为除数");
 		res[c] = t_RowVector1[c] / t_RowVector2[c];
 	}
 	return res;
@@ -263,7 +263,7 @@ Matrix::Matrix() :
 
 Matrix::Matrix(int t_Row, int t_Col) :
 	row(t_Row), col(t_Col) {
-	if (t_Row < 0 || t_Col < 0) throw Exp("矩阵的维度必须是非负的");
+	if (t_Row < 0 || t_Col < 0) throw LTEV2X_Exception("矩阵的维度必须是非负的");
 	matrix = new RowVector[row];
 	for (int iter = 0; iter < row; iter++) {
 		matrix[iter] = RowVector(col);
@@ -358,7 +358,7 @@ Matrix Matrix::hermitian() {
 
 
 Matrix Matrix::inverse(bool t_TryPseudoInverse) {
-	if (row <= 0 || col <= 0 || row != col) throw Exp("该矩阵无法求逆");
+	if (row <= 0 || col <= 0 || row != col) throw LTEV2X_Exception("该矩阵无法求逆");
 
 	if (row < 3) return inverseWhenDimlowerThan3(t_TryPseudoInverse);
 
@@ -378,7 +378,7 @@ Matrix Matrix::inverse(bool t_TryPseudoInverse) {
 					return this->pseudoInverse();
 				}
 				else {
-					throw Exp("该矩阵不满秩，无法求逆矩阵");
+					throw LTEV2X_Exception("该矩阵不满秩，无法求逆矩阵");
 				}
 			}
 
@@ -416,7 +416,7 @@ Matrix Matrix::inverseWhenDimlowerThan3(bool t_TryPseudoInverse) {
 			if (t_TryPseudoInverse)
 				return Matrix{ { 0,0 } };
 			else
-				throw Exp("该矩阵无法求逆");
+				throw LTEV2X_Exception("该矩阵无法求逆");
 		}
 		return Matrix{ { 1 / this->operator[](0)[0] } };
 	}
@@ -425,7 +425,7 @@ Matrix Matrix::inverseWhenDimlowerThan3(bool t_TryPseudoInverse) {
 		Complex denominator = this->operator[](0)[0] * this->operator[](1)[1] - this->operator[](0)[1] * this->operator[](1)[0];
 		if (denominator == 0) {
 			if (t_TryPseudoInverse) return pseudoInverse();
-			else throw Exp("该矩阵无法求逆");
+			else throw LTEV2X_Exception("该矩阵无法求逆");
 		}
 		res[0][0] = this->operator[](1)[1] / denominator;
 		res[0][1] = -(this->operator[](0)[1]) / denominator;
@@ -437,7 +437,7 @@ Matrix Matrix::inverseWhenDimlowerThan3(bool t_TryPseudoInverse) {
 
 
 Matrix Matrix::diag() {
-	if (row != col) throw Exp("该函数只支持方阵");
+	if (row != col) throw LTEV2X_Exception("该函数只支持方阵");
 	Matrix res(1, row);
 	for (int r = 0; r < row; r++) {
 		res[0][r] = this->operator[](r)[r];
@@ -486,7 +486,7 @@ pair<Matrix, Matrix>  Matrix::fullRankDecomposition() {
 		rank++;
 	}
 
-	if (rank == 0) throw Exp("该矩阵秩为0，不满足满秩分解的条件");
+	if (rank == 0) throw LTEV2X_Exception("该矩阵秩为0，不满足满秩分解的条件");
 
 	pair<Matrix, Matrix> splitRes = verticalSplit(mergeMatrix, mergeMatrix.col - row, row);
 	Matrix B = splitRes.first;
@@ -568,7 +568,7 @@ void Matrix::print(ostream&t_Out, int t_NumEnter) {
 
 
 Matrix Matrix::verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
-	if (t_Matrix1.row != t_Matrix2.row) throw Exp("这两个矩阵无法合并");
+	if (t_Matrix1.row != t_Matrix2.row) throw LTEV2X_Exception("这两个矩阵无法合并");
 	Matrix res(t_Matrix1.row, t_Matrix1.col + t_Matrix2.col);
 	for (int r = 0; r < t_Matrix1.row; r++) {
 		for (int c = 0; c < t_Matrix1.col; c++) {
@@ -585,7 +585,7 @@ Matrix Matrix::verticalMerge(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 
 
 pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix, int t_LeftCol, int t_RightCol) {
-	if (t_Matrix.col != t_LeftCol + t_RightCol) throw Exp("该矩阵无法分裂成指定维度");
+	if (t_Matrix.col != t_LeftCol + t_RightCol) throw LTEV2X_Exception("该矩阵无法分裂成指定维度");
 	Matrix left(t_Matrix.row, t_LeftCol), right(t_Matrix.row, t_RightCol);
 	for (int r = 0; r < left.row; r++) {
 		for (int c = 0; c < left.col; c++) {
@@ -603,7 +603,7 @@ pair<Matrix, Matrix> Matrix::verticalSplit(const Matrix& t_Matrix, int t_LeftCol
 
 
 pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int t_UpRow, int t_DownRow) {
-	if (t_Matrix.row != t_UpRow + t_DownRow) throw Exp("该矩阵无法分裂成指定维度");
+	if (t_Matrix.row != t_UpRow + t_DownRow) throw LTEV2X_Exception("该矩阵无法分裂成指定维度");
 	Matrix up(t_UpRow, t_Matrix.col), down(t_DownRow, t_Matrix.col);
 	for (int r = 0; r < up.row; r++) {
 		for (int c = 0; c < up.col; c++) {
@@ -620,7 +620,7 @@ pair<Matrix, Matrix> Matrix::horizonSplit(const Matrix& t_Matrix, int t_UpRow, i
 }
 
 Matrix Matrix::eye(const int t_Dim) {
-	if (t_Dim < 1) throw Exp("单位阵维度至少为1");
+	if (t_Dim < 1) throw LTEV2X_Exception("单位阵维度至少为1");
 	Matrix res(t_Dim, t_Dim);
 	for (int i = 0; i < t_Dim; i++) {
 		res[i][i] = Complex(1, 0);
@@ -641,7 +641,7 @@ Matrix operator-(const Matrix& t_Matrix) {
 
 //矩阵间的运算
 Matrix operator+(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
-	if (t_Matrix1.row != t_Matrix2.row || t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不同，无法相加");
+	if (t_Matrix1.row != t_Matrix2.row || t_Matrix1.col != t_Matrix2.col) throw LTEV2X_Exception("矩阵维度不同，无法相加");
 	Matrix res(t_Matrix1.row, t_Matrix1.col);
 	for (int r = 0; r < t_Matrix1.row; r++) {
 		for (int c = 0; c < t_Matrix1.col; c++) {
@@ -653,7 +653,7 @@ Matrix operator+(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 
 
 Matrix operator-(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
-	if (t_Matrix1.row != t_Matrix2.row || t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不同，无法相减");
+	if (t_Matrix1.row != t_Matrix2.row || t_Matrix1.col != t_Matrix2.col) throw LTEV2X_Exception("矩阵维度不同，无法相减");
 	Matrix res(t_Matrix1.row, t_Matrix1.col);
 	for (int r = 0; r < t_Matrix1.row; r++) {
 		for (int c = 0; c < t_Matrix1.col; c++) {
@@ -665,7 +665,7 @@ Matrix operator-(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 
 
 Matrix operator*(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
-	if (t_Matrix1.col != t_Matrix2.row) throw Exp("矩阵维度不匹配，无法相乘");
+	if (t_Matrix1.col != t_Matrix2.row) throw LTEV2X_Exception("矩阵维度不匹配，无法相乘");
 
 	Matrix res(t_Matrix1.row, t_Matrix2.col);
 
@@ -721,7 +721,7 @@ Matrix operator*(const Complex& t_Complex, const Matrix& t_Matrix) {
 
 
 Matrix operator/(const Matrix& t_Matrix, const Complex& t_Complex) {
-	if (Complex::abs(t_Complex) == 0) throw Exp("除数模值为0，非法！");
+	if (Complex::abs(t_Complex) == 0) throw LTEV2X_Exception("除数模值为0，非法！");
 	Matrix res(t_Matrix.row, t_Matrix.col);
 	for (int r = 0; r < t_Matrix.row; r++) {
 		res[r] = t_Matrix[r] / t_Complex;
@@ -739,7 +739,7 @@ Matrix operator/(const Complex& t_Complex, const Matrix& t_Matrix) {
 
 Matrix elementProduct(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 	if (t_Matrix1.row != t_Matrix2.row ||
-		t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不匹配");
+		t_Matrix1.col != t_Matrix2.col) throw LTEV2X_Exception("矩阵维度不匹配");
 	Matrix res(t_Matrix1.row, t_Matrix1.col);
 	for (int r = 0; r < t_Matrix1.row; r++) {
 		res[r] = elementProduct(t_Matrix1[r], t_Matrix2[r]);
@@ -748,7 +748,7 @@ Matrix elementProduct(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 }
 Matrix elementDivide(const Matrix& t_Matrix1, const Matrix& t_Matrix2) {
 	if (t_Matrix1.row != t_Matrix2.row ||
-		t_Matrix1.col != t_Matrix2.col) throw Exp("矩阵维度不匹配");
+		t_Matrix1.col != t_Matrix2.col) throw LTEV2X_Exception("矩阵维度不匹配");
 	Matrix res(t_Matrix1.row, t_Matrix1.col);
 	for (int r = 0; r < t_Matrix1.row; r++) {
 		res[r] = elementDivide(t_Matrix1[r], t_Matrix2[r]);

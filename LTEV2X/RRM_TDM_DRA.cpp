@@ -251,7 +251,7 @@ void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 		//对于剩下的资源块，循环将下一时隙分配给当前比例最高的簇，分配之后，更改对应的比例（减去该时隙对应的VeUE数）
 		while (remainNTTI > 0) {
 			int dex = getMaxIndex(clusterSize);
-			if (dex == -1) throw Exp("还存在没有分配的时域资源，但是每个簇内的VeUE已经为负数");
+			if (dex == -1) throw LTEV2X_Exception("还存在没有分配的时域资源，但是每个簇内的VeUE已经为负数");
 			get<2>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[dex])++;
 			remainNTTI--;
 			clusterSize[dex] -= VeUESizePerTTI;
@@ -1167,7 +1167,7 @@ int RRM_TDM_DRA::getPatternType(int t_PatternIdx) {
 		if (t_PatternIdx >= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[patternType][0] && t_PatternIdx <= ns_RRM_TDM_DRA::gc_PatternTypePatternIdxInterval[patternType][1])
 			return patternType;
 	}
-	throw Exp("getPatternType");
+	throw LTEV2X_Exception("getPatternType");
 }
 
 

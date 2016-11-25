@@ -85,7 +85,7 @@ double WT_B::SINRCalculate(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarr
 	case SINR_MMSE:
 		return SINRCalculateMMSE(t_VeUEId, t_SubCarrierIdxStart, t_SubCarrierIdxEnd, t_PatternIdx);
 	default:
-		throw Exp("wrong SINRMode");
+		throw LTEV2X_Exception("wrong SINRMode");
 	}
 }
 

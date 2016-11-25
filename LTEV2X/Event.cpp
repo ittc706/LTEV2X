@@ -56,7 +56,7 @@ Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
 
 
 void Event::reset() {
-	if (m_IsFinished)throw Exp("error");
+	if (m_IsFinished)throw LTEV2X_Exception("error");
 	m_CurrentPackageIdx = 0;
 	m_WithdrawalTime = 0;
 	m_RemainBitNum = m_BitNumPerPackage[0];

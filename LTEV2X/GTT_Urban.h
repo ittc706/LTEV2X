@@ -22,7 +22,7 @@ public:
 	* 用于取得指向实际类型的指针
 	*/
 	GTT_Urban_VeUE  *const getUrbanPoint()override { return this; }
-	GTT_HighSpeed_VeUE  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
+	GTT_HighSpeed_VeUE  *const getHighSpeedPoint()override { throw LTEV2X_Exception("RuntimeException"); }
 };
 
 
@@ -37,7 +37,7 @@ public:
 	* 用于取得指向实际类型的指针
 	*/
 	GTT_Urban_RSU  *const getUrbanPoint()override { return this; }
-	GTT_HighSpeed_RSU  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
+	GTT_HighSpeed_RSU  *const getHighSpeedPoint()override { throw LTEV2X_Exception("RuntimeException"); }
 };
 
 
@@ -53,7 +53,7 @@ public:
 	* 用于取得指向实际类型的指针
 	*/
 	GTT_Urban_eNB  *const getUrbanPoint()override { return this; }
-	GTT_HighSpeed_eNB  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
+	GTT_HighSpeed_eNB  *const getHighSpeedPoint()override { throw LTEV2X_Exception("RuntimeException"); }
 };
 
 
@@ -86,7 +86,7 @@ public:
 	* 用于取得指向实际类型的指针
 	*/
 	GTT_Urban_Road  *const getUrbanPoint()override { return this; }
-	GTT_HighSpeed_Road  *const getHighSpeedPoint()override { throw Exp("RuntimeException"); }
+	GTT_HighSpeed_Road  *const getHighSpeedPoint()override { throw LTEV2X_Exception("RuntimeException"); }
 };
 
 

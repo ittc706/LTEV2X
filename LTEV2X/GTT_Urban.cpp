@@ -189,8 +189,6 @@ void GTT_Urban::initialize() {
 	int VeUEId = 0;
 	int DistanceFromBottomLeft = 0;
 
-	FILE *stream;
-	fopen_s(&stream, "LOG\\GTTLOG\\Sprinkle_URBAN.txt", "w+");
 
 	for (int RoadIdx = 0; RoadIdx != getContext()->m_Config.RoadNum; RoadIdx++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[RoadIdx]; uprIdx++) {
@@ -222,11 +220,8 @@ void GTT_Urban::initialize() {
 			_VeUEConfig.VeUENum = getContext()->m_Config.VeUENum;
 			m_VeUEAry[VeUEId++] = new GTT_Urban_VeUE(_VeUEConfig);
 
-			fprintf(stream, "%f\t", m_VeUEAry[VeUEId-1]->m_AbsX);
-			fprintf(stream, "%f\n", m_VeUEAry[VeUEId - 1]->m_AbsY);
 		}
 	}
-	fclose(stream);
 
 	//初始化车辆与RSU的距离
 	for (int VeIdx = 0; VeIdx != getContext()->m_Config.VeUENum; VeIdx++) {
