@@ -89,7 +89,7 @@ private:
 	/*
 	* 车辆车速
 	*/
-	double m_Speed;
+	double m_Speed;//km/h
 
 	/*
 	* 统计每个RSU下的车辆数目

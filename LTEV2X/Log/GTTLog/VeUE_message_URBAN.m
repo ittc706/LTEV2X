@@ -21,7 +21,7 @@ RandomColor = rand(RSUNumber,3);
  for cnt = 1:1:dim
     RSUId = data2(cnt,1)+1;
     plot(data4(cnt,1),data5(cnt,1),'X','Color',RandomColor(RSUId,:));hold on
-    axis([-800 800 -800 800]);
+    axis([-1000 1000 -1000 1000]);
  end
 
     

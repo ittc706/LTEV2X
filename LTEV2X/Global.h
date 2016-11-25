@@ -69,7 +69,8 @@ namespace ns_GTT_Urban {//城镇模块常量设置
 	const int gc_RSUNumber = 24;//只有路口有RSU
 	const int gc_Width = 250;
 	const int gc_Length = 433;
-	const double gc_LaneWidth = 3.5;
+	const double gc_LaneWidth = 7.0f;
+	const double gc_FreshTime = 1.0f;
 
 	const double gc_RoadTopoRatio[gc_RoadNumber * 2] = {
 		-1.5f, 1.0f,

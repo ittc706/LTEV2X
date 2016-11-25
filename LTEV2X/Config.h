@@ -123,13 +123,13 @@ struct HighSpeedRodeConfig {
 //VeUE≈‰÷√≤Œ ˝
 struct VeUEConfig {
 	int roadId;
-	int locationId;
 	double X;
 	double Y;
 	double AbsX;
 	double AbsY;
 	double V;
 	int VeUENum;
+	double angle;
 };
 
 
