@@ -112,8 +112,8 @@ void System::configure() {//系统仿真参数配置
 	ConfigLoader configLoader;
 
 	//首先先判断当前的平台，利用路径的表示在两个平台下的差异来判断
-	ifstream inPlatformWindows("Config\\systemConfig.html"),
-		inPlatformLinux("Config/systemConfig.html");
+	ifstream inPlatformWindows("Config\\systemConfig.xml"),
+		inPlatformLinux("Config/systemConfig.xml");
 	
 	if (inPlatformWindows.is_open()) {
 		m_Config.platform = Windows;
@@ -132,10 +132,10 @@ void System::configure() {//系统仿真参数配置
 	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析系统配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 	switch (m_Config.platform) {
 	case Windows:
-		configLoader.resolvConfigPath("Config\\systemConfig.html");
+		configLoader.resolvConfigPath("Config\\systemConfig.xml");
 		break;
 	case Linux:
-		configLoader.resolvConfigPath("Config/systemConfig.html");
+		configLoader.resolvConfigPath("Config/systemConfig.xml");
 		break;
 	default:
 		throw logic_error("Platform Config Error!");
@@ -255,10 +255,10 @@ void System::configure() {//系统仿真参数配置
 	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析日志配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 	switch (m_Config.platform) {
 	case Windows:
-		configLoader.resolvConfigPath("Config\\LogControlConfig.html");
+		configLoader.resolvConfigPath("Config\\LogControlConfig.xml");
 		break;
 	case Linux:
-		configLoader.resolvConfigPath("Config/LogControlConfig.html");
+		configLoader.resolvConfigPath("Config/LogControlConfig.xml");
 		break;
 	default:
 		throw logic_error("Platform Config Error!");

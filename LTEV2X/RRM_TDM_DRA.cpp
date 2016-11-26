@@ -305,7 +305,8 @@ void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 			* 若赋值为(0,-1,0)会导致获取当前簇编号失败，导致其他地方需要讨论
 			* 因此直接给每个簇都赋值为整个区间，反正也没有任何作用，免得其他部分讨论
 			*------------------------ATTENTION-----------------------*/
-			_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo = vector<tuple<int, int, int>>(_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum, tuple<int, int, int>(0, s_NTTI - 1, s_NTTI));
+			int tempNTTI = s_NTTI;//不知道为啥，直接在下面的式子中用s_NTTI，用g++/gcc编译后链接会出现s_NTTI未定义的情况
+			_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo = vector<tuple<int, int, int>>(_RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum, tuple<int, int, int>(0, tempNTTI - 1, tempNTTI));
 			continue;
 		}
 
