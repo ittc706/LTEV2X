@@ -19,10 +19,13 @@
 #include<limits>
 #include<sstream>
 #include<iomanip>
-#include"RRM.h"
-#include"Function.h"
 #include"System.h"
+#include"RRM.h"
 
+#include"VUE.h"
+#include"RSU.h"
+
+#include"Function.h"
 using namespace std;
 
 RRM_VeUE::RRM_VeUE(int t_TotalPatternNum):m_ModulationType(RRM::s_MODULATION_TYPE), m_CodeRate(RRM::s_CODE_RATE){
@@ -31,6 +34,11 @@ RRM_VeUE::RRM_VeUE(int t_TotalPatternNum):m_ModulationType(RRM::s_MODULATION_TYP
 	m_PreInterferenceVeUEIdVec = vector<vector<int>>(t_TotalPatternNum);
 	m_PreSINR = vector<double>(t_TotalPatternNum, (numeric_limits<double>::min)());
 }
+
+
+VeUE* RRM_VeUE::getSystemPoint() { return m_This; }
+
+void RRM_VeUE::setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 
 
 string RRM_RSU::ScheduleInfo::toLogString() {

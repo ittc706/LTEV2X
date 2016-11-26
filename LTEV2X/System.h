@@ -1,29 +1,22 @@
 #pragma once
 #include<vector>
 #include<fstream>
-#include"ConfigLoader.h"
 #include"Config.h"
-
-#include"eNB.h"
-#include"RSU.h"
-#include"VUE.h"
-#include"Road.h"
 #include"Event.h"
+/*
+* 前置声明
+* 由于System会被各个模块包含，因此System.h尽量避免包含其他模块
+* 在.cpp里面包含即可
+*/
+class GTT;
+class RRM;
+class TMC;
+class WT;
 
-#include"GTT.h"
-#include"GTT_Urban.h"
-#include"GTT_HighSpeed.h"
-
-#include"RRM.h"
-#include"RRM_TDM_DRA.h"
-#include"RRM_ICC_DRA.h"
-#include"RRM_RR.h"
-
-#include"WT.h"
-#include"WT_B.h"
-
-#include"TMC.h"
-#include"TMC_B.h"
+class VeUE;
+class RSU;
+class eNB;
+class Road;
 
 class System{
 	friend class GTT;

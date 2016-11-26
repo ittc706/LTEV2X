@@ -18,10 +18,10 @@
 
 #include<iomanip>
 #include<sstream>
-#include"GTT.h"
-#include"Function.h"
 #include"System.h"
+#include"GTT.h"
 #include"IMTA.h"
+#include"Function.h"
 
 using namespace std;
 

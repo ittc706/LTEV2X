@@ -88,12 +88,12 @@ public:
 	/*
 	* 取得系统级System的VeUE的指针
 	*/
-	VeUE* getSystemPoint() { return m_This; }
+	VeUE* getSystemPoint();
 
 	/*
 	* 设置系统级System的VeUE的指针
 	*/
-	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
+	void setSystemPoint(VeUE* t_Point);
 };
 
 class RSU;

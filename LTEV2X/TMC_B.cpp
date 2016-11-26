@@ -21,8 +21,11 @@
 #include<random>
 #include<sstream>
 #include<stdexcept>
-#include"TMC_B.h"
 #include"System.h"
+
+#include"TMC_B.h"
+
+#include"Config.h"
 #include"Log.h"
 
 using namespace std;
