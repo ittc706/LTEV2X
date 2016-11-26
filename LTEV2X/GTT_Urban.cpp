@@ -518,23 +518,23 @@ void GTT_Urban::freshLoc() {
 			double absX = abs(m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX);
 			double absY = abs(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY);
 
-			double wDistanceBP = 4 * (location.VeUEAntH - 1)*(location.RSUAntH - 1)*IMTA::gc_FC / IMTA::gc_C;
+			double wDistanceBP = 4 * (location.VeUEAntH - 1)*(location.RSUAntH - 1)*IMTA::s_FC / IMTA::s_C;
 			//LOS
 			if (absX <= 3.5 || absY <= 3.5) {
 
 				if (m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] > 3 && m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < wDistanceBP)
 				{
-					wPL[RSUIdx] = 22.7f * log10(m_VeUEAry[UserIdx1]->m_Distance[RSUIdx]) + 27.0f + 20.0f * (log10(IMTA::gc_FC) - 9.0f);//转换为GHz
+					wPL[RSUIdx] = 22.7f * log10(m_VeUEAry[UserIdx1]->m_Distance[RSUIdx]) + 27.0f + 20.0f * (log10(IMTA::s_FC) - 9.0f);//转换为GHz
 				}
 				else
 				{
 					if (wDistanceBP < m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] && m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < 5000)
 					{
-						wPL[RSUIdx] = 40.0f * log10(m_VeUEAry[UserIdx1]->m_Distance[RSUIdx]) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f *(log10(IMTA::gc_FC) - 9.0f);
+						wPL[RSUIdx] = 40.0f * log10(m_VeUEAry[UserIdx1]->m_Distance[RSUIdx]) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f *(log10(IMTA::s_FC) - 9.0f);
 					}
 					else if (m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] < 3)
 					{
-						wPL[RSUIdx] = 22.7f * log10(3) + 27.0f + 20.0f * (log10(IMTA::gc_FC) - 9.0f);
+						wPL[RSUIdx] = 22.7f * log10(3) + 27.0f + 20.0f * (log10(IMTA::s_FC) - 9.0f);
 					}
 				}
 			}
@@ -545,37 +545,37 @@ void GTT_Urban::freshLoc() {
 				fTemp = (2.8f - 0.0024f * absX) > 1.84f ? (2.8f - 0.0024f * absX) : 1.84f;
 				if (3 < absX&&absX < wDistanceBP)
 				{
-					fPL1 = 22.7f * log10(absX) + 27.0f + 20.0f *(log10(IMTA::gc_FC) - 9.0f);
+					fPL1 = 22.7f * log10(absX) + 27.0f + 20.0f *(log10(IMTA::s_FC) - 9.0f);
 				}
 				else
 				{
 					if (wDistanceBP < absX&&absX < 5000)
 					{
-						fPL1 = 40.0f * log10(absX) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f * (log10(IMTA::gc_FC) - 9.0f);
+						fPL1 = 40.0f * log10(absX) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f * (log10(IMTA::s_FC) - 9.0f);
 					}
 					else if (absX<3)
 					{
-						fPL1 = 22.7f * log10(3) + 27.0f + 20.0f * (log10(IMTA::gc_FC) - 9.0f);
+						fPL1 = 22.7f * log10(3) + 27.0f + 20.0f * (log10(IMTA::s_FC) - 9.0f);
 					}
 				}
-				fPL1 = fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(absY) + 3 * (log10(IMTA::gc_FC) - 9.0f);
+				fPL1 = fPL1 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(absY) + 3 * (log10(IMTA::s_FC) - 9.0f);
 				fTemp = (2.8f - 0.0024f * absY) > 1.84f ? (2.8f - 0.0024f * absY) : 1.84f;
 				if (3 < absY&&absY < wDistanceBP)
 				{
-					fPL2 = 22.7f * log10(absY) + 27.0f + 20.0f * (log10(IMTA::gc_FC) - 9.0f);
+					fPL2 = 22.7f * log10(absY) + 27.0f + 20.0f * (log10(IMTA::s_FC) - 9.0f);
 				}
 				else
 				{
 					if (wDistanceBP < absY&&absY < 5000)
 					{
-						fPL2 = 40.0f * log10(absY) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f * (log10(IMTA::gc_FC) - 9.0f);
+						fPL2 = 40.0f * log10(absY) + 7.56f - 17.3f * log10(location.VeUEAntH - 1) - 17.3f * log10(location.RSUAntH - 1) + 2.7f * (log10(IMTA::s_FC) - 9.0f);
 					}
 					else if (absY < 3)
 					{
-						fPL2 = 22.7f * log10(3) + 27.0f + 20.0f *(log10(IMTA::gc_FC) - 9.0f);
+						fPL2 = 22.7f * log10(3) + 27.0f + 20.0f *(log10(IMTA::s_FC) - 9.0f);
 					}
 				}
-				fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(absX) + 3 * (log10(IMTA::gc_FC) - 9.0f);
+				fPL2 = fPL2 + 17.3f - 12.5f*fTemp + 10 * fTemp * log10(absX) + 3 * (log10(IMTA::s_FC) - 9.0f);
 				wPL[RSUIdx] = fPL1 < fPL2 ? fPL1 : fPL2;
 			}
 		}
@@ -655,14 +655,14 @@ void GTT_Urban::freshLoc() {
 		if (absX1 <= 3.5 || absY1 <= 3.5) {
 			location.locationType = Los;// 在同一条道路上即为LOS
 			location.distance = sqrt(pow((m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX), 2.0f) + pow((m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY), 2.0f));
-			angle = atan2(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY, m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX) / IMTA::gc_Degree2PI;
+			angle = atan2(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY, m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX) / IMTA::s_DEGREE_TO_PI;
 		}
 		else
 		{
 			location.locationType = Nlos;
 			location.distance1 = absX1;
 			location.distance2 = absY1;
-			angle = atan2(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY, m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX) / IMTA::gc_Degree2PI;
+			angle = atan2(m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY, m_VeUEAry[UserIdx1]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX) / IMTA::s_DEGREE_TO_PI;
 		}
 	
 		
@@ -685,7 +685,7 @@ void GTT_Urban::freshLoc() {
 
 		double t_Pl = 0;
 
-		m_VeUEAry[UserIdx1]->m_IMTA[RSUIdx].build(&t_Pl, IMTA::gc_FC, location, antenna, m_VeUEAry[UserIdx1]->m_V*3.6, m_VeUEAry[UserIdx1]->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
+		m_VeUEAry[UserIdx1]->m_IMTA[RSUIdx].build(&t_Pl, IMTA::s_FC, location, antenna, m_VeUEAry[UserIdx1]->m_V*3.6, m_VeUEAry[UserIdx1]->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
 		bool *flag = new bool();
 
 		m_VeUEAry[UserIdx1]->m_Ploss = t_Pl;
@@ -767,7 +767,7 @@ void GTT_Urban::calculateInterference(const vector<vector<list<int>>>& t_RRMInte
 					{
 						location.locationType = Los;
 						location.distance = sqrt(pow((m_VeUEAry[interferenceVeUEId]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX), 2.0f) + pow((m_VeUEAry[interferenceVeUEId]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY), 2.0f));
-						angle = atan2(m_VeUEAry[interferenceVeUEId]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY, m_VeUEAry[interferenceVeUEId]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX) / IMTA::gc_Degree2PI;
+						angle = atan2(m_VeUEAry[interferenceVeUEId]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY, m_VeUEAry[interferenceVeUEId]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX) / IMTA::s_DEGREE_TO_PI;
 					}
 					else
 					{
@@ -800,7 +800,7 @@ void GTT_Urban::calculateInterference(const vector<vector<list<int>>>& t_RRMInte
 				antenna.RxAntSpacing[1] = 0.5f;
 
 				double t_Pl = 0;
-				m_VeUEAry[interferenceVeUEId]->m_IMTA[RSUIdx].build(&t_Pl, IMTA::gc_FC, location, antenna, m_VeUEAry[interferenceVeUEId]->m_V*3.6, m_VeUEAry[interferenceVeUEId]->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
+				m_VeUEAry[interferenceVeUEId]->m_IMTA[RSUIdx].build(&t_Pl, IMTA::s_FC, location, antenna, m_VeUEAry[interferenceVeUEId]->m_V*3.6, m_VeUEAry[interferenceVeUEId]->m_VAngle);//计算了结果代入信道模型计算UE之间信道系数
 				bool *flag = new bool();
 
 

@@ -13,15 +13,15 @@
 class IMTA {
 	/*------------------¾²Ì¬------------------*/
 public:
-	static const double gc_PI;
-	static const double gc_PINeg;
-	static const double gc_PI2;
-	static const double gc_PIHalf;
-	static const double gc_Degree2PI;
-	static const double gc_SqrtHalf;
-	static const double gc_SqrtThree;
-	static const double gc_C;
-	static const double gc_FC;
+	static const double s_PI;
+	static const double s_PINeg;
+	static const double s_PI2;
+	static const double s_PI_HALF;
+	static const double s_DEGREE_TO_PI;
+	static const double s_SQRT_HALF;
+	static const double s_SQRT_THREE;
+	static const double s_C;
+	static const double s_FC;
 public:
 	//Â·¾¶Êý
 	static const int m_scbySubPathNum = 20;

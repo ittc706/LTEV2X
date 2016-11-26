@@ -58,26 +58,25 @@ public:
 	* 紧急事件/周期事件/数据业务事件 的数据包数量
 	* 下标以MessageType的定义为准
 	*/
-	static const std::vector<int> gc_MessagePackageNum;
+	static const std::vector<int> s_MESSAGE_PACKAGE_NUM;
 
 	/*
 	* 紧急事件/周期事件/数据业务事件 每个数据包的bit数量
 	* 下标以MessageType的定义为准
 	*/
-	static const std::vector<std::vector<int>> gc_MessageBitNumPerPackage;
+	static const std::vector<std::vector<int>> s_MESSAGE_BIT_NUM_PER_PACKAGE;
 
 	/*
 	* 紧急事件/周期事件/数据业务事件 初始的退避窗大小
 	* 下标以MessageType的定义为准
 	*/
-	static const std::vector<int> gc_InitialWindowSize;
+	static const std::vector<int> s_INITIAL_WINDOW_SIZE;
 
 	/*
 	* 紧急事件/周期事件/数据业务事件 最大的退避窗大小
 	* 下标以MessageType的定义为准
 	*/
-	static const std::vector<int> gc_MaxWindowSize;
-	/*------------------域------------------*/
+	static const std::vector<int> s_MAX_WINDOW_SIZE;
 	/*------------------域------------------*/
 private:
 	/*

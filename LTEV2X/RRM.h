@@ -222,33 +222,33 @@ public:
 	/*
 	* 10MHz，总带宽(Hz)
 	*/
-	static const int gc_TotalBandwidth = 10 * 1000 * 1000;
+	static const int s_TOTAL_BANDWIDTH = 10 * 1000 * 1000;
 
 	/*
 	* 每个RB的带宽(Hz)
 	*/
-	static const int gc_BandwidthOfRB = 12 * 1000 * 15;
+	static const int s_BANDWIDTH_OF_RB = 12 * 1000 * 15;
 
 	/*
 	* 单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
 	*/
-	static const int gc_BitNumPerRB = 180;
+	static const int s_BIT_NUM_PER_RB = 180;
 
 	/*
 	* 调制方式
 	*/
-	static const ModulationType gc_ModulationType = QPSK;
+	static const ModulationType s_MODULATION_TYPE = QPSK;
 
 	/*
 	* 信道编码码率
 	*/
-	static const double gc_CodeRate;
+	static const double s_CODE_RATE;
 
 	/*
 	* 不丢包传输的最小载干比
 	* 用于判断是否丢包之用
 	*/
-	static const double gc_CriticalPoint;
+	static const double s_DROP_SINR_BOUNDARY;
 	/*------------------域------------------*/
 private:
 	/*

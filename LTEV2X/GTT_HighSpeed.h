@@ -78,52 +78,52 @@ public:
 	/*
 	* 基站数量
 	*/
-	static const int gc_eNBNumber = 2;
+	static const int s_eNB_NUM = 2;
 
 	/*
 	* 道路数量
 	*/
-	static const int gc_LaneNumber = 6;
+	static const int s_ROAD_NUM = 6;
 
 	/*
 	* RSU数量
 	*/
-	static const int gc_RSUNumber = 35;
+	static const int s_RSU_NUM = 35;
 
 	/*
 	* RSU内簇数量
 	*/
-	static const int gc_RSUClusterNum = 2;
+	static const int s_RSU_CLUSTER_NUM = 2;
 
 	/*
 	* 路长
 	*/
-	static const int gc_Length = 3464;
+	static const int s_ROAD_LENGTH = 3464;
 
 	/*
 	* 路宽
 	*/
-	static const double gc_LaneWidth;
+	static const double s_ROAD_WIDTH;
 
 	/*
 	* ???
 	*/
-	static const double gc_ISD;
+	static const double s_ISD;
 
 	/*
 	* ???
 	*/
-	static const double gc_LaneTopoRatio[gc_LaneNumber * 2];
+	static const double s_ROAD_TOPO_RATIO[s_ROAD_NUM * 2];
 
 	/*
 	* ???
 	*/
-	static const double gc_RSUTopoRatio[gc_RSUNumber * 2];
+	static const double s_RSU_TOPO_RATIO[s_RSU_NUM * 2];
 
 	/*
 	* ???
 	*/
-	static const double gc_eNBTopo[gc_eNBNumber * 2];
+	static const double s_eNB_TOPO[s_eNB_NUM * 2];
 	/*------------------域------------------*/
 private:
 	/*

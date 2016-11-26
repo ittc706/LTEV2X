@@ -148,12 +148,12 @@ public:
 	/*
 	* 每个Pattern的RB数量
 	*/
-	static const int gc_RBNumPerPattern = 10;
+	static const int s_RB_NUM_PER_PATTERN = 10;
 
 	/*
 	* 总的Pattern数量
 	*/
-	static const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;
+	static const int s_TOTAL_PATTERN_NUM = s_TOTAL_BANDWIDTH / s_BANDWIDTH_OF_RB / s_RB_NUM_PER_PATTERN;
 
 	/*------------------域------------------*/
 public:
@@ -340,7 +340,7 @@ void RRM_ICC_DRA_RSU::pushToScheduleInfoTable(ScheduleInfo* t_Info) {
 inline
 void RRM_ICC_DRA_RSU::pullFromScheduleInfoTable(int t_TTI) {
 	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-		for (int patternIdx = 0; patternIdx < RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
+		for (int patternIdx = 0; patternIdx < RRM_ICC_DRA::s_TOTAL_PATTERN_NUM; patternIdx++) {
 			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
 				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
 				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;

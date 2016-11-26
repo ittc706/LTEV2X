@@ -25,7 +25,7 @@
 
 using namespace std;
 
-RRM_VeUE::RRM_VeUE(int t_TotalPatternNum):m_ModulationType(RRM::gc_ModulationType), m_CodeRate(RRM::gc_CodeRate){
+RRM_VeUE::RRM_VeUE(int t_TotalPatternNum):m_ModulationType(RRM::s_MODULATION_TYPE), m_CodeRate(RRM::s_CODE_RATE){
 	m_InterferenceVeUENum = vector<int>(t_TotalPatternNum);
 	m_InterferenceVeUEIdVec = vector<vector<int>>(t_TotalPatternNum);
 	m_PreInterferenceVeUEIdVec = vector<vector<int>>(t_TotalPatternNum);
@@ -59,9 +59,9 @@ string RRM_RSU::ScheduleInfo::toScheduleString(int t_NumTab) {
 }
 
 
-const double RRM::gc_CodeRate= 0.5;
+const double RRM::s_CODE_RATE= 0.5;
 
-const double RRM::gc_CriticalPoint= 1.99;
+const double RRM::s_DROP_SINR_BOUNDARY= 1.99;
 
 
 RRM::~RRM() {
