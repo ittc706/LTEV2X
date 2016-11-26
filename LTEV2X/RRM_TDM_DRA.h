@@ -2,8 +2,8 @@
 #include<vector>
 #include<random>
 #include<thread>
+#include<stdexcept>
 #include"RRM.h"
-#include"Exception.h"
 
 //<RRM_TDM_DRA> :Radio Resource Management Time Division Dultiplexing based Distributed Resource Allocation
 
@@ -41,8 +41,8 @@ public:
 	* 用于取得指向实际类型的指针
 	*/
 	RRM_TDM_DRA_VeUE *const getTDM_DRAPoint()override { return this; }
-	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw LTEV2X_Exception("RuntimeException"); }
-	RRM_RR_VeUE *const getRRPoint()override { throw LTEV2X_Exception("RuntimeException"); }
+	RRM_ICC_DRA_VeUE *const getICC_DRAPoint()override { throw std::logic_error("RuntimeException"); }
+	RRM_RR_VeUE *const getRRPoint()override { throw std::logic_error("RuntimeException"); }
 };
 
 
@@ -154,8 +154,8 @@ public:
 	* 用于取得指向实际类型的指针
 	*/
 	RRM_TDM_DRA_RSU *const getTDM_DRAPoint()override { return this; }
-	RRM_ICC_DRA_RSU *const getICC_DRAPoint() override { throw LTEV2X_Exception("RuntimeException"); }
-	RRM_RR_RSU *const getRRPoint() override { throw LTEV2X_Exception("RuntimeException"); }
+	RRM_ICC_DRA_RSU *const getICC_DRAPoint() override { throw std::logic_error("RuntimeException"); }
+	RRM_RR_RSU *const getRRPoint() override { throw std::logic_error("RuntimeException"); }
 };
 
 

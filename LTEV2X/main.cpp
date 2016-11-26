@@ -3,7 +3,6 @@
 #include<iomanip>
 #include"Enumeration.h"
 #include"System.h"
-#include"Exception.h"
 #include"Matrix.h"
 #include"Function.h"
 

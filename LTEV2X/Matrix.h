@@ -5,7 +5,6 @@
 #include<utility>
 #include<iostream>
 #include"Complex.h"
-#include"Exception.h"
 
 class RowVector {
 	/*------------------”Ú------------------*/

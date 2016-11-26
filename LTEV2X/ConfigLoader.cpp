@@ -17,8 +17,8 @@
 */
 
 #include<iostream>
+#include<stdexcept>
 #include"ConfigLoader.h"
-#include"Exception.h"
 
 using namespace std;
 
@@ -40,7 +40,7 @@ void ConfigLoader::resolvConfigPath(string t_FilePath) {
 		string rightTag = it->operator[](3);
 		string content = it->operator[](2);
 		if (leftTag != rightTag) {
-			throw LTEV2X_Exception("tag not match");
+			throw logic_error("tag not match");
 		}
 		m_TagContentMap[leftTag] = content;
 	}

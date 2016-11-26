@@ -21,7 +21,6 @@
 #include<iostream>
 #include<string.h>
 #include"GTT_Urban.h"
-#include"Exception.h"
 #include"Function.h"
 #include"System.h"
 #include"Log.h"

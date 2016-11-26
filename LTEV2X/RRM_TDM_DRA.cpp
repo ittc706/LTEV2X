@@ -22,8 +22,8 @@
 #include<sstream>
 #include<iomanip>
 #include<set>
+#include<stdexcept>
 #include"RRM_TDM_DRA.h"
-#include"Exception.h"
 #include"Function.h"
 #include"System.h"
 #include"Log.h"
@@ -331,7 +331,7 @@ void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 		//对于剩下的资源块，循环将下一时隙分配给当前比例最高的簇，分配之后，更改对应的比例（减去该时隙对应的VeUE数）
 		while (remainNTTI > 0) {
 			int dex = getMaxIndex(clusterSize);
-			if (dex == -1) throw LTEV2X_Exception("还存在没有分配的时域资源，但是每个簇内的VeUE已经为负数");
+			if (dex == -1) throw logic_error("还存在没有分配的时域资源，但是每个簇内的VeUE已经为负数");
 			get<2>(_RSU->getTDM_DRAPoint()->m_ClusterTDRInfo[dex])++;
 			remainNTTI--;
 			clusterSize[dex] -= VeUESizePerTTI;
@@ -1247,7 +1247,7 @@ int RRM_TDM_DRA::getPatternType(int t_PatternIdx) {
 		if (t_PatternIdx >= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternType][0] && t_PatternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternType][1])
 			return patternType;
 	}
-	throw LTEV2X_Exception("getPatternType");
+	throw logic_error("getPatternType");
 }
 
 

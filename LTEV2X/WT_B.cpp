@@ -22,6 +22,7 @@
 #include<random>
 #include<iostream>
 #include<math.h>
+#include<stdexcept>
 #include"WT_B.h"
 #include"System.h"
 
@@ -85,7 +86,7 @@ double WT_B::SINRCalculate(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarr
 	case SINR_MMSE:
 		return SINRCalculateMMSE(t_VeUEId, t_SubCarrierIdxStart, t_SubCarrierIdxEnd, t_PatternIdx);
 	default:
-		throw LTEV2X_Exception("wrong SINRMode");
+		throw logic_error("wrong SINRMode");
 	}
 }
 

@@ -20,9 +20,9 @@
 #include<cmath>
 #include<algorithm>
 #include<sstream>
+#include<stdexcept>
 #include"Event.h"
 #include"TMC.h"
-#include"Exception.h"
 
 using namespace std;
 
@@ -57,7 +57,7 @@ Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
 
 
 void Event::reset() {
-	if (m_IsFinished)throw LTEV2X_Exception("error");
+	if (m_IsFinished)throw logic_error("error");
 	m_CurrentPackageIdx = 0;
 	m_WithdrawalTime = 0;
 	m_RemainBitNum = m_BitNumPerPackage[0];

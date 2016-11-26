@@ -18,6 +18,7 @@
 
 #include<iomanip>
 #include<sstream>
+#include<stdexcept>
 #include"RRM_ICC_DRA.h"
 #include"Function.h"
 #include"System.h"
@@ -664,7 +665,7 @@ void RRM_ICC_DRA::writeScheduleInfo(ofstream& t_File) {
 				bool isAvaliable = _RSU->getICC_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx];
 				if (!isAvaliable) {
 					RRM_RSU::ScheduleInfo* &info = *(_RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx].begin());
-					if (info == nullptr) throw LTEV2X_Exception("logic error");
+					if (info == nullptr) throw logic_error("logic error");
 					t_File << info->toScheduleString(3) << endl;
 				}
 			}

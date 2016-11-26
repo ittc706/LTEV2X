@@ -1,6 +1,6 @@
 #pragma once
+#include<stdexcept>
 #include"GTT.h"
-#include"Exception.h"
 
 // <GTT_HighSpeed>: Geographical Topology and Transport HighSpeed
 
@@ -17,7 +17,7 @@ public:
 	/*
 	* 用于取得指向实际类型的指针
 	*/
-	GTT_Urban_VeUE  *const getUrbanPoint()override { throw LTEV2X_Exception("RuntimeException"); }
+	GTT_Urban_VeUE  *const getUrbanPoint()override { throw std::logic_error("RuntimeException"); }
 	GTT_HighSpeed_VeUE  *const getHighSpeedPoint()override { return this; }
 };
 
@@ -32,7 +32,7 @@ public:
 	/*
 	* 用于取得指向实际类型的指针
 	*/
-	GTT_Urban_RSU  *const getUrbanPoint()override { throw LTEV2X_Exception("RuntimeException"); }
+	GTT_Urban_RSU  *const getUrbanPoint()override { throw std::logic_error("RuntimeException"); }
 	GTT_HighSpeed_RSU  *const getHighSpeedPoint()override { return this; }
 };
 
@@ -48,7 +48,7 @@ public:
 	/*
 	* 用于取得指向实际类型的指针
 	*/
-	GTT_Urban_eNB  *const getUrbanPoint()override { throw LTEV2X_Exception("RuntimeException"); }
+	GTT_Urban_eNB  *const getUrbanPoint()override { throw std::logic_error("RuntimeException"); }
 	GTT_HighSpeed_eNB  *const getHighSpeedPoint()override { return this; }
 };
 
@@ -63,7 +63,7 @@ public:
 	/*
 	* 用于取得指向实际类型的指针
 	*/
-	GTT_Urban_Road  *const getUrbanPoint()override { throw LTEV2X_Exception("RuntimeException"); }
+	GTT_Urban_Road  *const getUrbanPoint()override { throw std::logic_error("RuntimeException"); }
 	GTT_HighSpeed_Road  *const getHighSpeedPoint()override { return this; }
 };
 

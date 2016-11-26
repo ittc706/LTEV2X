@@ -2,7 +2,6 @@
 #include<math.h>
 #include"fftw3.h"
 #include"Config.h"
-#include"Enumeration.h"
 
 /*===========================================
 *               IMTA信道模型

@@ -18,9 +18,6 @@
     <ClInclude Include="Enumeration.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Exception.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="System.h">
       <Filter>头文件</Filter>
     </ClInclude>

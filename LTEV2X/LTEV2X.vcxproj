@@ -136,7 +136,6 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
-    <ClInclude Include="Exception.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="IMTA.h" />
     <ClInclude Include="Road.h" />

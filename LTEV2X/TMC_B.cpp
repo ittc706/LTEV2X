@@ -20,7 +20,7 @@
 #include<iostream>
 #include<random>
 #include<sstream>
-#include"Exception.h"
+#include<stdexcept>
 #include"TMC_B.h"
 #include"System.h"
 #include"Log.h"
@@ -79,7 +79,7 @@ void TMC_B::buildEventList(ofstream& t_File) {
 			double T = 0;
 			while (T <getContext()->m_Config.NTTI) {
 				double u = urd(dre);
-				if (u == 0) throw LTEV2X_Exception("uniform_real_distribution生成范围包含边界");
+				if (u == 0) throw logic_error("uniform_real_distribution生成范围包含边界");
 				T = T - (1 / getContext()->m_Config.emergencyLambda)*log(u);
 				int IntegerT = static_cast<int>(T);
 				if (IntegerT < getContext()->m_Config.NTTI) {
@@ -103,7 +103,7 @@ void TMC_B::buildEventList(ofstream& t_File) {
 			double T = 0;
 			while (T < getContext()->m_Config.NTTI) {
 				double u = urd(dre);
-				if (u == 0) throw LTEV2X_Exception("uniform_real_distribution生成范围包含边界");
+				if (u == 0) throw logic_error("uniform_real_distribution生成范围包含边界");
 				T = T - (1 / getContext()->m_Config.dataLambda)*log(u);
 				int IntegerT = static_cast<int>(T);
 				if (IntegerT < getContext()->m_Config.NTTI) {
@@ -230,7 +230,7 @@ void TMC_B::processStatistics(
 				ssData << event.getQueueDelay() << " ";
 				break;
 			default:
-				throw LTEV2X_Exception("非法消息类型");
+				throw logic_error("非法消息类型");
 			}
 		}
 	t_FileEmergencyDelay << ssEmergency.str() << endl;
@@ -255,7 +255,7 @@ void TMC_B::processStatistics(
 				ssData << event.getSendDelay() << " ";
 				break;
 			default:
-				throw LTEV2X_Exception("非法消息类型");
+				throw logic_error("非法消息类型");
 			}
 		}
 	t_FileEmergencyDelay << ssEmergency.str() << endl;
@@ -289,7 +289,7 @@ void TMC_B::processStatistics(
 			ssData << event.getConflictNum() << " ";
 			break;
 		default:
-			throw LTEV2X_Exception("非法消息类型");
+			throw logic_error("非法消息类型");
 		}
 	}
 	t_FileEmergencyConflict << ssEmergency.str() << endl;
