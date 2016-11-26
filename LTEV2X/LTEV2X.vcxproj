@@ -137,7 +137,7 @@
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="Exception.h" />
-    <ClInclude Include="Global.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="IMTA.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="RRM.h" />
@@ -163,7 +163,7 @@
     <ClCompile Include="test.cpp" />
     <ClCompile Include="TMC.cpp" />
     <ClCompile Include="TMC_B.cpp" />
-    <ClCompile Include="Global.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="IMTA.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RRM_TDM_DRA.cpp" />

@@ -1,11 +1,8 @@
 #pragma once
 #include<math.h>
-#include<string>
-#include<map>
 #include"fftw3.h"
 #include"Config.h"
 #include"Enumeration.h"
-#include"Global.h"
 
 /*===========================================
 *               IMTA信道模型
@@ -24,24 +21,24 @@ public:
 	static const double s_FC;
 public:
 	//路径数
-	static const int m_scbySubPathNum = 20;
-	static const int m_scbyMidPathNum = 3;
+	static const int s_SubPathNum = 20;
+	static const int s_MidPathNum = 3;
 	//相关系数矩阵
-	static const double m_sacfConstantInHLoS[25];
-	static const double m_sacfConstantInHNLoS[25];
-	static const double m_sacfConstantUMiLoS[25];
-	static const double m_sacfConstantUMiNLoS[25];
-	static const double m_sacfConstantUMiO2I[25];
-	static const double m_sacfConstantSMaLoS[25];
-	static const double m_sacfConstantSMaNLoS[25];
-	static const double m_sacfConstantUMaLoS[25];
-	static const double m_sacfConstantUMaNLoS[25];
-	static const double m_sacfConstantRMaLoS[25];
-	static const double m_sacfConstantRMaNLoS[25];
+	static const double s_ConstantInHLoS[25];
+	static const double s_ConstantInHNLoS[25];
+	static const double s_ConstantUMiLoS[25];
+	static const double s_ConstantUMiNLoS[25];
+	static const double s_ConstantUMiO2I[25];
+	static const double s_ConstantSMaLoS[25];
+	static const double s_ConstantSMaNLoS[25];
+	static const double s_ConstantUMaLoS[25];
+	static const double s_ConstantUMaNLoS[25];
+	static const double s_ConstantRMaLoS[25];
+	static const double s_ConstantRMaNLoS[25];
 	//角度偏移数组
-	static const double m_sacfAngleOffset[m_scbySubPathNum];
-	static const double m_sacfMidPathDelayOffset[m_scbyMidPathNum];
-	static const int m_sacbyMidPathIndex[m_scbySubPathNum];
+	static const double s_AngleOffset[s_SubPathNum];
+	static const double s_MidPathDelayOffset[s_MidPathNum];
+	static const int s_MidPathIndex[s_SubPathNum];
 
 	static void randomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation);
 	static void randomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero);
@@ -50,62 +47,62 @@ public:
 
 	/*------------------域------------------*/
 	//信道所需基本常量
-	double m_fAntGain;
-	double m_fMaxAttenu; // dBm
-	int m_byTxAntNum;
-	int m_byRxAntNum;
-	double * m_pfTxSlantAngle; // degree
-	double * m_pfRxSlantAngle; // degree
-	double * m_pfTxAntSpacing;
-	double * m_pfRxAntSpacing;
-	double m_fTxAngle;
-	double m_fRxAngle;
+	double m_AntGain;
+	double m_MaxAttenu; // dBm
+	int m_TxAntNum;
+	int m_RxAntNum;
+	double * m_TxSlantAngle; // degree
+	double * m_RxSlantAngle; // degree
+	double * m_TxAntSpacing;
+	double * m_RxAntSpacing;
+	double m_TxAngle;
+	double m_RxAngle;
 
 	//信道所需配置常量
-	int m_byPathNum;
-	double m_fVelocity;
-	double m_fvAngle;
-	double m_fC;
-	double m_fPathShadowSTD;
-	double m_fAoDRatio;
-	double m_fAoARatio;
-	double m_fXPR;
-	double m_fDS;
-	double m_fDSRatio;
-	double m_fAoD;
-	double m_fAoA;
-	double m_fK;
-	double m_fKDB;
-	double m_fD;
+	int m_PathNum;
+	double m_Velocity;
+	double m_VAngle;
+	double m_C;
+	double m_PathShadowSTD;
+	double m_AoDRatio;
+	double m_AoARatio;
+	double m_XPR;
+	double m_DS;
+	double m_DSRatio;
+	double m_AoD;
+	double m_AoA;
+	double m_K;
+	double m_KDB;
+	double m_D;
 
 
-	bool m_bLoS;
-	bool m_bBuilt;
-	bool m_bEnable;
-	double m_fPLSF;
+	bool m_LoS;
+	bool m_Built;
+	bool m_Enable;
+	double m_PLSF;
 
-	int m_byPathFirst;
-	int m_byPathSecond;
+	int m_PathFirst;
+	int m_PathSecond;
 	//信道所需存储常量
-	double *m_pfGain;
-	double *m_pfSinAoD;
-	double *m_pfCosAoD;
-	double *m_pfSinAoA;
-	double *m_pfCosAoA;
-	double *m_pfPhase;
+	double *m_Gain;
+	double *m_SinAoD;
+	double *m_CosAoD;
+	double *m_SinAoA;
+	double *m_CosAoA;
+	double *m_Phase;
 
-	double m_fGainLoS;
-	double m_fSinAoDLoS;
+	double m_GainLoS;
+	double m_SinAoDLoS;
 	double m_fSinAoALoS;
-	double m_fCosAoALoS;
-	double *m_pfPhaseLoS;
+	double m_CosAoALoS;
+	double *m_PhaseLoS;
 
 	//FFT所用变量
-	int m_wFFTNum;
-	int m_byFFTOrder;
-	double m_fFFTTime;
-	int m_wHNum;
-	int *m_pwFFTIndex;
+	int m_FFTNum;
+	int m_FFTOrder;
+	double m_FFTTime;
+	int m_HNum;
+	int *m_FFTIndex;
 public:
 	IMTA();
 	~IMTA();

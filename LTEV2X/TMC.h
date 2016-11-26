@@ -1,11 +1,9 @@
 #pragma once
 #include<list>
-#include"VUE.h"
-#include"RSU.h"
-#include"Config.h"
-#include"Event.h"
+#include<vector>
 
 //<TMC>: Traffic Model and Control
+class VeUE;
 
 class TMC_VeUE {
 	/*------------------”Ú------------------*/
@@ -28,6 +26,7 @@ public:
 	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 };
 
+class RSU;
 
 class TMC_RSU {
 	/*------------------”Ú------------------*/

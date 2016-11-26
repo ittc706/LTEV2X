@@ -1,5 +1,6 @@
 #pragma once
 #include"GTT.h"
+#include"Exception.h"
 
 // <GTT_Urban>: Geographical Topology and Transport Urban
 

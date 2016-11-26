@@ -3,7 +3,6 @@
 #include<fstream>
 #include"ConfigLoader.h"
 #include"Config.h"
-#include"Global.h"
 
 #include"eNB.h"
 #include"RSU.h"

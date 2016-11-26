@@ -22,6 +22,7 @@
 #include<stdlib.h>
 #include"System.h"
 #include"Function.h"
+#include"Log.h"
 
 
 using namespace std;

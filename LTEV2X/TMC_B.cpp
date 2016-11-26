@@ -23,6 +23,7 @@
 #include"Exception.h"
 #include"TMC_B.h"
 #include"System.h"
+#include"Log.h"
 
 using namespace std;
 

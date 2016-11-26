@@ -1,21 +1,16 @@
 #pragma once
 #include<random>
-#include<set>
 #include<vector>
 #include<list>
 #include<tuple>
-#include"RSU.h"
-#include"VUE.h"
-#include"eNB.h"
-#include"Road.h"
 #include"Config.h"
-#include"IMTA.h"
-#include"Exception.h"
 
 // <GTT>: Geographical Topology and Transport
 
+class VeUE;
 class GTT_Urban_VeUE;
 class GTT_HighSpeed_VeUE;
+class IMTA;
 
 class GTT_VeUE {
 	/*------------------¾²Ì¬------------------*/
@@ -155,7 +150,7 @@ public:
 	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 };
 
-
+class RSU;
 class GTT_Urban_RSU;
 class GTT_HighSpeed_RSU;
 
@@ -238,6 +233,7 @@ public:
 	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
 };
 
+class eNB;
 class GTT_Urban_eNB;
 class GTT_HighSpeed_eNB;
 
@@ -311,6 +307,7 @@ public:
 	void setSystemPoint(eNB* t_Point) { m_This = t_Point; }
 };
 
+class Road;
 class GTT_Urban_Road;
 class GTT_HighSpeed_Road;
 

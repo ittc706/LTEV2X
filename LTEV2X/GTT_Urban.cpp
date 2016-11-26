@@ -24,6 +24,8 @@
 #include"Exception.h"
 #include"Function.h"
 #include"System.h"
+#include"Log.h"
+#include"IMTA.h"
 
 using namespace std;
 

@@ -4,7 +4,6 @@
 #include"Enumeration.h"
 
 
-
 /*===========================================
 *            输出日志文件流声明
 * ==========================================*/
@@ -36,14 +35,6 @@ extern std::ofstream g_FilePackageLoss;
 extern std::ofstream g_FilePackageTransimit;
 
 void logFileConfig(Platform t_Platform);
-
-
-
-/*===========================================
-*          数据业务与统计单元常量
-* ==========================================*/
-
-
 
 
 

@@ -3,10 +3,8 @@
 #include<random>
 #include<thread>
 #include"RRM.h"
-#include"GTT.h"
-#include"Enumeration.h"
 #include"Exception.h"
-#include"Global.h"
+
 
 //<RRM_ICC_DRA> :Radio Resource Management Inter-Cluster Concurrency based Distributed Resource Allocation
 
@@ -302,49 +300,3 @@ private:
 	std::pair<int, int> getOccupiedSubCarrierRange(int t_PatternIdx);
 };
 
-
-inline
-int RRM_ICC_DRA_VeUE::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx) {
-	int size = static_cast<int>(t_CurAvaliablePatternIdx.size());
-	if (size == 0) return -1;
-	std::uniform_int_distribution<int> u(0, size - 1);
-	return t_CurAvaliablePatternIdx[u(s_Engine)];
-}
-
-
-inline
-void RRM_ICC_DRA_RSU::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
-	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-inline
-void RRM_ICC_DRA_RSU::pushToWaitEventIdList(int t_ClusterIdx, int t_EventId) {
-	m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-inline
-void RRM_ICC_DRA_RSU::pushToSwitchEventIdList(std::list<int>& t_SwitchVeUEIdList, int t_EventId) {
-	t_SwitchVeUEIdList.push_back(t_EventId);
-}
-
-inline
-void RRM_ICC_DRA_RSU::pushToTransmitScheduleInfoList(ScheduleInfo* t_Info) {
-	m_TransimitScheduleInfoList[t_Info->clusterIdx][t_Info->patternIdx].push_back(t_Info);
-}
-
-inline
-void RRM_ICC_DRA_RSU::pushToScheduleInfoTable(ScheduleInfo* t_Info) {
-	m_ScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
-}
-
-inline
-void RRM_ICC_DRA_RSU::pullFromScheduleInfoTable(int t_TTI) {
-	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-		for (int patternIdx = 0; patternIdx < RRM_ICC_DRA::s_TOTAL_PATTERN_NUM; patternIdx++) {
-			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
-				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
-				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
-			}
-		}
-	}
-}

@@ -3,8 +3,7 @@
 #include<list>
 #include"VUE.h"
 #include"RSU.h"
-#include"Event.h"
-#include"Config.h"
+#include"Enumeration.h"
 
 //<RRM>: Radio Resource Management
 

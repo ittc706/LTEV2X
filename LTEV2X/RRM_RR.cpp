@@ -24,6 +24,7 @@
 #include"RRM_RR.h"
 #include"Function.h"
 #include"System.h"
+#include"Log.h"
 
 using namespace std;
 
@@ -88,6 +89,29 @@ std::string RRM_RR_RSU::toString(int t_NumTab) {
 	//主干信息
 	ss << indent << "}" << endl;
 	return ss.str();
+}
+
+
+void RRM_RR_RSU::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
+	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
+}
+
+
+void RRM_RR_RSU::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
+		m_WaitEventIdList[t_ClusterIdx].insert(m_WaitEventIdList[t_ClusterIdx].begin(), t_EventId);
+	else
+		m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
+}
+
+
+void RRM_RR_RSU::pushToSwitchEventIdList(int t_EventId, std::list<int>& t_SwitchVeUEIdList) {
+	t_SwitchVeUEIdList.push_back(t_EventId);
+}
+
+
+void RRM_RR_RSU::pushToTransimitScheduleInfoTable(ScheduleInfo* t_Info) {
+	m_TransimitScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
 }
 
 

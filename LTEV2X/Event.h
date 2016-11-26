@@ -4,7 +4,6 @@
 #include<string>
 #include<utility>
 #include<random>
-#include"Global.h"
 #include"Enumeration.h"
 
 

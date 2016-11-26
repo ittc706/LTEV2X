@@ -1,12 +1,10 @@
 #pragma once
 #include<vector>
 #include<tuple>
-#include"Matrix.h"
-#include"VUE.h"
-#include"RSU.h"
 #include"Enumeration.h"
 
 //<WT>: Wireless Transmission
+class VeUE;
 
 class WT_VeUE {
 	/*------------------”Ú------------------*/
@@ -29,6 +27,7 @@ public:
 	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 };
 
+class RSU;
 
 class WT_RSU {
 	/*------------------”Ú------------------*/

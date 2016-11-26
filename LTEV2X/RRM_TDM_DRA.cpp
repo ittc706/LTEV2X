@@ -26,6 +26,7 @@
 #include"Exception.h"
 #include"Function.h"
 #include"System.h"
+#include"Log.h"
 
 using namespace std;
 
@@ -35,6 +36,13 @@ default_random_engine RRM_TDM_DRA_VeUE::s_Engine((unsigned)time(NULL));
 
 RRM_TDM_DRA_VeUE::RRM_TDM_DRA_VeUE() :RRM_VeUE(RRM_TDM_DRA::s_TOTAL_PATTERN_NUM) {}
 
+
+int RRM_TDM_DRA_VeUE::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx) {
+	int size = static_cast<int>(t_CurAvaliablePatternIdx.size());
+	if (size == 0) return -1;
+	std::uniform_int_distribution<int> u(0, size - 1);
+	return t_CurAvaliablePatternIdx[u(s_Engine)];
+}
 
 string RRM_TDM_DRA_VeUE::toString(int t_NumTab) {
 	string indent;
@@ -115,6 +123,61 @@ string RRM_TDM_DRA_RSU::toString(int t_NumTab) {
 	//主干信息
 	ss << indent << "}" << endl;
 	return ss.str();
+}
+
+
+void RRM_TDM_DRA_RSU::pushToAccessEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
+		m_AccessEventIdList[t_ClusterIdx].first.push_back(t_EventId);
+	else
+		m_AccessEventIdList[t_ClusterIdx].second.push_back(t_EventId);
+}
+
+
+void RRM_TDM_DRA_RSU::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
+	if (t_IsEmergency)
+		m_WaitEventIdList[t_ClusterIdx].first.push_back(t_EventId);
+	else
+		m_WaitEventIdList[t_ClusterIdx].second.push_back(t_EventId);
+}
+
+
+void RRM_TDM_DRA_RSU::pushToSwitchEventIdList(std::list<int>& t_SwitchVeUEIdList, int t_EventId) {
+	t_SwitchVeUEIdList.push_back(t_EventId);
+}
+
+
+void RRM_TDM_DRA_RSU::pushToTransimitScheduleInfoList(ScheduleInfo* t_Info) {
+	m_TransimitScheduleInfoList[t_Info->clusterIdx][t_Info->patternIdx].push_back(t_Info);
+}
+
+
+void RRM_TDM_DRA_RSU::pushToScheduleInfoTable(ScheduleInfo* t_Info) {
+	m_ScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
+}
+
+
+void RRM_TDM_DRA_RSU::pullFromScheduleInfoTable(int t_TTI) {
+	/*将处于调度表中当前可以传输的信息压入m_TransimitEventIdList*/
+
+	/*  EMERGENCY  */
+	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
+		for (int patternIdx = 0; patternIdx < RRM_TDM_DRA::s_PATTERN_NUM_PER_PATTERN_TYPE[EMERGENCY]; patternIdx++) {
+			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
+				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
+				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+			}
+		}
+	}
+	/*  EMERGENCY  */
+
+	int clusterIdx = getClusterIdx(t_TTI);
+	for (int patternIdx = RRM_TDM_DRA::s_PATTERN_NUM_PER_PATTERN_TYPE[EMERGENCY]; patternIdx < RRM_TDM_DRA::s_TOTAL_PATTERN_NUM; patternIdx++) {
+		if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
+			m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
+			m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
+		}
+	}
 }
 
 

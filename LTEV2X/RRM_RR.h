@@ -4,7 +4,6 @@
 #include<thread>
 #include"RRM.h"
 #include"Exception.h"
-#include"Global.h"
 
 //<RRM_RR>: Radio Resource Management Round-Robin
 
@@ -252,29 +251,3 @@ private:
 	std::pair<int, int> getOccupiedSubCarrierRange(int t_PatternIdx);
 };
 
-
-
-inline
-void RRM_RR_RSU::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
-	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-inline
-void RRM_RR_RSU::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
-	if (t_IsEmergency)
-		m_WaitEventIdList[t_ClusterIdx].insert(m_WaitEventIdList[t_ClusterIdx].begin(), t_EventId);
-	else
-		m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-
-inline
-void RRM_RR_RSU::pushToSwitchEventIdList(int t_EventId, std::list<int>& t_SwitchVeUEIdList) {
-	t_SwitchVeUEIdList.push_back(t_EventId);
-}
-
-
-inline
-void RRM_RR_RSU::pushToTransimitScheduleInfoTable(ScheduleInfo* t_Info) {
-	m_TransimitScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
-}

@@ -18,6 +18,7 @@
 
 #include<iostream>
 #include"ConfigLoader.h"
+#include"Exception.h"
 
 using namespace std;
 

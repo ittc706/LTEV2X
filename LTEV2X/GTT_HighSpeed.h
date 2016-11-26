@@ -1,5 +1,6 @@
 #pragma once
 #include"GTT.h"
+#include"Exception.h"
 
 // <GTT_HighSpeed>: Geographical Topology and Transport HighSpeed
 

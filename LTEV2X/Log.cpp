@@ -1,10 +1,9 @@
 #include<iomanip>
 #include<cmath>
-#include"Global.h"
+#include"Log.h"
 #include"Function.h"
 
 using namespace std;
-
 
 void logFileConfig(Platform t_Platform) {
 	if (t_Platform == Windows) {
