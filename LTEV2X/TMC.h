@@ -1,6 +1,7 @@
 #pragma once
 #include<list>
 #include<vector>
+#include<fstream>
 
 //<TMC>: Traffic Model and Control
 class VeUE;

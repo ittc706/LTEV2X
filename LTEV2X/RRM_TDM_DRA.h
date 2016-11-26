@@ -246,7 +246,7 @@ public:
 	void cleanWhenLocationUpdate()override;
 
 	/*
-	* RRM_ICC_DRA调度总控，覆盖基类的虚函数
+	* RRM_TDM_DRA调度总控，覆盖基类的虚函数
 	*/
 	void schedule() override;
 

@@ -23,11 +23,6 @@
 #include<stdexcept>
 #include"System.h"
 
-#include"VUE.h"
-#include"RSU.h"
-#include"eNB.h"
-#include"Road.h"
-
 #include"GTT.h"
 #include"GTT_HighSpeed.h"
 #include"GTT_Urban.h"
@@ -42,6 +37,11 @@
 
 #include"WT.h"
 #include"WT_B.h"
+
+#include"VUE.h"
+#include"RSU.h"
+#include"eNB.h"
+#include"Road.h"
 
 #include"Config.h"
 #include"Function.h"
