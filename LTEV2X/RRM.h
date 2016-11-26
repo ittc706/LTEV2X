@@ -1,12 +1,11 @@
 #pragma once
 #include<vector>
 #include<list>
-#include"VUE.h"
-#include"RSU.h"
 #include"Enumeration.h"
 
 //<RRM>: Radio Resource Management
 
+class VeUE;
 class RRM_TDM_DRA_VeUE;
 class RRM_ICC_DRA_VeUE;
 class RRM_RR_VeUE;
@@ -97,7 +96,7 @@ public:
 	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
 };
 
-
+class RSU;
 class RRM_TDM_DRA_RSU;
 class RRM_ICC_DRA_RSU;
 class RRM_RR_RSU;

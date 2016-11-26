@@ -1,5 +1,4 @@
 #pragma once
-
 #include<random>
 #include<thread>
 #include<stdexcept>
