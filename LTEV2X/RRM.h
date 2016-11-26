@@ -41,12 +41,12 @@ public:
 	/*
 	* 调制方式
 	*/
-	const ModulationType m_ModulationType = gc_ModulationType;
+	const ModulationType m_ModulationType;
 
 	/*
 	* 信道编码码率
 	*/
-	const double m_CodeRate = gc_CodeRate;
+	const double m_CodeRate;
 
 	/*
 	* 上次计算的载干比
@@ -217,6 +217,38 @@ public:
 
 class System;
 class RRM {
+	/*------------------静态------------------*/
+public:
+	/*
+	* 10MHz，总带宽(Hz)
+	*/
+	static const int gc_TotalBandwidth = 10 * 1000 * 1000;
+
+	/*
+	* 每个RB的带宽(Hz)
+	*/
+	static const int gc_BandwidthOfRB = 12 * 1000 * 15;
+
+	/*
+	* 单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
+	*/
+	static const int gc_BitNumPerRB = 180;
+
+	/*
+	* 调制方式
+	*/
+	static const ModulationType gc_ModulationType = QPSK;
+
+	/*
+	* 信道编码码率
+	*/
+	static const double gc_CodeRate;
+
+	/*
+	* 不丢包传输的最小载干比
+	* 用于判断是否丢包之用
+	*/
+	static const double gc_CriticalPoint;
 	/*------------------域------------------*/
 private:
 	/*

@@ -21,6 +21,7 @@
 #include<algorithm>
 #include<sstream>
 #include"Event.h"
+#include"TMC.h"
 #include"Exception.h"
 
 using namespace std;
@@ -36,14 +37,14 @@ Event::Event(int t_VeUEId, int t_TTI, MessageType t_MessageType) :
 	m_VeUEId(t_VeUEId),
 	m_TriggerTTI(t_TTI),
 	m_MessageType(t_MessageType),
-	m_PackageNum(gc_MessagePackageNum[t_MessageType]),
+	m_PackageNum(TMC::gc_MessagePackageNum[t_MessageType]),
 	m_TransimitPackageNum(0),
 	m_PackageLossNum(0),
-	m_BitNumPerPackage(gc_MessageBitNumPerPackage[t_MessageType]),
+	m_BitNumPerPackage(TMC::gc_MessageBitNumPerPackage[t_MessageType]),
 	m_IsFinished(false),
 	m_CurrentPackageIdx(0),
-	m_InitialWindowSize(gc_InitialWindowSize[t_MessageType]),
-	m_MaxWindowSize(gc_MaxWindowSize[t_MessageType]),
+	m_InitialWindowSize(TMC::gc_InitialWindowSize[t_MessageType]),
+	m_MaxWindowSize(TMC::gc_MaxWindowSize[t_MessageType]),
 	m_WithdrawalTime(0),
 	m_ConflictNum(0),
 	m_SendDelay(0),

@@ -106,6 +106,17 @@ public:
 
 
 class RRM_RR :public RRM {
+	/*------------------静态------------------*/
+public:
+	/*
+	* 每个Pattern的RB数量
+	*/
+	static const int gc_RBNumPerPattern = 10;
+
+	/*
+	* 总的Pattern数量
+	*/
+	static const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;
 	/*------------------域------------------*/
 public:
 	/*

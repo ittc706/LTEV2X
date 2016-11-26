@@ -28,7 +28,7 @@
 using namespace std;
 
 
-RRM_RR_VeUE::RRM_RR_VeUE() :RRM_VeUE(ns_RRM_RR::gc_TotalPatternNum) {}
+RRM_RR_VeUE::RRM_RR_VeUE() :RRM_VeUE(RRM_RR::gc_TotalPatternNum) {}
 
 
 std::string RRM_RR_VeUE::toString(int t_NumTab) {
@@ -50,7 +50,7 @@ RRM_RR_RSU::RRM_RR_RSU() {}
 void RRM_RR_RSU::initialize() {
 	m_AccessEventIdList = vector<list<int>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
 	m_WaitEventIdList = vector<list<int>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
-	m_TransimitScheduleInfoTable = vector<vector<ScheduleInfo*>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<ScheduleInfo*>(ns_RRM_RR::gc_TotalPatternNum, nullptr));
+	m_TransimitScheduleInfoTable = vector<vector<ScheduleInfo*>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<ScheduleInfo*>(RRM_RR::gc_TotalPatternNum, nullptr));
 }
 
 std::string RRM_RR_RSU::toString(int t_NumTab) {
@@ -94,7 +94,7 @@ std::string RRM_RR_RSU::toString(int t_NumTab) {
 RRM_RR::RRM_RR(System* t_Context) :
 	RRM(t_Context) {
 	m_ThreadNum = t_Context->m_Config.threadNum;
-	m_InterferenceVec = vector<vector<list<int>>>(getContext()->m_Config.VeUENum, vector<list<int>>(ns_RRM_RR::gc_TotalPatternNum));
+	m_InterferenceVec = vector<vector<list<int>>>(getContext()->m_Config.VeUENum, vector<list<int>>(RRM_RR::gc_TotalPatternNum));
 
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
@@ -125,7 +125,7 @@ void RRM_RR::cleanWhenLocationUpdate() {
 	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
 		for (vector<int>& preInterferenceVeUEIdVec : m_VeUEAry[VeUEId]->m_PreInterferenceVeUEIdVec)
 			preInterferenceVeUEIdVec.clear();
-		m_VeUEAry[VeUEId]->m_PreSINR.assign(ns_RRM_RR::gc_TotalPatternNum, (numeric_limits<double>::min)());
+		m_VeUEAry[VeUEId]->m_PreSINR.assign(RRM_RR::gc_TotalPatternNum, (numeric_limits<double>::min)());
 	}
 }
 
@@ -286,7 +286,7 @@ void RRM_RR::processWaitEventIdList() {
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			int patternIdx = 0;
 			list<int>::iterator it = _RSU->getRRPoint()->m_WaitEventIdList[clusterIdx].begin();
-			while (it != _RSU->getRRPoint()->m_WaitEventIdList[clusterIdx].end() && patternIdx < ns_RRM_RR::gc_TotalPatternNum) {
+			while (it != _RSU->getRRPoint()->m_WaitEventIdList[clusterIdx].end() && patternIdx < gc_TotalPatternNum) {
 				int eventId = *it;
 
 				//更新日志
@@ -338,7 +338,7 @@ void RRM_RR::delaystatistics() {
 				getContext()->m_EventVec[eventId].increaseQueueDelay();
 
 			//处理此刻正在将要传输的调度表
-			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
+			for (int patternIdx = 0; patternIdx < gc_TotalPatternNum; patternIdx++) {
 				if (_RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx] == nullptr)continue;
 				getContext()->m_EventVec[_RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx]->eventId].increaseSendDelay();
 			}
@@ -349,14 +349,14 @@ void RRM_RR::delaystatistics() {
 
 void RRM_RR::transimitPreparation() {
 	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
-		for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++)
+		for (int patternIdx = 0; patternIdx < gc_TotalPatternNum; patternIdx++)
 			m_InterferenceVec[VeUEId][patternIdx].clear();
 
 
 	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
+			for (int patternIdx = 0; patternIdx < gc_TotalPatternNum; patternIdx++) {
 				RRM_RSU::ScheduleInfo *&curInfo = _RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (curInfo == nullptr) continue;
 				int curVeUEId = curInfo->VeUEId;
@@ -373,7 +373,7 @@ void RRM_RR::transimitPreparation() {
 
 
 	//更新每辆车的干扰车辆列表	
-	for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
+	for (int patternIdx = 0; patternIdx < gc_TotalPatternNum; patternIdx++) {
 		for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
 			list<int>& interList = m_InterferenceVec[VeUEId][patternIdx];
 
@@ -415,7 +415,7 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 	for (int RSUId = t_FromRSUId; RSUId <= t_ToRSUId; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
+			for (int patternIdx = 0; patternIdx < gc_TotalPatternNum; patternIdx++) {
 				RRM_RSU::ScheduleInfo *&info = _RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 
 				if (info == nullptr) continue;
@@ -428,7 +428,7 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				double factor = m_VeUEAry[VeUEId]->m_ModulationType * m_VeUEAry[VeUEId]->m_CodeRate;
 
 				//该编码方式下，该Pattern在一个TTI最多可传输的有效信息bit数量
-				int maxEquivalentBitNum = (int)((double)(ns_RRM_RR::gc_RBNumPerPattern * gc_BitNumPerRB)* factor);
+				int maxEquivalentBitNum = (int)((double)(gc_RBNumPerPattern * gc_BitNumPerRB)* factor);
 
 				//计算SINR
 				double curSINR = 0;
@@ -478,7 +478,7 @@ void RRM_RR::writeScheduleInfo(ofstream& t_File) {
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			t_File << "        Cluster[" << clusterIdx << "] :" << endl;
 			t_File << "        {" << endl;
-			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
+			for (int patternIdx = 0; patternIdx < gc_TotalPatternNum; patternIdx++) {
 				t_File << "            Pattern[ " << left << setw(3) << patternIdx << "] : " << endl;
 				RRM_RSU::ScheduleInfo* &info = _RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
@@ -551,7 +551,7 @@ void RRM_RR::transimitEnd() {
 
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 
-			for (int patternIdx = 0; patternIdx < ns_RRM_RR::gc_TotalPatternNum; patternIdx++) {
+			for (int patternIdx = 0; patternIdx < gc_TotalPatternNum; patternIdx++) {
 
 				RRM_RSU::ScheduleInfo* &info = _RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (info == nullptr) continue;
@@ -623,8 +623,8 @@ void RRM_RR::writeClusterPerformInfo(bool isLocationUpdate, ofstream& t_File) {
 pair<int, int> RRM_RR::getOccupiedSubCarrierRange(int t_PatternIdx) {
 	pair<int, int> res;
 
-	res.first = ns_RRM_RR::gc_RBNumPerPattern * t_PatternIdx;
-	res.second = ns_RRM_RR::gc_RBNumPerPattern * (t_PatternIdx + 1) - 1;
+	res.first = gc_RBNumPerPattern * t_PatternIdx;
+	res.second = gc_RBNumPerPattern * (t_PatternIdx + 1) - 1;
 
 	res.first *= 12;
 	res.second = (res.second + 1) * 12 - 1;

@@ -143,6 +143,18 @@ public:
 
 
 class RRM_ICC_DRA :public RRM {
+	/*------------------静态------------------*/
+public:
+	/*
+	* 每个Pattern的RB数量
+	*/
+	static const int gc_RBNumPerPattern = 10;
+
+	/*
+	* 总的Pattern数量
+	*/
+	static const int gc_TotalPatternNum = gc_TotalBandwidth / gc_BandwidthOfRB / gc_RBNumPerPattern;
+
 	/*------------------域------------------*/
 public:
 	/*
@@ -328,7 +340,7 @@ void RRM_ICC_DRA_RSU::pushToScheduleInfoTable(ScheduleInfo* t_Info) {
 inline
 void RRM_ICC_DRA_RSU::pullFromScheduleInfoTable(int t_TTI) {
 	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-		for (int patternIdx = 0; patternIdx < ns_RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
+		for (int patternIdx = 0; patternIdx < RRM_ICC_DRA::gc_TotalPatternNum; patternIdx++) {
 			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
 				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
 				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
