@@ -24,6 +24,18 @@
 
 using namespace std;
 
+
+const double IMTA::gc_PI = 3.1415926535897932384626433832795f;
+const double IMTA::gc_PINeg = -3.1415926535897932384626433832795f;
+const double IMTA::gc_PI2 = 6.283185307179586476925286766559f;
+const double IMTA::gc_PIHalf = 1.5707963267948966192313216916398f;
+const double IMTA::gc_Degree2PI = 0.01745329251994329576923690768489f;
+const double IMTA::gc_SqrtHalf = 0.70710678118654752440084436210485f;
+const double IMTA::gc_SqrtThree = 1.73205080756887729f;
+const double IMTA::gc_C = 299792458.0f;
+const double IMTA::gc_FC = 6e9f;
+
+
 const double IMTA::m_sacfConstantUMiLoS[25] =
 {
 	0.753065949852806f, 0.241023875447849f, 0.454091158552085f, -0.097177920212920f, -0.398944655540474f,
@@ -117,6 +129,152 @@ const int IMTA::m_sacbyMidPathIndex[m_scbySubPathNum] =
 {
 	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0
 };
+
+
+void IMTA::randomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation) {
+	long ulHalfNum = t_ulNumber / 2;
+	if (ulHalfNum)
+	{
+		double *pfTemp1 = new double[ulHalfNum];
+		double *pfTemp2 = new double[ulHalfNum];
+		randomUniform(pfTemp1, ulHalfNum, 1.0f, 0.0f, true);
+		randomUniform(pfTemp2, ulHalfNum, gc_PI, gc_PINeg, false);
+		for (long ulTemp = 0; ulTemp != ulHalfNum; ++ulTemp)
+		{
+			t_pfArray[ulTemp * 2] = sqrt(log(pfTemp1[ulTemp]) * -2.0f) * cos(pfTemp2[ulTemp]) * t_fStandardDeviation + t_fMean;
+			t_pfArray[ulTemp * 2 + 1] = sqrt(log(pfTemp1[ulTemp]) * -2.0f) * sin(pfTemp2[ulTemp]) * t_fStandardDeviation + t_fMean;
+		}
+		Delete::safeDelete(pfTemp1, true);
+		Delete::safeDelete(pfTemp2, true);
+	}
+	if (t_ulNumber % 2)
+	{
+		double fTemp1;
+		double fTemp2;
+		randomUniform(&fTemp1, 1, 1.0f, 0.0f, true);
+		randomUniform(&fTemp2, 1, gc_PI, gc_PINeg, false);
+		t_pfArray[t_ulNumber - 1] = sqrt(log(fTemp1) * -2.0f) * cos(fTemp2) * t_fStandardDeviation + t_fMean;
+	}
+
+	return;
+}
+
+
+void IMTA::randomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero)
+{
+	for (long ulTemp = 0; ulTemp != t_ulNumber; ++ulTemp)
+	{
+		do
+		{
+			t_pfArray[ulTemp] = (t_fUpBound - t_fDownBound) * rand() / RAND_MAX + t_fDownBound;
+		} while (t_bFlagZero && (t_pfArray[ulTemp] == 0.0f));
+	}
+
+	return;
+}
+
+
+void IMTA::sortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
+{
+	double fTemp;
+	bool bFlagDone;
+	for (int i1 = 0; i1 != t_wNumber - 1; ++i1)
+	{
+		bFlagDone = true;
+		for (int i2 = 0; i2 != t_wNumber - 1 - i1; ++i2)
+		{
+			if (t_bFlagDirection)
+			{
+				if (t_bFlagFabs)
+				{
+					if (fabs(t_pfArray[i2]) < fabs(t_pfArray[i2 + 1]))
+					{
+						fTemp = t_pfArray[i2];
+						t_pfArray[i2] = t_pfArray[i2 + 1];
+						t_pfArray[i2 + 1] = fTemp;
+						bFlagDone = false;
+					}
+				}
+				else
+				{
+					if (t_pfArray[i2] < t_pfArray[i2 + 1])
+					{
+						fTemp = t_pfArray[i2];
+						t_pfArray[i2] = t_pfArray[i2 + 1];
+						t_pfArray[i2 + 1] = fTemp;
+						bFlagDone = false;
+					}
+				}
+			}
+			else
+			{
+				if (t_bFlagFabs)
+				{
+					if (fabs(t_pfArray[i2]) > fabs(t_pfArray[i2 + 1]))
+					{
+						fTemp = t_pfArray[i2];
+						t_pfArray[i2] = t_pfArray[i2 + 1];
+						t_pfArray[i2 + 1] = fTemp;
+						bFlagDone = false;
+					}
+				}
+				else
+				{
+					if (t_pfArray[i2] > t_pfArray[i2 + 1])
+					{
+						fTemp = t_pfArray[i2];
+						t_pfArray[i2] = t_pfArray[i2 + 1];
+						t_pfArray[i2 + 1] = fTemp;
+						bFlagDone = false;
+					}
+				}
+			}
+		}
+		if (bFlagDone)
+		{
+			break;
+		}
+	}
+
+	return;
+}
+
+
+void IMTA::selectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond)
+{
+	int byFisrtIndex;
+	int bySecondIndex;
+	if (t_pfArray[0] < t_pfArray[1])
+	{
+		byFisrtIndex = 1;
+		bySecondIndex = 0;
+	}
+	else
+	{
+		byFisrtIndex = 0;
+		bySecondIndex = 1;
+	}
+	for (int byTemp = 2; byTemp != t_byNumber; ++byTemp)
+	{
+		if (t_pfArray[byFisrtIndex] < t_pfArray[byTemp])
+		{
+			bySecondIndex = byFisrtIndex;
+			byFisrtIndex = byTemp;
+		}
+		else
+		{
+			if (t_pfArray[bySecondIndex] < t_pfArray[byTemp])
+			{
+				bySecondIndex = byTemp;
+			}
+		}
+	}
+	*t_pbyFirst = byFisrtIndex;
+	*t_pbySecond = bySecondIndex;
+
+	return;
+}
+
 
 IMTA::IMTA() {
 	m_pfGain = nullptr;

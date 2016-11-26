@@ -107,6 +107,7 @@ std::string GTT_Road::toString(int t_NumTab) {
 	return ss.str();
 }
 
+
 GTT::~GTT(){
 	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
 		Delete::safeDelete(m_VeUEAry[VeUEId]);

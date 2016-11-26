@@ -11,6 +11,17 @@
 *               IMTA信道模型
 * ==========================================*/
 class IMTA {
+	/*------------------静态------------------*/
+public:
+	static const double gc_PI;
+	static const double gc_PINeg;
+	static const double gc_PI2;
+	static const double gc_PIHalf;
+	static const double gc_Degree2PI;
+	static const double gc_SqrtHalf;
+	static const double gc_SqrtThree;
+	static const double gc_C;
+	static const double gc_FC;
 public:
 	//路径数
 	static const int m_scbySubPathNum = 20;
@@ -32,6 +43,12 @@ public:
 	static const double m_sacfMidPathDelayOffset[m_scbyMidPathNum];
 	static const int m_sacbyMidPathIndex[m_scbySubPathNum];
 
+	static void randomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation);
+	static void randomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero);
+	static void sortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs);
+	static void selectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond);
+
+	/*------------------域------------------*/
 	//信道所需基本常量
 	double m_fAntGain;
 	double m_fMaxAttenu; // dBm

@@ -101,39 +101,57 @@ public:
 	/*
 	* 基站数量
 	*/
-	static const int s_eNBNumber = 7;
+	static const int s_eNB_NUM = 7;
 
 	/*
 	* 道路数量
 	*/
-	static const int s_RoadNumber = 14;
+	static const int s_ROAD_NUM = 14;
 
 	/*
 	* RSU数量
 	*/
-	static const int s_RSUNumber = 24;
+	static const int s_RSU_NUM = 24;
+
+	/*
+	* 南北向路长
+	*/
+	static const int s_ROAD_LENGTH_SN = 250;
+
+	/*
+	* 东西向路长
+	*/
+	static const int s_ROAD_LENGTH_EW = 433;
 
 	/*
 	* 路宽
 	*/
-	static const int s_Width = 250;
+	static const double s_ROAD_WIDTH;
 
 	/*
-	* 长度
+	* ???
 	*/
-	static const int s_Length = 433;
+	static const double s_ROAD_TOPO_RATIO[s_ROAD_NUM * 2];
 
 	/*
-	* 路宽
+	* ???
 	*/
-	static const double s_LaneWidth;
-	static const double s_FreshTime;
+	static const int s_WRAP_AROUND_ROAD[s_ROAD_NUM][9];
 
-	static const double s_RoadTopoRatio[s_RoadNumber * 2];
-	static const int s_WrapAroundRoad[s_RoadNumber][9];
-	static const int s_RSUClusterNum[s_RSUNumber];
-	static const double s_RSUTopoRatio[s_RSUNumber * 2];
-	static const int s_RSUInRoad[s_RoadNumber][4];
+	/*
+	* ???
+	*/
+	static const int s_RSU_CLUSTER_NUM[s_RSU_NUM];
+
+	/*
+	* ???
+	*/
+	static const double s_RSU_TOPO_RATIO[s_RSU_NUM * 2];
+
+	/*
+	* ???
+	*/
+	static const int s_RSU_IN_ROAD[s_ROAD_NUM][4];
 	/*------------------域------------------*/
 private:
 	/*
