@@ -97,6 +97,43 @@ public:
 	* 随机数引擎，该类共享
 	*/
 	static std::default_random_engine s_Engine;
+
+	/*
+	* 基站数量
+	*/
+	static const int s_eNBNumber = 7;
+
+	/*
+	* 道路数量
+	*/
+	static const int s_RoadNumber = 14;
+
+	/*
+	* RSU数量
+	*/
+	static const int s_RSUNumber = 24;
+
+	/*
+	* 路宽
+	*/
+	static const int s_Width = 250;
+
+	/*
+	* 长度
+	*/
+	static const int s_Length = 433;
+
+	/*
+	* 路宽
+	*/
+	static const double s_LaneWidth;
+	static const double s_FreshTime;
+
+	static const double s_RoadTopoRatio[s_RoadNumber * 2];
+	static const int s_WrapAroundRoad[s_RoadNumber][9];
+	static const int s_RSUClusterNum[s_RSUNumber];
+	static const double s_RSUTopoRatio[s_RSUNumber * 2];
+	static const int s_RSUInRoad[s_RoadNumber][4];
 	/*------------------域------------------*/
 private:
 	/*
