@@ -1,0 +1,14 @@
+<!--南北方向道路长度-->	
+<RoadLengthSN>433</RoadLengthSN>
+
+
+<!--东西方向道路长度-->	
+<RoadLengthEW>433</RoadLengthEW>
+
+
+<!--路宽-->	
+<RoadWidth>7.0</RoadWidth>
+
+
+<!--车速(km/h)-->	
+<Speed>15</Speed>

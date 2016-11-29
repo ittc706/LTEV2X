@@ -87,7 +87,6 @@ struct SystemConfig {
 	* Schedule日志开关
 	*/
 	bool scheduleLogIsOn = false;
-
 };
 
 //eNB配置参数

@@ -117,17 +117,22 @@ public:
 	/*
 	* 南北向路长
 	*/
-	static const int s_ROAD_LENGTH_SN = 250;
+	static int s_ROAD_LENGTH_SN;
 
 	/*
 	* 东西向路长
 	*/
-	static const int s_ROAD_LENGTH_EW = 433;
+	static int s_ROAD_LENGTH_EW;
 
 	/*
 	* 路宽
 	*/
-	static const double s_ROAD_WIDTH;
+	static double s_ROAD_WIDTH;
+
+	/*
+	* 车速
+	*/
+	static double s_SPEED;
 
 	/*
 	* ???
@@ -153,6 +158,11 @@ public:
 	* ???
 	*/
 	static const int s_RSU_IN_ROAD[s_ROAD_NUM][4];
+
+	/*
+	* 加载城镇场景参数
+	*/
+	static void loadConfig(Platform t_Platform);
 	/*------------------域------------------*/
 private:
 	/*

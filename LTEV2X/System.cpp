@@ -303,6 +303,10 @@ void System::configure() {//系统仿真参数配置
 	}
 	else
 		throw logic_error("ConfigLoaderError");
+
+
+	//读取各个模块的配置文件
+	GTT_Urban::loadConfig(m_Config.platform);
 }
 
 

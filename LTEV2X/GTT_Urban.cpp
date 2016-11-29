@@ -19,13 +19,17 @@
 #include<tuple>
 #include<iomanip>
 #include<iostream>
+#include<stdexcept>
 #include<string.h>
+#include<sstream>
 #include"System.h"
 #include"GTT_Urban.h"
 #include"IMTA.h"
 #include"Log.h"
 #include"Function.h"
+#include"ConfigLoader.h"
 
+#define INVALID -1
 
 using namespace std;
 
@@ -101,7 +105,68 @@ GTT_Urban_Road::GTT_Urban_Road(UrbanRoadConfig &t_RoadConfig) {
 
 default_random_engine GTT_Urban::s_Engine((unsigned)time(NULL));
 
-const double GTT_Urban::s_ROAD_WIDTH = 7.0f;
+int GTT_Urban::s_ROAD_LENGTH_SN = INVALID;
+
+int GTT_Urban::s_ROAD_LENGTH_EW = INVALID;
+
+double GTT_Urban::s_ROAD_WIDTH = INVALID;
+
+double GTT_Urban::s_SPEED = INVALID;
+
+void GTT_Urban::loadConfig(Platform t_Platform) {
+	ConfigLoader configLoader;
+	if (t_Platform == Windows) {
+		configLoader.resolvConfigPath("Config\\UrbanConfig.xml");
+	}
+	else if(t_Platform==Linux){
+		configLoader.resolvConfigPath("Config/UrbanConfig.xml");
+	}
+	else {
+		throw logic_error("Platform Config Error!");
+	}
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = configLoader.getParam("RoadLengthSN")) != nullString) {
+		ss << temp;
+		ss >> s_ROAD_LENGTH_SN;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("RoadLengthEW")) != nullString) {
+		ss << temp;
+		ss >> s_ROAD_LENGTH_EW;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("RoadWidth")) != nullString) {
+		ss << temp;
+		ss >> s_ROAD_WIDTH;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("Speed")) != nullString) {
+		ss << temp;
+		ss >> s_SPEED;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+}
 
 const double GTT_Urban::s_ROAD_TOPO_RATIO[s_ROAD_NUM * 2] = {
 	-1.5f, 1.0f,
@@ -233,7 +298,7 @@ void GTT_Urban::configure() {
 	//	m_pueTopo[temp * 2 + 0] = temp_x;
 	//	m_pueTopo[temp * 2 + 1] = temp_y;
 	//}
-	m_Speed = 15;//车速设定,km/h
+	m_Speed = s_SPEED;//车速设定,km/h
 }
 
 
