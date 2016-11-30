@@ -202,7 +202,7 @@ const int GTT_Urban::s_WRAP_AROUND_ROAD[s_ROAD_NUM][9] = {
 };
 
 const int GTT_Urban::s_RSU_CLUSTER_NUM[s_RSU_NUM] = {
-	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4
+	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
 };
 
 const double GTT_Urban::s_RSU_TOPO_RATIO[s_RSU_NUM * 2] = {
@@ -444,6 +444,8 @@ void GTT_Urban::channelGeneration() {
 
 
 void GTT_Urban::freshLoc() {
+	//g_FileVeUEMessage.close();
+	//g_FileVeUEMessage.open("Log\\GTTLog\\VeUEMessage.txt");
 	double freshTime = ((double)getContext()->m_Config.locationUpdateNTTI) / 1000.0;
 	for (int UserIdx = 0; UserIdx != getContext()->m_Config.VeUENum; UserIdx++)
 	{
@@ -670,30 +672,34 @@ void GTT_Urban::freshLoc() {
 		vectorI2V[1] = m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY;//向量纵坐标
 		double tan = vectorI2V[1] / vectorI2V[0];//计算方向角
 		//根据方向角判断所在簇的Id
-		if (vectorI2V[0] >= 0 && vectorI2V[1] >= 0) {
-			if (tan < 1)
-				ClusterID = 1;
-			else
-				ClusterID = 0;
+		if (m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] > ((GTT_Urban::s_ROAD_LENGTH_SN + 2 * GTT_Urban::s_ROAD_WIDTH)) / 6) {
+			if (vectorI2V[0] >= 0 && vectorI2V[1] >= 0) {
+				if (tan < 1)
+					ClusterID = 2;
+				else
+					ClusterID = 1;
+			}
+			else if (vectorI2V[0] < 0 && vectorI2V[1] >= 0) {
+				if (tan < -1)
+					ClusterID = 1;
+				else
+					ClusterID = 4;
+			}
+			else if (vectorI2V[0] < 0 && vectorI2V[1] < 0) {
+				if (tan < 1)
+					ClusterID = 4;
+				else
+					ClusterID = 3;
+			}
+			else {
+				if (tan < -1)
+					ClusterID = 3;
+				else
+					ClusterID = 2;
+			}
 		}
-		else if (vectorI2V[0] < 0 && vectorI2V[1] >= 0) {
-			if (tan < -1)
-				ClusterID = 0;
-			else
-				ClusterID = 3;
-		}
-		else if (vectorI2V[0] < 0 && vectorI2V[1] < 0) {
-			if (tan < 1)
-				ClusterID = 3;
-			else
-				ClusterID = 2;
-		}
-		else {
-			if (tan < -1)
-				ClusterID = 2;
-			else
-				ClusterID = 1;
-		}
+		else
+			ClusterID = 0;
 
 		m_VeUEAry[UserIdx1]->m_RSUId = RSUIdx;
 		m_VeUEAry[UserIdx1]->m_ClusterIdx = ClusterID;
@@ -705,6 +711,7 @@ void GTT_Urban::freshLoc() {
 		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_ClusterIdx << " ";
 		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsX << " ";
 		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsY << " ";
+		g_FileVeUEMessage << endl;
 		//g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_RoadId << " ";
 		//g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_VAngle << endl;
 
