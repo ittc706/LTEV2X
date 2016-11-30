@@ -325,7 +325,7 @@ void System::initialization() {
 	//TMC模块初始化
 	initializeTMCModule();
 
-	initializeNON();
+	initializeBuildConnection();
 }
 
 
@@ -375,7 +375,7 @@ void System::initializeTMCModule() {
 }
 
 
-void System::initializeNON() {
+void System::initializeBuildConnection() {
 	//系统VeUE与各个单元中VeUE视图建立关联
 	m_VeUEAry = new VeUE[m_Config.VeUENum];
 	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {

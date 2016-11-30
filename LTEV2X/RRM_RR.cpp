@@ -24,8 +24,9 @@
 #include"System.h"
 
 #include"GTT.h"
-#include"WT.h"
 #include"RRM_RR.h"
+#include"TMC.h"
+#include"WT.h"
 
 #include"VUE.h"
 #include"RSU.h"
@@ -222,8 +223,8 @@ void RRM_RR::updateAccessEventIdList(bool t_ClusterFlag) {
 }
 
 void RRM_RR::processEventList() {
-	for (int eventId : getContext()->m_EventTTIList[getContext()->m_TTI]) {
-		Event event = getContext()->m_EventVec[eventId];
+	for (int eventId : getContext()->m_TMCPoint->m_EventTTIList[getContext()->m_TTI]) {
+		Event event = getContext()->m_TMCPoint->m_EventVec[eventId];
 		int VeUEId = event.getVeUEId();
 		int RSUId = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId;
 		int clusterIdx = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx;
@@ -233,7 +234,7 @@ void RRM_RR::processEventList() {
 		_RSU->getRRPoint()->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//更新日志
-		getContext()->m_EventVec[eventId].addEventLog(getContext()->m_TTI, EVENT_TO_WAIT, -1, -1, -1, RSUId, clusterIdx, -1, "Trigger");
+		getContext()->m_TMCPoint->m_EventVec[eventId].addEventLog(getContext()->m_TTI, EVENT_TO_WAIT, -1, -1, -1, RSUId, clusterIdx, -1, "Trigger");
 		writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, EVENT_TO_WAIT, eventId, -1, -1, -1, RSUId, clusterIdx, -1, "Trigger");
 	}
 }
@@ -248,8 +249,8 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 			list<int>::iterator it = _RSU->getRRPoint()->m_WaitEventIdList[clusterIdx].begin();
 			while (it != _RSU->getRRPoint()->m_WaitEventIdList[clusterIdx].end()) {
 				int eventId = *it;
-				int VeUEId = getContext()->m_EventVec[eventId].getVeUEId();
-				bool isEmergency = getContext()->m_EventVec[eventId].getMessageType() == EMERGENCY;
+				int VeUEId = getContext()->m_TMCPoint->m_EventVec[eventId].getVeUEId();
+				bool isEmergency = getContext()->m_TMCPoint->m_EventVec[eventId].getMessageType() == EMERGENCY;
 				//该VeUE已经不在该RSU范围内
 				if (m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId != _RSU->getSystemPoint()->getGTTPoint()->m_RSUId) {
 
@@ -260,10 +261,10 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 					it = _RSU->getRRPoint()->m_WaitEventIdList[clusterIdx].erase(it);
 
 					//将剩余待传bit重置
-					getContext()->m_EventVec[eventId].reset();
+					getContext()->m_TMCPoint->m_EventVec[eventId].reset();
 
 					//更新日志
-					getContext()->m_EventVec[eventId].addEventLog(getContext()->m_TTI, WAIT_TO_SWITCH, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
+					getContext()->m_TMCPoint->m_EventVec[eventId].addEventLog(getContext()->m_TTI, WAIT_TO_SWITCH, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
 					writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, WAIT_TO_SWITCH, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, -1, -1, -1, "LocationUpdate");
 				}
 				//仍然处于当前RSU范围内，但是位于不同的簇
@@ -275,7 +276,7 @@ void RRM_RR::processWaitEventIdListWhenLocationUpdate() {
 					it = _RSU->getRRPoint()->m_WaitEventIdList[clusterIdx].erase(it);
 
 					//更新日志
-					getContext()->m_EventVec[eventId].addEventLog(getContext()->m_TTI, WAIT_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
+					getContext()->m_TMCPoint->m_EventVec[eventId].addEventLog(getContext()->m_TTI, WAIT_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
 					writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, WAIT_TO_WAIT, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx, -1, "LocationUpdate");
 				}
 				else {
@@ -292,19 +293,19 @@ void RRM_RR::processSwitchListWhenLocationUpdate() {
 	list<int>::iterator it = m_SwitchEventIdList.begin();
 	while (it != m_SwitchEventIdList.end()) {
 		int eventId = *it;
-		int VeUEId = getContext()->m_EventVec[eventId].getVeUEId();
+		int VeUEId = getContext()->m_TMCPoint->m_EventVec[eventId].getVeUEId();
 		int clusterIdx = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_ClusterIdx;
 		int RSUId = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_RSUId;
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
-		bool isEmergency = getContext()->m_EventVec[eventId].getMessageType() == EMERGENCY;
+		bool isEmergency = getContext()->m_TMCPoint->m_EventVec[eventId].getMessageType() == EMERGENCY;
 		_RSU->getRRPoint()->pushToWaitEventIdList(isEmergency, clusterIdx, eventId);
 
 		//从Switch链表中删除
 		it = m_SwitchEventIdList.erase(it);
 
 		//更新日志
-		getContext()->m_EventVec[eventId].addEventLog(getContext()->m_TTI, SWITCH_TO_WAIT, -1, -1, -1, RSUId, clusterIdx, -1, "LocationUpdate");
+		getContext()->m_TMCPoint->m_EventVec[eventId].addEventLog(getContext()->m_TTI, SWITCH_TO_WAIT, -1, -1, -1, RSUId, clusterIdx, -1, "LocationUpdate");
 		writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, SWITCH_TO_WAIT, eventId, -1, -1, -1, RSUId, clusterIdx, -1, "LocationUpdate");
 
 	}
@@ -321,7 +322,7 @@ void RRM_RR::processWaitEventIdList() {
 				int eventId = *it;
 
 				//更新日志
-				getContext()->m_EventVec[eventId].addEventLog(getContext()->m_TTI, WAIT_TO_ACCESS, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "CanAccess");
+				getContext()->m_TMCPoint->m_EventVec[eventId].addEventLog(getContext()->m_TTI, WAIT_TO_ACCESS, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "CanAccess");
 				writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, WAIT_TO_ACCESS, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "CanAccess");
 
 				_RSU->getRRPoint()->pushToAccessEventIdList(clusterIdx, eventId);
@@ -334,7 +335,7 @@ void RRM_RR::processWaitEventIdList() {
 				int eventId = *it;
 
 				//更新日志
-				getContext()->m_EventVec[eventId].addEventLog(getContext()->m_TTI, WAIT_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "AllBusy");
+				getContext()->m_TMCPoint->m_EventVec[eventId].addEventLog(getContext()->m_TTI, WAIT_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "AllBusy");
 				writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, WAIT_TO_WAIT, eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "AllBusy");
 
 				++it;
@@ -350,7 +351,7 @@ void RRM_RR::roundRobin() {
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			int patternIdx = 0;
 			for (int eventId : _RSU->getRRPoint()->m_AccessEventIdList[clusterIdx]) {
-				int VeUEId = getContext()->m_EventVec[eventId].getVeUEId();
+				int VeUEId = getContext()->m_TMCPoint->m_EventVec[eventId].getVeUEId();
 				_RSU->getRRPoint()->pushToTransimitScheduleInfoTable(new RRM_RSU::ScheduleInfo(eventId, VeUEId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx));
 				++patternIdx;
 			}
@@ -366,12 +367,12 @@ void RRM_RR::delaystatistics() {
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			//处理等待链表
 			for (int eventId : _RSU->getRRPoint()->m_WaitEventIdList[clusterIdx])
-				getContext()->m_EventVec[eventId].increaseQueueDelay();
+				getContext()->m_TMCPoint->m_EventVec[eventId].increaseQueueDelay();
 
 			//处理此刻正在将要传输的调度表
 			for (int patternIdx = 0; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
 				if (_RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx] == nullptr)continue;
-				getContext()->m_EventVec[_RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx]->eventId].increaseSendDelay();
+				getContext()->m_TMCPoint->m_EventVec[_RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx]->eventId].increaseSendDelay();
 			}
 		}
 	}
@@ -475,20 +476,20 @@ void RRM_RR::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				double tmpDistance = m_VeUEAry[VeUEId]->getSystemPoint()->getGTTPoint()->m_Distance[RSUId];
 				if (curSINR < s_DROP_SINR_BOUNDARY) {
 					//记录丢包			
-					getContext()->m_EventVec[info->eventId].packetLoss(tmpDistance);
+					getContext()->m_TMCPoint->m_EventVec[info->eventId].packetLoss(tmpDistance);
 				}
 				info->transimitBitNum = maxEquivalentBitNum;
-				info->currentPackageIdx = getContext()->m_EventVec[info->eventId].getCurrentPackageIdx();
-				info->remainBitNum = getContext()->m_EventVec[info->eventId].getRemainBitNum();
+				info->currentPackageIdx = getContext()->m_TMCPoint->m_EventVec[info->eventId].getCurrentPackageIdx();
+				info->remainBitNum = getContext()->m_TMCPoint->m_EventVec[info->eventId].getRemainBitNum();
 
 				//该编码方式下，该Pattern在一个TTI传输的实际的有效信息bit数量，并更新信息状态
-				int realEquivalentBitNum = getContext()->m_EventVec[info->eventId].transimit(maxEquivalentBitNum, tmpDistance);
+				int realEquivalentBitNum = getContext()->m_TMCPoint->m_EventVec[info->eventId].transimit(maxEquivalentBitNum, tmpDistance);
 
 				//累计吞吐率
-				getContext()->m_TTIRSUThroughput[getContext()->m_TTI][_RSU->getSystemPoint()->getGTTPoint()->m_RSUId] += realEquivalentBitNum;
+				getContext()->m_TMCPoint->m_TTIRSUThroughput[getContext()->m_TTI][_RSU->getSystemPoint()->getGTTPoint()->m_RSUId] += realEquivalentBitNum;
 
 				//更新日志
-				getContext()->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, TRANSIMITTING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+				getContext()->m_TMCPoint->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, TRANSIMITTING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 				writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, TRANSIMITTING, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 			}
 		}
@@ -588,21 +589,21 @@ void RRM_RR::transimitEnd() {
 				if (info == nullptr) continue;
 
 				//说明已经传输完毕
-				if (getContext()->m_EventVec[info->eventId].isFinished()) {
+				if (getContext()->m_TMCPoint->m_EventVec[info->eventId].isFinished()) {
 
 					//更新日志
-					getContext()->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, SUCCEED, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
+					getContext()->m_TMCPoint->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, SUCCEED, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 					writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, SUCCEED, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Succeed");
 
 					//释放调度信息对象的内存资源
 					Delete::safeDelete(info);
 				}
 				else {//没有传输完毕，转到Wait链表，等待下一次调度
-					bool isEmergency = getContext()->m_EventVec[info->eventId].getMessageType() == EMERGENCY;
+					bool isEmergency = getContext()->m_TMCPoint->m_EventVec[info->eventId].getMessageType() == EMERGENCY;
 					_RSU->getRRPoint()->pushToWaitEventIdList(isEmergency, clusterIdx, info->eventId);
 
 					//更新日志
-					getContext()->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, SCHEDULETABLE_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "NextTurn");
+					getContext()->m_TMCPoint->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, SCHEDULETABLE_TO_WAIT, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "NextTurn");
 					writeTTILogInfo(g_FileTTILogInfo, getContext()->m_TTI, SCHEDULETABLE_TO_WAIT, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, -1, "NextTurn");
 
 					//释放调度信息对象的内存资源

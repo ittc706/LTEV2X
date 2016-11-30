@@ -19,6 +19,9 @@ class eNB;
 class Road;
 
 class System{
+	/*
+	* 声明友元，System所有域禁止外部直接访问
+	*/
 	friend class GTT;
 	friend class GTT_Urban;
 	friend class GTT_HighSpeed;
@@ -50,23 +53,6 @@ private:
 	Road* m_RoadAry = nullptr;
 	RSU* m_RSUAry = nullptr;
 	VeUE* m_VeUEAry = nullptr;
-
-	/*
-	* 事件容器，下标代表事件ID
-	*/
-	std::vector<Event> m_EventVec;
-
-	/*
-	* 以TTI为下标的事件容器
-	* 事件触发链表，m_EventTTIList[i]代表第i个TTI的事件表
-	*/
-	std::vector<std::list<int>> m_EventTTIList;
-
-	/*
-	* 吞吐率
-	* 外层下标为TTI，内层下标为RSUId
-	*/
-	std::vector<std::vector<int>> m_TTIRSUThroughput;
 
 
 	/*
@@ -127,7 +113,7 @@ private:
 	/*
 	* 建立中转实体对象初始化
 	*/
-	void initializeNON();
+	void initializeBuildConnection();
 };
 
 

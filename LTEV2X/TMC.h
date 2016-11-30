@@ -2,6 +2,7 @@
 #include<list>
 #include<vector>
 #include<fstream>
+#include"Event.h"
 
 //<TMC>: Traffic Model and Control
 class VeUE;
@@ -93,6 +94,23 @@ public:
 	* TMC视图下的VeUE容器
 	*/
 	TMC_VeUE** m_VeUEAry;
+
+	/*
+	* 事件容器，下标代表事件ID
+	*/
+	std::vector<Event> m_EventVec;
+
+	/*
+	* 以TTI为下标的事件容器
+	* 事件触发链表，m_EventTTIList[i]代表第i个TTI的事件表
+	*/
+	std::vector<std::list<int>> m_EventTTIList;
+
+	/*
+	* 吞吐率
+	* 外层下标为TTI，内层下标为RSUId
+	*/
+	std::vector<std::vector<int>> m_TTIRSUThroughput;
 
 	/*------------------接口------------------*/
 public:
