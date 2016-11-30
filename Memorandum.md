@@ -3,3 +3,4 @@
 * 需要修改matlab画图文件的顺序
 * 将各个模块基类的成员设为私有，添加其他模块的友元
 * RRM_RDM_DRA中groupSizeBasedTMD(bool)函数中，有/ATTENTION注释的部分，其中s_NTTI在Linux下链接错误，不知道为啥
+* 将拥周期事件周期改成数组，数组下标是拥塞等级

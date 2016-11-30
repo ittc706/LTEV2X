@@ -160,7 +160,7 @@ public:
 	static const int s_RSU_IN_ROAD[s_ROAD_NUM][4];
 
 	/*
-	* 加载城镇场景参数
+	* 加载城镇场景配置参数
 	*/
 	static void loadConfig(Platform t_Platform);
 	/*------------------域------------------*/

@@ -112,8 +112,8 @@ void System::configure() {//系统仿真参数配置
 	ConfigLoader configLoader;
 
 	//首先先判断当前的平台，利用路径的表示在两个平台下的差异来判断
-	ifstream inPlatformWindows("Config\\systemConfig.xml"),
-		inPlatformLinux("Config/systemConfig.xml");
+	ifstream inPlatformWindows("Config\\SystemConfig.xml"),
+		inPlatformLinux("Config/SystemConfig.xml");
 	
 	if (inPlatformWindows.is_open()) {
 		m_Config.platform = Windows;
@@ -132,10 +132,10 @@ void System::configure() {//系统仿真参数配置
 	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析系统配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 	switch (m_Config.platform) {
 	case Windows:
-		configLoader.resolvConfigPath("Config\\systemConfig.xml");
+		configLoader.resolvConfigPath("Config\\SystemConfig.xml");
 		break;
 	case Linux:
-		configLoader.resolvConfigPath("Config/systemConfig.xml");
+		configLoader.resolvConfigPath("Config/SystemConfig.xml");
 		break;
 	default:
 		throw logic_error("Platform Config Error!");
@@ -155,33 +155,6 @@ void System::configure() {//系统仿真参数配置
 	else
 		throw logic_error("ConfigLoaderError");
 
-	if ((temp = configLoader.getParam("periodicEventNTTI")) != nullString) {
-		ss << temp;
-		ss >> m_Config.periodicEventNTTI;
-		ss.clear();//清除标志位
-		ss.str("");
-	}
-	else
-		throw logic_error("ConfigLoaderError");
-
-
-	if ((temp = configLoader.getParam("emergencyLambda")) != nullString) {
-		ss << temp;
-		ss >> m_Config.emergencyLambda;
-		ss.clear();//清除标志位
-		ss.str("");
-	}
-	else
-		throw logic_error("ConfigLoaderError");
-
-	if ((temp = configLoader.getParam("dataLambda")) != nullString) {
-		ss << temp;
-		ss >> m_Config.dataLambda;
-		ss.clear();//清除标志位
-		ss.str("");
-	}
-	else
-		throw logic_error("ConfigLoaderError");
 
 	if ((temp = configLoader.getParam("locationUpdateNTTI")) != nullString) {
 		ss << temp;
@@ -307,6 +280,8 @@ void System::configure() {//系统仿真参数配置
 
 	//读取各个模块的配置文件
 	GTT_Urban::loadConfig(m_Config.platform);
+
+	TMC::loadConfig(m_Config.platform);
 }
 
 

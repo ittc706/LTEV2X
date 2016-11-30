@@ -65,8 +65,8 @@ void TMC_B::buildEventList(ofstream& t_File) {
 
 
 	//首先生成各个车辆的周期性事件的起始时刻(相对时刻，即[0 , m_Config.periodicEventNTTI)
-	vector<list<int>> startTTIVec(getContext()->m_Config.periodicEventNTTI, list<int>());
-	uniform_int_distribution<int> uid(0, getContext()->m_Config.periodicEventNTTI - 1);
+	vector<list<int>> startTTIVec(s_PERIODIC_EVENT_PERIOD_PER_CONGESTION_LEVEL[0], list<int>());
+	uniform_int_distribution<int> uid(0, s_PERIODIC_EVENT_PERIOD_PER_CONGESTION_LEVEL[0] - 1);
 	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
 		int startTTI = uid(dre);
 		startTTIVec[startTTI].push_back(VeUEId);
@@ -76,14 +76,14 @@ void TMC_B::buildEventList(ofstream& t_File) {
 	m_VeUEEmergencyNum = vector<int>(getContext()->m_Config.VeUENum, 0);//初始化统计量
 	int countEmergency = 0;
 	vector<list<int>> emergencyEventTriggerTTI(getContext()->m_Config.NTTI);
-	if (getContext()->m_Config.emergencyLambda != 0) {
+	if (s_EMERGENCY_POISSON != 0) {
 		for (int VeUEId = 0; VeUEId <getContext()->m_Config.VeUENum; VeUEId++) {
 			//依次生成每个车辆的紧急事件到达时刻
 			double T = 0;
 			while (T <getContext()->m_Config.NTTI) {
 				double u = urd(dre);
 				if (u == 0) throw logic_error("uniform_real_distribution生成范围包含边界");
-				T = T - (1 / getContext()->m_Config.emergencyLambda)*log(u);
+				T = T - (1 / s_EMERGENCY_POISSON)*log(u);
 				int IntegerT = static_cast<int>(T);
 				if (IntegerT < getContext()->m_Config.NTTI) {
 					emergencyEventTriggerTTI[IntegerT].push_back(VeUEId);
@@ -100,14 +100,14 @@ void TMC_B::buildEventList(ofstream& t_File) {
 	m_VeUEDataNum = vector<int>(getContext()->m_Config.VeUENum, 0);//初始化统计量
 	int countData = 0;
 	vector<list<int>> dataEventTriggerTTI(getContext()->m_Config.NTTI);
-	if (getContext()->m_Config.dataLambda != 0) {
+	if (s_DATA_POISSON != 0) {
 		for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
-			//依次生成每个车辆的紧急事件到达时刻
+			//依次生成每个车辆的Data事件到达时刻
 			double T = 0;
 			while (T < getContext()->m_Config.NTTI) {
 				double u = urd(dre);
 				if (u == 0) throw logic_error("uniform_real_distribution生成范围包含边界");
-				T = T - (1 / getContext()->m_Config.dataLambda)*log(u);
+				T = T - (1 / s_DATA_POISSON)*log(u);
 				int IntegerT = static_cast<int>(T);
 				if (IntegerT < getContext()->m_Config.NTTI) {
 					dataEventTriggerTTI[IntegerT].push_back(VeUEId);
@@ -125,7 +125,7 @@ void TMC_B::buildEventList(ofstream& t_File) {
 	int startTTIOfEachPeriod = 0;//每个周期的起始时刻
 	while (startTTIOfEachPeriod < getContext()->m_Config.NTTI) {
 		//TTIOffset为相对于startTTIOfEachPeriod的偏移量
-		for (int TTIOffset = 0; TTIOffset <getContext()->m_Config.periodicEventNTTI; TTIOffset++) {
+		for (int TTIOffset = 0; TTIOffset <s_PERIODIC_EVENT_PERIOD_PER_CONGESTION_LEVEL[0]; TTIOffset++) {
 			//压入紧急事件
 			if (startTTIOfEachPeriod + TTIOffset < getContext()->m_Config.NTTI) {
 				list<int> &emergencyList = emergencyEventTriggerTTI[startTTIOfEachPeriod + TTIOffset];
@@ -172,7 +172,7 @@ void TMC_B::buildEventList(ofstream& t_File) {
 				}
 			}
 		}
-		startTTIOfEachPeriod += getContext()->m_Config.periodicEventNTTI;
+		startTTIOfEachPeriod += s_PERIODIC_EVENT_PERIOD_PER_CONGESTION_LEVEL[0];
 	}
 
 	//打印事件链表

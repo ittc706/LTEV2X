@@ -1,0 +1,14 @@
+<!--拥塞等级数量-->
+<CongestionLevelNum>5</CongestionLevelNum>
+
+
+<!--周期事件周期，单位TTI-->
+<PeriodicEventPeriod>  100 200   300 400 500   </PeriodicEventPeriod>
+
+
+<!--紧急事件Lambda，单位次/TTI-->
+<EmergencyPoisson>0</EmergencyPoisson>
+
+
+<!--数据事件Lambda，单位次/TTI-->
+<DataPoisson>0</DataPoisson>

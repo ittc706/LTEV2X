@@ -15,6 +15,16 @@ private:
 	*/
 	VeUE* m_This;
 
+public:
+	/*
+	* 当前车辆下次周期事件触发的时刻
+	*/
+	int m_NextPeriodEventTriggerTTI;
+
+	/*
+	* 周期事件的触发周期，会根据拥塞等级而改变
+	*/
+	int m_PeriodEventTriggerPeriod;
 	/*------------------方法------------------*/
 public:
 	/*
@@ -78,6 +88,31 @@ public:
 	* 下标以MessageType的定义为准
 	*/
 	static const std::vector<int> s_MAX_WINDOW_SIZE;
+
+	/*
+	* 拥塞等级
+	*/
+	static int s_CONGESTION_LEVEL_NUM;
+
+	/*
+	* 对应拥塞等级下周期性事件的周期(单位TTI)
+	*/
+	static std::vector<int> s_PERIODIC_EVENT_PERIOD_PER_CONGESTION_LEVEL;
+	
+	/*
+	* 紧急事件泊松过程Lamda,单位次/TTI
+	*/
+	static double s_EMERGENCY_POISSON;
+
+	/*
+	* 数据业务事件泊松过程Lamda,单位次/TTI
+	*/
+	static double s_DATA_POISSON;
+
+	/*
+	* 加载TMC模块配置参数
+	*/
+	static void loadConfig(Platform t_Platform);
 	/*------------------域------------------*/
 private:
 	/*

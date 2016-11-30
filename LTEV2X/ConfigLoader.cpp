@@ -17,10 +17,30 @@
 */
 
 #include<iostream>
+#include<sstream>
 #include<stdexcept>
 #include"ConfigLoader.h"
 
 using namespace std;
+
+int ConfigLoader::stringToInt(std::string t_String) {
+	if (t_String.size() > 10) throw logic_error("IntOverFlow");
+	stringstream ss;
+	ss << t_String;
+	long res;
+	ss >> res;
+	if(res>(numeric_limits<int>::max)()|| res<(numeric_limits<int>::min)()) throw logic_error("IntOverFlow");
+	return static_cast<int>(res);
+}
+
+double ConfigLoader::stringToDouble(std::string t_String) {
+	//由于double实在太大了，暂不处理溢出了，即默认输入为正常范围
+	stringstream ss;
+	ss << t_String;
+	double res;
+	ss >> res;
+	return res;
+}
 
 void ConfigLoader::resolvConfigPath(string t_FilePath) {
 	//清空缓存
@@ -29,7 +49,7 @@ void ConfigLoader::resolvConfigPath(string t_FilePath) {
 
 	//读取待解析字符串
 	ifstream in(t_FilePath);
-	istream_iterator<char> if_it(in), if_eof;
+	istreambuf_iterator<char> if_it(in), if_eof;
 	m_Content.assign(if_it, if_eof);
 	in.close();
 

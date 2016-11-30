@@ -29,16 +29,7 @@
 <locationUpdateNTTI>100</locationUpdateNTTI>
 
 
-<!--周期事件周期，单位TTI-->
-<periodicEventNTTI>500</periodicEventNTTI>
 
-
-<!--紧急事件Lambda，单位次/TTI-->
-<emergencyLambda>0</emergencyLambda>
-
-
-<!--数据事件Lambda，单位次/TTI-->
-<dataLambda>0</dataLambda>
 
 
 
