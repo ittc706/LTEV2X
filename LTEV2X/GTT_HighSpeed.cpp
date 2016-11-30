@@ -20,12 +20,17 @@
 #include<iomanip>
 #include<iostream>
 #include<string.h>
+#include<sstream>
+
 #include"System.h"
 #include"GTT_HighSpeed.h"
+
 #include"IMTA.h"
 #include"Log.h"
 #include"Function.h"
+#include"ConfigLoader.h"
 
+#define INVALID -1
 
 using namespace std;
 
@@ -80,7 +85,12 @@ GTT_HighSpeed_Road::GTT_HighSpeed_Road(HighSpeedRodeConfig &t_RoadHighSpeedConfi
 
 default_random_engine GTT_HighSpeed::s_Engine((unsigned)time(NULL));
 
-const double GTT_HighSpeed::s_ROAD_WIDTH = 4.0f;
+int GTT_HighSpeed::s_ROAD_LENGTH = INVALID;
+
+double GTT_HighSpeed::s_ROAD_WIDTH = INVALID;
+
+double GTT_HighSpeed::s_SPEED = INVALID;
+
 const double GTT_HighSpeed::s_ISD = 1732.0f;
 
 const double GTT_HighSpeed::s_ROAD_TOPO_RATIO[s_ROAD_NUM * 2] = {
@@ -129,11 +139,60 @@ const double GTT_HighSpeed::s_RSU_TOPO_RATIO[s_RSU_NUM * 2] = {
 	-16.0f, 0.0f,
 	-17.0f, 0.0f,
 };
+
 const double GTT_HighSpeed::s_eNB_TOPO[s_eNB_NUM * 2] = {
 	-0.5f*s_ISD,35,
 	0.5f*s_ISD,35,
 };
 
+void GTT_HighSpeed::loadConfig(Platform t_Platform) {
+	ConfigLoader configLoader;
+	if (t_Platform == Windows) {
+		configLoader.resolvConfigPath("Config\\HighSpeedConfig.xml");
+	}
+	else if (t_Platform == Linux) {
+		configLoader.resolvConfigPath("Config/HighSpeedConfig.xml");
+	}
+	else {
+		throw logic_error("Platform Config Error!");
+	}
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = configLoader.getParam("RoadLength")) != nullString) {
+		ss << temp;
+		ss >> s_ROAD_LENGTH;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("RoadWidth")) != nullString) {
+		ss << temp;
+		ss >> s_ROAD_WIDTH;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("Speed")) != nullString) {
+		ss << temp;
+		ss >> s_SPEED;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	/*cout << "RoadLength: " << s_ROAD_LENGTH << endl;
+	cout << "RoadWidth: " << s_ROAD_WIDTH << endl;
+	cout << "Speed: " << s_SPEED << endl;*/
+}
 
 GTT_HighSpeed::GTT_HighSpeed(System* t_Context) :
 	GTT(t_Context) {}
@@ -161,7 +220,7 @@ void GTT_HighSpeed::configure() {
 		m_pupr[temp] = k - 1;
 		getContext()->m_Config.VeUENum = getContext()->m_Config.VeUENum + k - 1;
 	}
-	m_Speed = 140;//车速设定,km/h
+	m_Speed = s_SPEED;//车速设定,km/h
 }
 
 

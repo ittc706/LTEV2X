@@ -99,12 +99,17 @@ public:
 	/*
 	* 路长
 	*/
-	static const int s_ROAD_LENGTH = 3464;
+	static int s_ROAD_LENGTH;
 
 	/*
 	* 路宽
 	*/
-	static const double s_ROAD_WIDTH;
+	static double s_ROAD_WIDTH;
+
+	/*
+	* 车速
+	*/
+	static double s_SPEED;
 
 	/*
 	* ???
@@ -125,6 +130,11 @@ public:
 	* ???
 	*/
 	static const double s_eNB_TOPO[s_eNB_NUM * 2];
+
+	/*
+	* 加载城镇场景配置参数
+	*/
+	static void loadConfig(Platform t_Platform);
 	/*------------------域------------------*/
 private:
 	/*

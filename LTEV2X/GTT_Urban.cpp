@@ -113,61 +113,6 @@ double GTT_Urban::s_ROAD_WIDTH = INVALID;
 
 double GTT_Urban::s_SPEED = INVALID;
 
-void GTT_Urban::loadConfig(Platform t_Platform) {
-	ConfigLoader configLoader;
-	if (t_Platform == Windows) {
-		configLoader.resolvConfigPath("Config\\UrbanConfig.xml");
-	}
-	else if(t_Platform==Linux){
-		configLoader.resolvConfigPath("Config/UrbanConfig.xml");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
-
-	stringstream ss;
-
-	const string nullString("");
-	string temp;
-
-	if ((temp = configLoader.getParam("RoadLengthSN")) != nullString) {
-		ss << temp;
-		ss >> s_ROAD_LENGTH_SN;
-		ss.clear();//清除标志位
-		ss.str("");
-	}
-	else
-		throw logic_error("ConfigLoaderError");
-
-	if ((temp = configLoader.getParam("RoadLengthEW")) != nullString) {
-		ss << temp;
-		ss >> s_ROAD_LENGTH_EW;
-		ss.clear();//清除标志位
-		ss.str("");
-	}
-	else
-		throw logic_error("ConfigLoaderError");
-
-	if ((temp = configLoader.getParam("RoadWidth")) != nullString) {
-		ss << temp;
-		ss >> s_ROAD_WIDTH;
-		ss.clear();//清除标志位
-		ss.str("");
-	}
-	else
-		throw logic_error("ConfigLoaderError");
-
-	if ((temp = configLoader.getParam("Speed")) != nullString) {
-		ss << temp;
-		ss >> s_SPEED;
-		ss.clear();//清除标志位
-		ss.str("");
-	}
-	else
-		throw logic_error("ConfigLoaderError");
-
-}
-
 const double GTT_Urban::s_ROAD_TOPO_RATIO[s_ROAD_NUM * 2] = {
 	-1.5f, 1.0f,
 	-0.5f, 1.0f,
@@ -184,6 +129,7 @@ const double GTT_Urban::s_ROAD_TOPO_RATIO[s_ROAD_NUM * 2] = {
 	0.5f,-1.0f,
 	1.5f,-1.0f
 };
+
 const int GTT_Urban::s_WRAP_AROUND_ROAD[s_ROAD_NUM][9] = {
 	{ 0,1,6,5,4,13,8,9,10 },
 	{ 1,2,7,6,5,0,9,10,11 },
@@ -248,6 +194,65 @@ const int GTT_Urban::s_RSU_IN_ROAD[s_ROAD_NUM][4] = {
 	{ 15,16,22,21 },
 	{ 16,17,23,22 }
 };
+
+void GTT_Urban::loadConfig(Platform t_Platform) {
+	ConfigLoader configLoader;
+	if (t_Platform == Windows) {
+		configLoader.resolvConfigPath("Config\\UrbanConfig.xml");
+	}
+	else if (t_Platform == Linux) {
+		configLoader.resolvConfigPath("Config/UrbanConfig.xml");
+	}
+	else {
+		throw logic_error("Platform Config Error!");
+	}
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = configLoader.getParam("RoadLengthSN")) != nullString) {
+		ss << temp;
+		ss >> s_ROAD_LENGTH_SN;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("RoadLengthEW")) != nullString) {
+		ss << temp;
+		ss >> s_ROAD_LENGTH_EW;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("RoadWidth")) != nullString) {
+		ss << temp;
+		ss >> s_ROAD_WIDTH;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("Speed")) != nullString) {
+		ss << temp;
+		ss >> s_SPEED;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	/*cout << "RoadLengthSN: " << s_ROAD_LENGTH_SN << endl;
+	cout << "RoadLengthEW: " << s_ROAD_LENGTH_EW << endl;
+	cout << "RoadWidth: " << s_ROAD_WIDTH << endl;
+	cout << "Speed: " << s_SPEED << endl;*/
+}
 
 GTT_Urban::GTT_Urban(System* t_Context) :
 	GTT(t_Context) {}
