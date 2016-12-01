@@ -19,7 +19,7 @@ extern std::ofstream g_FileClasterPerformInfo;
 extern std::ofstream g_FileEventListInfo;
 extern std::ofstream g_FileTTILogInfo;
 extern std::ofstream g_FileEventLogInfo;
-//TMC_BÄ£¿é
+//TMCÄ£¿é
 extern std::ofstream g_FileStatisticsDescription;
 extern std::ofstream g_FileEmergencyDelayStatistics;
 extern std::ofstream g_FilePeriodDelayStatistics;

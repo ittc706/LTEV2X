@@ -30,9 +30,7 @@ class System{
 	friend class RRM_ICC_DRA;
 	friend class RRM_RR;
 	friend class TMC;
-	friend class TMC_B;
 	friend class WT;
-	friend class WT_B;
 	/*------------------”Ú------------------*/
 private:
 	/*

@@ -22,7 +22,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileEventListInfo.open("Log\\RRMLog\\EventListInfo.txt");
 		g_FileTTILogInfo.open("Log\\RRMLog\\TTILogInfo.txt");
 		g_FileEventLogInfo.open("Log\\RRMLog\\EventLogInfo.txt");
-		//TMC_B模块
+		//TMC模块
 		g_FileStatisticsDescription.open("Log\\TMCLog\\StatisticsDescription.txt");
 		g_FileEmergencyDelayStatistics.open("Log\\TMCLog\\EmergencyDelayStatistics.txt");
 		g_FilePeriodDelayStatistics.open("Log\\TMCLog\\PeriodDelayStatistics.txt");
@@ -53,7 +53,7 @@ void logFileConfig(Platform t_Platform) {
 		g_FileEventListInfo.open("Log/RRMLog/EventListInfo.txt");
 		g_FileTTILogInfo.open("Log/RRMLog/TTILogInfo.txt");
 		g_FileEventLogInfo.open("Log/RRMLog/EventLogInfo.txt");
-		//TMC_B模块
+		//TMC模块
 		g_FileStatisticsDescription.open("Log/TMCLog/StatisticsDescription.txt");
 		g_FileEmergencyDelayStatistics.open("Log/TMCLog/EmergencyDelayStatistics.txt");
 		g_FilePeriodDelayStatistics.open("Log/TMCLog/PeriodDelayStatistics.txt");
@@ -82,7 +82,7 @@ ofstream g_FileClasterPerformInfo;
 ofstream g_FileEventListInfo;
 ofstream g_FileTTILogInfo;
 ofstream g_FileEventLogInfo;
-//TMC_B模块
+//TMC模块
 ofstream g_FileStatisticsDescription;
 ofstream g_FileEmergencyDelayStatistics;
 ofstream g_FilePeriodDelayStatistics;

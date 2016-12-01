@@ -1,7 +1,9 @@
 #pragma once
 #include<vector>
 #include<tuple>
+#include<memory>
 #include"Enumeration.h"
+#include"Matrix.h"
 
 //<WT>: Wireless Transmission
 class VeUE;
@@ -52,9 +54,11 @@ public:
 
 class System;
 class WT {
+	/*------------------静态------------------*/
+public:
+	static std::default_random_engine s_Engine;
 	/*------------------域------------------*/
 private:
-	friend class WT_B;
 	/*
 	* 指向系统的指针
 	*/
@@ -75,6 +79,53 @@ public:
 	*/
 	WTMode m_SINRMode;
 
+public:
+	/*
+	* 发送天线数
+	*/
+	int m_Nt;
+
+	/*
+	* 接收天线数
+	*/
+	int m_Nr;
+
+	/*
+	* 发射功率
+	*/
+	double m_Pt;
+
+	/*
+	* 距离路径损耗
+	*/
+	double m_Ploss;
+
+	/*
+	* 干扰距离路径损耗
+	*/
+	std::vector<double> m_PlossInterference;
+
+	/*
+	* 高斯噪声的功率，单位是mw
+	*/
+	double m_Sigma;
+
+	/*
+	* 每个子载波有一个Nr*Nt的信道矩阵
+	*/
+	Matrix m_H;
+
+	/*
+	* 每个子载波有一组Nr*Nt的干扰信道矩阵
+	* 下标为干扰源编号
+	*/
+	std::vector<Matrix> m_HInterference;
+
+	/*
+	* 以下成员设为指针，用new分配内存，作为多个不同WT实例的共享资源，只会在initialize()初始化一次
+	*/
+	std::shared_ptr<std::vector<double>> m_QPSK_MI;
+
 	/*------------------接口------------------*/
 public:
 	/*
@@ -89,6 +140,15 @@ public:
 	*/
 	WT(System* t_Context);
 
+private:
+	/*
+	* 拷贝构造函数
+	* 定义为私有避免误用
+	*/
+	WT(const WT& t_WT);
+
+public:
+
 	/*
 	* 析构函数
 	*/
@@ -102,20 +162,56 @@ public:
 	/*
 	* 初始化RSU VeUE内该单元的内部类
 	*/
-	virtual void initialize() = 0;
+	virtual void initialize();
 
 	/*
 	* 获取该模块的一个拷贝
 	*/
-	virtual WT* getCopy() = 0;
+	virtual WT* getCopy();
 
 	/*
 	* 释放该模块的拷贝
 	*/
-	virtual void freeCopy() = 0;
+	virtual void freeCopy();
 
 	/*
 	* 计算载干比
 	*/
-	virtual double SINRCalculate(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx) = 0;
+	virtual double SINRCalculate(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx);
+
+	/*
+	* 计算载干比：MRC
+	*/
+	double SINRCalculateMRC(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx);
+
+	/*
+	* 计算载干比：MMSE
+	*/
+	double SINRCalculateMMSE(int t_VeUEId, int t_SubCarrierIdxStart, int t_SubCarrierIdxEnd, int t_PatternIdx);
+
+private:
+	/*
+	* 每次调用SINRCalculate前需要进行参数配置
+	*/
+	void configuration(int t_VeUEId, int t_PatternIdx, int t_SubCarrierNum);
+
+	/*
+	* 读取对应子载波的信道响应矩阵
+	*/
+	Matrix readH(int t_VeUEId, int t_SubCarrierIdx);
+
+	/*
+	* 读取对应车辆在对应子载波上的干扰矩阵数组
+	*/
+	std::vector<Matrix> readInterferenceH(int t_VeUEId, int t_SubCarrierIdx, int t_PatternIdx);
+
+	/*
+	* 二分法查找算法
+	*/
+	int closest(std::vector<double> t_Vec, double t_Target);
+
+	/*
+	* 查表
+	*/
+	double getMutualInformation(std::vector<double> t_Vec, int t_Index);
 };

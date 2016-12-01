@@ -33,10 +33,8 @@
 #include"RRM_RR.h"
 
 #include"TMC.h"
-#include"TMC_B.h"
 
 #include"WT.h"
-#include"WT_B.h"
 
 #include"VUE.h"
 #include"RSU.h"
@@ -323,7 +321,7 @@ void System::initializeGTTModule() {
 }
 
 void System::initializeWTModule() {
-	m_WTPoint = new WT_B(this);
+	m_WTPoint = new WT(this);
 	m_WTPoint->initialize();//模块初始化
 }
 
@@ -347,7 +345,7 @@ void System::initializeRRMModule() {
 
 
 void System::initializeTMCModule() {
-	m_TMCPoint = new TMC_B(this);
+	m_TMCPoint = new TMC(this);
 	m_TMCPoint->initialize();//模块初始化
 }
 

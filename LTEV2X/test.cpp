@@ -1,7 +1,7 @@
 #include<random>
 #include<thread>
 #include<iomanip>
-#include"WT_B.h"
+#include"WT.h"
 
 using namespace std;
 

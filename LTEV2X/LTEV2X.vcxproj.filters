@@ -51,9 +51,6 @@
     <ClInclude Include="WT.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="WT_B.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Complex.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -64,9 +61,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TMC.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TMC_B.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="RRM_ICC_DRA.h">
@@ -107,9 +101,6 @@
     <ClCompile Include="Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="WT_B.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Complex.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -120,9 +111,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RRM_TDM_DRA.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="TMC_B.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GTT_Urban.cpp">

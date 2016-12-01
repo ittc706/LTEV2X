@@ -8,6 +8,12 @@
 class VeUE;
 
 class TMC_VeUE {
+	/*------------------静态------------------*/
+public:
+	/*
+	* 随机数引擎，该类共享
+	*/
+	static std::default_random_engine s_Engine;
 	/*------------------域------------------*/
 private:
 	/*
@@ -147,6 +153,25 @@ public:
 	*/
 	std::vector<std::vector<int>> m_TTIRSUThroughput;
 
+	/*
+	* 每辆车紧急事件触发的次数
+	* 用于验证泊松分布，仿真中并无用处
+	*/
+	std::vector<int> m_VeUEEmergencyNum;
+
+	/*
+	* 每辆车数据业务事件触发的次数
+	* 用于验证泊松分布，仿真中并无用处
+	*/
+	std::vector<int> m_VeUEDataNum;
+
+	/*
+	* 每类事件成功传输的数目
+	* 外层下标为事件种类
+	*/
+	std::vector<int> m_TransimitSucceedEventNumPerEventType;
+
+
 	/*------------------接口------------------*/
 public:
 	/*
@@ -157,7 +182,7 @@ public:
 	/*
 	* 构造函数
 	*/
-	TMC(System* t_Context) : m_Context(t_Context) {}
+	TMC(System* t_Context);
 
 	/*
 	* 析构函数
@@ -172,22 +197,33 @@ public:
 	/*
 	* 初始化RSU VeUE内该单元的内部类
 	*/
-	virtual void initialize() = 0;
+	void initialize();
 
 	/*
 	* 生成事件链表
 	*/
-	virtual void buildEventList(std::ofstream& t_File)=0;
+	void buildEventList(std::ofstream& t_File);
 
 	/*
 	* 仿真结束后统计各种数据
 	*/
-	virtual void processStatistics(
+	void processStatistics(
 		std::ofstream& t_FileStatisticsDescription,
-		std::ofstream& t_FileEmergencyDelay, std::ofstream& t_FilePeriodDelay, std::ofstream& t_FileDataDelay, 
-		std::ofstream& t_FileEmergencyPossion, std::ofstream& t_FileDataPossion, 
+		std::ofstream& t_FileEmergencyDelay, std::ofstream& t_FilePeriodDelay, std::ofstream& t_FileDataDelay,
+		std::ofstream& t_FileEmergencyPossion, std::ofstream& t_FileDataPossion,
 		std::ofstream& t_FileEmergencyConflict, std::ofstream& t_FilePeriodConflict, std::ofstream& t_FileDataConflict,
 		std::ofstream& t_FilePackageLoss, std::ofstream& t_FilePackageTransimit,
 		std::ofstream& t_FileEventLog
-	)=0;
+	);
+
+private:
+	/*
+	* 写入事件列表的信息
+	*/
+	void writeEventListInfo(std::ofstream &t_File);
+
+	/*
+	* 写入以事件的日志信息
+	*/
+	void writeEventLogInfo(std::ofstream &t_File);
 };

@@ -132,7 +132,6 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="RRM_ICC_DRA.h" />
     <ClInclude Include="TMC.h" />
-    <ClInclude Include="TMC_B.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
@@ -147,7 +146,6 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="VUE.h" />
     <ClInclude Include="WT.h" />
-    <ClInclude Include="WT_B.h" />
     <ClInclude Include="GTT_HighSpeed.h" />
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +159,6 @@
     <ClCompile Include="RRM_ICC_DRA.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="TMC.cpp" />
-    <ClCompile Include="TMC_B.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="IMTA.cpp" />
     <ClCompile Include="main.cpp" />
@@ -170,7 +167,6 @@
     <ClCompile Include="System.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="WT.cpp" />
-    <ClCompile Include="WT_B.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

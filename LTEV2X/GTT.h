@@ -105,13 +105,13 @@ public:
 	double* m_Distance = nullptr;
 
 	/*
-	* 其他车辆，对当前车辆的干扰路径损耗，WT_B模块需要
+	* 其他车辆，对当前车辆的干扰路径损耗，WT模块需要
 	* 下标：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
 	*/
 	std::vector<double> m_InterferencePloss;
 
 	/*
-	* 其他车辆，对当前车辆的信道响应矩阵，WT_B模块需要
+	* 其他车辆，对当前车辆的信道响应矩阵，WT模块需要
 	* 下标：干扰车辆的VeUEId：VeUEId(会在一开始就开辟好所有车辆的槽位，该层的size不变)
 	*/
 	std::vector<double*> m_InterferenceH;

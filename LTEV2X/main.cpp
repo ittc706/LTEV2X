@@ -113,7 +113,7 @@ int main() {
 
 
 //int main() {
-//	WT_B* p = new WT_B(nullptr);
+//	WT* p = new WT(nullptr);
 //	p->testCloest();
 //	system("pause");
 //	return 1;
@@ -130,7 +130,7 @@ int main() {
 
 
 //int main() {
-//	WT_B *w = new WT_B(Configure(), nullptr, nullptr);
+//	WT *w = new WT(Configure(), nullptr, nullptr);
 //	w->testSINR();
 //	system("pause");
 //	return 1;
