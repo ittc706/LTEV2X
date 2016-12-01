@@ -367,6 +367,22 @@ public:
 
 class System;
 class GTT {
+	/*------------------静态------------------*/
+public:
+	/*
+	* 拥塞等级总数
+	*/
+	static int s_CONGESTION_LEVEL_NUM;
+
+	/*
+	* 拥塞等级对应的车辆数目
+	*/
+	static std::vector<int> s_VEUE_NUM_PER_CONGESTION_LEVEL;
+
+	/*
+	* 加载GTT模块
+	*/
+	static void loadConfig(Platform t_Platform);
 	/*------------------域------------------*/
 private:
 	/*

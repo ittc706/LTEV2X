@@ -1,0 +1,6 @@
+<!--拥塞等级数量-->
+<CongestionLevelNum>5</CongestionLevelNum>
+
+
+<!--对应拥塞等级下车辆数目，单位TTI-->
+<VeUENumPerCongestionLevel>10 20 30 40 50</VeUENumPerCongestionLevel>

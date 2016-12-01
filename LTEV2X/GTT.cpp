@@ -22,6 +22,9 @@
 #include"GTT.h"
 #include"IMTA.h"
 #include"Function.h"
+#include"ConfigLoader.h"
+
+#define INVALID -1
 
 using namespace std;
 
@@ -108,6 +111,56 @@ std::string GTT_Road::toString(int t_NumTab) {
 	return ss.str();
 }
 
+
+int GTT::s_CONGESTION_LEVEL_NUM = INVALID;
+
+vector<int> GTT::s_VEUE_NUM_PER_CONGESTION_LEVEL;
+
+void GTT::loadConfig(Platform t_Platform) {
+	ConfigLoader configLoader;
+	if (t_Platform == Windows) {
+		configLoader.resolvConfigPath("Config\\GTTConfig.xml");
+	}
+	else if (t_Platform == Linux) {
+		configLoader.resolvConfigPath("Config/GTTConfig.xml");
+	}
+	else {
+		throw logic_error("Platform Config Error!");
+	}
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = configLoader.getParam("CongestionLevelNum")) != nullString) {
+		ss << temp;
+		ss >> s_CONGESTION_LEVEL_NUM;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("VeUENumPerCongestionLevel")) != nullString) {
+		s_VEUE_NUM_PER_CONGESTION_LEVEL.clear();
+		ss << temp;
+		string temp2;
+		while (ss >> temp2) {
+			s_VEUE_NUM_PER_CONGESTION_LEVEL.push_back(ConfigLoader::stringToInt(temp2));
+		}
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+
+	/*cout << "CongestionLevelNum: " << s_CONGESTION_LEVEL_NUM << endl;
+	cout << "VeUENumPerCongestionLevel: " << endl;
+	Print::printVectorDim1(s_VEUE_NUM_PER_CONGESTION_LEVEL);
+	system("pause");*/
+}
 
 GTT::GTT(System* t_Context) : m_Context(t_Context) {
 	if (getContext()->m_Config.platform == Windows) {

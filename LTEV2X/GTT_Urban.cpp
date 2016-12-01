@@ -250,7 +250,8 @@ void GTT_Urban::loadConfig(Platform t_Platform) {
 	/*cout << "RoadLengthSN: " << s_ROAD_LENGTH_SN << endl;
 	cout << "RoadLengthEW: " << s_ROAD_LENGTH_EW << endl;
 	cout << "RoadWidth: " << s_ROAD_WIDTH << endl;
-	cout << "Speed: " << s_SPEED << endl;*/
+	cout << "Speed: " << s_SPEED << endl;
+	system("pause");*/
 }
 
 GTT_Urban::GTT_Urban(System* t_Context) :

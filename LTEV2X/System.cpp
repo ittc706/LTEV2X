@@ -268,6 +268,8 @@ void System::configure() {//系统仿真参数配置
 
 
 	//读取各个模块的配置文件
+	GTT::loadConfig(m_Config.platform);
+
 	GTT_Urban::loadConfig(m_Config.platform);
 
 	GTT_HighSpeed::loadConfig(m_Config.platform);

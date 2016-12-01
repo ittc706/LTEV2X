@@ -190,7 +190,8 @@ void GTT_HighSpeed::loadConfig(Platform t_Platform) {
 
 	/*cout << "RoadLength: " << s_ROAD_LENGTH << endl;
 	cout << "RoadWidth: " << s_ROAD_WIDTH << endl;
-	cout << "Speed: " << s_SPEED << endl;*/
+	cout << "Speed: " << s_SPEED << endl;
+	system("pause");*/
 }
 
 GTT_HighSpeed::GTT_HighSpeed(System* t_Context) :
