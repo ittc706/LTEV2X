@@ -27,7 +27,7 @@ public:
 	static void printVectorDim1(std::vector<T> t_Vector) {
 		for (T& t : t_Vector)
 			std::cout << std::left << std::setw(5) << t;
-		std::cout << endl;
+		std::cout << std::endl;
 	}
 
 	template<typename T>
@@ -36,7 +36,7 @@ public:
 			for (T& t : innerVector) {
 				std::cout << std::left << std::setw(5) << t;
 			}
-			std::cout << endl;
+			std::cout << std::endl;
 		}
 	}
 };
