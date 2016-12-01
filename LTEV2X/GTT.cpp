@@ -162,6 +162,13 @@ void GTT::loadConfig(Platform t_Platform) {
 	system("pause");*/
 }
 
+int GTT::calcuateCongestionLevel(int t_VeUENum) {
+	for (int contestionLevel = 0; contestionLevel < s_CONGESTION_LEVEL_NUM - 1; contestionLevel++)
+		if (t_VeUENum < s_VEUE_NUM_PER_CONGESTION_LEVEL[contestionLevel])
+			return contestionLevel;
+	return s_CONGESTION_LEVEL_NUM - 1;
+}
+
 GTT::GTT(System* t_Context) : m_Context(t_Context) {
 	if (getContext()->m_Config.platform == Windows) {
 		m_FileVeUELocationUpdateLogInfo.open("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");

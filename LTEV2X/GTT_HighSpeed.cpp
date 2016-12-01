@@ -61,7 +61,6 @@ GTT_HighSpeed_RSU::GTT_HighSpeed_RSU() {
 	m_AbsX = GTT_HighSpeed::s_RSU_TOPO_RATIO[m_RSUId * 2 + 0] * 100;
 	m_AbsY = GTT_HighSpeed::s_RSU_TOPO_RATIO[m_RSUId * 2 + 1];
 	IMTA::randomUniform(&m_FantennaAngle, 1, 180.0f, -180.0f, false);
-	//g_FileLocationInfo << toString(0);
 	m_ClusterNum = GTT_HighSpeed::s_RSU_CLUSTER_NUM;
 	m_ClusterVeUEIdList = vector<list<int>>(m_ClusterNum);
 }
@@ -71,7 +70,6 @@ void GTT_HighSpeed_eNB::initialize(eNBConfig &t_eNBConfig) {
 	m_eNBId = t_eNBConfig.eNBId;
 	m_AbsX = GTT_HighSpeed::s_eNB_TOPO[m_eNBId * 2 + 0];
 	m_AbsY = GTT_HighSpeed::s_eNB_TOPO[m_eNBId * 2 + 1];
-	//g_FileLocationInfo << toString(0);
 }
 
 
@@ -232,6 +230,7 @@ void GTT_HighSpeed::initialize() {
 		_eNBConfig.eNBId = eNBId;
 		m_eNBAry[eNBId] = new GTT_HighSpeed_eNB();
 		m_eNBAry[eNBId]->initialize(_eNBConfig);
+		m_FileLocationInfo << m_eNBAry[eNBId]->toString(0);
 	}
 
 	//初始化m_RoadAry
@@ -247,6 +246,7 @@ void GTT_HighSpeed::initialize() {
 	m_RSUAry = new GTT_RSU*[getContext()->m_Config.RSUNum];
 	for (int RSUId = 0; RSUId != getContext()->m_Config.RSUNum; RSUId++) {
 		m_RSUAry[RSUId] = new GTT_HighSpeed_RSU();
+		m_FileLocationInfo << m_RSUAry[RSUId]->toString(0);
 	}
 
 	//初始化m_VeUEAry

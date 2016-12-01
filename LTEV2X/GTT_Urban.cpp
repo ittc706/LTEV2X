@@ -71,7 +71,6 @@ void GTT_Urban_eNB::initialize(eNBConfig &t_eNBConfig) {
 	m_Y = t_eNBConfig.Y;
 	m_AbsX = t_eNBConfig.AbsX;
 	m_AbsY = t_eNBConfig.AbsY;
-	//g_FileLocationInfo << toString(0);
 }
 
 
@@ -79,7 +78,6 @@ GTT_Urban_Road::GTT_Urban_Road(UrbanRoadConfig &t_RoadConfig) {
 	m_RoadId = t_RoadConfig.roadId;
 	m_AbsX = GTT_Urban::s_ROAD_TOPO_RATIO[m_RoadId * 2 + 0] * (GTT_Urban::s_ROAD_LENGTH_SN + 2 * GTT_Urban::s_ROAD_WIDTH);
 	m_AbsY = GTT_Urban::s_ROAD_TOPO_RATIO[m_RoadId * 2 + 1] * (GTT_Urban::s_ROAD_LENGTH_EW + 2 * GTT_Urban::s_ROAD_WIDTH);
-	//g_FileLocationInfo << toString(0);
 
 	m_eNBNum = t_RoadConfig.eNBNum;
 	if (m_eNBNum == 1) {
@@ -331,10 +329,16 @@ void GTT_Urban::initialize() {
 		m_RoadAry[roadId] = new GTT_Urban_Road(urbanRoadConfig);
 	}
 
+	//就为了打印一下eNB的信息，由于eNB初始化比较奇怪，由road来初始化
+	for (int eNBId = 0; eNBId < getContext()->m_Config.eNBNum; eNBId++) {
+		m_FileLocationInfo << m_eNBAry[eNBId]->toString(0);
+	}
+
 	//初始化m_RSUAry
 	m_RSUAry = new GTT_RSU*[getContext()->m_Config.RSUNum];
 	for (int RSUId = 0; RSUId != getContext()->m_Config.RSUNum; RSUId++) {
 		m_RSUAry[RSUId] = new GTT_Urban_RSU();
+		m_FileLocationInfo << m_RSUAry[RSUId]->toString(0);
 	}
 
 	//初始化m_VeUEAry

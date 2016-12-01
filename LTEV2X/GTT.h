@@ -383,6 +383,11 @@ public:
 	* 加载GTT模块
 	*/
 	static void loadConfig(Platform t_Platform);
+
+	/*
+	* 给定车辆数目，返回拥塞等级
+	*/
+	static int calcuateCongestionLevel(int t_VeUENum);
 	/*------------------域------------------*/
 private:
 	/*
