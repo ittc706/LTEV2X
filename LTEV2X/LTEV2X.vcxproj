@@ -135,7 +135,6 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
-    <ClInclude Include="Log.h" />
     <ClInclude Include="IMTA.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="RRM.h" />
@@ -159,7 +158,6 @@
     <ClCompile Include="RRM_ICC_DRA.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="TMC.cpp" />
-    <ClCompile Include="Log.cpp" />
     <ClCompile Include="IMTA.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RRM_TDM_DRA.cpp" />

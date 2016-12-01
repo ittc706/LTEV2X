@@ -71,6 +71,21 @@ const double RRM::s_CODE_RATE= 0.5;
 
 const double RRM::s_DROP_SINR_BOUNDARY= 1.99;
 
+RRM::RRM(System* t_Context) : m_Context(t_Context) {
+	if (getContext()->m_Config.platform == Windows) {
+		m_FileScheduleInfo.open("Log\\RRMLog\\ScheduleInfo.txt");
+		m_FileClasterPerformInfo.open("Log\\RRMLog\\ClasterPerformInfo.txt");
+		m_FileTTILogInfo.open("Log\\RRMLog\\TTILogInfo.txt");
+	}
+	else if (getContext()->m_Config.platform == Linux) {
+		m_FileScheduleInfo.open("Log/RRMLog/ScheduleInfo.txt");
+		m_FileClasterPerformInfo.open("Log/RRMLog/ClasterPerformInfo.txt");
+		m_FileTTILogInfo.open("Log/RRMLog/TTILogInfo.txt");
+	}
+	else {
+		throw logic_error("Platform Config Error!");
+	}
+}
 
 RRM::~RRM() {
 	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
@@ -80,6 +95,10 @@ RRM::~RRM() {
 	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++)
 		Delete::safeDelete(m_RSUAry[RSUId]);
 	Delete::safeDelete(m_RSUAry, true);
+
+	m_FileScheduleInfo.close();
+	m_FileClasterPerformInfo.close();
+	m_FileTTILogInfo.close();
 }
 
 

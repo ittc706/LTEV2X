@@ -244,7 +244,7 @@ public:
 	/*
 	* 写入地理位置更新日志
 	*/
-	void writeVeUELocationUpdateLogInfo(std::ofstream &t_File1, std::ofstream &t_File2) override;
+	void writeVeUELocationUpdateLogInfo() override;
 
 	/*
 	* 计算干扰矩阵

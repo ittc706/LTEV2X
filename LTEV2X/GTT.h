@@ -35,34 +35,34 @@ public:
 	/*
 	* 所在道路的RoadId
 	*/
-	int m_RoadId;
+	int m_RoadId = -1;
 
 	/*
 	* 相对横坐标，纵坐标
 	*/
-	double m_X;
-	double m_Y;
+	double m_X = -1;
+	double m_Y = -1;
 
 	/*
 	* 绝对横坐标，纵坐标
 	*/
-	double m_AbsX;
-	double m_AbsY;
+	double m_AbsX = -1;
+	double m_AbsY = -1;
 
 	/*
 	* 车辆速度
 	*/
-	double m_V;
+	double m_V = -1;
 
 	/*
 	* <?>
 	*/
-	double m_VAngle;
+	double m_VAngle = -1;
 
 	/*
 	* <?>
 	*/
-	double m_FantennaAngle;
+	double m_FantennaAngle = -1;
 
 	/*
 	* <?>
@@ -72,27 +72,32 @@ public:
 	/*
 	* 车辆所在的RSUId
 	*/
-	int m_RSUId;
+	int m_RSUId = -1;
 
 	/*
 	* 车辆所在簇编号
 	*/
-	int m_ClusterIdx;
+	int m_ClusterIdx = -1;
+
+	/*
+	* 拥塞等级
+	*/
+	int m_CongestionLevel = 0;
 
 	/*
 	* 发送天线数目
 	*/
-	int m_Nt;
+	int m_Nt = -1;
 
 	/*
 	* 接收天线数目
 	*/
-	int m_Nr;
+	int m_Nr = -1;
 
 	/*
 	* 路径损耗
 	*/
-	double m_Ploss;
+	double m_Ploss = -1;
 
 	/*
 	* 信道响应矩阵
@@ -391,6 +396,14 @@ public:
 	*/
 	GTT_VeUE** m_VeUEAry;
 
+	/*
+	* 日志文件
+	*/
+	std::ofstream m_FileVeUELocationUpdateLogInfo;
+	std::ofstream m_FileVeUENumPerRSULogInfo;
+	std::ofstream m_FileLocationInfo;
+	std::ofstream m_FileVeUEMessage;
+
 	/*------------------接口------------------*/
 public:
 	/*
@@ -401,7 +414,7 @@ public:
 	/*
 	* 构造函数
 	*/
-	GTT(System* t_Context) : m_Context(t_Context) {}
+	GTT(System* t_Context);
 
 	/*
 	* 析构函数
@@ -441,7 +454,7 @@ public:
 	/*
 	* 写入地理位置更新日志
 	*/
-	virtual void writeVeUELocationUpdateLogInfo(std::ofstream &t_File1, std::ofstream &t_File2) = 0;
+	virtual void writeVeUELocationUpdateLogInfo() = 0;
 
 	/*
 	* 计算干扰矩阵

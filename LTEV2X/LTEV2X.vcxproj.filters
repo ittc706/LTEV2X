@@ -81,9 +81,6 @@
     <ClInclude Include="Function.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -135,9 +132,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TMC.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

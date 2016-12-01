@@ -280,17 +280,17 @@ private:
 	/*
 	* 记录调度信息日志
 	*/
-	void writeScheduleInfo(std::ofstream& t_File);
+	void writeScheduleInfo();
 
 	/*
 	* 以TTI为主键记录日志
 	*/
-	void writeTTILogInfo(std::ofstream& t_File, int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description);
+	void writeTTILogInfo(int t_TTI, EventLogType t_EventLogType, int t_EventId, int t_FromRSUId, int t_FromClusterIdx, int t_FromPatternIdx, int t_ToRSUId, int t_ToClusterIdx, int t_ToPatternIdx, std::string t_Description);
 	
 	/*
 	* 写入分簇信息的日志
 	*/
-	void writeClusterPerformInfo(bool isLocationUpdate, std::ofstream& t_File);
+	void writeClusterPerformInfo(bool isLocationUpdate);
 
 
 	/*

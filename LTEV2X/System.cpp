@@ -44,8 +44,6 @@
 #include"Config.h"
 #include"Function.h"
 #include"ConfigLoader.h"
-#include"Log.h"
-
 
 using namespace std;
 
@@ -58,9 +56,6 @@ void System::process() {
 	//仿真初始化
 	initialization();
 
-	//创建事件链表
-	m_TMCPoint->buildEventList(g_FileEventListInfo);
-
 	//开始仿真
 	for (int count = 0;count < m_Config.NTTI;count++) {
 		cout << "Current TTI = " << m_TTI << endl;
@@ -70,6 +65,10 @@ void System::process() {
 			m_GTTPoint->cleanWhenLocationUpdate();
 			m_RRMPoint->cleanWhenLocationUpdate();
 		}
+
+		//事件触发
+		m_TMCPoint->eventTrigger();
+
 		//开始资源分配
 		m_RRMPoint->schedule();
 		m_TTI++;
@@ -86,16 +85,10 @@ void System::process() {
 	cout.unsetf(ios::fixed);
 
 	//处理各项业务时延数据
-	m_TMCPoint->processStatistics(
-		g_FileStatisticsDescription,
-		g_FileEmergencyDelayStatistics, g_FilePeriodDelayStatistics, g_FileDataDelayStatistics,
-		g_FileEmergencyPossion, g_FileDataPossion,
-		g_FileEmergencyConflictNum, g_FilePeriodConflictNum, g_FileDataConflictNum,
-		g_FilePackageLoss, g_FilePackageTransimit,
-		g_FileEventLogInfo);
+	m_TMCPoint->processStatistics();
 
 	//打印车辆地理位置更新日志信息
-	m_GTTPoint->writeVeUELocationUpdateLogInfo(g_FileVeUELocationUpdateLogInfo, g_FileVeUENumPerRSULogInfo);
+	m_GTTPoint->writeVeUELocationUpdateLogInfo();
 
 	//整个程序计时
 	long double programEnd = clock();
@@ -124,8 +117,6 @@ void System::configure() {//系统仿真参数配置
 	else
 		throw logic_error("PlatformError");
 
-	//初始化输出流对象
-	logFileConfig(m_Config.platform);
 
 	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析系统配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 	switch (m_Config.platform) {
@@ -301,6 +292,9 @@ void System::initialization() {
 	initializeTMCModule();
 
 	initializeBuildConnection();
+
+	//创建事件链表
+	m_TMCPoint->buildEmergencyDataEventTriggerTTI();
 }
 
 
@@ -415,24 +409,5 @@ System::~System() {
 	Delete::safeDelete(m_VeUEAry, true);
 	Delete::safeDelete(m_RoadAry, true);
 
-    //关闭文件流
-	g_FileTemp.close();
-
-	g_FileVeUELocationUpdateLogInfo.close();
-	g_FileVeUENumPerRSULogInfo.close();
-	g_FileLocationInfo.close();
-
-	g_FileScheduleInfo.close();
-	g_FileClasterPerformInfo.close();
-	g_FileEventListInfo.close();
-	g_FileTTILogInfo.close();
-	g_FileEventLogInfo.close();
-
-	g_FileEmergencyDelayStatistics.close();
-	g_FileEmergencyPossion.close();
-	g_FileDataPossion.close();
-	g_FileEmergencyConflictNum.close();
-	g_FileTTIThroughput.close();
-	g_FileRSUThroughput.close();
 }
 

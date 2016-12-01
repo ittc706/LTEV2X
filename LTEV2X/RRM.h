@@ -270,6 +270,12 @@ public:
 	long double m_GTTTimeConsume = 0;
 	long double m_WTTimeConsume = 0;
 
+	/*
+	* 日志文件
+	*/
+	std::ofstream m_FileScheduleInfo;
+	std::ofstream m_FileClasterPerformInfo;
+	std::ofstream m_FileTTILogInfo;
 	/*------------------接口------------------*/
 public:
 	/*
@@ -280,7 +286,7 @@ public:
 	/*
 	* 构造函数
 	*/
-	RRM(System* t_Context) : m_Context(t_Context) {}
+	RRM(System* t_Context);
 
 	/*
 	* 析构函数

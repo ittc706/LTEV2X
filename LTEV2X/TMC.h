@@ -23,14 +23,15 @@ private:
 
 public:
 	/*
-	* 当前车辆下次周期事件触发的时刻
+	* 默认构造函数
 	*/
-	int m_NextPeriodEventTriggerTTI;
+	TMC_VeUE();
 
 	/*
-	* 周期事件的触发周期，会根据拥塞等级而改变
+	* 对应拥塞等级下，车辆下次周期事件触发的时刻
 	*/
-	int m_PeriodEventTriggerPeriod;
+	std::vector<int> m_NextPeriodEventTriggerTTI;
+
 	/*------------------方法------------------*/
 public:
 	/*
@@ -148,6 +149,20 @@ public:
 	std::vector<std::list<int>> m_EventTTIList;
 
 	/*
+	* 紧急事件触发列表
+	* 外层下标代表TTI
+	* 内层list存放对应TTI触发紧急事件的车辆Id
+	*/
+	std::vector<std::list<int>> m_EergencyVeUEIdListOfTriggerTTI;
+
+	/*
+	* 数据事件触发列表
+	* 外层下标代表TTI
+	* 内层list存放对应TTI触发数据事件的车辆Id
+	*/
+	std::vector<std::list<int>> m_DataVeUEIdListOfTriggerTTI;
+
+	/*
 	* 吞吐率
 	* 外层下标为TTI，内层下标为RSUId
 	*/
@@ -171,7 +186,24 @@ public:
 	*/
 	std::vector<int> m_TransimitSucceedEventNumPerEventType;
 
-
+	/*
+	* 日志文件
+	*/
+	std::ofstream m_FileEventLogInfo;
+	std::ofstream m_FileEventListInfo;
+	std::ofstream m_FileStatisticsDescription;
+	std::ofstream m_FileEmergencyDelayStatistics;
+	std::ofstream m_FilePeriodDelayStatistics;
+	std::ofstream m_FileDataDelayStatistics;
+	std::ofstream m_FileEmergencyPossion;
+	std::ofstream m_FileDataPossion;
+	std::ofstream m_FileEmergencyConflictNum;
+	std::ofstream m_FilePeriodConflictNum;
+	std::ofstream m_FileDataConflictNum;
+	std::ofstream m_FileTTIThroughput;
+	std::ofstream m_FileRSUThroughput;
+	std::ofstream m_FilePackageLoss;
+	std::ofstream m_FilePackageTransimit;
 	/*------------------接口------------------*/
 public:
 	/*
@@ -202,28 +234,26 @@ public:
 	/*
 	* 生成事件链表
 	*/
-	void buildEventList(std::ofstream& t_File);
+	void eventTrigger();
+
+	/*
+	* 生成事件链表
+	*/
+	void buildEmergencyDataEventTriggerTTI();
 
 	/*
 	* 仿真结束后统计各种数据
 	*/
-	void processStatistics(
-		std::ofstream& t_FileStatisticsDescription,
-		std::ofstream& t_FileEmergencyDelay, std::ofstream& t_FilePeriodDelay, std::ofstream& t_FileDataDelay,
-		std::ofstream& t_FileEmergencyPossion, std::ofstream& t_FileDataPossion,
-		std::ofstream& t_FileEmergencyConflict, std::ofstream& t_FilePeriodConflict, std::ofstream& t_FileDataConflict,
-		std::ofstream& t_FilePackageLoss, std::ofstream& t_FilePackageTransimit,
-		std::ofstream& t_FileEventLog
-	);
+	void processStatistics();
 
 private:
 	/*
 	* 写入事件列表的信息
 	*/
-	void writeEventListInfo(std::ofstream &t_File);
+	void writeEventListInfo();
 
 	/*
 	* 写入以事件的日志信息
 	*/
-	void writeEventLogInfo(std::ofstream &t_File);
+	void writeEventLogInfo();
 };

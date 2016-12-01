@@ -25,7 +25,6 @@
 #include"System.h"
 #include"GTT_Urban.h"
 #include"IMTA.h"
-#include"Log.h"
 #include"Function.h"
 #include"ConfigLoader.h"
 
@@ -58,7 +57,7 @@ GTT_Urban_RSU::GTT_Urban_RSU() {
 	m_AbsX = GTT_Urban::s_RSU_TOPO_RATIO[m_RSUId * 2 + 0] * (GTT_Urban::s_ROAD_LENGTH_SN + 2 * GTT_Urban::s_ROAD_WIDTH);
 	m_AbsY = GTT_Urban::s_RSU_TOPO_RATIO[m_RSUId * 2 + 1] * (GTT_Urban::s_ROAD_LENGTH_EW + 2 * GTT_Urban::s_ROAD_WIDTH);
 	IMTA::randomUniform(&m_FantennaAngle, 1, 180.0f, -180.0f, false);
-	g_FileLocationInfo << toString(0);
+	//g_FileLocationInfo << toString(0);
 
 	m_ClusterNum = GTT_Urban::s_RSU_CLUSTER_NUM[m_RSUId];
 	m_ClusterVeUEIdList = vector<list<int>>(m_ClusterNum);
@@ -72,7 +71,7 @@ void GTT_Urban_eNB::initialize(eNBConfig &t_eNBConfig) {
 	m_Y = t_eNBConfig.Y;
 	m_AbsX = t_eNBConfig.AbsX;
 	m_AbsY = t_eNBConfig.AbsY;
-	g_FileLocationInfo << toString(0);
+	//g_FileLocationInfo << toString(0);
 }
 
 
@@ -80,7 +79,7 @@ GTT_Urban_Road::GTT_Urban_Road(UrbanRoadConfig &t_RoadConfig) {
 	m_RoadId = t_RoadConfig.roadId;
 	m_AbsX = GTT_Urban::s_ROAD_TOPO_RATIO[m_RoadId * 2 + 0] * (GTT_Urban::s_ROAD_LENGTH_SN + 2 * GTT_Urban::s_ROAD_WIDTH);
 	m_AbsY = GTT_Urban::s_ROAD_TOPO_RATIO[m_RoadId * 2 + 1] * (GTT_Urban::s_ROAD_LENGTH_EW + 2 * GTT_Urban::s_ROAD_WIDTH);
-	g_FileLocationInfo << toString(0);
+	//g_FileLocationInfo << toString(0);
 
 	m_eNBNum = t_RoadConfig.eNBNum;
 	if (m_eNBNum == 1) {
@@ -711,12 +710,12 @@ void GTT_Urban::freshLoc() {
 		m_RSUAry[RSUIdx]->m_VeUEIdList.push_back(UserIdx1);
 
 		//输出VeUE信息到文档
-		g_FileVeUEMessage << UserIdx1 << " ";
-		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_RSUId << " ";
-		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_ClusterIdx << " ";
-		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsX << " ";
-		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsY << " ";
-		g_FileVeUEMessage << endl;
+		m_FileVeUEMessage << UserIdx1 << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_RSUId << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_ClusterIdx << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsX << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsY << " ";
+		m_FileVeUEMessage << endl;
 		//g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_RoadId << " ";
 		//g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_VAngle << endl;
 
@@ -798,19 +797,19 @@ void GTT_Urban::freshLoc() {
 }
 
 
-void GTT_Urban::writeVeUELocationUpdateLogInfo(ofstream &t_File1, ofstream &t_File2) {
+void GTT_Urban::writeVeUELocationUpdateLogInfo() {
 	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
-		t_File1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
-		t_File1 << "{" << endl;
+		m_FileVeUELocationUpdateLogInfo << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
+		m_FileVeUELocationUpdateLogInfo << "{" << endl;
 		for (const tuple<int, int> &t : m_VeUEAry[VeUEId]->m_LocationUpdateLogInfoList)
-			t_File1 << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
-		t_File1 << "}" << endl;
+			m_FileVeUELocationUpdateLogInfo << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
+		m_FileVeUELocationUpdateLogInfo << "}" << endl;
 	}
 	for (const vector<int> &v : m_VeUENumPerRSU) {
 		for (int i : v) {
-			t_File2 << i << " ";
+			m_FileVeUENumPerRSULogInfo << i << " ";
 		}
-		t_File2 << endl;
+		m_FileVeUENumPerRSULogInfo << endl;
 	}
 }
 

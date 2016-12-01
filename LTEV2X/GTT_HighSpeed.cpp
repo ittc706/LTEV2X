@@ -26,7 +26,6 @@
 #include"GTT_HighSpeed.h"
 
 #include"IMTA.h"
-#include"Log.h"
 #include"Function.h"
 #include"ConfigLoader.h"
 
@@ -62,7 +61,7 @@ GTT_HighSpeed_RSU::GTT_HighSpeed_RSU() {
 	m_AbsX = GTT_HighSpeed::s_RSU_TOPO_RATIO[m_RSUId * 2 + 0] * 100;
 	m_AbsY = GTT_HighSpeed::s_RSU_TOPO_RATIO[m_RSUId * 2 + 1];
 	IMTA::randomUniform(&m_FantennaAngle, 1, 180.0f, -180.0f, false);
-	g_FileLocationInfo << toString(0);
+	//g_FileLocationInfo << toString(0);
 	m_ClusterNum = GTT_HighSpeed::s_RSU_CLUSTER_NUM;
 	m_ClusterVeUEIdList = vector<list<int>>(m_ClusterNum);
 }
@@ -72,7 +71,7 @@ void GTT_HighSpeed_eNB::initialize(eNBConfig &t_eNBConfig) {
 	m_eNBId = t_eNBConfig.eNBId;
 	m_AbsX = GTT_HighSpeed::s_eNB_TOPO[m_eNBId * 2 + 0];
 	m_AbsY = GTT_HighSpeed::s_eNB_TOPO[m_eNBId * 2 + 1];
-	g_FileLocationInfo << toString(0);
+	//g_FileLocationInfo << toString(0);
 }
 
 
@@ -432,11 +431,11 @@ void GTT_HighSpeed::freshLoc() {
 		m_RSUAry[RSUIdx]->m_VeUEIdList.push_back(UserIdx1);
 
 		//输出VeUE信息到文档
-		g_FileVeUEMessage << UserIdx1 << " ";
-		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_RSUId << " ";
-		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_ClusterIdx << " ";
-		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsX << " ";
-		g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsY << endl;
+		m_FileVeUEMessage << UserIdx1 << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_RSUId << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_ClusterIdx << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsX << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsY << endl;
 
 		location.locationType = None;
 		location.distance = 0;
@@ -506,19 +505,19 @@ void GTT_HighSpeed::freshLoc() {
 }
 
 
-void GTT_HighSpeed::writeVeUELocationUpdateLogInfo(ofstream &out1, ofstream &out2) {
+void GTT_HighSpeed::writeVeUELocationUpdateLogInfo() {
 	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
-		out1 << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
-		out1 << "{" << endl;
+		m_FileVeUELocationUpdateLogInfo << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
+		m_FileVeUELocationUpdateLogInfo << "{" << endl;
 		for (const tuple<int, int> &t : m_VeUEAry[VeUEId]->m_LocationUpdateLogInfoList)
-			out1 << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
-		out1 << "}" << endl;
+			m_FileVeUELocationUpdateLogInfo << "    " << "[ RSUId = " << left << setw(2) << get<0>(t) << " , ClusterIdx = " << get<1>(t) << " ]" << endl;
+		m_FileVeUELocationUpdateLogInfo << "}" << endl;
 	}
 	for (const vector<int> &v : m_VeUENumPerRSU) {
 		for (int i : v) {
-			out2 << i << " ";
+			m_FileVeUENumPerRSULogInfo << i << " ";
 		}
-		out2 << endl;
+		m_FileVeUENumPerRSULogInfo << endl;
 	}
 }
 
