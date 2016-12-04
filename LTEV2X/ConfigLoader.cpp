@@ -3,7 +3,7 @@
 *
 *       Filename:  ConfigLoader.cpp
 *
-*    Description:  TMC模块
+*    Description:  配置文件加载器
 *
 *        Version:  1.0
 *        Created:

@@ -3,7 +3,7 @@
 *
 *       Filename:  RRM_RR.cpp
 *
-*    Description:  RR模块
+*    Description:  RRM模块的轮询调度，不同分簇为一个调度单元，即簇之间是并发的
 *
 *        Version:  1.0
 *        Created:
@@ -29,7 +29,9 @@
 #include"WT.h"
 
 #include"VUE.h"
+#include"GTT_VeUE.h"
 #include"RSU.h"
+#include"GTT_RSU.h"
 
 #include"Function.h"
 

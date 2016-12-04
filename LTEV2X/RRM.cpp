@@ -3,7 +3,7 @@
 *
 *       Filename:  RRM.cpp
 *
-*    Description:  TMCÄ£¿é
+*    Description:  RRMÄ£¿é
 *
 *        Version:  1.0
 *        Created:

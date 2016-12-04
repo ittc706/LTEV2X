@@ -104,17 +104,7 @@ struct HighSpeedRodeConfig {
 };
 
 
-//VeUE配置参数
-struct VeUEConfig {
-	int roadId;
-	double X;
-	double Y;
-	double AbsX;
-	double AbsY;
-	double V;
-	int VeUENum;
-	double angle;
-};
+
 
 
 //地理位置配置参数

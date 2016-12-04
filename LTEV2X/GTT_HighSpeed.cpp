@@ -3,7 +3,7 @@
 *
 *       Filename:  GTT_HighSpeed.cpp
 *
-*    Description:  TMC模块
+*    Description:  GTT模块下的高速场景
 *
 *        Version:  1.0
 *        Created:
@@ -34,50 +34,9 @@
 using namespace std;
 
 
-GTT_HighSpeed_VeUE::GTT_HighSpeed_VeUE(VeUEConfig &t_VeUEConfig) {
-	m_RoadId = t_VeUEConfig.roadId;
-	m_X = t_VeUEConfig.X;
-	m_Y = t_VeUEConfig.Y;
-	m_AbsX = t_VeUEConfig.AbsX;
-	m_AbsY = t_VeUEConfig.AbsY;
-	m_V = t_VeUEConfig.V / 3.6f;//由km/h换算为m/s，用于车辆的位置更新
-
-	if (m_RoadId <= 2)
-		m_VAngle = 0;
-	else
-		m_VAngle = 180;
-
-	IMTA::randomUniform(&m_FantennaAngle, 1, 180.0f, -180.0f, false);
-
-	m_Nt = 1;
-	m_Nr = 2;
-	m_H = new double[2 * 1024 * 2];
-	m_InterferencePloss = vector<double>(t_VeUEConfig.VeUENum, 0);
-	m_InterferenceH = vector<double*>(t_VeUEConfig.VeUENum, nullptr);
-}
 
 
-GTT_HighSpeed_RSU::GTT_HighSpeed_RSU() {
-	m_AbsX = GTT_HighSpeed::s_RSU_TOPO_RATIO[m_RSUId * 2 + 0] * 100;
-	m_AbsY = GTT_HighSpeed::s_RSU_TOPO_RATIO[m_RSUId * 2 + 1];
-	IMTA::randomUniform(&m_FantennaAngle, 1, 180.0f, -180.0f, false);
-	m_ClusterNum = GTT_HighSpeed::s_RSU_CLUSTER_NUM;
-	m_ClusterVeUEIdList = vector<list<int>>(m_ClusterNum);
-}
 
-
-void GTT_HighSpeed_eNB::initialize(eNBConfig &t_eNBConfig) {
-	m_eNBId = t_eNBConfig.eNBId;
-	m_AbsX = GTT_HighSpeed::s_eNB_TOPO[m_eNBId * 2 + 0];
-	m_AbsY = GTT_HighSpeed::s_eNB_TOPO[m_eNBId * 2 + 1];
-}
-
-
-GTT_HighSpeed_Road::GTT_HighSpeed_Road(HighSpeedRodeConfig &t_RoadHighSpeedConfig) {
-	m_RoadId = t_RoadHighSpeedConfig.roadId;
-	m_AbsX = 0.0f;
-	m_AbsY = GTT_HighSpeed::s_ROAD_TOPO_RATIO[m_RoadId * 2 + 1] * GTT_HighSpeed::s_ROAD_WIDTH;
-}
 
 
 default_random_engine GTT_HighSpeed::s_Engine((unsigned)time(NULL));

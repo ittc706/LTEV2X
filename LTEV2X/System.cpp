@@ -3,7 +3,7 @@
 *
 *       Filename:  System.cpp
 *
-*    Description:  TMC模块
+*    Description:  总控单元
 *
 *        Version:  1.0
 *        Created:

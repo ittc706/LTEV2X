@@ -1,94 +1,9 @@
 #pragma once
 #include<stdexcept>
 #include"GTT.h"
+#include"GTT_VeUE.h"
 
 // <GTT_Urban>: Geographical Topology and Transport Urban
-
-class GTT_Urban_VeUE :public GTT_VeUE {
-	/*------------------域------------------*/
-public:
-	/*
-	* <?>
-	*/
-	int m_LocationId;
-	/*------------------方法------------------*/
-public:
-	/*
-	* 构造函数
-	*/
-	GTT_Urban_VeUE() = delete;
-	GTT_Urban_VeUE(VeUEConfig &t_VeUEConfig);
-
-	/*
-	* 用于取得指向实际类型的指针
-	*/
-	GTT_Urban_VeUE  *const getUrbanPoint()override { return this; }
-	GTT_HighSpeed_VeUE  *const getHighSpeedPoint()override { throw std::logic_error("RuntimeException"); }
-};
-
-
-class GTT_Urban_RSU :public GTT_RSU {
-public:
-	/*
-	* 构造函数
-	*/
-	GTT_Urban_RSU();
-
-	/*
-	* 用于取得指向实际类型的指针
-	*/
-	GTT_Urban_RSU  *const getUrbanPoint()override { return this; }
-	GTT_HighSpeed_RSU  *const getHighSpeedPoint()override { throw std::logic_error("RuntimeException"); }
-};
-
-
-class GTT_Urban_eNB :public GTT_eNB {
-public:
-	/*
-	* 初始化方法
-	* 不用构造函数的原因是构造的时刻其依赖项还没创建完毕
-	*/
-	void initialize(eNBConfig &t_eNBConfig)override;
-
-	/*
-	* 用于取得指向实际类型的指针
-	*/
-	GTT_Urban_eNB  *const getUrbanPoint()override { return this; }
-	GTT_HighSpeed_eNB  *const getHighSpeedPoint()override { throw std::logic_error("RuntimeException"); }
-};
-
-
-class GTT_Urban_Road :public GTT_Road {
-	/*------------------域------------------*/
-public:
-	/*
-	* 基站数目
-	*/
-	int m_eNBNum;
-
-	/*
-	* 基站Id
-	*/
-	int m_eNBId;
-
-	/*
-	* 持有指向其所在基站对象的指针
-	*/
-	GTT_eNB *m_eNB;
-
-public:
-	/*
-	* 初始化方法
-	* 不用构造函数的原因是构造的时刻其依赖项还没创建完毕
-	*/
-	GTT_Urban_Road(UrbanRoadConfig &t_RoadConfig);
-
-	/*
-	* 用于取得指向实际类型的指针
-	*/
-	GTT_Urban_Road  *const getUrbanPoint()override { return this; }
-	GTT_HighSpeed_Road  *const getHighSpeedPoint()override { throw std::logic_error("RuntimeException"); }
-};
 
 
 class GTT_Urban :public GTT {

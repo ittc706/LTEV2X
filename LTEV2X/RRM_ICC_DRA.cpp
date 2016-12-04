@@ -3,7 +3,7 @@
 *
 *       Filename:  RRM_ICC_DRA.cpp
 *
-*    Description:  RRM_ICC_DRA模块
+*    Description:  RRM模块的ICC_DRA实现，即簇内无冲突，簇间有干扰
 *
 *        Version:  1.0
 *        Created:
@@ -27,7 +27,9 @@
 #include"WT.h"
 
 #include"VUE.h"
+#include"GTT_VeUE.h"
 #include"RSU.h"
+#include"GTT_RSU.h"
 
 #include"Function.h"
 

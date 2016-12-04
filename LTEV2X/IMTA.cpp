@@ -3,7 +3,7 @@
 *
 *       Filename:  IMTA.cpp
 *
-*    Description:  TMCÄ£¿é
+*    Description:  IMTA
 *
 *        Version:  1.0
 *        Created:

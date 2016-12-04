@@ -3,7 +3,7 @@
 *
 *       Filename:  Event.cpp
 *
-*    Description:  TMC模块
+*    Description:  事件类
 *
 *        Version:  1.0
 *        Created:

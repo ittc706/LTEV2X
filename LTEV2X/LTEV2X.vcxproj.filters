@@ -81,6 +81,18 @@
     <ClInclude Include="Function.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GTT_VeUE.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GTT_RSU.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GTT_Road.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GTT_eNB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -132,6 +144,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TMC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GTT_VeUE.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GTT_RSU.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GTT_eNB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GTT_Road.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

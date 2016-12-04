@@ -3,7 +3,7 @@
 *
 *       Filename:  RRM_TDM_DRA.cpp
 *
-*    Description:  RRM_TDM_DRA模块
+*    Description:  RRM模块的时分方案，不同的簇占用不同的时间，吞吐量较低
 *
 *        Version:  1.0
 *        Created:
@@ -31,7 +31,9 @@
 #include"WT.h"
 
 #include"VUE.h"
+#include"GTT_VeUE.h"
 #include"RSU.h"
+#include"GTT_RSU.h"
 
 #include"Function.h"
 

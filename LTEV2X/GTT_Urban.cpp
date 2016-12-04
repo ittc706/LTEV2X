@@ -3,7 +3,7 @@
 *
 *       Filename:  GTT_Urban.cpp
 *
-*    Description:  TMC模块
+*    Description:  GTT模块下的城镇场景
 *
 *        Version:  1.0
 *        Created:
@@ -24,6 +24,10 @@
 #include<sstream>
 #include"System.h"
 #include"GTT_Urban.h"
+
+#include"GTT_RSU.h"
+#include"GTT_VeUE.h"
+
 #include"IMTA.h"
 #include"Function.h"
 #include"ConfigLoader.h"
@@ -33,71 +37,10 @@
 using namespace std;
 
 
-GTT_Urban_VeUE::GTT_Urban_VeUE(VeUEConfig &t_VeUEConfig) {
-
-	m_RoadId = t_VeUEConfig.roadId;
-	m_X = t_VeUEConfig.X;
-	m_Y = t_VeUEConfig.Y;
-	m_AbsX = t_VeUEConfig.AbsX;
-	m_AbsY = t_VeUEConfig.AbsY;
-	m_V = t_VeUEConfig.V/3.6;//换算为m/s
-	m_VAngle = t_VeUEConfig.angle;
-
-	IMTA::randomUniform(&m_FantennaAngle, 1, 180.0f, -180.0f, false);
-
-	m_Nt = 1;
-	m_Nr = 2;
-	m_H = new double[2 * 1024 * 2];
-	m_InterferencePloss = vector<double>(t_VeUEConfig.VeUENum, 0);
-	m_InterferenceH = vector<double*>(t_VeUEConfig.VeUENum, nullptr);
-}
 
 
-GTT_Urban_RSU::GTT_Urban_RSU() {
-	m_AbsX = GTT_Urban::s_RSU_TOPO_RATIO[m_RSUId * 2 + 0] * (GTT_Urban::s_ROAD_LENGTH_SN + 2 * GTT_Urban::s_ROAD_WIDTH);
-	m_AbsY = GTT_Urban::s_RSU_TOPO_RATIO[m_RSUId * 2 + 1] * (GTT_Urban::s_ROAD_LENGTH_EW + 2 * GTT_Urban::s_ROAD_WIDTH);
-	IMTA::randomUniform(&m_FantennaAngle, 1, 180.0f, -180.0f, false);
-	//g_FileLocationInfo << toString(0);
-
-	m_ClusterNum = GTT_Urban::s_RSU_CLUSTER_NUM[m_RSUId];
-	m_ClusterVeUEIdList = vector<list<int>>(m_ClusterNum);
-}
 
 
-void GTT_Urban_eNB::initialize(eNBConfig &t_eNBConfig) {
-	m_RoadId = t_eNBConfig.roadId;
-	m_eNBId = t_eNBConfig.eNBId;
-	m_X = t_eNBConfig.X;
-	m_Y = t_eNBConfig.Y;
-	m_AbsX = t_eNBConfig.AbsX;
-	m_AbsY = t_eNBConfig.AbsY;
-}
-
-
-GTT_Urban_Road::GTT_Urban_Road(UrbanRoadConfig &t_RoadConfig) {
-	m_RoadId = t_RoadConfig.roadId;
-	m_AbsX = GTT_Urban::s_ROAD_TOPO_RATIO[m_RoadId * 2 + 0] * (GTT_Urban::s_ROAD_LENGTH_SN + 2 * GTT_Urban::s_ROAD_WIDTH);
-	m_AbsY = GTT_Urban::s_ROAD_TOPO_RATIO[m_RoadId * 2 + 1] * (GTT_Urban::s_ROAD_LENGTH_EW + 2 * GTT_Urban::s_ROAD_WIDTH);
-
-	m_eNBNum = t_RoadConfig.eNBNum;
-	if (m_eNBNum == 1) {
-		/*
-		* 这里比较绕，解释一下
-		* 由于t_RoadConfig.eNB存的是一个(GTT_eNB**)类型，双重指针
-		* 第一重指针指向数组
-		*/
-		m_eNB = *((GTT_eNB **)t_RoadConfig.eNB + t_RoadConfig.eNBOffset);
-		eNBConfig eNBConfig;
-		eNBConfig.systemConfig = t_RoadConfig.systemConfig;
-		eNBConfig.roadId = m_RoadId;
-		eNBConfig.X = 42.0f;
-		eNBConfig.Y = -88.5f;
-		eNBConfig.AbsX = m_AbsX + eNBConfig.X;
-		eNBConfig.AbsY = m_AbsY + eNBConfig.Y;
-		eNBConfig.eNBId = t_RoadConfig.eNBOffset;
-		m_eNB->initialize(eNBConfig);
-	}
-}
 
 
 default_random_engine GTT_Urban::s_Engine((unsigned)time(NULL));
