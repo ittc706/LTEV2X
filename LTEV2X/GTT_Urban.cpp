@@ -710,6 +710,12 @@ void GTT_Urban::freshLoc() {
 		else
 			ClusterID = 0;
 
+		//ÅÐ¶ÏÓµÈûµÈ¼¶
+		if (ClusterID == 0)
+			m_VeUEAry[UserIdx1]->m_CongestionLevel = 1;
+		else
+			m_VeUEAry[UserIdx1]->m_CongestionLevel = 0;
+
 		m_VeUEAry[UserIdx1]->m_RSUId = RSUIdx;
 		m_VeUEAry[UserIdx1]->m_ClusterIdx = ClusterID;
 		m_RSUAry[RSUIdx]->m_VeUEIdList.push_back(UserIdx1);
