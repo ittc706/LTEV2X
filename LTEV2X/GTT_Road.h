@@ -1,6 +1,5 @@
 #pragma once
 #include<string>
-#include"Config.h"
 
 class Road;
 class GTT_Urban_Road;

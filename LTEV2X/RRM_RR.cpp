@@ -22,107 +22,17 @@
 #include<iostream>
 #include<set>
 #include"System.h"
-
 #include"GTT.h"
 #include"RRM_RR.h"
 #include"TMC.h"
 #include"WT.h"
 
 #include"VUE.h"
-#include"GTT_VeUE.h"
 #include"RSU.h"
-#include"GTT_RSU.h"
 
 #include"Function.h"
 
 using namespace std;
-
-
-RRM_RR_VeUE::RRM_RR_VeUE() :RRM_VeUE(RRM_RR::s_TOTAL_PATTERN_NUM) {}
-
-
-std::string RRM_RR_VeUE::toString(int t_NumTab) {
-	string indent;
-	for (int i = 0; i < t_NumTab; i++)
-		indent.append("    ");
-
-	ostringstream ss;
-	ss << indent << "{ VeUEId = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_VeUEId;
-	ss << " , RSUId = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_RSUId;
-	ss << " , ClusterIdx = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_ClusterIdx << " }";
-	return ss.str();
-}
-
-
-RRM_RR_RSU::RRM_RR_RSU() {}
-
-
-void RRM_RR_RSU::initialize() {
-	m_AccessEventIdList = vector<list<int>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
-	m_WaitEventIdList = vector<list<int>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
-	m_TransimitScheduleInfoTable = vector<vector<ScheduleInfo*>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<ScheduleInfo*>(RRM_RR::s_TOTAL_PATTERN_NUM, nullptr));
-}
-
-std::string RRM_RR_RSU::toString(int t_NumTab) {
-	string indent;
-	for (int i = 0; i < t_NumTab; i++)
-		indent.append("    ");
-
-	ostringstream ss;
-	//主干信息
-	ss << indent << "RSU[" << getSystemPoint()->getGTTPoint()->m_RSUId << "] :" << endl;
-	ss << indent << "{" << endl;
-
-	//开始打印VeUEIdList
-	ss << indent << "    " << "VeUEIdList :" << endl;
-	ss << indent << "    " << "{" << endl;
-	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
-		ss << indent << "        " << "{" << endl;
-		int cnt = 0;
-		for (int RSUId : getSystemPoint()->getGTTPoint()->m_ClusterVeUEIdList[clusterIdx]) {
-			if (cnt % 10 == 0)
-				ss << indent << "            [ ";
-			ss << left << setw(3) << RSUId << " , ";
-			if (cnt % 10 == 9)
-				ss << " ]" << endl;
-			cnt++;
-		}
-		if (cnt != 0 && cnt % 10 != 0)
-			ss << " ]" << endl;
-		ss << indent << "        " << "}" << endl;
-	}
-	ss << indent << "    " << "}" << endl;
-
-
-	//主干信息
-	ss << indent << "}" << endl;
-	return ss.str();
-}
-
-
-void RRM_RR_RSU::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
-	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-
-void RRM_RR_RSU::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
-	if (t_IsEmergency)
-		m_WaitEventIdList[t_ClusterIdx].insert(m_WaitEventIdList[t_ClusterIdx].begin(), t_EventId);
-	else
-		m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-
-void RRM_RR_RSU::pushToSwitchEventIdList(int t_EventId, std::list<int>& t_SwitchVeUEIdList) {
-	t_SwitchVeUEIdList.push_back(t_EventId);
-}
-
-
-void RRM_RR_RSU::pushToTransimitScheduleInfoTable(ScheduleInfo* t_Info) {
-	m_TransimitScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
-}
-
 
 RRM_RR::RRM_RR(System* t_Context) :
 	RRM(t_Context) {

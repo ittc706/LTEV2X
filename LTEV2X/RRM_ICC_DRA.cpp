@@ -20,134 +20,17 @@
 #include<sstream>
 #include<stdexcept>
 #include"System.h"
-
 #include"GTT.h"
 #include"RRM_ICC_DRA.h"
 #include"TMC.h"
 #include"WT.h"
 
 #include"VUE.h"
-#include"GTT_VeUE.h"
 #include"RSU.h"
-#include"GTT_RSU.h"
 
 #include"Function.h"
 
 using namespace std;
-
-default_random_engine RRM_ICC_DRA_VeUE::s_Engine((unsigned)time(NULL));
-
-
-RRM_ICC_DRA_VeUE::RRM_ICC_DRA_VeUE() :RRM_VeUE(RRM_ICC_DRA::s_TOTAL_PATTERN_NUM) {}
-
-
-int RRM_ICC_DRA_VeUE::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx) {
-	int size = static_cast<int>(t_CurAvaliablePatternIdx.size());
-	if (size == 0) return -1;
-	std::uniform_int_distribution<int> u(0, size - 1);
-	return t_CurAvaliablePatternIdx[u(s_Engine)];
-}
-
-
-std::string RRM_ICC_DRA_VeUE::toString(int t_NumTab) {
-	string indent;
-	for (int i = 0; i < t_NumTab; i++)
-		indent.append("    ");
-
-	ostringstream ss;
-	ss << indent << "{ VeUEId = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_VeUEId;
-	ss << " , RSUId = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_RSUId;
-	ss << " , ClusterIdx = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_ClusterIdx << " }";
-	return ss.str();
-}
-
-
-RRM_ICC_DRA_RSU::RRM_ICC_DRA_RSU() {}
-
-
-void RRM_ICC_DRA_RSU::initialize() {
-	m_AccessEventIdList = vector<list<int>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
-	m_WaitEventIdList = vector<list<int>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
-	m_PatternIsAvailable = vector<vector<bool>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<bool>(RRM_ICC_DRA::s_TOTAL_PATTERN_NUM, true));
-	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<ScheduleInfo*>(RRM_ICC_DRA::s_TOTAL_PATTERN_NUM, nullptr));
-	m_TransimitScheduleInfoList = vector<vector<list<ScheduleInfo*>>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<list<ScheduleInfo*>>(RRM_ICC_DRA::s_TOTAL_PATTERN_NUM));
-}
-
-
-string RRM_ICC_DRA_RSU::toString(int t_NumTab) {
-	string indent;
-	for (int i = 0; i < t_NumTab; i++)
-		indent.append("    ");
-
-	ostringstream ss;
-	//主干信息
-	ss << indent << "RSU[" << getSystemPoint()->getGTTPoint()->m_RSUId << "] :" << endl;
-	ss << indent << "{" << endl;
-
-	//开始打印VeUEIdList
-	ss << indent << "    " << "VeUEIdList :" << endl;
-	ss << indent << "    " << "{" << endl;
-	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
-		ss << indent << "        " << "{" << endl;
-		int cnt = 0;
-		for (int RSUId : getSystemPoint()->getGTTPoint()->m_ClusterVeUEIdList[clusterIdx]) {
-			if (cnt % 10 == 0)
-				ss << indent << "            [ ";
-			ss << left << setw(3) << RSUId << " , ";
-			if (cnt % 10 == 9)
-				ss << " ]" << endl;
-			cnt++;
-		}
-		if (cnt != 0 && cnt % 10 != 0)
-			ss << " ]" << endl;
-		ss << indent << "        " << "}" << endl;
-	}
-	ss << indent << "    " << "}" << endl;
-
-
-	//主干信息
-	ss << indent << "}" << endl;
-	return ss.str();
-}
-
-
-void RRM_ICC_DRA_RSU::pushToAccessEventIdList(int t_ClusterIdx, int t_EventId) {
-	m_AccessEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-
-void RRM_ICC_DRA_RSU::pushToWaitEventIdList(int t_ClusterIdx, int t_EventId) {
-	m_WaitEventIdList[t_ClusterIdx].push_back(t_EventId);
-}
-
-
-void RRM_ICC_DRA_RSU::pushToSwitchEventIdList(std::list<int>& t_SwitchVeUEIdList, int t_EventId) {
-	t_SwitchVeUEIdList.push_back(t_EventId);
-}
-
-
-void RRM_ICC_DRA_RSU::pushToTransmitScheduleInfoList(ScheduleInfo* t_Info) {
-	m_TransimitScheduleInfoList[t_Info->clusterIdx][t_Info->patternIdx].push_back(t_Info);
-}
-
-
-void RRM_ICC_DRA_RSU::pushToScheduleInfoTable(ScheduleInfo* t_Info) {
-	m_ScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
-}
-
-
-void RRM_ICC_DRA_RSU::pullFromScheduleInfoTable(int t_TTI) {
-	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-		for (int patternIdx = 0; patternIdx < RRM_ICC_DRA::s_TOTAL_PATTERN_NUM; patternIdx++) {
-			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
-				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
-				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
-			}
-		}
-	}
-}
-
 
 RRM_ICC_DRA::RRM_ICC_DRA(System* t_Context) :
 	RRM(t_Context) {

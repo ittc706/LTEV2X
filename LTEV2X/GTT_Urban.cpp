@@ -25,9 +25,6 @@
 #include"System.h"
 #include"GTT_Urban.h"
 
-#include"GTT_RSU.h"
-#include"GTT_VeUE.h"
-
 #include"IMTA.h"
 #include"Function.h"
 #include"ConfigLoader.h"

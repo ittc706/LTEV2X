@@ -3,6 +3,8 @@
 #include"GTT.h"
 #include"GTT_VeUE.h"
 
+#include"Enumeration.h"
+
 // <GTT_HighSpeed>: Geographical Topology and Transport HighSpeed
 
 class GTT_HighSpeed :public GTT {

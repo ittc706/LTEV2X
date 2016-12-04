@@ -3,6 +3,8 @@
 #include"GTT.h"
 #include"GTT_VeUE.h"
 
+#include"Enumeration.h"
+
 // <GTT_Urban>: Geographical Topology and Transport Urban
 
 class GTT_Urban :public GTT {

@@ -2,57 +2,16 @@
 #include<vector>
 #include<tuple>
 #include<memory>
+#include"WT_VeUE.h"
+#include"WT_RSU.h"
+
 #include"Enumeration.h"
 #include"Matrix.h"
 
 //<WT>: Wireless Transmission
-class VeUE;
-
-class WT_VeUE {
-	/*------------------域------------------*/
-private:
-	/*
-	* 指向用于不同单元VeUE数据交互的系统级VeUE对象
-	*/
-	VeUE* m_This;
-
-	/*------------------方法------------------*/
-public:
-	/*
-	* 取得系统级System的VeUE的指针
-	*/
-	VeUE* getSystemPoint() { return m_This; }
-
-	/*
-	* 设置系统级System的VeUE的指针
-	*/
-	void setSystemPoint(VeUE* t_Point) { m_This = t_Point; }
-};
-
-class RSU;
-
-class WT_RSU {
-	/*------------------域------------------*/
-private:
-	/*
-	* 指向用于不同单元RSU数据交互的系统级RSU对象
-	*/
-	RSU* m_This;
-
-	/*------------------方法------------------*/
-public:
-	/*
-	* 取得系统级System的RSU的指针
-	*/
-	RSU* getSystemPoint() { return m_This; }
-
-	/*
-	* 设置系统级System的RSU的指针
-	*/
-	void setSystemPoint(RSU* t_Point) { m_This = t_Point; }
-};
 
 class System;
+
 class WT {
 	/*------------------静态------------------*/
 public:

@@ -8,11 +8,13 @@
 #include"GTT_RSU.h"
 #include"GTT_eNB.h"
 #include"GTT_Road.h"
-#include"Config.h"
+
+#include"Enumeration.h"
 
 // <GTT>: Geographical Topology and Transport
 
 class System;
+
 class GTT {
 	/*------------------¾²Ì¬------------------*/
 public:

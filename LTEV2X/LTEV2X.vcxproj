@@ -135,8 +135,9 @@
     <ClInclude Include="GTT_VeUE.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="RRM_ICC_DRA.h" />
+    <ClInclude Include="RRM_RSU.h" />
+    <ClInclude Include="RRM_VeUE.h" />
     <ClInclude Include="TMC.h" />
-    <ClInclude Include="Config.h" />
     <ClInclude Include="eNB.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="IMTA.h" />
@@ -147,9 +148,13 @@
     <ClInclude Include="RSU.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="TMC_RSU.h" />
+    <ClInclude Include="TMC_VeUE.h" />
     <ClInclude Include="VUE.h" />
     <ClInclude Include="WT.h" />
     <ClInclude Include="GTT_HighSpeed.h" />
+    <ClInclude Include="WT_RSU.h" />
+    <ClInclude Include="WT_VeUE.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Complex.cpp" />
@@ -164,6 +169,8 @@
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="RRM.cpp" />
     <ClCompile Include="RRM_ICC_DRA.cpp" />
+    <ClCompile Include="RRM_RSU.cpp" />
+    <ClCompile Include="RRM_VeUE.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="TMC.cpp" />
     <ClCompile Include="IMTA.cpp" />
@@ -172,7 +179,11 @@
     <ClCompile Include="RRM_RR.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="TMC_RSU.cpp" />
+    <ClCompile Include="TMC_VeUE.cpp" />
     <ClCompile Include="WT.cpp" />
+    <ClCompile Include="WT_RSU.cpp" />
+    <ClCompile Include="WT_VeUE.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

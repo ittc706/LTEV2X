@@ -21,7 +21,6 @@
 #include<iostream>
 #include<string.h>
 #include<sstream>
-
 #include"System.h"
 #include"GTT_HighSpeed.h"
 

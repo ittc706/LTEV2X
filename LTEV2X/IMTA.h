@@ -1,7 +1,33 @@
 #pragma once
 #include<math.h>
 #include"fftw3.h"
-#include"Config.h"
+#include"Enumeration.h"
+
+struct Location {
+	bool manhattan;
+	LocationType locationType;
+	double distance; //单位:m
+	double distance1; //单位:m
+	double distance2; //单位:m
+	double eNBAntH; //单位:m
+	double VeUEAntH; //单位:m
+	double RSUAntH;//单位：m
+	double posCor[5];
+
+};
+
+struct Antenna {
+	double TxAngle; // degree
+	double RxAngle; // degree
+	double maxAttenu; // dB
+	int byTxAntNum;
+	int byRxAntNum;
+	double *TxSlantAngle; // degree
+	double *RxSlantAngle; // degree
+	double *TxAntSpacing;
+	double *RxAntSpacing;
+	double antGain;
+};
 
 /*===========================================
 *               IMTA信道模型

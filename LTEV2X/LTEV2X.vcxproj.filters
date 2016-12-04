@@ -27,9 +27,6 @@
     <ClInclude Include="eNB.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Config.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="RSU.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -91,6 +88,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GTT_eNB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RRM_VeUE.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RRM_RSU.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TMC_VeUE.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TMC_RSU.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WT_VeUE.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WT_RSU.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -156,6 +171,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GTT_Road.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RRM_VeUE.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RRM_RSU.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TMC_VeUE.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TMC_RSU.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WT_VeUE.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WT_RSU.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

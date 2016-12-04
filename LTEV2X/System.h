@@ -1,8 +1,9 @@
 #pragma once
 #include<vector>
 #include<fstream>
-#include"Config.h"
+#include"Enumeration.h"
 #include"Event.h"
+
 /*
 * 前置声明
 * 由于System会被各个模块包含，因此System.h尽量避免包含其他模块
@@ -31,6 +32,59 @@ class System{
 	friend class RRM_RR;
 	friend class TMC;
 	friend class WT;
+
+	/*------------------内部类------------------*/
+	struct SystemConfig {
+		/*
+		* 仿真平台，Linux或Windows，仅涉及到文件路径的格式
+		*/
+		Platform platform;
+
+		/*
+		* GTT模块实现的具体类别
+		*/
+		GTTMode _GTTMode;
+
+		/*
+		* RRM模块实现的具体类别
+		*/
+		RRMMode _RRMMode;
+
+		/*
+		* WT模块实现的具体类别
+		*/
+		WTMode _WTMode;
+
+		/*
+		* 仿真总共的TTI
+		*/
+		int NTTI;
+
+		/*
+		* 线程数量
+		*/
+		int threadNum;
+
+		/*
+		* 车辆刷新位置的周期
+		*/
+		int locationUpdateNTTI;
+
+		/*
+		* TTI日志开关
+		*/
+		bool TTILogIsOn = false;
+
+		/*
+		* Event日志开关
+		*/
+		bool eventLogIsOn = false;
+
+		/*
+		* Schedule日志开关
+		*/
+		bool scheduleLogIsOn = false;
+	};
 	/*------------------域------------------*/
 private:
 	/*
@@ -113,6 +167,8 @@ private:
 	*/
 	void initializeBuildConnection();
 };
+
+
 
 
 

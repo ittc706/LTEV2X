@@ -41,7 +41,6 @@
 #include"eNB.h"
 #include"Road.h"
 
-#include"Config.h"
 #include"Function.h"
 #include"ConfigLoader.h"
 

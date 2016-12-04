@@ -24,171 +24,17 @@
 #include<set>
 #include<stdexcept>
 #include"System.h"
-
 #include"GTT.h"
 #include"RRM_TDM_DRA.h"
 #include"TMC.h"
 #include"WT.h"
 
 #include"VUE.h"
-#include"GTT_VeUE.h"
 #include"RSU.h"
-#include"GTT_RSU.h"
 
 #include"Function.h"
 
 using namespace std;
-
-
-default_random_engine RRM_TDM_DRA_VeUE::s_Engine((unsigned)time(NULL));
-
-
-RRM_TDM_DRA_VeUE::RRM_TDM_DRA_VeUE() :RRM_VeUE(RRM_TDM_DRA::s_TOTAL_PATTERN_NUM) {}
-
-
-int RRM_TDM_DRA_VeUE::selectRBBasedOnP2(const std::vector<int>&t_CurAvaliablePatternIdx) {
-	int size = static_cast<int>(t_CurAvaliablePatternIdx.size());
-	if (size == 0) return -1;
-	std::uniform_int_distribution<int> u(0, size - 1);
-	return t_CurAvaliablePatternIdx[u(s_Engine)];
-}
-
-string RRM_TDM_DRA_VeUE::toString(int t_NumTab) {
-	string indent;
-	for (int i = 0; i < t_NumTab; i++)
-		indent.append("    ");
-
-	ostringstream ss;
-	ss << indent << "{ VeUEId = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_VeUEId;
-	ss << " , RSUId = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_RSUId;
-	ss << " , ClusterIdx = " << left << setw(3) << getSystemPoint()->getGTTPoint()->m_ClusterIdx;
-	ss << " , ScheduleInterval = [" << left << setw(3) << get<0>(m_ScheduleInterval) << "," << left << setw(3) << get<1>(m_ScheduleInterval) << "] }";
-	return ss.str();
-}
-
-
-RRM_TDM_DRA_RSU::RRM_TDM_DRA_RSU() {}
-
-
-void RRM_TDM_DRA_RSU::initialize() {
-	m_AccessEventIdList = vector<pair<list<int>, list<int>>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
-	m_WaitEventIdList = vector<pair<list<int>, list<int>>>(getSystemPoint()->getGTTPoint()->m_ClusterNum);
-	m_PatternIsAvailable = vector<vector<bool>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<bool>(RRM_TDM_DRA::s_TOTAL_PATTERN_NUM, true));
-	m_ScheduleInfoTable = vector<vector<ScheduleInfo*>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<ScheduleInfo*>(RRM_TDM_DRA::s_TOTAL_PATTERN_NUM, nullptr));
-	m_TransimitScheduleInfoList = vector<vector<list<ScheduleInfo*>>>(getSystemPoint()->getGTTPoint()->m_ClusterNum, vector<list<ScheduleInfo*>>(RRM_TDM_DRA::s_TOTAL_PATTERN_NUM));
-}
-
-
-int RRM_TDM_DRA_RSU::getClusterIdx(int t_TTI) {
-	int roundATTI = t_TTI%RRM_TDM_DRA::s_NTTI; //将TTI映射到[0-s_NTTI)的范围
-	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++)
-		if (roundATTI <= get<1>(m_ClusterTDRInfo[clusterIdx])) return clusterIdx;
-	return -1;
-}
-
-
-string RRM_TDM_DRA_RSU::toString(int t_NumTab) {
-	string indent;
-	for (int i = 0; i < t_NumTab; i++)
-		indent.append("    ");
-
-	ostringstream ss;
-	//主干信息
-	ss << indent << "RSU[" << getSystemPoint()->getGTTPoint()->m_RSUId << "] :" << endl;
-	ss << indent << "{" << endl;
-
-	//开始打印VeUEIdList
-	ss << indent << "    " << "VeUEIdList :" << endl;
-	ss << indent << "    " << "{" << endl;
-	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-		ss << indent << "        " << "Cluster[" << clusterIdx << "] :" << endl;
-		ss << indent << "        " << "{" << endl;
-		int cnt = 0;
-		for (int RSUId : getSystemPoint()->getGTTPoint()->m_ClusterVeUEIdList[clusterIdx]) {
-			if (cnt % 10 == 0)
-				ss << indent << "            [ ";
-			ss << left << setw(3) << RSUId << " , ";
-			if (cnt % 10 == 9)
-				ss << " ]" << endl;
-			cnt++;
-		}
-		if (cnt != 0 && cnt % 10 != 0)
-			ss << " ]" << endl;
-		ss << indent << "        " << "}" << endl;
-	}
-	ss << indent << "    " << "}" << endl;
-
-	//开始打印clusterInfo
-	ss << indent << "    " << "clusterInfo :" << endl;
-	ss << indent << "    " << "{" << endl;
-
-	ss << indent << "        ";
-	for (const tuple<int, int, int>&t : getTDM_DRAPoint()->m_ClusterTDRInfo)
-		ss << "[ " << get<0>(t) << " , " << get<1>(t) << " ] ,";
-	ss << endl;
-	ss << indent << "    " << "}" << endl;
-
-
-	//主干信息
-	ss << indent << "}" << endl;
-	return ss.str();
-}
-
-
-void RRM_TDM_DRA_RSU::pushToAccessEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
-	if (t_IsEmergency)
-		m_AccessEventIdList[t_ClusterIdx].first.push_back(t_EventId);
-	else
-		m_AccessEventIdList[t_ClusterIdx].second.push_back(t_EventId);
-}
-
-
-void RRM_TDM_DRA_RSU::pushToWaitEventIdList(bool t_IsEmergency, int t_ClusterIdx, int t_EventId) {
-	if (t_IsEmergency)
-		m_WaitEventIdList[t_ClusterIdx].first.push_back(t_EventId);
-	else
-		m_WaitEventIdList[t_ClusterIdx].second.push_back(t_EventId);
-}
-
-
-void RRM_TDM_DRA_RSU::pushToSwitchEventIdList(std::list<int>& t_SwitchVeUEIdList, int t_EventId) {
-	t_SwitchVeUEIdList.push_back(t_EventId);
-}
-
-
-void RRM_TDM_DRA_RSU::pushToTransimitScheduleInfoList(ScheduleInfo* t_Info) {
-	m_TransimitScheduleInfoList[t_Info->clusterIdx][t_Info->patternIdx].push_back(t_Info);
-}
-
-
-void RRM_TDM_DRA_RSU::pushToScheduleInfoTable(ScheduleInfo* t_Info) {
-	m_ScheduleInfoTable[t_Info->clusterIdx][t_Info->patternIdx] = t_Info;
-}
-
-
-void RRM_TDM_DRA_RSU::pullFromScheduleInfoTable(int t_TTI) {
-	/*将处于调度表中当前可以传输的信息压入m_TransimitEventIdList*/
-
-	/*  EMERGENCY  */
-	for (int clusterIdx = 0; clusterIdx < getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
-		for (int patternIdx = 0; patternIdx < RRM_TDM_DRA::s_PATTERN_NUM_PER_PATTERN_TYPE[EMERGENCY]; patternIdx++) {
-			if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
-				m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
-				m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
-			}
-		}
-	}
-	/*  EMERGENCY  */
-
-	int clusterIdx = getClusterIdx(t_TTI);
-	for (int patternIdx = RRM_TDM_DRA::s_PATTERN_NUM_PER_PATTERN_TYPE[EMERGENCY]; patternIdx < RRM_TDM_DRA::s_TOTAL_PATTERN_NUM; patternIdx++) {
-		if (m_ScheduleInfoTable[clusterIdx][patternIdx] != nullptr) {
-			m_TransimitScheduleInfoList[clusterIdx][patternIdx].push_back(m_ScheduleInfoTable[clusterIdx][patternIdx]);
-			m_ScheduleInfoTable[clusterIdx][patternIdx] = nullptr;
-		}
-	}
-}
-
 
 const int RRM_TDM_DRA::s_RB_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM] = { 2,10,10 };
 
