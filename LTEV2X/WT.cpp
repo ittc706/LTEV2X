@@ -40,13 +40,13 @@ WT::WT(System* t_Context) : m_Context(t_Context) {
 
 WT::~WT() {
 	if (m_VeUEAry != nullptr) {
-		for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
+		for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++)
 			Delete::safeDelete(m_VeUEAry[VeUEId]);
 		Delete::safeDelete(m_VeUEAry, true);
 	}
 
 	if (m_RSUAry != nullptr) {
-		for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++)
+		for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++)
 			Delete::safeDelete(m_RSUAry[RSUId]);
 		Delete::safeDelete(m_RSUAry, true);
 	}
@@ -75,14 +75,14 @@ void WT::initialize() {
 	in.close();
 
 	//初始化VeUE的该模块参数部分
-	m_VeUEAry = new WT_VeUE*[getContext()->m_Config.VeUENum];
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	m_VeUEAry = new WT_VeUE*[GTT::s_VeUE_NUM];
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		m_VeUEAry[VeUEId] = new WT_VeUE();
 	}
 
 	//初始化RSU的该模块参数部分
-	m_RSUAry = new WT_RSU*[getContext()->m_Config.RSUNum];
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	m_RSUAry = new WT_RSU*[GTT::s_RSU_NUM];
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		m_RSUAry[RSUId] = new WT_RSU();
 	}
 }

@@ -2,7 +2,15 @@
 #include<vector>
 #include<list>
 #include<string>
-#include"Config.h"
+
+struct eNBConfig {
+	int roadId;
+	int eNBId;
+	double X;
+	double Y;
+	double AbsX;
+	double AbsY;
+};
 
 class eNB;
 class GTT_Urban_eNB;

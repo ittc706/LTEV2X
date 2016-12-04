@@ -3,11 +3,7 @@
 #include"GTT.h"
 #include"GTT_VeUE.h"
 
-
 // <GTT_HighSpeed>: Geographical Topology and Transport HighSpeed
- 
-
-
 
 class GTT_HighSpeed :public GTT {
 	/*------------------静态------------------*/
@@ -78,11 +74,6 @@ public:
 	static void loadConfig(Platform t_Platform);
 	/*------------------域------------------*/
 private:
-	/*
-	* 高速Rode总数
-	*/
-	int m_HighSpeedRodeNum;
-
 	/*
 	* user per road array
 	*/

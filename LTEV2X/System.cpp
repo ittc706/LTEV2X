@@ -348,8 +348,8 @@ void System::initializeTMCModule() {
 
 void System::initializeBuildConnection() {
 	//系统VeUE与各个单元中VeUE视图建立关联
-	m_VeUEAry = new VeUE[m_Config.VeUENum];
-	for (int VeUEId = 0; VeUEId < m_Config.VeUENum; VeUEId++) {
+	m_VeUEAry = new VeUE[GTT::s_VeUE_NUM];
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		m_VeUEAry[VeUEId].m_GTT = m_GTTPoint->m_VeUEAry[VeUEId];
 		m_GTTPoint->m_VeUEAry[VeUEId]->setSystemPoint(&m_VeUEAry[VeUEId]);
 
@@ -364,8 +364,8 @@ void System::initializeBuildConnection() {
 	}
 
 	//系统RSU与各个单元中RSU视图建立关联
-	m_RSUAry = new RSU[m_Config.RSUNum];
-	for (int RSUId = 0; RSUId < m_Config.RSUNum; RSUId++) {
+	m_RSUAry = new RSU[GTT::s_RSU_NUM];
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		m_RSUAry[RSUId].m_GTT = m_GTTPoint->m_RSUAry[RSUId];
 		m_GTTPoint->m_RSUAry[RSUId]->setSystemPoint(&m_RSUAry[RSUId]);
 
@@ -383,15 +383,15 @@ void System::initializeBuildConnection() {
 	}
 
 	//系统eNB与各个单元中eNB视图建立关联
-	m_eNBAry = new eNB[m_Config.eNBNum];
-	for (int eNBId = 0; eNBId < m_Config.eNBNum; eNBId++) {
+	m_eNBAry = new eNB[GTT::s_eNB_NUM];
+	for (int eNBId = 0; eNBId < GTT::s_eNB_NUM; eNBId++) {
 		m_eNBAry[eNBId].m_GTT = m_GTTPoint->m_eNBAry[eNBId];
 		m_GTTPoint->m_eNBAry[eNBId]->setSystemPoint(&m_eNBAry[eNBId]);
 	}
 
 	//系统Road与各个单元中Road视图建立关联
-	m_RoadAry = new Road[m_Config.RoadNum];
-	for (int roadId = 0; roadId < m_Config.RoadNum; roadId++) {
+	m_RoadAry = new Road[GTT::s_ROAD_NUM];
+	for (int roadId = 0; roadId < GTT::s_ROAD_NUM; roadId++) {
 		m_RoadAry[roadId].m_GTT = m_GTTPoint->m_RoadAry[roadId];
 		m_GTTPoint->m_RoadAry[roadId]->setSystemPoint(&m_RoadAry[roadId]);
 	}

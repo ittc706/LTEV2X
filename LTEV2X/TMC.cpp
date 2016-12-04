@@ -197,11 +197,11 @@ void TMC::loadConfig(Platform t_Platform) {
 }
 
 TMC::~TMC() {
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++)
 		Delete::safeDelete(m_VeUEAry[VeUEId]);
 	Delete::safeDelete(m_VeUEAry, true);
 
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++)
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++)
 		Delete::safeDelete(m_RSUAry[RSUId]);
 	Delete::safeDelete(m_RSUAry, true);
 
@@ -232,7 +232,7 @@ TMC::TMC(System* t_Context) :
 
 	m_DataVeUEIdListOfTriggerTTI = vector<list<int>>(getContext()->m_Config.NTTI);
 
-	m_TTIRSUThroughput = vector<vector<int>>(getContext()->m_Config.NTTI, vector<int>(getContext()->m_Config.RSUNum));
+	m_TTIRSUThroughput = vector<vector<int>>(getContext()->m_Config.NTTI, vector<int>(GTT::s_RSU_NUM));
 
 	if (getContext()->m_Config.platform == Windows) {
 		m_FileEventLogInfo.open("Log\\TMCLog\\EventLogInfo.txt");
@@ -276,21 +276,21 @@ TMC::TMC(System* t_Context) :
 
 void TMC::initialize() {
 	//初始化VeUE的该模块参数部分
-	m_VeUEAry = new TMC_VeUE*[getContext()->m_Config.VeUENum];
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	m_VeUEAry = new TMC_VeUE*[GTT::s_VeUE_NUM];
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		m_VeUEAry[VeUEId] = new TMC_VeUE();
 	}
 
 	//初始化RSU的该模块参数部分
-	m_RSUAry = new TMC_RSU*[getContext()->m_Config.RSUNum];
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	m_RSUAry = new TMC_RSU*[GTT::s_RSU_NUM];
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		m_RSUAry[RSUId] = new TMC_RSU();
 	}
 }
 
 void TMC::eventTrigger() {
 	int curTTI = getContext()->m_TTI;
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		TMC_VeUE* _VeUE = m_VeUEAry[VeUEId];
 		int congestionLevel = _VeUE->getSystemPoint()->getGTTPoint()->m_CongestionLevel;
 
@@ -324,10 +324,10 @@ void TMC::buildEmergencyDataEventTriggerTTI() {
 	uniform_real_distribution<double> urd(0, 1);
 
 	//生成紧急事件的发生时刻，每个时间槽存放该时刻发生紧急事件的车辆
-	m_VeUEEmergencyNum = vector<int>(getContext()->m_Config.VeUENum, 0);//初始化统计量
+	m_VeUEEmergencyNum = vector<int>(GTT::s_VeUE_NUM, 0);//初始化统计量
 	int countEmergency = 0;
 	if (s_EMERGENCY_POISSON != 0) {
-		for (int VeUEId = 0; VeUEId <getContext()->m_Config.VeUENum; VeUEId++) {
+		for (int VeUEId = 0; VeUEId <GTT::s_VeUE_NUM; VeUEId++) {
 			//依次生成每个车辆的紧急事件到达时刻
 			double T = 0;
 			while (T <getContext()->m_Config.NTTI) {
@@ -347,10 +347,10 @@ void TMC::buildEmergencyDataEventTriggerTTI() {
 
 
 	//生成数据业务事件的发生时刻，每个时间槽存放该时刻发生数据业务事件的车辆
-	m_VeUEDataNum = vector<int>(getContext()->m_Config.VeUENum, 0);//初始化统计量
+	m_VeUEDataNum = vector<int>(GTT::s_VeUE_NUM, 0);//初始化统计量
 	int countData = 0;
 	if (s_DATA_POISSON != 0) {
-		for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+		for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 			//依次生成每个车辆的Data事件到达时刻
 			double T = 0;
 			while (T < getContext()->m_Config.NTTI) {
@@ -489,9 +489,9 @@ void TMC::processStatistics() {
 
 	/*------------------统计吞吐率------------------*/
 	vector<int> tmpTTIThroughput(getContext()->m_Config.NTTI);
-	vector<int> tmpRSUThroughput(getContext()->m_Config.RSUNum);
+	vector<int> tmpRSUThroughput(GTT::s_RSU_NUM);
 	for (int tmpTTI = 0; tmpTTI < getContext()->m_Config.NTTI; tmpTTI++) {
-		for (int tmpRSUId = 0; tmpRSUId < getContext()->m_Config.RSUNum; tmpRSUId++) {
+		for (int tmpRSUId = 0; tmpRSUId < GTT::s_RSU_NUM; tmpRSUId++) {
 			tmpTTIThroughput[tmpTTI] += m_TTIRSUThroughput[tmpTTI][tmpRSUId];
 			tmpRSUThroughput[tmpRSUId] += m_TTIRSUThroughput[tmpTTI][tmpRSUId];
 		}

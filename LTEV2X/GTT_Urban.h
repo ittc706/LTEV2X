@@ -5,7 +5,6 @@
 
 // <GTT_Urban>: Geographical Topology and Transport Urban
 
-
 class GTT_Urban :public GTT {
 	/*------------------¾²Ì¬------------------*/
 public:

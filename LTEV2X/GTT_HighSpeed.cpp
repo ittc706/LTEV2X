@@ -156,14 +156,14 @@ GTT_HighSpeed::GTT_HighSpeed(System* t_Context) :
 
 
 void GTT_HighSpeed::configure() {
-	getContext()->m_Config.eNBNum = s_eNB_NUM;
-	m_HighSpeedRodeNum = s_ROAD_NUM;
-	getContext()->m_Config.RSUNum = s_RSU_NUM;//目前只表示UE RSU数
-	m_pupr = new int[m_HighSpeedRodeNum];
-	getContext()->m_Config.VeUENum = 0;
+	GTT::s_eNB_NUM = s_eNB_NUM;
+	GTT::s_ROAD_NUM = s_ROAD_NUM;
+	GTT::s_RSU_NUM = s_RSU_NUM;//目前只表示UE RSU数
+	m_pupr = new int[GTT::s_ROAD_NUM];
+	int tempVeUENum = 0;
 	double Lambda = s_ROAD_LENGTH*3.6 / (2.5 * m_Speed);
 	srand((unsigned)time(NULL));
-	for (int temp = 0; temp != m_HighSpeedRodeNum; ++temp)
+	for (int temp = 0; temp != GTT::s_ROAD_NUM; ++temp)
 	{
 		int k = 0;
 		long double p = 1.0;
@@ -175,17 +175,18 @@ void GTT_HighSpeed::configure() {
 			k++;
 		}
 		m_pupr[temp] = k - 1;
-		getContext()->m_Config.VeUENum = getContext()->m_Config.VeUENum + k - 1;
+		tempVeUENum = tempVeUENum + k - 1;
 	}
+	GTT::s_VeUE_NUM = tempVeUENum;
 	m_Speed = s_SPEED;//车速设定,km/h
 }
 
 
 void GTT_HighSpeed::initialize() {
 	//初始化m_eNBAry
-	m_eNBAry = new GTT_eNB*[getContext()->m_Config.eNBNum];
+	m_eNBAry = new GTT_eNB*[GTT::s_eNB_NUM];
 	eNBConfig _eNBConfig;
-	for (int eNBId = 0; eNBId != getContext()->m_Config.eNBNum; ++eNBId) {
+	for (int eNBId = 0; eNBId != GTT::s_eNB_NUM; ++eNBId) {
 		_eNBConfig.eNBId = eNBId;
 		m_eNBAry[eNBId] = new GTT_HighSpeed_eNB();
 		m_eNBAry[eNBId]->initialize(_eNBConfig);
@@ -193,27 +194,27 @@ void GTT_HighSpeed::initialize() {
 	}
 
 	//初始化m_RoadAry
-	m_RoadAry = new GTT_Road*[m_HighSpeedRodeNum];
+	m_RoadAry = new GTT_Road*[GTT::s_ROAD_NUM];
 	HighSpeedRodeConfig highSpeedRodeConfig;
-	for (int roadId = 0; roadId != m_HighSpeedRodeNum; ++roadId) {
+	for (int roadId = 0; roadId != GTT::s_ROAD_NUM; ++roadId) {
 		highSpeedRodeConfig.roadId = roadId;
 		m_RoadAry[roadId] = new GTT_HighSpeed_Road(highSpeedRodeConfig);
 	}
 
 	
 	//初始化m_RSUAry
-	m_RSUAry = new GTT_RSU*[getContext()->m_Config.RSUNum];
-	for (int RSUId = 0; RSUId != getContext()->m_Config.RSUNum; RSUId++) {
+	m_RSUAry = new GTT_RSU*[GTT::s_RSU_NUM];
+	for (int RSUId = 0; RSUId != GTT::s_RSU_NUM; RSUId++) {
 		m_RSUAry[RSUId] = new GTT_HighSpeed_RSU();
 		m_FileLocationInfo << m_RSUAry[RSUId]->toString(0);
 	}
 
 	//初始化m_VeUEAry
-	m_VeUEAry = new GTT_VeUE*[getContext()->m_Config.VeUENum];
+	m_VeUEAry = new GTT_VeUE*[GTT::s_VeUE_NUM];
 	VeUEConfig _VeUEConfig;
 	int VeUEId = 0;
 
-	for (int roadId = 0; roadId != m_HighSpeedRodeNum; roadId++) {
+	for (int roadId = 0; roadId != GTT::s_ROAD_NUM; roadId++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[roadId]; uprIdx++) {
 			_VeUEConfig.roadId = roadId;
 			_VeUEConfig.X = -1732 + rand() % 3465;
@@ -221,12 +222,12 @@ void GTT_HighSpeed::initialize() {
 			_VeUEConfig.AbsX = m_RoadAry[roadId]->m_AbsX + _VeUEConfig.X;
 			_VeUEConfig.AbsY = m_RoadAry[roadId]->m_AbsY + _VeUEConfig.Y;
 			_VeUEConfig.V = m_Speed;
-			_VeUEConfig.VeUENum = getContext()->m_Config.VeUENum;
+			_VeUEConfig.VeUENum = GTT::s_VeUE_NUM;
 			m_VeUEAry[VeUEId++] = new GTT_HighSpeed_VeUE(_VeUEConfig);
 		}
 	}
 
-	for (int VeIdx = 0; VeIdx != getContext()->m_Config.VeUENum; VeIdx++) {
+	for (int VeIdx = 0; VeIdx != GTT::s_VeUE_NUM; VeIdx++) {
 		m_VeUEAry[VeIdx]->m_Distance = new double[s_RSU_NUM];
 		for (int RSUIdx = 0; RSUIdx != s_RSU_NUM; RSUIdx++) {
 			m_VeUEAry[VeIdx]->m_Distance[RSUIdx] = sqrt(pow((m_VeUEAry[VeIdx]->m_AbsX - m_RSUAry[RSUIdx]->m_AbsX), 2.0f) + pow((m_VeUEAry[VeIdx]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY), 2.0f));
@@ -236,7 +237,7 @@ void GTT_HighSpeed::initialize() {
 
 
 void GTT_HighSpeed::cleanWhenLocationUpdate() {
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		for (auto &c : m_VeUEAry[VeUEId]->m_InterferenceH) {
 			if (c != nullptr)
 				Delete::safeDelete(c, true);
@@ -247,7 +248,7 @@ void GTT_HighSpeed::cleanWhenLocationUpdate() {
 
 void GTT_HighSpeed::channelGeneration() {
 	//RSU.m_VeUEIdList是在freshLoc函数内生成的，因此需要在更新位置前清空这个列表
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		GTT_RSU *_GTT_RSU = m_RSUAry[RSUId];
 		_GTT_RSU->m_VeUEIdList.clear();
 		for (int clusterIdx = 0; clusterIdx < _GTT_RSU->m_ClusterNum; clusterIdx++) {
@@ -255,14 +256,14 @@ void GTT_HighSpeed::channelGeneration() {
 		}
 	}
 	//同时也清除eNB.m_VeUEIdList
-	for (int eNBId = 0; eNBId < getContext()->m_Config.eNBNum; eNBId++)
+	for (int eNBId = 0; eNBId < GTT::s_eNB_NUM; eNBId++)
 		m_eNBAry[eNBId]->m_VeUEIdList.clear();
 
 	//运动模型
 	freshLoc();
 
 	//将更新后的RSU.m_VeUEIdList压入对应的簇中
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		GTT_RSU *_GTT_RSU = m_RSUAry[RSUId];
 		for (int VeUEId : _GTT_RSU->m_VeUEIdList) {
 			int clusterIdx = m_VeUEAry[VeUEId]->m_ClusterIdx;
@@ -271,12 +272,12 @@ void GTT_HighSpeed::channelGeneration() {
 	}
 
 	//记录并更新每辆车的位置日志
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++)
 		m_VeUEAry[VeUEId]->m_LocationUpdateLogInfoList.push_back(tuple<int, int>(m_VeUEAry[VeUEId]->m_RSUId, m_VeUEAry[VeUEId]->m_ClusterIdx));
 
 	//记录RSU内车辆的数目
 	vector<int> curVeUENum;
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		GTT_RSU *_GTT_RSU = m_RSUAry[RSUId];
 		curVeUENum.push_back(static_cast<int>(_GTT_RSU->m_VeUEIdList.size()));
 	}
@@ -285,7 +286,7 @@ void GTT_HighSpeed::channelGeneration() {
 
 	//<UNDONE>:基站类的RSUIDList在哪里维护的?
 	//更新基站的VeUE容器
-	for (int eNBId = 0; eNBId < getContext()->m_Config.eNBNum; eNBId++) {
+	for (int eNBId = 0; eNBId < GTT::s_eNB_NUM; eNBId++) {
 		GTT_eNB *_eNB = m_eNBAry[eNBId];
 		for (int RSUId : _eNB->m_RSUIdList) {
 			for (int VeUEId : m_RSUAry[RSUId]->m_VeUEIdList) {
@@ -298,7 +299,7 @@ void GTT_HighSpeed::channelGeneration() {
 
 void GTT_HighSpeed::freshLoc() {
 	double freshTime = ((double)getContext()->m_Config.locationUpdateNTTI) / 1000.0;
-	for (int UserIdx = 0; UserIdx != getContext()->m_Config.VeUENum; UserIdx++)
+	for (int UserIdx = 0; UserIdx != GTT::s_VeUE_NUM; UserIdx++)
 	{
 
 		if (m_VeUEAry[UserIdx]->m_VAngle == 0)
@@ -345,7 +346,7 @@ void GTT_HighSpeed::freshLoc() {
 	location.RSUAntH = 5;
 
 	int RSUIdx = 0;
-	for (int UserIdx1 = 0; UserIdx1 != getContext()->m_Config.VeUENum; UserIdx1++)
+	for (int UserIdx1 = 0; UserIdx1 != GTT::s_VeUE_NUM; UserIdx1++)
 	{
 		//计算车辆与所有RSU之间的路径损耗
 		double wPL[s_RSU_NUM] = { 0 };
@@ -385,7 +386,7 @@ void GTT_HighSpeed::freshLoc() {
 		//车辆选择最小衰落的RSU与之通信
 		RSUIdx = FirstRSUIdx;
 
-		m_VeUEAry[UserIdx1]->m_IMTA = new IMTA[getContext()->m_Config.RSUNum];
+		m_VeUEAry[UserIdx1]->m_IMTA = new IMTA[GTT::s_RSU_NUM];
 
 		m_VeUEAry[UserIdx1]->m_RSUId = RSUIdx;
 		m_RSUAry[RSUIdx]->m_VeUEIdList.push_back(UserIdx1);
@@ -466,7 +467,7 @@ void GTT_HighSpeed::freshLoc() {
 
 
 void GTT_HighSpeed::writeVeUELocationUpdateLogInfo() {
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		m_FileVeUELocationUpdateLogInfo << "VeUE[ " << left << setw(3) << VeUEId << "]" << endl;
 		m_FileVeUELocationUpdateLogInfo << "{" << endl;
 		for (const tuple<int, int> &t : m_VeUEAry[VeUEId]->m_LocationUpdateLogInfoList)
@@ -483,11 +484,11 @@ void GTT_HighSpeed::writeVeUELocationUpdateLogInfo() {
 
 
 void GTT_HighSpeed::calculateInterference(const vector<vector<list<int>>>& t_RRMInterferenceVec) {
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
-		m_VeUEAry[VeUEId]->m_IMTA = new IMTA[getContext()->m_Config.RSUNum];
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
+		m_VeUEAry[VeUEId]->m_IMTA = new IMTA[GTT::s_RSU_NUM];
 	}
 
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		for (int patternIdx = 0; patternIdx < t_RRMInterferenceVec[VeUEId].size(); patternIdx++) {
 			const list<int> &lst = t_RRMInterferenceVec[VeUEId][patternIdx];//当前车辆，当前Pattern下所有干扰车辆的Id
 
@@ -572,7 +573,7 @@ void GTT_HighSpeed::calculateInterference(const vector<vector<list<int>>>& t_RRM
 		}
 	}
 
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		Delete::safeDelete(m_VeUEAry[VeUEId]->m_IMTA, true);
 	}
 }

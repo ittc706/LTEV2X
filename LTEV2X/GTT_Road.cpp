@@ -48,7 +48,6 @@ GTT_Urban_Road::GTT_Urban_Road(UrbanRoadConfig &t_RoadConfig) {
 		*/
 		m_eNB = *((GTT_eNB **)t_RoadConfig.eNB + t_RoadConfig.eNBOffset);
 		eNBConfig eNBConfig;
-		eNBConfig.systemConfig = t_RoadConfig.systemConfig;
 		eNBConfig.roadId = m_RoadId;
 		eNBConfig.X = 42.0f;
 		eNBConfig.Y = -88.5f;

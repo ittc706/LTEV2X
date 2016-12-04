@@ -212,34 +212,34 @@ RRM_TDM_DRA::RRM_TDM_DRA(System* t_Context) :
 	RRM(t_Context) {
 	m_ThreadNum = t_Context->m_Config.threadNum;
 
-	m_InterferenceVec = vector<vector<list<int>>>(getContext()->m_Config.VeUENum, vector<list<int>>(s_TOTAL_PATTERN_NUM));
+	m_InterferenceVec = vector<vector<list<int>>>(GTT::s_VeUE_NUM, vector<list<int>>(s_TOTAL_PATTERN_NUM));
 	m_ThreadsRSUIdRange = vector<pair<int, int>>(m_ThreadNum);
 
-	int num = getContext()->m_Config.RSUNum / m_ThreadNum;
+	int num = GTT::s_RSU_NUM / m_ThreadNum;
 	for (int threadIdx = 0; threadIdx < m_ThreadNum; threadIdx++) {
 		m_ThreadsRSUIdRange[threadIdx] = pair<int, int>(threadIdx*num, (threadIdx + 1)*num - 1);
 	}
-	m_ThreadsRSUIdRange[m_ThreadNum - 1].second = getContext()->m_Config.RSUNum - 1;//修正最后一个边界
+	m_ThreadsRSUIdRange[m_ThreadNum - 1].second = GTT::s_RSU_NUM - 1;//修正最后一个边界
 }
 
 
 void RRM_TDM_DRA::initialize() {
 	//初始化VeUE的该模块参数部分
-	m_VeUEAry = new RRM_VeUE*[getContext()->m_Config.VeUENum];
-	for (int VeUEId = 0; VeUEId <getContext()->m_Config.VeUENum; VeUEId++) {
+	m_VeUEAry = new RRM_VeUE*[GTT::s_VeUE_NUM];
+	for (int VeUEId = 0; VeUEId <GTT::s_VeUE_NUM; VeUEId++) {
 		m_VeUEAry[VeUEId] = new RRM_TDM_DRA_VeUE();
 	}
 
 	//初始化RSU的该模块参数部分
-	m_RSUAry = new RRM_RSU*[getContext()->m_Config.RSUNum];
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	m_RSUAry = new RRM_RSU*[GTT::s_RSU_NUM];
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		m_RSUAry[RSUId] = new RRM_TDM_DRA_RSU();
 	}
 }
 
 
 void RRM_TDM_DRA::cleanWhenLocationUpdate() {
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		for (vector<int>& preInterferenceVeUEIdVec : m_VeUEAry[VeUEId]->m_PreInterferenceVeUEIdVec)
 			preInterferenceVeUEIdVec.clear();
 
@@ -285,7 +285,7 @@ void RRM_TDM_DRA::schedule() {
 
 
 void RRM_TDM_DRA::informationClean() {
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			_RSU->getTDM_DRAPoint()->m_AccessEventIdList[clusterIdx].first.clear();
@@ -297,7 +297,7 @@ void RRM_TDM_DRA::informationClean() {
 
 void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 	if (!t_ClusterFlag)return;
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		//特殊情况，当该RSU内无一辆车时
@@ -368,7 +368,7 @@ void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 
 void RRM_TDM_DRA::uniformTDM(bool t_ClusterFlag) {
 	if (!t_ClusterFlag)return;
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		//初始化
@@ -437,7 +437,7 @@ void RRM_TDM_DRA::processEventList() {
 
 
 void RRM_TDM_DRA::processScheduleInfoTableWhenLocationUpdate() {
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		//开始处理 m_ScheduleInfoTable
@@ -490,7 +490,7 @@ void RRM_TDM_DRA::processScheduleInfoTableWhenLocationUpdate() {
 
 
 void RRM_TDM_DRA::processWaitEventIdListWhenLocationUpdate() {
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		//开始处理 m_WaitEventIdList
 
@@ -604,7 +604,7 @@ void RRM_TDM_DRA::processSwitchListWhenLocationUpdate() {
 
 
 void RRM_TDM_DRA::processWaitEventIdList() {
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		/*  EMERGENCY  */
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
@@ -664,7 +664,7 @@ void RRM_TDM_DRA::processWaitEventIdList() {
 
 
 void RRM_TDM_DRA::selectRBBasedOnP123() {
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
@@ -750,7 +750,7 @@ void RRM_TDM_DRA::selectRBBasedOnP123() {
 
 
 void RRM_TDM_DRA::delaystatistics() {
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
@@ -791,7 +791,7 @@ void RRM_TDM_DRA::delaystatistics() {
 }
 
 void RRM_TDM_DRA::conflictListener() {
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
@@ -855,12 +855,12 @@ void RRM_TDM_DRA::conflictListener() {
 
 void RRM_TDM_DRA::transimitPreparation() {
 	//首先清空上一次干扰信息
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++)
 		for (int patternIdx = 0; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++)
 			m_InterferenceVec[VeUEId][patternIdx].clear();
 
 	//统计本次的干扰信息
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
@@ -885,7 +885,7 @@ void RRM_TDM_DRA::transimitPreparation() {
 
 	//更新每辆车的干扰车辆列表	
 	for (int patternIdx = 0; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
-		for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+		for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 			list<int>& interList = m_InterferenceVec[VeUEId][patternIdx];
 
 			m_VeUEAry[VeUEId]->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
@@ -1035,7 +1035,7 @@ void RRM_TDM_DRA::writeScheduleInfo() {
 	if (!getContext()->m_Config.scheduleLogIsOn)return;
 	m_FileScheduleInfo << "[ TTI = " << left << setw(3) << getContext()->m_TTI << "]" << endl;
 	m_FileScheduleInfo << "{" << endl;
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		int NonEmergencyClusterIdx = _RSU->getTDM_DRAPoint()->getClusterIdx(getContext()->m_TTI);
@@ -1083,7 +1083,7 @@ void RRM_TDM_DRA::writeScheduleInfo() {
 }
 
 void RRM_TDM_DRA::transimitEnd() {
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
 		/*  EMERGENCY  */
@@ -1210,7 +1210,7 @@ void RRM_TDM_DRA::writeClusterPerformInfo() {
 	//打印VeUE信息
 	m_FileClasterPerformInfo << "    VUE Info: " << endl;
 	m_FileClasterPerformInfo << "    {" << endl;
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++) {
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		RRM_VeUE &_VeUE = *(m_VeUEAry[VeUEId]);
 		m_FileClasterPerformInfo << _VeUE.getTDM_DRAPoint()->toString(2) << endl;
 	}
@@ -1228,7 +1228,7 @@ void RRM_TDM_DRA::writeClusterPerformInfo() {
 	//打印RSU信息
 	m_FileClasterPerformInfo << "    RSU Info: " << endl;
 	m_FileClasterPerformInfo << "    {" << endl;
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++) {
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		m_FileClasterPerformInfo << _RSU->getTDM_DRAPoint()->toString(2) << endl;
 	}

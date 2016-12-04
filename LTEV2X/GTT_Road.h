@@ -55,6 +55,18 @@ public:
 };
 
 
+struct UrbanRoadConfig {
+	int roadId;
+	void *eNB;
+	int eNBNum;
+	int eNBOffset;
+};
+
+
+struct HighSpeedRodeConfig {
+	int roadId;
+};
+
 class GTT_eNB;
 
 class GTT_Urban_Road :public GTT_Road {

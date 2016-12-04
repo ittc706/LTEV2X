@@ -28,8 +28,13 @@
 
 using namespace std;
 
+int GTT::s_VeUE_NUM = INVALID;
 
+int GTT::s_RSU_NUM = INVALID;
 
+int GTT::s_eNB_NUM = INVALID;
+
+int GTT::s_ROAD_NUM = INVALID;
 
 int GTT::s_CONGESTION_LEVEL_NUM = INVALID;
 
@@ -108,19 +113,19 @@ GTT::GTT(System* t_Context) : m_Context(t_Context) {
 
 
 GTT::~GTT(){
-	for (int VeUEId = 0; VeUEId < getContext()->m_Config.VeUENum; VeUEId++)
+	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++)
 		Delete::safeDelete(m_VeUEAry[VeUEId]);
 	Delete::safeDelete(m_VeUEAry, true);
 
-	for (int RSUId = 0; RSUId < getContext()->m_Config.RSUNum; RSUId++)
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++)
 		Delete::safeDelete(m_RSUAry[RSUId]);
 	Delete::safeDelete(m_RSUAry, true);
 
-	for (int eNBId = 0; eNBId < getContext()->m_Config.eNBNum; eNBId++)
+	for (int eNBId = 0; eNBId < GTT::s_eNB_NUM; eNBId++)
 		Delete::safeDelete(m_eNBAry[eNBId]);
 	Delete::safeDelete(m_eNBAry,true);
 
-	for (int roadId = 0; roadId < getContext()->m_Config.RoadNum; roadId++)
+	for (int roadId = 0; roadId < GTT::s_ROAD_NUM; roadId++)
 		Delete::safeDelete(m_RoadAry[roadId]);
 	Delete::safeDelete(m_RoadAry, true);
 

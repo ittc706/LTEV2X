@@ -39,26 +39,6 @@ struct SystemConfig {
 	int locationUpdateNTTI;
 
 	/*
-	* 车辆总数
-	*/
-	int VeUENum;
-
-	/*
-	* RSU总数
-	*/
-	int RSUNum;
-
-	/*
-	* 基站总数
-	*/
-	int eNBNum;
-
-	/*
-	* RoadNum
-	*/
-	int RoadNum;
-
-	/*
 	* TTI日志开关
 	*/
 	bool TTILogIsOn = false;
@@ -73,38 +53,6 @@ struct SystemConfig {
 	*/
 	bool scheduleLogIsOn = false;
 };
-
-//eNB配置参数
-struct eNBConfig {
-	SystemConfig* systemConfig;
-	int roadId;
-	int eNBId;
-	double X;
-	double Y;
-	double AbsX;
-	double AbsY;
-};
-
-//Road配置参数
-struct UrbanRoadConfig {
-	SystemConfig* systemConfig;
-	int roadId;
-	void *eNB;
-	int eNBNum;
-	int eNBOffset;
-	void *lane;
-	int laneNum;
-	int laneOffset;
-};
-
-
-struct HighSpeedRodeConfig {
-	SystemConfig* systemConfig;
-	int roadId;
-};
-
-
-
 
 
 //地理位置配置参数

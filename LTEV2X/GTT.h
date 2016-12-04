@@ -17,6 +17,26 @@ class GTT {
 	/*------------------静态------------------*/
 public:
 	/*
+	* 车辆总数
+	*/
+	static int s_VeUE_NUM;
+
+	/*
+	* RSU总数
+	*/
+	static int s_RSU_NUM;
+
+	/*
+	* 基站总数
+	*/
+	static int s_eNB_NUM;
+
+	/*
+	* 道路总数
+	*/
+	static int s_ROAD_NUM;
+
+	/*
 	* 拥塞等级总数
 	*/
 	static int s_CONGESTION_LEVEL_NUM;
