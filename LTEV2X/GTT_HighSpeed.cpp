@@ -159,6 +159,8 @@ void GTT_HighSpeed::configure() {
 	GTT::s_eNB_NUM = s_eNB_NUM;
 	GTT::s_ROAD_NUM = s_ROAD_NUM;
 	GTT::s_RSU_NUM = s_RSU_NUM;//目前只表示UE RSU数
+	m_Speed = s_SPEED;//车速设定,km/h
+
 	m_pupr = new int[GTT::s_ROAD_NUM];
 	int tempVeUENum = 0;
 	double Lambda = s_ROAD_LENGTH*3.6 / (2.5 * m_Speed);
@@ -178,7 +180,6 @@ void GTT_HighSpeed::configure() {
 		tempVeUENum = tempVeUENum + k - 1;
 	}
 	GTT::s_VeUE_NUM = tempVeUENum;
-	m_Speed = s_SPEED;//车速设定,km/h
 }
 
 

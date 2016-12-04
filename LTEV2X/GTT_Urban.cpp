@@ -203,6 +203,8 @@ void GTT_Urban::configure() {
 	GTT::s_eNB_NUM = s_eNB_NUM;
 	GTT::s_ROAD_NUM = s_ROAD_NUM;
 	GTT::s_RSU_NUM = s_RSU_NUM;//目前只表示UE RSU数
+	m_Speed = s_SPEED;//车速设定,km/h
+
 	m_pupr = new int[GTT::s_ROAD_NUM];
 	int tempVeUENum = 0;
 	int Lambda = static_cast<int>((s_ROAD_LENGTH_EW + s_ROAD_LENGTH_SN) * 2 * 3.6 / (2.5 * 15));
@@ -245,7 +247,6 @@ void GTT_Urban::configure() {
 	//	m_pueTopo[temp * 2 + 0] = temp_x;
 	//	m_pueTopo[temp * 2 + 1] = temp_y;
 	//}
-	m_Speed = s_SPEED;//车速设定,km/h
 }
 
 

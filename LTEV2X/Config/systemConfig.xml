@@ -1,7 +1,7 @@
 <!--地理拓扑单元选择
 	[URBAN]：城市场景
 	[HIGHSPEED]：高速场景-->	
-<GTTMode>URBAN</GTTMode>
+<GTTMode>HIGHSPEED</GTTMode>
 
 
 <!--无限资源管理模式选择
