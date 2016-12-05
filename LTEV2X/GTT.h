@@ -89,10 +89,12 @@ public:
 	/*
 	* 日志文件
 	*/
+	std::ofstream m_FileStatisticsDescription;
 	std::ofstream m_FileVeUELocationUpdateLogInfo;
 	std::ofstream m_FileVeUENumPerRSULogInfo;
 	std::ofstream m_FileLocationInfo;
 	std::ofstream m_FileVeUEMessage;
+	std::ofstream m_FileVeUECongestionInfo;
 
 	/*------------------接口------------------*/
 public:

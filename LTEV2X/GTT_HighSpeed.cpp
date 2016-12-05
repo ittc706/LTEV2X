@@ -32,12 +32,6 @@
 
 using namespace std;
 
-
-
-
-
-
-
 default_random_engine GTT_HighSpeed::s_Engine((unsigned)time(NULL));
 
 int GTT_HighSpeed::s_ROAD_LENGTH = INVALID;
@@ -179,6 +173,8 @@ void GTT_HighSpeed::configure() {
 		tempVeUENum = tempVeUENum + k - 1;
 	}
 	GTT::s_VeUE_NUM = tempVeUENum;
+	m_FileStatisticsDescription << "<VeUENum>" << GTT::s_VeUE_NUM << "</VeUENum>" << endl;
+	m_FileStatisticsDescription << "<CongestionLevelNum>" << GTT_HighSpeed::s_CONGESTION_LEVEL_NUM << "</CongestionLevelNum>" << endl;
 }
 
 
@@ -268,6 +264,18 @@ void GTT_HighSpeed::channelGeneration() {
 		for (int VeUEId : _GTT_RSU->m_VeUEIdList) {
 			int clusterIdx = m_VeUEAry[VeUEId]->m_ClusterIdx;
 			_GTT_RSU->m_ClusterVeUEIdList[clusterIdx].push_back(VeUEId);
+		}
+	}
+
+	//更新拥塞等级
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
+		GTT_RSU *_GTT_RSU = m_RSUAry[RSUId];
+		for (int clusterIdx = 0; clusterIdx < _GTT_RSU->m_ClusterNum; clusterIdx++) {
+			int congestionLevel = calcuateCongestionLevel(static_cast<int>(_GTT_RSU->m_ClusterVeUEIdList[clusterIdx].size()));
+			for (int VeUEId : _GTT_RSU->m_ClusterVeUEIdList[clusterIdx]) {
+				m_VeUEAry[VeUEId]->m_CongestionLevel = congestionLevel;
+				m_FileVeUECongestionInfo << m_VeUEAry[VeUEId]->m_AbsX << " " << m_VeUEAry[VeUEId]->m_AbsY << " " << m_VeUEAry[VeUEId]->m_CongestionLevel << endl;
+			}
 		}
 	}
 

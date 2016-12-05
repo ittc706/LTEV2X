@@ -96,16 +96,20 @@ int GTT::calcuateCongestionLevel(int t_VeUENum) {
 
 GTT::GTT(System* t_Context) : m_Context(t_Context) {
 	if (getContext()->m_Config.platform == Windows) {
+		m_FileStatisticsDescription.open("Log\\GTTLog\\StatisticsDescription.txt");
 		m_FileVeUELocationUpdateLogInfo.open("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");
 		m_FileVeUENumPerRSULogInfo.open("Log\\GTTLog\\VeUENumPerRSULogInfo.txt");
 		m_FileLocationInfo.open("Log\\GTTLog\\LocationInfo.txt");
 		m_FileVeUEMessage.open("Log\\GTTLog\\VeUEMessage.txt");
+		m_FileVeUECongestionInfo.open("Log\\GTTLog\\VeUECongestionInfo.txt");
 	}
 	else if (getContext()->m_Config.platform == Linux) {
+		m_FileStatisticsDescription.open("Log/GTTLog/StatisticsDescription.txt");
 		m_FileVeUELocationUpdateLogInfo.open("Log/GTTLog/VeUELocationUpdateLogInfo.txt");
 		m_FileVeUENumPerRSULogInfo.open("Log/GTTLog/VeUENumPerRSULogInfo.txt");
 		m_FileLocationInfo.open("Log/GTTLog/LocationInfo.txt");
 		m_FileVeUEMessage.open("Log/GTTLog/VeUEMessage.txt");
+		m_FileVeUECongestionInfo.open("Log/GTTLog/VeUECongestionInfo.txt");
 	}
 	else {
 		throw logic_error("Platform Config Error!");
@@ -130,8 +134,10 @@ GTT::~GTT(){
 		Delete::safeDelete(m_RoadAry[roadId]);
 	Delete::safeDelete(m_RoadAry, true);
 
+	m_FileStatisticsDescription.close();
 	m_FileVeUELocationUpdateLogInfo.close();
 	m_FileVeUENumPerRSULogInfo.close();
 	m_FileLocationInfo.close();
 	m_FileVeUEMessage.close();
+	m_FileVeUECongestionInfo.close();
 }

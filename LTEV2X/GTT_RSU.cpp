@@ -28,7 +28,6 @@
 
 using namespace std;
 
-
 GTT_RSU::~GTT_RSU() {
 	Delete::safeDelete(m_IMTA, true);
 }

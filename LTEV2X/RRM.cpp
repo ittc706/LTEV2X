@@ -29,8 +29,6 @@
 #include"Function.h"
 using namespace std;
 
-
-
 const double RRM::s_CODE_RATE= 0.5;
 
 const double RRM::s_DROP_SINR_BOUNDARY= 1.99;

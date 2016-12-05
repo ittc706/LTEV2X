@@ -1,9 +1,9 @@
 <!--拥塞等级数量-->
-<CongestionLevelNum>5</CongestionLevelNum>
+<CongestionLevelNum>3</CongestionLevelNum>
 
 
 <!--对应拥塞等级下周期事件周期，单位TTI-->
-<PeriodicEventPeriod>500 2000 3000 4000 5000</PeriodicEventPeriod>
+<PeriodicEventPeriod>500 1000 2000</PeriodicEventPeriod>
 
 
 <!--紧急事件Lambda，单位次/TTI-->

@@ -33,13 +33,6 @@
 
 using namespace std;
 
-
-
-
-
-
-
-
 default_random_engine GTT_Urban::s_Engine((unsigned)time(NULL));
 
 int GTT_Urban::s_ROAD_LENGTH_SN = INVALID;
@@ -244,6 +237,9 @@ void GTT_Urban::configure() {
 	//	m_pueTopo[temp * 2 + 0] = temp_x;
 	//	m_pueTopo[temp * 2 + 1] = temp_y;
 	//}
+
+	m_FileStatisticsDescription << "<VeUENum>" << GTT::s_VeUE_NUM << "</VeUENum>" << endl;
+	m_FileStatisticsDescription << "<CongestionLevelNum>" << GTT_Urban::s_CONGESTION_LEVEL_NUM << "</CongestionLevelNum>" << endl;
 }
 
 
@@ -365,6 +361,18 @@ void GTT_Urban::channelGeneration() {
 		for (int VeUEId : _GTT_RSU->m_VeUEIdList) {
 			int clusterIdx = m_VeUEAry[VeUEId]->m_ClusterIdx;
 			_GTT_RSU->m_ClusterVeUEIdList[clusterIdx].push_back(VeUEId);
+		}
+	}
+
+	//更新拥塞等级
+	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
+		GTT_RSU *_GTT_RSU = m_RSUAry[RSUId];
+		for (int clusterIdx = 0; clusterIdx < _GTT_RSU->m_ClusterNum; clusterIdx++) {
+			int congestionLevel = calcuateCongestionLevel(static_cast<int>(_GTT_RSU->m_ClusterVeUEIdList[clusterIdx].size()));
+			for (int VeUEId : _GTT_RSU->m_ClusterVeUEIdList[clusterIdx]) {
+				m_VeUEAry[VeUEId]->m_CongestionLevel = congestionLevel;
+				m_FileVeUECongestionInfo << m_VeUEAry[VeUEId]->m_AbsX << " " << m_VeUEAry[VeUEId]->m_AbsY << " " << m_VeUEAry[VeUEId]->m_CongestionLevel << endl;
+			}
 		}
 	}
 
@@ -651,12 +659,6 @@ void GTT_Urban::freshLoc() {
 		}
 		else
 			ClusterID = 0;
-
-		//判断拥塞等级
-		if (ClusterID == 0)
-			m_VeUEAry[UserIdx1]->m_CongestionLevel = 1;
-		else
-			m_VeUEAry[UserIdx1]->m_CongestionLevel = 0;
 
 		m_VeUEAry[UserIdx1]->m_RSUId = RSUIdx;
 		m_VeUEAry[UserIdx1]->m_ClusterIdx = ClusterID;
