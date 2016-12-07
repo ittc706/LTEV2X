@@ -78,6 +78,10 @@ const int GTT_Urban::s_WRAP_AROUND_ROAD[s_ROAD_NUM][9] = {
 };
 
 const int GTT_Urban::s_RSU_CLUSTER_NUM[s_RSU_NUM] = {
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4
+};
+
+const int GTT_Urban::s_RSU_ZONE_NUM[s_RSU_NUM] = {
 	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
 };
 
@@ -347,6 +351,9 @@ void GTT_Urban::channelGeneration() {
 		for (int clusterIdx = 0; clusterIdx < _GTT_RSU->m_ClusterNum; clusterIdx++) {
 			_GTT_RSU->m_ClusterVeUEIdList[clusterIdx].clear();
 		}
+		for (int ZoneIdx = 0; ZoneIdx < _GTT_RSU->m_ZoneNum; ZoneIdx++) {
+			_GTT_RSU->m_ZoneVeUEIdList[ZoneIdx].clear();
+		}
 	}
 	//同时也清除eNB.m_VeUEIdList
 	for (int eNBId = 0; eNBId < GTT::s_eNB_NUM; eNBId++)
@@ -364,12 +371,20 @@ void GTT_Urban::channelGeneration() {
 		}
 	}
 
-	//更新拥塞等级
+	for (int RSUId = 0; RSUId <GTT::s_RSU_NUM; RSUId++) {
+		GTT_RSU *_GTT_RSU = m_RSUAry[RSUId];
+		for (int VeUEId : _GTT_RSU->m_VeUEIdList) {
+			int zoneIdx = m_VeUEAry[VeUEId]->m_ZoneIdx;
+			_GTT_RSU->m_ZoneVeUEIdList[zoneIdx].push_back(VeUEId);
+		}
+	}
+
+	//根据所在拥塞区域的车辆的多少更新拥塞等级
 	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		GTT_RSU *_GTT_RSU = m_RSUAry[RSUId];
-		for (int clusterIdx = 0; clusterIdx < _GTT_RSU->m_ClusterNum; clusterIdx++) {
-			int congestionLevel = calcuateCongestionLevel(static_cast<int>(_GTT_RSU->m_ClusterVeUEIdList[clusterIdx].size()));
-			for (int VeUEId : _GTT_RSU->m_ClusterVeUEIdList[clusterIdx]) {
+		for (int ZoneIdx = 0; ZoneIdx < _GTT_RSU->m_ZoneNum; ZoneIdx++) {
+			int congestionLevel = calcuateCongestionLevel(static_cast<int>(_GTT_RSU->m_ZoneVeUEIdList[ZoneIdx].size()));
+			for (int VeUEId : _GTT_RSU->m_ZoneVeUEIdList[ZoneIdx]) {
 				m_VeUEAry[VeUEId]->m_CongestionLevel = congestionLevel;
 				m_FileVeUECongestionInfo << m_VeUEAry[VeUEId]->m_AbsX << " " << m_VeUEAry[VeUEId]->m_AbsY << " " << m_VeUEAry[VeUEId]->m_CongestionLevel << endl;
 			}
@@ -403,8 +418,8 @@ void GTT_Urban::channelGeneration() {
 
 
 void GTT_Urban::freshLoc() {
-	//g_FileVeUEMessage.close();
-	//g_FileVeUEMessage.open("Log\\GTTLog\\VeUEMessage.txt");
+	m_FileVeUEMessage.close();
+	m_FileVeUEMessage.open("Log\\GTTLog\\VeUEMessage.txt");
 	double freshTime = ((double)getContext()->m_Config.locationUpdateNTTI) / 1000.0;
 	for (int UserIdx = 0; UserIdx != GTT::s_VeUE_NUM; UserIdx++)
 	{
@@ -536,6 +551,7 @@ void GTT_Urban::freshLoc() {
 
 	int RSUIdx = 0;
 	int ClusterID = 0;
+	int ZoneID = 0;
 
 	for (int UserIdx1 = 0; UserIdx1 != GTT::s_VeUE_NUM; UserIdx1++)
 	{
@@ -631,37 +647,63 @@ void GTT_Urban::freshLoc() {
 		vectorI2V[1] = m_VeUEAry[UserIdx1]->m_AbsY - m_RSUAry[RSUIdx]->m_AbsY;//向量纵坐标
 		double tan = vectorI2V[1] / vectorI2V[0];//计算方向角
 		//根据方向角判断所在簇的Id
-		if (m_VeUEAry[UserIdx1]->m_Distance[RSUIdx] > ((GTT_Urban::s_ROAD_LENGTH_SN + 2 * GTT_Urban::s_ROAD_WIDTH)) / 6) {
 			if (vectorI2V[0] >= 0 && vectorI2V[1] >= 0) {
 				if (tan < 1)
-					ClusterID = 2;
-				else
 					ClusterID = 1;
+				else
+					ClusterID = 0;
 			}
 			else if (vectorI2V[0] < 0 && vectorI2V[1] >= 0) {
 				if (tan < -1)
-					ClusterID = 1;
-				else
-					ClusterID = 4;
-			}
-			else if (vectorI2V[0] < 0 && vectorI2V[1] < 0) {
-				if (tan < 1)
-					ClusterID = 4;
+					ClusterID = 0;
 				else
 					ClusterID = 3;
 			}
-			else {
-				if (tan < -1)
+			else if (vectorI2V[0] < 0 && vectorI2V[1] < 0) {
+				if (tan < 1)
 					ClusterID = 3;
 				else
 					ClusterID = 2;
 			}
+			else {
+				if (tan < -1)
+					ClusterID = 2;
+				else
+					ClusterID = 1;
+			}
+
+		//根据地理位置判断所在的拥塞区域的Id
+		double disfromcenter = m_VeUEAry[UserIdx1]->m_Distance[RSUIdx];
+		switch (ClusterID) {
+		case 0:
+			if (disfromcenter < (s_ROAD_LENGTH_EW + 2 * s_ROAD_WIDTH) / 6)
+				ZoneID = 0;
+			else
+				ZoneID = 1;
+			break;
+		case 1:
+			if (disfromcenter < (s_ROAD_LENGTH_SN + 2 * s_ROAD_WIDTH) / 6)
+				ZoneID = 0;
+			else
+				ZoneID = 2;
+			break;
+		case 2:
+			if (disfromcenter < (s_ROAD_LENGTH_EW + 2 * s_ROAD_WIDTH) / 6)
+				ZoneID = 0;
+			else
+				ZoneID = 3;
+			break;
+		case 3:
+			if (disfromcenter < (s_ROAD_LENGTH_SN + 2 * s_ROAD_WIDTH) / 6)
+				ZoneID = 0;
+			else
+				ZoneID = 4;
+			break;
 		}
-		else
-			ClusterID = 0;
 
 		m_VeUEAry[UserIdx1]->m_RSUId = RSUIdx;
 		m_VeUEAry[UserIdx1]->m_ClusterIdx = ClusterID;
+		m_VeUEAry[UserIdx1]->m_ZoneIdx = ZoneID;
 		m_RSUAry[RSUIdx]->m_VeUEIdList.push_back(UserIdx1);
 
 		//输出VeUE信息到文档
@@ -670,6 +712,7 @@ void GTT_Urban::freshLoc() {
 		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_ClusterIdx << " ";
 		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsX << " ";
 		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_AbsY << " ";
+		m_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_ZoneIdx << " ";
 		m_FileVeUEMessage << endl;
 		//g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_RoadId << " ";
 		//g_FileVeUEMessage << m_VeUEAry[UserIdx1]->m_VAngle << endl;

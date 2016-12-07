@@ -153,24 +153,32 @@ void GTT_HighSpeed::configure() {
 	GTT::s_ROAD_NUM = s_ROAD_NUM;
 	GTT::s_RSU_NUM = s_RSU_NUM;//目前只表示UE RSU数
 	m_Speed = s_SPEED;//车速设定,km/h
-
+	//根据泊松分布计算出每个road上的车辆总数与到达时间间隔
 	m_pupr = new int[GTT::s_ROAD_NUM];
+	TotalTime = new double[GTT::s_ROAD_NUM];
+	possion = new std::list<double>[GTT::s_ROAD_NUM];
+	//生成负指数分布的车辆到达间隔
 	int tempVeUENum = 0;
-	double Lambda = s_ROAD_LENGTH*3.6 / (2.5 * m_Speed);
-	srand((unsigned)time(NULL));
-	for (int temp = 0; temp != GTT::s_ROAD_NUM; ++temp)
-	{
-		int k = 0;
-		long double p = 1.0;
-		long double l = exp(-Lambda);  /* 为了精度，才定义为long double的，exp(-Lambda)是接近0的小数*/
-		while (p >= l)
-		{
-			double u = (double)(rand() % 10000)*0.0001f;
-			p *= u;
-			k++;
+	double lambda = 1 / 2.5;//均值为1/lambda，依照协议车辆到达时间间隔的均值为2.5s
+	for (int roadId = 0; roadId != GTT::s_ROAD_NUM; roadId++) {
+		TotalTime[roadId] = 0;
+		while (TotalTime[roadId] *(m_Speed / 3.6) < 3464) {
+			double pV = 0.0;
+			while (true)
+			{
+				pV = (double)rand() / (double)RAND_MAX;
+				if (pV != 1)
+				{
+					break;
+				}
+			}
+			pV = (-1.0 / lambda)*log(1 - pV);
+			possion[roadId].push_back(pV);
+			TotalTime[roadId] += pV;
+			double check = TotalTime[roadId];
 		}
-		m_pupr[temp] = k - 1;
-		tempVeUENum = tempVeUENum + k - 1;
+		m_pupr[roadId] = possion[roadId].size();
+		tempVeUENum += m_pupr[roadId];
 	}
 	GTT::s_VeUE_NUM = tempVeUENum;
 	m_FileStatisticsDescription << "<VeUENum>" << GTT::s_VeUE_NUM << "</VeUENum>" << endl;
@@ -213,13 +221,19 @@ void GTT_HighSpeed::initialize() {
 	for (int roadId = 0; roadId != GTT::s_ROAD_NUM; roadId++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[roadId]; uprIdx++) {
 			_VeUEConfig.roadId = roadId;
-			_VeUEConfig.X = -1732 + rand() % 3465;
+			_VeUEConfig.X = -1732 + (TotalTime[roadId] - possion[roadId].back())*(m_Speed/3.6);
 			_VeUEConfig.Y = 0.0f;
 			_VeUEConfig.AbsX = m_RoadAry[roadId]->m_AbsX + _VeUEConfig.X;
 			_VeUEConfig.AbsY = m_RoadAry[roadId]->m_AbsY + _VeUEConfig.Y;
 			_VeUEConfig.V = m_Speed;
 			_VeUEConfig.VeUENum = GTT::s_VeUE_NUM;
 			m_VeUEAry[VeUEId++] = new GTT_HighSpeed_VeUE(_VeUEConfig);
+			TotalTime[roadId] = TotalTime[roadId] - possion[roadId].back();
+			possion[roadId].pop_back();
+
+			m_FileVeUEMessage << uprIdx << " ";
+			m_FileVeUEMessage << _VeUEConfig.AbsX << " ";
+			m_FileVeUEMessage << _VeUEConfig.AbsY << endl;
 		}
 	}
 

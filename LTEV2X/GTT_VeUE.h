@@ -76,6 +76,11 @@ public:
 	int m_ClusterIdx = -1;
 
 	/*
+	* 车辆所在拥塞区域编号
+	*/
+	int m_ZoneIdx = -1;
+
+	/*
 	* 拥塞等级
 	*/
 	int m_CongestionLevel = 0;

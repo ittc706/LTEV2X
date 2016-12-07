@@ -53,6 +53,8 @@ GTT_Urban_RSU::GTT_Urban_RSU() {
 
 	m_ClusterNum = GTT_Urban::s_RSU_CLUSTER_NUM[m_RSUId];
 	m_ClusterVeUEIdList = vector<list<int>>(m_ClusterNum);
+	m_ZoneNum = GTT_Urban::s_RSU_ZONE_NUM[m_RSUId];
+    m_ZoneVeUEIdList = vector<list<int>>(m_ZoneNum);
 }
 
 

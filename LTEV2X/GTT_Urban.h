@@ -68,6 +68,11 @@ public:
 	/*
 	* ???
 	*/
+	static const int s_RSU_ZONE_NUM[s_RSU_NUM];
+
+	/*
+	* ???
+	*/
 	static const double s_RSU_TOPO_RATIO[s_RSU_NUM * 2];
 
 	/*

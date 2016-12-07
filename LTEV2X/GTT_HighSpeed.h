@@ -82,6 +82,16 @@ private:
 	int* m_pupr;
 
 	/*
+	*  每条道路初始泊松撒点过程中所有车辆都已撒进区域内所用的总时间
+	*/
+	double* TotalTime;
+
+	/*
+	*  每条道路初始泊松撒点的车辆到达时间间隔list，单位s
+	*/
+	std::list<double>* possion;
+
+	/*
 	* 车辆车速
 	*/
 	double m_Speed;//km/h

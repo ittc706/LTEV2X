@@ -59,6 +59,16 @@ public:
 	*/
 	std::vector<std::list<int>> m_ClusterVeUEIdList;
 
+	/*
+	* 一个RSU覆盖范围内的拥塞区域的个数
+	*/
+	int m_ZoneNum;
+
+	/*
+	* 存放每个簇的拥塞区域Zone的Id的容器,下标代表Zone的编号
+	*/
+	std::vector<std::list<int>> m_ZoneVeUEIdList;
+
 	/*------------------方法------------------*/
 	/*
 	* 析构函数，释放指针
