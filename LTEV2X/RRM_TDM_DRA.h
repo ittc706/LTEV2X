@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#include<utility>
 #include<random>
 #include<thread>
 #include<stdexcept>
@@ -13,33 +14,38 @@ public:
 	/*
 	* 所有簇进行一次DRA所占用的TTI数量。(NTTI:Number of TTI)
 	*/
-	static const int s_NTTI = 100;
+	static int s_NTTI;
 
 	/*
 	* 事件的Pattern的类型种类
 	* 即紧急事件，周期事件，数据业务事件
 	*/
-	static const int s_PATTERN_TYPE_NUM = 3;
+	static int s_PATTERN_TYPE_NUM;
 
 	/*
 	* 每个Pattern种类所占的RB数量
 	*/
-	static const int s_RB_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM];
+	static std::vector<int> s_RB_NUM_PER_PATTERN_TYPE;
 
 	/*
 	* 每个Pattern种类对应的Pattern数量
 	*/
-	static const int s_PATTERN_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM];
+	static std::vector<int> s_PATTERN_NUM_PER_PATTERN_TYPE;
 
 	/*
 	* 每个种类的事件，其各自的Pattern的开始与结束编号，即[startIdx,endIdx]，闭区间
 	*/
-	static const int s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[s_PATTERN_TYPE_NUM][2];
+	static std::vector<std::pair<int, int>> s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL;
 
 	/*
 	* 所有Pattern数量，包括三个事件
 	*/
-	static const int s_TOTAL_PATTERN_NUM;
+	static int s_TOTAL_PATTERN_NUM;
+
+	/*
+	* 加载城镇场景配置参数
+	*/
+	static void loadConfig(Platform t_Platform);
 	/*------------------域------------------*/
 public:
 	/*

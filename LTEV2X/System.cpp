@@ -273,6 +273,8 @@ void System::configure() {//系统仿真参数配置
 
 	GTT_HighSpeed::loadConfig(m_Config.platform);
 
+	RRM_TDM_DRA::loadConfig(m_Config.platform);
+
 	TMC::loadConfig(m_Config.platform);
 }
 

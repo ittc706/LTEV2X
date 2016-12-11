@@ -1,0 +1,14 @@
+<!--调度单元一次调度总时长-->	
+<NTTI>100</NTTI>
+
+
+<!--Pattern类型的数目，该参数目前就是3，因为只有三类事件-->	
+<PatternTypeNum>3</PatternTypeNum>
+
+
+<!--每个Pattern种类对应的RB数目，依次为紧急事件、周期事件、数据业务事件-->	
+<RBNumPerPatternType>10 10 20</RBNumPerPatternType>
+
+
+<!--每个Pattern种类对应Pattern数目，依次为紧急事件、周期事件、数据业务事件-->	
+<PatternNumPerPatternType>1 2 1</PatternNumPerPatternType>

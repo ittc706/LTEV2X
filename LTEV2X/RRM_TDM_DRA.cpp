@@ -33,26 +33,108 @@
 #include"RSU.h"
 
 #include"Function.h"
+#include"ConfigLoader.h"
 
 using namespace std;
 
-const int RRM_TDM_DRA::s_RB_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM] = { 10,10,20 };
+int RRM_TDM_DRA::s_NTTI;
 
-const int RRM_TDM_DRA::s_PATTERN_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM] = { 1,2,1 };
+int RRM_TDM_DRA::s_PATTERN_TYPE_NUM;
 
-const int RRM_TDM_DRA::s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[s_PATTERN_TYPE_NUM][2] = {
-	{ 0,s_PATTERN_NUM_PER_PATTERN_TYPE[0] - 1 },
-	{ s_PATTERN_NUM_PER_PATTERN_TYPE[0],s_PATTERN_NUM_PER_PATTERN_TYPE[0] + s_PATTERN_NUM_PER_PATTERN_TYPE[1] - 1 },
-	{ s_PATTERN_NUM_PER_PATTERN_TYPE[0] + s_PATTERN_NUM_PER_PATTERN_TYPE[1],s_PATTERN_NUM_PER_PATTERN_TYPE[0] + s_PATTERN_NUM_PER_PATTERN_TYPE[1] + s_PATTERN_NUM_PER_PATTERN_TYPE[2] - 1 },
-};
+vector<int> RRM_TDM_DRA::s_RB_NUM_PER_PATTERN_TYPE;
 
-const int RRM_TDM_DRA::s_TOTAL_PATTERN_NUM = [&]() {
-	int res = 0;
-	for (int num : s_PATTERN_NUM_PER_PATTERN_TYPE)
-		res += num;
-	return res;
-}();
+vector<int> RRM_TDM_DRA::s_PATTERN_NUM_PER_PATTERN_TYPE;
 
+vector<pair<int, int>> RRM_TDM_DRA::s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL;
+
+int RRM_TDM_DRA::s_TOTAL_PATTERN_NUM;
+
+void RRM_TDM_DRA::loadConfig(Platform t_Platform) {
+	ConfigLoader configLoader;
+	if (t_Platform == Windows) {
+		configLoader.resolvConfigPath("Config\\RRM_TDM_DRAConfig.xml");
+	}
+	else if (t_Platform == Linux) {
+		configLoader.resolvConfigPath("Config/RRM_TDM_DRAConfig.xml");
+	}
+	else {
+		throw logic_error("Platform Config Error!");
+	}
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = configLoader.getParam("NTTI")) != nullString) {
+		ss << temp;
+		ss >> s_NTTI;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("PatternTypeNum")) != nullString) {
+		ss << temp;
+		ss >> s_PATTERN_TYPE_NUM;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("RBNumPerPatternType")) != nullString) {
+		s_RB_NUM_PER_PATTERN_TYPE.clear();
+		ss << temp;
+		string temp2;
+		while (ss >> temp2) {
+			s_RB_NUM_PER_PATTERN_TYPE.push_back(ConfigLoader::stringToInt(temp2));
+		}
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("PatternNumPerPatternType")) != nullString) {
+		s_PATTERN_NUM_PER_PATTERN_TYPE.clear();
+		ss << temp;
+		string temp2;
+		while (ss >> temp2) {
+			s_PATTERN_NUM_PER_PATTERN_TYPE.push_back(ConfigLoader::stringToInt(temp2));
+		}
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL.assign(s_PATTERN_TYPE_NUM, pair<int, int>(0, 0));
+	for (int patternTypeIdx = 0; patternTypeIdx < s_PATTERN_TYPE_NUM; patternTypeIdx++) {
+		s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternTypeIdx].first = (patternTypeIdx == 0 ? 0 : s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternTypeIdx - 1].second + 1);
+		s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternTypeIdx].second = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternTypeIdx].first + s_PATTERN_NUM_PER_PATTERN_TYPE[patternTypeIdx] - 1;
+	}
+
+	s_TOTAL_PATTERN_NUM = [&]() {
+		int res = 0;
+		for (int num : s_PATTERN_NUM_PER_PATTERN_TYPE)
+			res += num;
+		return res;
+	}();
+
+	/*cout << "NTTI: " << s_NTTI << endl;
+	cout << "PatternTypeNum: " << s_PATTERN_TYPE_NUM << endl;
+	cout << "RBNumPerPatternType: " << endl;
+	Print::printVectorDim1(s_RB_NUM_PER_PATTERN_TYPE);
+	cout << "PatternNumPerPatternType: " << endl;
+	Print::printVectorDim1(s_PATTERN_NUM_PER_PATTERN_TYPE);
+	cout << "PatternTypePatternIndexInterval: " << endl;
+	for (pair<int, int>& p : s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL)
+		cout << "[" << p.first << "," << p.second << "]" << endl;
+	cout << "TotalPatternNum: " << s_TOTAL_PATTERN_NUM << endl;
+	system("pause");*/
+}
 
 RRM_TDM_DRA::RRM_TDM_DRA(System* t_Context) :
 	RRM(t_Context) {
@@ -559,7 +641,7 @@ void RRM_TDM_DRA::selectRBBasedOnP123() {
 		vector<vector<int>> curAvaliablePatternIdx(s_PATTERN_TYPE_NUM);
 
 		for (int patternTypeIdx = 1; patternTypeIdx < s_PATTERN_TYPE_NUM; patternTypeIdx++) {
-			for (int patternIdx = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternTypeIdx][0]; patternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternTypeIdx][1]; patternIdx++) {
+			for (int patternIdx = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternTypeIdx].first; patternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternTypeIdx].second; patternIdx++) {
 				if (_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx]) {
 					curAvaliablePatternIdx[patternTypeIdx].push_back(patternIdx);
 				}
@@ -893,7 +975,7 @@ void RRM_TDM_DRA::writeScheduleInfo() {
 			m_FileScheduleInfo << "        {" << endl;
 
 			m_FileScheduleInfo << "            EMERGENCY:" << endl;
-			for (int patternIdx = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[EMERGENCY][0]; patternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[EMERGENCY][1]; patternIdx++) {
+			for (int patternIdx = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[EMERGENCY].first; patternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[EMERGENCY].second; patternIdx++) {
 				bool isAvaliable = _RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx];
 				m_FileScheduleInfo << "                Pattern[" << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 				if (!isAvaliable) {
@@ -903,7 +985,7 @@ void RRM_TDM_DRA::writeScheduleInfo() {
 			}
 			if (clusterIdx != NonEmergencyClusterIdx)continue;
 			m_FileScheduleInfo << "            PERIOD:" << endl;
-			for (int patternIdx = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[PERIOD][0]; patternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[PERIOD][1]; patternIdx++) {
+			for (int patternIdx = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[PERIOD].first; patternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[PERIOD].second; patternIdx++) {
 				bool isAvaliable = _RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx];
 				m_FileScheduleInfo << "                Pattern[" << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 				if (!isAvaliable) {
@@ -912,7 +994,7 @@ void RRM_TDM_DRA::writeScheduleInfo() {
 				}
 			}
 			m_FileScheduleInfo << "            DATA:" << endl;
-			for (int patternIdx = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[DATA][0]; patternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[DATA][1]; patternIdx++) {
+			for (int patternIdx = s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[DATA].first; patternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[DATA].second; patternIdx++) {
 				bool isAvaliable = _RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx];
 				m_FileScheduleInfo << "                Pattern[" << left << setw(3) << patternIdx << "] : " << (isAvaliable ? "Available" : "Unavailable") << endl;
 				if (!isAvaliable) {
@@ -1100,7 +1182,7 @@ int RRM_TDM_DRA::getMaxIndex(const vector<double>&t_ClusterSize) {
 int RRM_TDM_DRA::getPatternType(int t_PatternIdx) {
 	//patternIdx指所有事件类型的Pattern的绝对序号，从0开始编号，包括Emergency
 	for (int patternType = 0; patternType < s_PATTERN_TYPE_NUM; patternType++) {
-		if (t_PatternIdx >= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternType][0] && t_PatternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternType][1])
+		if (t_PatternIdx >= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternType].first && t_PatternIdx <= s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[patternType].second)
 			return patternType;
 	}
 	throw logic_error("getPatternType");
