@@ -36,9 +36,9 @@
 
 using namespace std;
 
-const int RRM_TDM_DRA::s_RB_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM] = { 2,10,10 };
+const int RRM_TDM_DRA::s_RB_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM] = { 10,10,20 };
 
-const int RRM_TDM_DRA::s_PATTERN_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM] = { 0,5,0 };
+const int RRM_TDM_DRA::s_PATTERN_NUM_PER_PATTERN_TYPE[s_PATTERN_TYPE_NUM] = { 1,2,1 };
 
 const int RRM_TDM_DRA::s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL[s_PATTERN_TYPE_NUM][2] = {
 	{ 0,s_PATTERN_NUM_PER_PATTERN_TYPE[0] - 1 },
@@ -541,7 +541,7 @@ void RRM_TDM_DRA::selectRBBasedOnP123() {
 				_RSU->getTDM_DRAPoint()->m_PatternIsAvailable[clusterIdx][patternIdx] = false;
 
 				//将调度信息压入m_EmergencyTransimitEventIdList中
-				_RSU->getTDM_DRAPoint()->pushToTransimitScheduleInfoList(new RRM_RSU::ScheduleInfo(eventId, VeUEId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, -1, patternIdx));
+				_RSU->getTDM_DRAPoint()->pushToTransimitScheduleInfoList(new RRM_RSU::ScheduleInfo(eventId, VeUEId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx));
 
 			}
 

@@ -3,7 +3,7 @@
 
 
 <!--对应拥塞等级下周期事件周期，单位TTI-->
-<PeriodicEventPeriod>500 1000 2000</PeriodicEventPeriod>
+<PeriodicEventPeriod>500 500 500</PeriodicEventPeriod>
 
 
 <!--紧急事件Lambda，单位次/TTI-->
@@ -22,7 +22,7 @@
 <MessageBitNumPerPackage>
 	1520 1520 1520 2400 
 	1520 1520 1520 2400
-	1520 1520 1520 2400
+	3040 3040 3040 4800
 </MessageBitNumPerPackage>
 
 
