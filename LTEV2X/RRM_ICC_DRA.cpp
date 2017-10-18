@@ -424,13 +424,25 @@ void RRM_ICC_DRA::transimitPreparation() {
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
 				list<RRM_RSU::ScheduleInfo*> &curList = _RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-				if (curList.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-					RRM_RSU::ScheduleInfo *curInfo = *curList.begin();
+				//这里要处理的情况是：可能在同一个Pattern有多个车辆在传输，即发生了冲突，但是没有退避		
+				for (auto curIt = curList.begin(); curIt != curList.end(); curIt++) {
+					RRM_RSU::ScheduleInfo *curInfo = *curIt;
+
 					int curVeUEId = curInfo->VeUEId;
+
+					// 添加同一个Cluster同一个Pattern中的其他冲突车辆
+					for (auto otherIt = curList.begin(); otherIt != curList.end(); otherIt++) {
+						int otherVeUEId = (*otherIt)->VeUEId;
+						if (otherVeUEId != curVeUEId)
+							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
+					}
+
+					// 添加其他Cluster同一个Pattern中的其他车辆
 					for (int otherClusterIdx = 0; otherClusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; otherClusterIdx++) {
 						if (otherClusterIdx == clusterIdx)continue;
 						list<RRM_RSU::ScheduleInfo*> &otherList = _RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
-						if (otherList.size() == 1) {//其他簇中该pattern下有车辆在传输，那么将该车辆作为干扰车辆
+						
+						for (auto otherIt = otherList.begin(); otherIt != otherList.end(); otherIt++) {
 							RRM_RSU::ScheduleInfo *otherInfo = *otherList.begin();
 							int otherVeUEId = otherInfo->VeUEId;
 							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
@@ -449,13 +461,6 @@ void RRM_ICC_DRA::transimitPreparation() {
 			m_VeUEAry[VeUEId]->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
 
 			m_VeUEAry[VeUEId]->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
-
-			/*if (m_VeUEAry[VeUEId]->m_InterferenceVeUENum[patternIdx]>0) {
-				g_FileTemp << "VeUEId: " << VeUEId << " [";
-				for (auto c : m_VeUEAry[VeUEId]->m_InterferenceVeUEIdVec[patternIdx])
-					g_FileTemp << c << ", ";
-				g_FileTemp << " ]" << endl;
-			}*/
 		}
 	}
 
@@ -488,8 +493,10 @@ void RRM_ICC_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 			for (int patternIdx = 0; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
 
 				list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-				if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-					RRM_RSU::ScheduleInfo *info = *lst.begin();
+				
+				//这里要处理的情况是：可能在同一个Pattern有多个车辆在传输，即发生了冲突，但是没有退避
+				for (auto curIt = lst.begin(); curIt != lst.end(); curIt++) {
+					RRM_RSU::ScheduleInfo *info = *curIt;
 					int VeUEId = info->VeUEId;
 
 					//计算SINR，获取调制编码方式
@@ -531,7 +538,6 @@ void RRM_ICC_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					//更新日志
 					getContext()->m_TMCPoint->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, TRANSIMITTING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 					writeTTILogInfo(getContext()->m_TTI, TRANSIMITTING, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
-
 				}
 			}
 		}
@@ -579,8 +585,11 @@ void RRM_ICC_DRA::transimitEnd() {
 			for (int patternIdx = 0; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
 
 				list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-				if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-					RRM_RSU::ScheduleInfo* &info = *lst.begin();
+
+				//这里要处理的情况是：可能在同一个Pattern有多个车辆在传输，即发生了冲突，但是没有退避
+				for (auto curIt = lst.begin(); curIt != lst.end(); curIt++) {
+					RRM_RSU::ScheduleInfo* &info = *curIt;
+
 					//说明该数据已经传输完毕
 					if (getContext()->m_TMCPoint->m_EventVec[info->eventId].isFinished()) {
 
@@ -599,6 +608,7 @@ void RRM_ICC_DRA::transimitEnd() {
 						info = nullptr;
 					}
 				}
+
 				//处理完后，将该pattern上的数据清空（此时要不本身就是空，要不就是nullptr指针）
 				lst.clear();
 			}
