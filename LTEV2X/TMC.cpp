@@ -49,17 +49,10 @@ vector<int> TMC::s_INITIAL_WINDOW_SIZE;
 
 vector<int> TMC::s_MAX_WINDOW_SIZE;
 
-void TMC::loadConfig(Platform t_Platform) {
+void TMC::loadConfig() {
 	ConfigLoader configLoader;
-	if (t_Platform == Windows) {
-		configLoader.resolvConfigPath("Config\\TMCConfig.xml");
-	}
-	else if (t_Platform == Linux) {
-		configLoader.resolvConfigPath("Config/TMCConfig.xml");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
+
+	configLoader.resolvConfigPath("Config/TMCConfig.xml");
 
 	stringstream ss;
 
@@ -219,43 +212,21 @@ TMC::TMC(System* t_Context) :
 
 	m_TTIRSUThroughput = vector<vector<int>>(getContext()->m_Config.NTTI, vector<int>(GTT::s_RSU_NUM));
 
-	if (getContext()->m_Config.platform == Windows) {
-		m_FileEventLogInfo.open("Log\\TMCLog\\EventLogInfo.txt");
-		m_FileEventListInfo.open("Log\\TMCLog\\EventListInfo.txt");
-		m_FileStatisticsDescription.open("Log\\TMCLog\\StatisticsDescription.txt");
-		m_FileEmergencyDelayStatistics.open("Log\\TMCLog\\EmergencyDelayStatistics.txt");
-		m_FilePeriodDelayStatistics.open("Log\\TMCLog\\PeriodDelayStatistics.txt");
-		m_FileDataDelayStatistics.open("Log\\TMCLog\\DataDelayStatistics.txt");
-		m_FileEmergencyPossion.open("Log\\TMCLog\\EmergencyPossion.txt");
-		m_FileDataPossion.open("Log\\TMCLog\\DataPossion.txt");
-		m_FileEmergencyConflictNum.open("Log\\TMCLog\\EmergencyConflictNum.txt");
-		m_FilePeriodConflictNum.open("Log\\TMCLog\\PeriodConflictNum.txt");
-		m_FileDataConflictNum.open("Log\\TMCLog\\DataConflictNum.txt");
-		m_FileTTIThroughput.open("Log\\TMCLog\\TTIThroughput.txt");
-		m_FileRSUThroughput.open("Log\\TMCLog\\RSUThroughput.txt");
-		m_FilePackageLoss.open("Log\\TMCLog\\PackageLoss.txt");
-		m_FilePackageTransimit.open("Log\\TMCLog\\PackageTransimit.txt");
-	}
-	else if (getContext()->m_Config.platform == Linux) {
-		m_FileEventLogInfo.open("Log/TMCLog/EventLogInfo.txt");
-		m_FileEventListInfo.open("Log/TMCLog/EventListInfo.txt");
-		m_FileStatisticsDescription.open("Log/TMCLog/StatisticsDescription.txt");
-		m_FileEmergencyDelayStatistics.open("Log/TMCLog/EmergencyDelayStatistics.txt");
-		m_FilePeriodDelayStatistics.open("Log/TMCLog/PeriodDelayStatistics.txt");
-		m_FileDataDelayStatistics.open("Log/TMCLog/DataDelayStatistics.txt");
-		m_FileEmergencyPossion.open("Log/TMCLog/EmergencyPossion.txt");
-		m_FileDataPossion.open("Log/TMCLog/DataPossion.txt");
-		m_FileEmergencyConflictNum.open("Log/TMCLog/EmergencyConflictNum.txt");
-		m_FilePeriodConflictNum.open("Log/TMCLog/PeriodConflictNum.txt");
-		m_FileDataConflictNum.open("Log/TMCLog/DataConflictNum.txt");
-		m_FileTTIThroughput.open("Log/TMCLog/TTIThroughput.txt");
-		m_FileRSUThroughput.open("Log/TMCLog/RSUThroughput.txt");
-		m_FilePackageLoss.open("Log/TMCLog/PackageLoss.txt");
-		m_FilePackageTransimit.open("Log/TMCLog/PackageTransimit.txt");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
+	m_FileEventLogInfo.open("Log/TMCLog/EventLogInfo.txt");
+	m_FileEventListInfo.open("Log/TMCLog/EventListInfo.txt");
+	m_FileStatisticsDescription.open("Log/TMCLog/StatisticsDescription.txt");
+	m_FileEmergencyDelayStatistics.open("Log/TMCLog/EmergencyDelayStatistics.txt");
+	m_FilePeriodDelayStatistics.open("Log/TMCLog/PeriodDelayStatistics.txt");
+	m_FileDataDelayStatistics.open("Log/TMCLog/DataDelayStatistics.txt");
+	m_FileEmergencyPossion.open("Log/TMCLog/EmergencyPossion.txt");
+	m_FileDataPossion.open("Log/TMCLog/DataPossion.txt");
+	m_FileEmergencyConflictNum.open("Log/TMCLog/EmergencyConflictNum.txt");
+	m_FilePeriodConflictNum.open("Log/TMCLog/PeriodConflictNum.txt");
+	m_FileDataConflictNum.open("Log/TMCLog/DataConflictNum.txt");
+	m_FileTTIThroughput.open("Log/TMCLog/TTIThroughput.txt");
+	m_FileRSUThroughput.open("Log/TMCLog/RSUThroughput.txt");
+	m_FilePackageLoss.open("Log/TMCLog/PackageLoss.txt");
+	m_FilePackageTransimit.open("Log/TMCLog/PackageTransimit.txt");
 }
 
 
@@ -406,6 +377,9 @@ void TMC::processStatistics() {
 				break;
 			default:
 				throw logic_error("非法消息类型");
+			}
+			if (event.getQueueDelay() == 75) {
+				cout << "ERROR<EVENT>: " << event.getEventId() << endl;
 			}
 		}
 	m_FileEmergencyDelayStatistics << ssEmergency.str() << endl;

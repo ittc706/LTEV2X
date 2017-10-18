@@ -41,17 +41,10 @@ int GTT::s_CONGESTION_LEVEL_NUM = INVALID;
 
 vector<int> GTT::s_VEUE_NUM_PER_CONGESTION_LEVEL;
 
-void GTT::loadConfig(Platform t_Platform) {
+void GTT::loadConfig() {
 	ConfigLoader configLoader;
-	if (t_Platform == Windows) {
-		configLoader.resolvConfigPath("Config\\GTTConfig.xml");
-	}
-	else if (t_Platform == Linux) {
-		configLoader.resolvConfigPath("Config/GTTConfig.xml");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
+
+	configLoader.resolvConfigPath("Config/GTTConfig.xml");
 
 	stringstream ss;
 
@@ -95,25 +88,12 @@ int GTT::calcuateCongestionLevel(int t_VeUENum) {
 }
 
 GTT::GTT(System* t_Context) : m_Context(t_Context) {
-	if (getContext()->m_Config.platform == Windows) {
-		m_FileStatisticsDescription.open("Log\\GTTLog\\StatisticsDescription.txt");
-		m_FileVeUELocationUpdateLogInfo.open("Log\\GTTLog\\VeUELocationUpdateLogInfo.txt");
-		m_FileVeUENumPerRSULogInfo.open("Log\\GTTLog\\VeUENumPerRSULogInfo.txt");
-		m_FileLocationInfo.open("Log\\GTTLog\\LocationInfo.txt");
-		m_FileVeUEMessage.open("Log\\GTTLog\\VeUEMessage.txt");
-		m_FileVeUECongestionInfo.open("Log\\GTTLog\\VeUECongestionInfo.txt");
-	}
-	else if (getContext()->m_Config.platform == Linux) {
-		m_FileStatisticsDescription.open("Log/GTTLog/StatisticsDescription.txt");
-		m_FileVeUELocationUpdateLogInfo.open("Log/GTTLog/VeUELocationUpdateLogInfo.txt");
-		m_FileVeUENumPerRSULogInfo.open("Log/GTTLog/VeUENumPerRSULogInfo.txt");
-		m_FileLocationInfo.open("Log/GTTLog/LocationInfo.txt");
-		m_FileVeUEMessage.open("Log/GTTLog/VeUEMessage.txt");
-		m_FileVeUECongestionInfo.open("Log/GTTLog/VeUECongestionInfo.txt");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
+	m_FileStatisticsDescription.open("Log/GTTLog/StatisticsDescription.txt");
+	m_FileVeUELocationUpdateLogInfo.open("Log/GTTLog/VeUELocationUpdateLogInfo.txt");
+	m_FileVeUENumPerRSULogInfo.open("Log/GTTLog/VeUENumPerRSULogInfo.txt");
+	m_FileLocationInfo.open("Log/GTTLog/LocationInfo.txt");
+	m_FileVeUEMessage.open("Log/GTTLog/VeUEMessage.txt");
+	m_FileVeUECongestionInfo.open("Log/GTTLog/VeUECongestionInfo.txt");
 }
 
 

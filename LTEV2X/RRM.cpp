@@ -34,19 +34,9 @@ const double RRM::s_CODE_RATE= 0.5;
 const double RRM::s_DROP_SINR_BOUNDARY= 1.99;
 
 RRM::RRM(System* t_Context) : m_Context(t_Context) {
-	if (getContext()->m_Config.platform == Windows) {
-		m_FileScheduleInfo.open("Log\\RRMLog\\ScheduleInfo.txt");
-		m_FileClasterPerformInfo.open("Log\\RRMLog\\ClasterPerformInfo.txt");
-		m_FileTTILogInfo.open("Log\\RRMLog\\TTILogInfo.txt");
-	}
-	else if (getContext()->m_Config.platform == Linux) {
-		m_FileScheduleInfo.open("Log/RRMLog/ScheduleInfo.txt");
-		m_FileClasterPerformInfo.open("Log/RRMLog/ClasterPerformInfo.txt");
-		m_FileTTILogInfo.open("Log/RRMLog/TTILogInfo.txt");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
+	m_FileScheduleInfo.open("Log/RRMLog/ScheduleInfo.txt");
+	m_FileClasterPerformInfo.open("Log/RRMLog/ClasterPerformInfo.txt");
+	m_FileTTILogInfo.open("Log/RRMLog/TTILogInfo.txt");
 }
 
 RRM::~RRM() {

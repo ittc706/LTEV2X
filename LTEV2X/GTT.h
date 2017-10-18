@@ -51,7 +51,7 @@ public:
 	/*
 	* 加载GTT模块
 	*/
-	static void loadConfig(Platform t_Platform);
+	static void loadConfig();
 
 	/*
 	* 给定车辆数目，返回拥塞等级

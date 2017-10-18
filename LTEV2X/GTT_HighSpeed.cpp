@@ -94,17 +94,10 @@ const double GTT_HighSpeed::s_eNB_TOPO[s_eNB_NUM * 2] = {
 	0.5f*s_ISD,35,
 };
 
-void GTT_HighSpeed::loadConfig(Platform t_Platform) {
+void GTT_HighSpeed::loadConfig() {
 	ConfigLoader configLoader;
-	if (t_Platform == Windows) {
-		configLoader.resolvConfigPath("Config\\HighSpeedConfig.xml");
-	}
-	else if (t_Platform == Linux) {
-		configLoader.resolvConfigPath("Config/HighSpeedConfig.xml");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
+
+	configLoader.resolvConfigPath("Config/HighSpeedConfig.xml");
 
 	stringstream ss;
 

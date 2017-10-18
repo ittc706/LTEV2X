@@ -60,7 +60,7 @@ public:
 	/*
 	* 加载TMC模块配置参数
 	*/
-	static void loadConfig(Platform t_Platform);
+	static void loadConfig();
 	/*------------------域------------------*/
 private:
 	/*

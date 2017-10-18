@@ -32,8 +32,35 @@
 #include"RSU.h"
 
 #include"Function.h"
+#include"ConfigLoader.h"
 
 using namespace std;
+
+int RRM_RR::s_RB_NUM_PER_PATTERN = 0;
+
+int RRM_RR::s_TOTAL_PATTERN_NUM = 0;
+
+void RRM_RR::loadConfig() {
+	ConfigLoader configLoader;
+
+	configLoader.resolvConfigPath("Config/RRM_RRConfig.xml");
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = configLoader.getParam("RBNumPerPattern")) != nullString) {
+		ss << temp;
+		ss >> s_RB_NUM_PER_PATTERN;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	s_TOTAL_PATTERN_NUM = s_TOTAL_BANDWIDTH / s_BANDWIDTH_OF_RB / s_RB_NUM_PER_PATTERN;
+}
 
 RRM_RR::RRM_RR(System* t_Context) :
 	RRM(t_Context) {

@@ -74,11 +74,8 @@ void System::process() {
 	}
 
 	cout.setf(ios::fixed);
-	double timeFactor;
-	if (m_Config.platform == Windows)
-		timeFactor = 1000L;
-	else
-		timeFactor = 1000000L;
+	double timeFactor = 1000L;
+
 	cout << "干扰信道计算耗时：" << m_RRMPoint->m_GTTTimeConsume / timeFactor << " s\n" << endl;
 	cout << "SINR计算耗时：" << m_RRMPoint->m_WTTimeConsume / timeFactor << " s\n" << endl;
 	cout.unsetf(ios::fixed);
@@ -101,33 +98,9 @@ void System::configure() {//系统仿真参数配置
 
 	ConfigLoader configLoader;
 
-	//首先先判断当前的平台，利用路径的表示在两个平台下的差异来判断
-	ifstream inPlatformWindows("Config\\SystemConfig.xml"),
-		inPlatformLinux("Config/SystemConfig.xml");
-	
-	if (inPlatformWindows.is_open()) {
-		m_Config.platform = Windows;
-		cout << "您当前的平台为：Windows" << endl;	
-	}
-	else if (inPlatformLinux.is_open()) {
-		m_Config.platform = Linux;
-		cout << "您当前的平台为：Linux" << endl;	
-	}
-	else
-		throw logic_error("PlatformError");
-
-
 	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析系统配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-	switch (m_Config.platform) {
-	case Windows:
-		configLoader.resolvConfigPath("Config\\SystemConfig.xml");
-		break;
-	case Linux:
-		configLoader.resolvConfigPath("Config/SystemConfig.xml");
-		break;
-	default:
-		throw logic_error("Platform Config Error!");
-	}
+
+	configLoader.resolvConfigPath("Config/SystemConfig.xml");
 
 	stringstream ss;
 
@@ -214,16 +187,8 @@ void System::configure() {//系统仿真参数配置
 
 
 	/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始解析日志配置文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-	switch (m_Config.platform) {
-	case Windows:
-		configLoader.resolvConfigPath("Config\\LogControlConfig.xml");
-		break;
-	case Linux:
-		configLoader.resolvConfigPath("Config/LogControlConfig.xml");
-		break;
-	default:
-		throw logic_error("Platform Config Error!");
-	}
+
+	configLoader.resolvConfigPath("Config/LogControlConfig.xml");
 
 	if ((temp = configLoader.getParam("TTILog")) != nullString) {
 		if (temp == "ON")
@@ -267,15 +232,15 @@ void System::configure() {//系统仿真参数配置
 
 
 	//读取各个模块的配置文件
-	GTT::loadConfig(m_Config.platform);
+	GTT::loadConfig();
+	GTT_Urban::loadConfig();
+	GTT_HighSpeed::loadConfig();
 
-	GTT_Urban::loadConfig(m_Config.platform);
+	RRM_RR::loadConfig();
+	RRM_TDM_DRA::loadConfig();
+	RRM_ICC_DRA::loadConfig();
 
-	GTT_HighSpeed::loadConfig(m_Config.platform);
-
-	RRM_TDM_DRA::loadConfig(m_Config.platform);
-
-	TMC::loadConfig(m_Config.platform);
+	TMC::loadConfig();
 }
 
 

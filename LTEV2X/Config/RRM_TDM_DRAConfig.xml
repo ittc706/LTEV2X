@@ -12,3 +12,15 @@
 
 <!--每个Pattern种类对应Pattern数目，依次为紧急事件、周期事件、数据业务事件-->	
 <PatternNumPerPatternType>2 6 1</PatternNumPerPatternType>
+
+
+<!--冲突避免开关
+	ON
+	OFF      -->
+<ConflictAvoidanceSwitch>ON</ConflictAvoidanceSwitch>
+
+
+<!--分簇方式
+    UNIFORM:均匀分簇
+    SIZE_BASED:基于大小的分簇-->	
+<ClasterMode>UNIFORM</ClasterMode>

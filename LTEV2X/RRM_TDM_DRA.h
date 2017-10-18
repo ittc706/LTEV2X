@@ -6,6 +6,12 @@
 #include<stdexcept>
 #include"RRM.h"
 
+// 分簇模式
+enum Cluster_Mode {
+	UNIFORM, // 均匀分簇
+	SIZE_BASED // 基于大小分簇
+};
+
 //<RRM_TDM_DRA> :Radio Resource Management Time Division Dultiplexing based Distributed Resource Allocation
 
 class RRM_TDM_DRA :public RRM {
@@ -43,9 +49,19 @@ public:
 	static int s_TOTAL_PATTERN_NUM;
 
 	/*
+	* 冲突避让机制开关
+	*/
+	static bool s_CONFLICT_AVOIDANCD_SWITCH;
+
+	/*
+	* 分簇方式
+	*/
+	static int s_CLASTER_MODE;
+
+	/*
 	* 加载城镇场景配置参数
 	*/
-	static void loadConfig(Platform t_Platform);
+	static void loadConfig();
 	/*------------------域------------------*/
 public:
 	/*
@@ -112,14 +128,19 @@ private:
 	void informationClean();
 
 	/*
+	* 分簇
+	*/
+	void cluster(bool t_ClusterFlag);
+
+	/*
 	* 基于簇大小的时分复用
 	*/
-	void groupSizeBasedTDM(bool t_ClusterFlag);
+	void groupSizeBasedTDM();
 
 	/*
 	* 均匀分配给每个簇时域资源
 	*/
-	void uniformTDM(bool t_ClusterFlag);
+	void uniformTDM();
 
 	/*
 	* 更新等待链表

@@ -129,17 +129,10 @@ const int GTT_Urban::s_RSU_IN_ROAD[s_ROAD_NUM][4] = {
 	{ 16,17,23,22 }
 };
 
-void GTT_Urban::loadConfig(Platform t_Platform) {
+void GTT_Urban::loadConfig() {
 	ConfigLoader configLoader;
-	if (t_Platform == Windows) {
-		configLoader.resolvConfigPath("Config\\UrbanConfig.xml");
-	}
-	else if (t_Platform == Linux) {
-		configLoader.resolvConfigPath("Config/UrbanConfig.xml");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
+
+	configLoader.resolvConfigPath("Config/UrbanConfig.xml");
 
 	stringstream ss;
 

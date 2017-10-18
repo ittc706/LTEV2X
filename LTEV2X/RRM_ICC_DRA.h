@@ -12,12 +12,22 @@ public:
 	/*
 	* 每个Pattern的RB数量
 	*/
-	static const int s_RB_NUM_PER_PATTERN = 5;
+	static int s_RB_NUM_PER_PATTERN;
 
 	/*
 	* 总的Pattern数量
 	*/
-	static const int s_TOTAL_PATTERN_NUM = s_TOTAL_BANDWIDTH / s_BANDWIDTH_OF_RB / s_RB_NUM_PER_PATTERN;
+	static int s_TOTAL_PATTERN_NUM;
+
+	/*
+	* 冲突避让机制开关
+	*/
+	static bool s_CONFLICT_AVOIDANCD_SWITCH;
+
+	/*
+	* 加载城镇场景配置参数
+	*/
+	static void loadConfig();
 
 	/*------------------域------------------*/
 public:

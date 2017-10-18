@@ -64,12 +64,8 @@ WT::WT(const WT& t_WT) : WT(t_WT.m_Context) {
 void WT::initialize() {
 	//读入信噪比和互信息的对应表(QPSK),维度是1*95
 	ifstream in;
-	if (getContext()->m_Config.platform == Windows) {
-		in.open("WT\\QPSK_MI.md");
-	}
-	else {
-		in.open("WT/QPSK_MI.md");
-	}
+	in.open("WT/QPSK_MI.md");
+
 	m_QPSK_MI = make_shared<vector<double>>();
 	istream_iterator<double> inIter2(in), eof2;
 	m_QPSK_MI->assign(inIter2, eof2);

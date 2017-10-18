@@ -1,9 +1,5 @@
 #pragma once
 
-enum Platform {
-	Windows,
-	Linux
-};
 enum GTTMode {
 	URBAN,      //城市
 	HIGHSPEED   //高速

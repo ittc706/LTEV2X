@@ -49,17 +49,14 @@ vector<pair<int, int>> RRM_TDM_DRA::s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL;
 
 int RRM_TDM_DRA::s_TOTAL_PATTERN_NUM;
 
-void RRM_TDM_DRA::loadConfig(Platform t_Platform) {
+bool RRM_TDM_DRA::s_CONFLICT_AVOIDANCD_SWITCH;
+
+int RRM_TDM_DRA::s_CLASTER_MODE;
+
+void RRM_TDM_DRA::loadConfig() {
 	ConfigLoader configLoader;
-	if (t_Platform == Windows) {
-		configLoader.resolvConfigPath("Config\\RRM_TDM_DRAConfig.xml");
-	}
-	else if (t_Platform == Linux) {
-		configLoader.resolvConfigPath("Config/RRM_TDM_DRAConfig.xml");
-	}
-	else {
-		throw logic_error("Platform Config Error!");
-	}
+
+	configLoader.resolvConfigPath("Config/RRM_TDM_DRAConfig.xml");
 
 	stringstream ss;
 
@@ -123,6 +120,31 @@ void RRM_TDM_DRA::loadConfig(Platform t_Platform) {
 		return res;
 	}();
 
+	if ((temp = configLoader.getParam("ConflictAvoidanceSwitch")) != nullString) {
+		if (temp == "ON") {
+			s_CONFLICT_AVOIDANCD_SWITCH = true;
+		}
+		else if (temp == "OFF") {
+			s_CONFLICT_AVOIDANCD_SWITCH = false;
+		}
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("ClasterMode")) != nullString) {
+		if (temp == "UNIFORM") {
+			s_CLASTER_MODE = UNIFORM;
+		}
+		else if (temp == "SIZE_BASED") {
+			s_CLASTER_MODE = SIZE_BASED;
+		}
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
 }
 
 RRM_TDM_DRA::RRM_TDM_DRA(System* t_Context) :
@@ -171,9 +193,8 @@ void RRM_TDM_DRA::schedule() {
 	//资源分配信息清空:包括每个RSU内的接入链表等
 	informationClean();
 
-	//根据簇大小进行时域资源的划分
-	//groupSizeBasedTDM(clusterFlag);
-	uniformTDM(clusterFlag);
+	//分簇
+	cluster(clusterFlag);
 
 	//更新等待链表
 	updateAccessEventIdList(clusterFlag);
@@ -212,8 +233,18 @@ void RRM_TDM_DRA::informationClean() {
 }
 
 
-void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
+void RRM_TDM_DRA::cluster(bool t_ClusterFlag) {
 	if (!t_ClusterFlag)return;
+	switch (s_CLASTER_MODE) {
+	case UNIFORM:
+		uniformTDM();
+	case SIZE_BASED:
+		groupSizeBasedTDM();
+	}
+}
+
+
+void RRM_TDM_DRA::groupSizeBasedTDM() {
 	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
@@ -283,8 +314,7 @@ void RRM_TDM_DRA::groupSizeBasedTDM(bool t_ClusterFlag) {
 }
 
 
-void RRM_TDM_DRA::uniformTDM(bool t_ClusterFlag) {
-	if (!t_ClusterFlag)return;
+void RRM_TDM_DRA::uniformTDM() {
 	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 
@@ -708,6 +738,8 @@ void RRM_TDM_DRA::delaystatistics() {
 }
 
 void RRM_TDM_DRA::conflictListener() {
+	if (!s_CONFLICT_AVOIDANCD_SWITCH)return;
+
 	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 

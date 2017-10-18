@@ -73,7 +73,7 @@ public:
 	/*
 	* 加载城镇场景配置参数
 	*/
-	static void loadConfig(Platform t_Platform);
+	static void loadConfig();
 	/*------------------域------------------*/
 private:
 	/*

@@ -1,0 +1,8 @@
+<!--每个Pattern的RB数量-->	
+<RBNumPerPattern>5</RBNumPerPattern>
+
+
+<!--冲突避免开关
+	ON
+	OFF      -->
+<ConflictAvoidanceSwitch>ON</ConflictAvoidanceSwitch>

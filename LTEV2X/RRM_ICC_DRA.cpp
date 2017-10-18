@@ -29,8 +29,50 @@
 #include"RSU.h"
 
 #include"Function.h"
+#include"ConfigLoader.h"
 
 using namespace std;
+
+int RRM_ICC_DRA::s_RB_NUM_PER_PATTERN = 0;
+
+bool RRM_ICC_DRA::s_CONFLICT_AVOIDANCD_SWITCH = false;
+
+int RRM_ICC_DRA::s_TOTAL_PATTERN_NUM = 0;
+
+void RRM_ICC_DRA::loadConfig() {
+	ConfigLoader configLoader;
+
+	configLoader.resolvConfigPath("Config/RRM_ICC_DRAConfig.xml");
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = configLoader.getParam("RBNumPerPattern")) != nullString) {
+		ss << temp;
+		ss >> s_RB_NUM_PER_PATTERN;
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = configLoader.getParam("ConflictAvoidanceSwitch")) != nullString) {
+		if (temp == "ON") {
+			s_CONFLICT_AVOIDANCD_SWITCH = true;
+		}
+		else if (temp == "OFF") {
+			s_CONFLICT_AVOIDANCD_SWITCH = false;
+		}
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	s_TOTAL_PATTERN_NUM = s_TOTAL_BANDWIDTH / s_BANDWIDTH_OF_RB / s_RB_NUM_PER_PATTERN;
+}
 
 RRM_ICC_DRA::RRM_ICC_DRA(System* t_Context) :
 	RRM(t_Context) {
@@ -378,6 +420,8 @@ void RRM_ICC_DRA::delaystatistics() {
 
 
 void RRM_ICC_DRA::conflictListener() {
+	if (!s_CONFLICT_AVOIDANCD_SWITCH) return;
+
 	for (int RSUId = 0; RSUId <GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 

@@ -36,11 +36,6 @@ class System{
 	/*------------------内部类------------------*/
 	struct SystemConfig {
 		/*
-		* 仿真平台，Linux或Windows，仅涉及到文件路径的格式
-		*/
-		Platform platform;
-
-		/*
 		* GTT模块实现的具体类别
 		*/
 		GTTMode _GTTMode;
