@@ -21,6 +21,7 @@
 #include<sstream>
 #include<iostream>
 #include<set>
+#include<algorithm>
 #include"System.h"
 #include"GTT.h"
 #include"RRM_RR.h"
@@ -261,9 +262,15 @@ void RRM_RR::roundRobin() {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			int patternIdx = 0;
+			vector<int> randomPattern(s_TOTAL_PATTERN_NUM);
+			for (int i = 0; i < s_TOTAL_PATTERN_NUM; i++) {
+				randomPattern.push_back(i);
+			}
+			random_shuffle(randomPattern.begin(), randomPattern.end());
+
 			for (int eventId : _RSU->getRRPoint()->m_AccessEventIdList[clusterIdx]) {
 				int VeUEId = getContext()->m_TMCPoint->m_EventVec[eventId].getVeUEId();
-				_RSU->getRRPoint()->pushToTransimitScheduleInfoTable(new RRM_RSU::ScheduleInfo(eventId, VeUEId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx));
+				_RSU->getRRPoint()->pushToTransimitScheduleInfoTable(new RRM_RSU::ScheduleInfo(eventId, VeUEId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, randomPattern[patternIdx]));
 				++patternIdx;
 			}
 		}
