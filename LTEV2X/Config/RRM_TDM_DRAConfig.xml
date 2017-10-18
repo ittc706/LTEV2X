@@ -23,4 +23,4 @@
 <!--分簇方式
     UNIFORM:均匀分簇
     SIZE_BASED:基于大小的分簇-->	
-<ClasterMode>UNIFORM</ClasterMode>
+<ClasterMode>SIZE_BASED</ClasterMode>

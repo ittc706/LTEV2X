@@ -378,9 +378,6 @@ void TMC::processStatistics() {
 			default:
 				throw logic_error("非法消息类型");
 			}
-			if (event.getQueueDelay() == 75) {
-				cout << "ERROR<EVENT>: " << event.getEventId() << endl;
-			}
 		}
 	m_FileEmergencyDelayStatistics << ssEmergency.str() << endl;
 	m_FilePeriodDelayStatistics << ssPeriod.str() << endl;
