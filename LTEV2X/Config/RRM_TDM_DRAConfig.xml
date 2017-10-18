@@ -1,14 +1,14 @@
-<!--µ÷¶Èµ¥ÔªÒ»´Îµ÷¶È×ÜÊ±³¤-->	
+<!--è°ƒåº¦å•å…ƒä¸€æ¬¡è°ƒåº¦æ€»æ—¶é•¿-->	
 <NTTI>100</NTTI>
 
 
-<!--PatternÀàÐÍµÄÊýÄ¿£¬¸Ã²ÎÊýÄ¿Ç°¾ÍÊÇ3£¬ÒòÎªÖ»ÓÐÈýÀàÊÂ¼þ-->	
+<!--Patternç±»åž‹çš„æ•°ç›®ï¼Œè¯¥å‚æ•°ç›®å‰å°±æ˜¯3ï¼Œå› ä¸ºåªæœ‰ä¸‰ç±»äº‹ä»¶-->	
 <PatternTypeNum>3</PatternTypeNum>
 
 
-<!--Ã¿¸öPatternÖÖÀà¶ÔÓ¦µÄRBÊýÄ¿£¬ÒÀ´ÎÎª½ô¼±ÊÂ¼þ¡¢ÖÜÆÚÊÂ¼þ¡¢Êý¾ÝÒµÎñÊÂ¼þ-->	
-<RBNumPerPatternType>10 10 20</RBNumPerPatternType>
+<!--æ¯ä¸ªPatternç§ç±»å¯¹åº”çš„RBæ•°ç›®ï¼Œä¾æ¬¡ä¸ºç´§æ€¥äº‹ä»¶ã€å‘¨æœŸäº‹ä»¶ã€æ•°æ®ä¸šåŠ¡äº‹ä»¶-->	
+<RBNumPerPatternType>5 5 10</RBNumPerPatternType>
 
 
-<!--Ã¿¸öPatternÖÖÀà¶ÔÓ¦PatternÊýÄ¿£¬ÒÀ´ÎÎª½ô¼±ÊÂ¼þ¡¢ÖÜÆÚÊÂ¼þ¡¢Êý¾ÝÒµÎñÊÂ¼þ-->	
-<PatternNumPerPatternType>1 2 1</PatternNumPerPatternType>
+<!--æ¯ä¸ªPatternç§ç±»å¯¹åº”Patternæ•°ç›®ï¼Œä¾æ¬¡ä¸ºç´§æ€¥äº‹ä»¶ã€å‘¨æœŸäº‹ä»¶ã€æ•°æ®ä¸šåŠ¡äº‹ä»¶-->	
+<PatternNumPerPatternType>2 6 1</PatternNumPerPatternType>

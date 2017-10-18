@@ -12,7 +12,7 @@ public:
 	/*
 	* 每个Pattern的RB数量
 	*/
-	static const int s_RB_NUM_PER_PATTERN = 10;
+	static const int s_RB_NUM_PER_PATTERN = 5;
 
 	/*
 	* 总的Pattern数量

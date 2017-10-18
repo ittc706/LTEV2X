@@ -1,6 +1,6 @@
-<!--拥塞等级数量-->
+<!--鎷ュ绛夌骇鏁伴噺-->
 <CongestionLevelNum>3</CongestionLevelNum>
 
 
-<!--对应拥塞等级下车辆数目，单位TTI-->
+<!--瀵瑰簲鎷ュ绛夌骇涓嬭溅杈嗘暟鐩紝鍗曚綅TTI-->
 <VeUENumPerCongestionLevel>20 35 50</VeUENumPerCongestionLevel>

@@ -1,38 +1,32 @@
-%城镇道路场景
+figure(1)
+[id,~,~,absX,absY,~] = textread('VeUEMessage.txt','%n%n%n%n%n%n');
+vueNum = length(id);
+RandomColor = linspecer(1);
+for cnt = 1:1:vueNum
+    plot(absX(cnt,1),absY(cnt,1),'X','Color',RandomColor);hold on
+end
+l1=legend('VUE',1);
+title('曼哈顿街区车辆撒点分布图','fontweight','bold')
+xlabel('x/m','fontweight','bold');
+ylabel('y/m','fontweight','bold');
+axis([-1000,1000,-800,800]);
+set(l1,'Fontname', 'Times New Roman','FontWeight','bold')
 
-% % 显示某个RSU下不同簇下的车辆拓扑
-% [data1,data2,data3,data4,data5,data6] = textread('VeUEMessage.txt','%n%n%n%n%n%n');
-% dim = length(data1);
-% ClusterNumber = 5;
-% RandomColor = rand(ClusterNumber,3);
-%  for cnt = 1:1:dim
-%     if(data2(cnt,1)==8)%选择查看的RSU编号，从0到23
-%     ClusterId = data3(cnt,1)+1;
-%     plot(data4(cnt,1),data5(cnt,1),'X','Color',RandomColor(ClusterId,:));hold on
-%     end
-%  end
- 
-% 显示不同RSU下车辆的拓扑
-% [data1,data2,data3,data4,data5,data6] = textread('VeUEMessage.txt','%n%n%n%n%n%n');
-% dim = length(data1);
-% RSUNumber = 24;
-% RandomColor = rand(RSUNumber,3);
-%  for cnt = 1:1:dim
-%     RSUId = data2(cnt,1)+1;
-%     plot(data4(cnt,1),data5(cnt,1),'X','Color',RandomColor(RSUId,:));hold on
-%  end
-% 
-%     
-    
-% 显示不同Zone下车辆的拓扑
-[data1,data2,data3,data4,data5,data6] = textread('VeUEMessage.txt','%n%n%n%n%n%n');
-dim = length(data1);
+
+figure(2)
+[id,~,~,absX,absY,zoneId] = textread('VeUEMessage.txt','%n%n%n%n%n%n');
+vueNum = length(id);
 Zonenummber = 5;
-RandomColor = rand(Zonenummber,3);
- for cnt = 1:1:dim
-    ZoneId = data6(cnt,1)+1;
-    plot(data4(cnt,1),data5(cnt,1),'X','Color',RandomColor(ZoneId,:));hold on
- end
+RandomColor = linspecer(Zonenummber*5);
+for cnt = 1:1:vueNum
+    ZoneId = zoneId(cnt,1)+1;
+    plot(absX(cnt,1),absY(cnt,1),'X','Color',RandomColor(ZoneId*5,:));hold on
+end
+l2=legend('Zone1','Zone2','Zone3','Zone4','Zone5',1);
+title('曼哈顿街区不同拥塞等级车辆分布图','fontweight','bold')
+xlabel('x/m','fontweight','bold');
+ylabel('y/m','fontweight','bold');
+axis([-1100,1100,-800,800]);
+set(l2,'Fontname', 'Times New Roman','FontWeight','bold')
 
-    
-            
+

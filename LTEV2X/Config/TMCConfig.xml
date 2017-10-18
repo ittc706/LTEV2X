@@ -1,37 +1,37 @@
-<!--ÓµÈûµÈ¼¶ÊýÁ¿-->
+<!--æ‹¥å¡žç­‰çº§æ•°é‡-->
 <CongestionLevelNum>3</CongestionLevelNum>
 
 
-<!--¶ÔÓ¦ÓµÈûµÈ¼¶ÏÂÖÜÆÚÊÂ¼þÖÜÆÚ£¬µ¥Î»TTI-->
-<PeriodicEventPeriod>500 500 500</PeriodicEventPeriod>
+<!--å¯¹åº”æ‹¥å¡žç­‰çº§ä¸‹å‘¨æœŸäº‹ä»¶å‘¨æœŸï¼Œå•ä½TTI-->
+<PeriodicEventPeriod>100 100 100</PeriodicEventPeriod>
 
 
-<!--½ô¼±ÊÂ¼þLambda£¬µ¥Î»´Î/TTI-->
-<EmergencyPoisson>0.0001</EmergencyPoisson>
+<!--ç´§æ€¥äº‹ä»¶Lambdaï¼Œå•ä½æ¬¡/TTI-->
+<EmergencyPoisson>0.001</EmergencyPoisson>
 
 
-<!--Êý¾ÝÊÂ¼þLambda£¬µ¥Î»´Î/TTI-->
-<DataPoisson>0.0001</DataPoisson>
+<!--æ•°æ®äº‹ä»¶Lambdaï¼Œå•ä½æ¬¡/TTI-->
+<DataPoisson>0.001</DataPoisson>
 
 
-<!--½ô¼±ÊÂ¼þ/ÖÜÆÚÊÂ¼þ/Êý¾ÝÒµÎñÊÂ¼þ µÄÊý¾Ý°üÊýÁ¿-->
-<MessagePackageNum>4 4 4</MessagePackageNum>
+<!--ç´§æ€¥äº‹ä»¶/å‘¨æœŸäº‹ä»¶/æ•°æ®ä¸šåŠ¡äº‹ä»¶ çš„æ•°æ®åŒ…æ•°é‡-->
+<MessagePackageNum>5 5 5</MessagePackageNum>
 
 
-<!--½ô¼±ÊÂ¼þ/ÖÜÆÚÊÂ¼þ/Êý¾ÝÒµÎñÊÂ¼þ Ã¿¸öÊý¾Ý°üµÄbitÊýÁ¿-->
+<!--ç´§æ€¥äº‹ä»¶/å‘¨æœŸäº‹ä»¶/æ•°æ®ä¸šåŠ¡äº‹ä»¶ æ¯ä¸ªæ•°æ®åŒ…çš„bitæ•°é‡-->
 <MessageBitNumPerPackage>
-	1520 1520 1520 2400 
-	1520 1520 1520 2400
-	3040 3040 3040 4800
+	2400 1520 1520 1520 1520
+	2400 1520 1520 1520 1520
+	4800 3040 3040 3040 3040
 </MessageBitNumPerPackage>
 
 
-<!--½ô¼±ÊÂ¼þ/ÖÜÆÚÊÂ¼þ/Êý¾ÝÒµÎñÊÂ¼þ ³õÊ¼µÄÍË±Ü´°´óÐ¡-->
+<!--ç´§æ€¥äº‹ä»¶/å‘¨æœŸäº‹ä»¶/æ•°æ®ä¸šåŠ¡äº‹ä»¶ åˆå§‹çš„é€€é¿çª—å¤§å°-->
 <InitialWindowSize>5 5 5</InitialWindowSize>
 
 
-<!--½ô¼±ÊÂ¼þ/ÖÜÆÚÊÂ¼þ/Êý¾ÝÒµÎñÊÂ¼þ ×î´óµÄÍË±Ü´°´óÐ¡-->
-<MaxWindowSize>20 20 20</MaxWindowSize>
+<!--ç´§æ€¥äº‹ä»¶/å‘¨æœŸäº‹ä»¶/æ•°æ®ä¸šåŠ¡äº‹ä»¶ æœ€å¤§çš„é€€é¿çª—å¤§å°-->
+<MaxWindowSize>40 20 20</MaxWindowSize>
 
 
 
