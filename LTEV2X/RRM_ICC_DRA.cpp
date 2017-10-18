@@ -432,7 +432,8 @@ void RRM_ICC_DRA::transimitPreparation() {
 
 					// 添加同一个Cluster同一个Pattern中的其他冲突车辆
 					for (auto otherIt = curList.begin(); otherIt != curList.end(); otherIt++) {
-						int otherVeUEId = (*otherIt)->VeUEId;
+						RRM_RSU::ScheduleInfo *otherInfo = *otherIt;
+						int otherVeUEId = otherInfo->VeUEId;
 						if (otherVeUEId != curVeUEId)
 							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
 					}
@@ -443,7 +444,7 @@ void RRM_ICC_DRA::transimitPreparation() {
 						list<RRM_RSU::ScheduleInfo*> &otherList = _RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
 						
 						for (auto otherIt = otherList.begin(); otherIt != otherList.end(); otherIt++) {
-							RRM_RSU::ScheduleInfo *otherInfo = *otherList.begin();
+							RRM_RSU::ScheduleInfo *otherInfo = *otherIt;
 							int otherVeUEId = otherInfo->VeUEId;
 							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
 						}

@@ -123,17 +123,6 @@ void RRM_TDM_DRA::loadConfig(Platform t_Platform) {
 		return res;
 	}();
 
-	/*cout << "NTTI: " << s_NTTI << endl;
-	cout << "PatternTypeNum: " << s_PATTERN_TYPE_NUM << endl;
-	cout << "RBNumPerPatternType: " << endl;
-	Print::printVectorDim1(s_RB_NUM_PER_PATTERN_TYPE);
-	cout << "PatternNumPerPatternType: " << endl;
-	Print::printVectorDim1(s_PATTERN_NUM_PER_PATTERN_TYPE);
-	cout << "PatternTypePatternIndexInterval: " << endl;
-	for (pair<int, int>& p : s_PATTERN_TYPE_PATTERN_INDEX_INTERVAL)
-		cout << "[" << p.first << "," << p.second << "]" << endl;
-	cout << "TotalPatternNum: " << s_TOTAL_PATTERN_NUM << endl;
-	system("pause");*/
 }
 
 RRM_TDM_DRA::RRM_TDM_DRA(System* t_Context) :
@@ -794,14 +783,28 @@ void RRM_TDM_DRA::transimitPreparation() {
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
 				list<RRM_RSU::ScheduleInfo*> &curList = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-				if (curList.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-					RRM_RSU::ScheduleInfo *curInfo = *curList.begin();
+				
+				//这里要处理的情况是：可能在同一个Pattern有多个车辆在传输，即发生了冲突，但是没有退避		
+				for (auto curIt = curList.begin(); curIt != curList.end(); curIt++) {
+					RRM_RSU::ScheduleInfo *curInfo = *curIt;
+
 					int curVeUEId = curInfo->VeUEId;
+
+					// 添加同一个Cluster同一个Pattern中的其他冲突车辆
+					for (auto otherIt = curList.begin(); otherIt != curList.end(); otherIt++) {
+						RRM_RSU::ScheduleInfo *otherInfo = *otherIt;
+						int otherVeUEId = otherInfo->VeUEId;
+						if (otherVeUEId != curVeUEId)
+							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
+					}
+
+					// 添加其他Cluster同一个Pattern中的其他车辆
 					for (int otherClusterIdx = 0; otherClusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; otherClusterIdx++) {
 						if (otherClusterIdx == clusterIdx)continue;
-						list<RRM_RSU::ScheduleInfo*> &otherList = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
-						if (otherList.size() == 1) {//其他簇中该pattern下有车辆在传输，那么将该车辆作为干扰车辆
-							RRM_RSU::ScheduleInfo *otherInfo = *otherList.begin();
+						list<RRM_RSU::ScheduleInfo*> &otherList = _RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
+
+						for (auto otherIt = otherList.begin(); otherIt != otherList.end(); otherIt++) {
+							RRM_RSU::ScheduleInfo *otherInfo = *otherIt;
 							int otherVeUEId = otherInfo->VeUEId;
 							m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
 						}
@@ -819,13 +822,6 @@ void RRM_TDM_DRA::transimitPreparation() {
 			m_VeUEAry[VeUEId]->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
 
 			m_VeUEAry[VeUEId]->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
-
-			/*if (m_VeUEAry[VeUEId]->m_InterferenceVeUENum[patternIdx]>0) {
-				g_FileTemp << "VeUEId: " << VeUEId << " [";
-				for (auto c : m_VeUEAry[VeUEId]->m_InterferenceVeUEIdVec[patternIdx])
-					g_FileTemp << c << ", ";
-				g_FileTemp << " ]" << endl;
-			}*/
 		}
 	}
 
@@ -857,8 +853,9 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < s_PATTERN_NUM_PER_PATTERN_TYPE[EMERGENCY]; patternIdx++) {
 				list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-				if (lst.size() == 1) {
-					RRM_RSU::ScheduleInfo *info = *lst.begin();
+				//这里要处理的情况是：可能在同一个Pattern有多个车辆在传输，即发生了冲突，但是没有退避
+				for (auto curIt = lst.begin(); curIt != lst.end(); curIt++) {
+					RRM_RSU::ScheduleInfo *info = *curIt;
 					int VeUEId = info->VeUEId;
 
 					//计算SINR，获取调制编码方式
@@ -899,6 +896,7 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 					//更新日志
 					getContext()->m_TMCPoint->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, TRANSIMITTING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 					writeTTILogInfo(getContext()->m_TTI, TRANSIMITTING, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+
 				}
 			}
 		}
@@ -909,15 +907,15 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 		for (int patternIdx = s_PATTERN_NUM_PER_PATTERN_TYPE[EMERGENCY]; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
 
 			list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RRM_RSU::ScheduleInfo *info = *lst.begin();
+			//这里要处理的情况是：可能在同一个Pattern有多个车辆在传输，即发生了冲突，但是没有退避
+			for (auto curIt = lst.begin(); curIt != lst.end(); curIt++) {
+				RRM_RSU::ScheduleInfo *info = *curIt;
 				int VeUEId = info->VeUEId;
 
 				int patternType = getPatternType(patternIdx);
 
 				//计算SINR，获取调制编码方式
 				pair<int, int> subCarrierIdxRange = getOccupiedSubCarrierRange(getContext()->m_TMCPoint->m_EventVec[info->eventId].getMessageType(), patternIdx);
-				//g_FileTemp << "NonEmergencyPatternIdx = " << patternIdx << "  [" << subCarrierIdxRange.first << " , " << subCarrierIdxRange.second << " ]  " << ((patternType == 0) ? "Emergency" : (patternType == 1 ? "Period" : "Data")) << endl;
 
 				double factor = m_VeUEAry[VeUEId]->m_ModulationType * m_VeUEAry[VeUEId]->m_CodeRate;
 
@@ -953,6 +951,7 @@ void RRM_TDM_DRA::transimitStartThread(int t_FromRSUId, int t_ToRSUId) {
 				//更新日志
 				getContext()->m_TMCPoint->m_EventVec[info->eventId].addEventLog(getContext()->m_TTI, TRANSIMITTING, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
 				writeTTILogInfo(getContext()->m_TTI, TRANSIMITTING, info->eventId, _RSU->getSystemPoint()->getGTTPoint()->m_RSUId, clusterIdx, patternIdx, -1, -1, -1, "Transimit");
+
 			}
 		}
 	}
@@ -1018,8 +1017,9 @@ void RRM_TDM_DRA::transimitEnd() {
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < s_PATTERN_NUM_PER_PATTERN_TYPE[EMERGENCY]; patternIdx++) {
 				list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-				if (lst.size() == 1) {
-					RRM_RSU::ScheduleInfo* &info = *lst.begin();
+				//这里要处理的情况是：可能在同一个Pattern有多个车辆在传输，即发生了冲突，但是没有退避
+				for (auto curIt = lst.begin(); curIt != lst.end(); curIt++) {
+					RRM_RSU::ScheduleInfo* &info = *curIt;
 					//已经传输完毕，将资源释放
 					if (getContext()->m_TMCPoint->m_EventVec[info->eventId].isFinished()) {
 
@@ -1048,8 +1048,9 @@ void RRM_TDM_DRA::transimitEnd() {
 		for (int patternIdx = s_PATTERN_NUM_PER_PATTERN_TYPE[EMERGENCY]; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
 
 			list<RRM_RSU::ScheduleInfo*> &lst = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[clusterIdx][patternIdx];
-			if (lst.size() == 1) {//只有一个用户在传输，该用户会正确的传输所有数据（在离开簇之前）
-				RRM_RSU::ScheduleInfo* &info = *lst.begin();
+			//这里要处理的情况是：可能在同一个Pattern有多个车辆在传输，即发生了冲突，但是没有退避
+			for (auto curIt = lst.begin(); curIt != lst.end(); curIt++) {
+				RRM_RSU::ScheduleInfo* &info = *curIt;
 				//说明该数据已经传输完毕
 				if (getContext()->m_TMCPoint->m_EventVec[info->eventId].isFinished()) {
 
