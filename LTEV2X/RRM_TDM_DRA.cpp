@@ -801,7 +801,7 @@ void RRM_TDM_DRA::transimitPreparation() {
 					// 添加其他Cluster同一个Pattern中的其他车辆
 					for (int otherClusterIdx = 0; otherClusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; otherClusterIdx++) {
 						if (otherClusterIdx == clusterIdx)continue;
-						list<RRM_RSU::ScheduleInfo*> &otherList = _RSU->getICC_DRAPoint()->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
+						list<RRM_RSU::ScheduleInfo*> &otherList = _RSU->getTDM_DRAPoint()->m_TransimitScheduleInfoList[otherClusterIdx][patternIdx];
 
 						for (auto otherIt = otherList.begin(); otherIt != otherList.end(); otherIt++) {
 							RRM_RSU::ScheduleInfo *otherInfo = *otherIt;

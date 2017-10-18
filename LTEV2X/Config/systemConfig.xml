@@ -8,7 +8,7 @@
 	[TDM_DRA]：簇间时分的竞争式资源管理模式
 	[ICC_DRA]：簇间并发的竞争式资源管理模式
 	[RR]：集中式轮询调度模式-->
-<RRMMode>ICC_DRA</RRMMode>
+<RRMMode>TDM_DRA</RRMMode>
 
 
 <!--无限资源管理模式选择

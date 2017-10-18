@@ -1,16 +1,16 @@
 <!--TTI日志开关
 	ON
 	OFF      -->
-<TTILog>OFF</TTILog>
+<TTILog>ON</TTILog>
 
 
 <!--Event日志开关
 	ON
 	OFF      -->
-<EventLog>OFF</EventLog>
+<EventLog>ON</EventLog>
 
 
 <!--Schedule日志开关
 	ON
 	OFF      -->
-<ScheduleLog>OFF</ScheduleLog>
+<ScheduleLog>ON</ScheduleLog>
