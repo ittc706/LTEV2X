@@ -332,8 +332,13 @@ void RRM_RR::transimitPreparation() {
 
 	for (int RSUId = 0; RSUId < GTT::s_RSU_NUM; RSUId++) {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
+
+		//获取邻接RSU id 集合
+		const vector<int>& adjacentRSUIds = getContext()->m_GTTPoint->getAdjacentRSUs(RSUId);
+
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			for (int patternIdx = 0; patternIdx < s_TOTAL_PATTERN_NUM; patternIdx++) {
+
 				RRM_RSU::ScheduleInfo *&curInfo = _RSU->getRRPoint()->m_TransimitScheduleInfoTable[clusterIdx][patternIdx];
 				if (curInfo == nullptr) continue;
 				int curVeUEId = curInfo->VeUEId;
@@ -343,6 +348,18 @@ void RRM_RR::transimitPreparation() {
 					if (otherInfo == nullptr) continue;
 					int otherVeUEId = otherInfo->VeUEId;
 					m_InterferenceVec[curVeUEId][patternIdx].push_back(otherVeUEId);
+				}
+
+				// 添加相邻RSU同一Pattern的干扰车辆
+				for (int adjRSUId : adjacentRSUIds) {
+					RRM_RSU *adjRSU = m_RSUAry[adjRSUId];
+					for (int adjClusterIdx = 0; adjClusterIdx < adjRSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; adjClusterIdx++) {
+
+							RRM_RSU::ScheduleInfo *&adjInfo = adjRSU->getRRPoint()->m_TransimitScheduleInfoTable[adjClusterIdx][patternIdx];
+							if (adjInfo == nullptr) continue;
+							int adjVeUEId = adjInfo->VeUEId;
+							m_InterferenceVec[curVeUEId][patternIdx].push_back(adjVeUEId);				
+					}
 				}
 			}
 		}

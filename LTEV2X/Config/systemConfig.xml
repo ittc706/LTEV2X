@@ -8,7 +8,7 @@
 	[TDM_DRA]：簇间时分的竞争式资源管理模式
 	[ICC_DRA]：簇间并发的竞争式资源管理模式
 	[RR]：集中式轮询调度模式-->
-<RRMMode>TDM_DRA</RRMMode>
+<RRMMode>RR</RRMMode>
 
 
 <!--无限资源管理模式选择
@@ -18,7 +18,7 @@
 
 
 <!--仿真总时间，单位TTI(毫秒)-->
-<NTTI>10000</NTTI>
+<NTTI>1000</NTTI>
 
 
 <!--线程数量-->
