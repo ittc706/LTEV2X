@@ -289,7 +289,7 @@ void RRM_RR::roundRobin() {
 		RRM_RSU *_RSU = m_RSUAry[RSUId];
 		for (int clusterIdx = 0; clusterIdx < _RSU->getSystemPoint()->getGTTPoint()->m_ClusterNum; clusterIdx++) {
 			int patternIdx = 0;
-			vector<int> randomPattern(s_TOTAL_PATTERN_NUM);
+			vector<int> randomPattern;
 			for (int i = 0; i < s_TOTAL_PATTERN_NUM; i++) {
 				randomPattern.push_back(i);
 			}
@@ -374,13 +374,6 @@ void RRM_RR::transimitPreparation() {
 			m_VeUEAry[VeUEId]->m_InterferenceVeUENum[patternIdx] = (int)interList.size();//写入干扰数目
 
 			m_VeUEAry[VeUEId]->m_InterferenceVeUEIdVec[patternIdx].assign(interList.begin(), interList.end());//写入干扰车辆ID
-
-			/*if (m_VeUEAry[VeUEId]->m_InterferenceVeUENum[patternIdx]>0) {
-				g_FileTemp << "VeUEId: " << VeUEId << " [";
-				for (auto c : m_VeUEAry[VeUEId]->m_InterferenceVeUEIdVec[patternIdx])
-					g_FileTemp << c << ", ";
-				g_FileTemp << " ]" << endl;
-			}*/
 		}
 	}
 
