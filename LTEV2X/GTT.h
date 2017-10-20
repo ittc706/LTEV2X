@@ -157,4 +157,10 @@ public:
 	* 目前仅有簇间干扰，因为RSU间干扰太小，几乎可以忽略
 	*/
 	virtual void calculateInterference(const std::vector<std::vector<std::list<int>>>& t_RRMInterferenceVec) = 0;
+
+	
+	/*
+	* 返回给定RSU的邻接RSU列表
+	*/
+	virtual const std::vector<int>& getAdjacentRSUs(int t_RSUId) = 0;
 };

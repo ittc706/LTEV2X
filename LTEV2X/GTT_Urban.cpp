@@ -129,6 +129,34 @@ const int GTT_Urban::s_RSU_IN_ROAD[s_ROAD_NUM][4] = {
 	{ 16,17,23,22 }
 };
 
+const vector<int> GTT_Urban::s_ADJACENT_RSU[s_RSU_NUM] = {
+	{ 1,6 },//0
+	{ 0,2,7 },//1
+	{ 1,3,8 },//2
+	{ 2,4,9 },//3
+	{ 3,10 },//4
+	{ 6,12 },//5
+	{ 0,5,7,13 },//6
+	{ 1,6,8,14 },//7
+	{ 2,7,9,15 },//8
+	{ 3,8,10,16 },//9
+	{ 4,9,11,17 },//10
+	{ 10,18 },//11
+	{ 5,13 },//12
+	{ 6,12,14,19 },//13
+	{ 7,13,15,20 },//14
+	{ 8,14,16,21 },//15
+	{ 9,15,17,22 },//16
+	{ 10,16,18,23 },//17
+	{ 11,17 },//18
+	{ 13,20 },//19
+	{ 14,19,21 },//20
+	{ 15,20,22 },//21
+	{ 16,21,23 },//22
+	{ 17,22 },//23
+};
+
+
 void GTT_Urban::loadConfig() {
 	ConfigLoader configLoader;
 
@@ -909,4 +937,8 @@ void GTT_Urban::calculateInterference(const vector<vector<list<int>>>& t_RRMInte
 	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		Delete::safeDelete(m_VeUEAry[VeUEId]->m_IMTA, true);
 	}
+}
+
+const std::vector<int>& GTT_Urban::getAdjacentRSUs(int t_RSUId) {
+	return s_ADJACENT_RSU[t_RSUId];
 }

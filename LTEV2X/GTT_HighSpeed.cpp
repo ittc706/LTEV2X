@@ -94,6 +94,44 @@ const double GTT_HighSpeed::s_eNB_TOPO[s_eNB_NUM * 2] = {
 	0.5f*s_ISD,35,
 };
 
+const vector<int> GTT_HighSpeed::s_ADJACENT_RSU[s_RSU_NUM]{
+	{ 1 },//0
+	{ 0, 2 },//1
+	{ 1, 3 },//2
+	{ 2, 4 },//3
+	{ 3, 5 },//4
+	{ 4, 6 },//5
+	{ 5, 7 },//6
+	{ 6, 8 },//7
+	{ 7, 9 },//8
+	{ 8, 10 },//9
+	{ 9, 11 },//10
+	{ 10, 12 },//11
+	{ 11, 13 },//12
+	{ 12, 14 },//13
+	{ 13, 15 },//14
+	{ 14, 16 },//15
+	{ 15, 17 },//16
+	{ 16, 18 },//17
+	{ 17, 19 },//18
+	{ 18, 20 },//19
+	{ 19, 21 },//20
+	{ 20, 22 },//21
+	{ 21, 23 },//22
+	{ 22, 24 },//23
+	{ 23, 25 },//24
+	{ 24, 26 },//25
+	{ 25, 27 },//26
+	{ 26, 28 },//27
+	{ 27, 29 },//28
+	{ 28, 30 },//29
+	{ 29, 31 },//30
+	{ 30, 32 },//31
+	{ 31, 33 },//32
+	{ 32, 34 },//33
+	{ 33 },//34
+};
+
 void GTT_HighSpeed::loadConfig() {
 	ConfigLoader configLoader;
 
@@ -591,4 +629,9 @@ void GTT_HighSpeed::calculateInterference(const vector<vector<list<int>>>& t_RRM
 	for (int VeUEId = 0; VeUEId < GTT::s_VeUE_NUM; VeUEId++) {
 		Delete::safeDelete(m_VeUEAry[VeUEId]->m_IMTA, true);
 	}
+}
+
+
+const std::vector<int>& GTT_HighSpeed::getAdjacentRSUs(int t_RSUId) {
+	return s_ADJACENT_RSU[t_RSUId];
 }

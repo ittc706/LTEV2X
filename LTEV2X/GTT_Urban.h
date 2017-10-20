@@ -81,6 +81,11 @@ public:
 	static const int s_RSU_IN_ROAD[s_ROAD_NUM][4];
 
 	/*
+	* 邻接RSU
+	*/
+	static const std::vector<int> s_ADJACENT_RSU[s_RSU_NUM];
+
+	/*
 	* 加载城镇场景配置参数
 	*/
 	static void loadConfig();
@@ -176,4 +181,9 @@ public:
 	* 目前仅有簇间干扰，因为RSU间干扰太小，几乎可以忽略
 	*/
 	void calculateInterference(const std::vector<std::vector<std::list<int>>>& t_RRMInterferenceVec) override;
+
+	/*
+	* 返回给定RSU的邻接RSU列表
+	*/
+	const std::vector<int>& getAdjacentRSUs(int t_RSUId);
 };
