@@ -180,5 +180,5 @@ plot(centerPackageLossDistance,numPackageLossDistanceRate,'bo-','LineWidth',2);
 title('PDR','LineWidth',2);
 xlabel('Distance(m)','LineWidth',2);
 ylabel('Drop Rate','LineWidth',2);
-%axis([0 max(PackageLossDistance) 0 1]);
+axis([0 max(PackageLossDistance) 0 1]);
 grid on;
