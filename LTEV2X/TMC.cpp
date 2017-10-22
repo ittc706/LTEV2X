@@ -196,8 +196,12 @@ TMC::~TMC() {
 	m_FileDataConflictNum.close();
 	m_FileTTIThroughput.close();
 	m_FileRSUThroughput.close();
-	m_FilePackageLoss.close();
-	m_FilePackageTransimit.close();
+	m_FileEmergencyPackageLossDistance.close();
+	m_FileEmergencyPackageTransmitDistance.close();
+	m_FilePeriodPackageLossDistance.close();
+	m_FilePeriodPackageTransmitDistance.close();
+	m_FileDataPackageLossDistance.close();
+	m_FileDataPackageTransmitDistance.close();
 }
 
 
@@ -225,8 +229,12 @@ TMC::TMC(System* t_Context) :
 	m_FileDataConflictNum.open("Log/TMCLog/DataConflictNum.txt");
 	m_FileTTIThroughput.open("Log/TMCLog/TTIThroughput.txt");
 	m_FileRSUThroughput.open("Log/TMCLog/RSUThroughput.txt");
-	m_FilePackageLoss.open("Log/TMCLog/PackageLoss.txt");
-	m_FilePackageTransimit.open("Log/TMCLog/PackageTransimit.txt");
+	m_FileEmergencyPackageLossDistance.open("Log/TMCLog/EmergencyPackageLossDistance.txt");
+	m_FileEmergencyPackageTransmitDistance.open("Log/TMCLog/EmergencyPackageTransmitDistance.txt");
+	m_FilePeriodPackageLossDistance.open("Log/TMCLog/PeriodPackageLossDistance.txt");
+	m_FilePeriodPackageTransmitDistance.open("Log/TMCLog/PeriodPackageTransmitDistance.txt");
+	m_FileDataPackageLossDistance.open("Log/TMCLog/DataPackageLossDistance.txt");
+	m_FileDataPackageTransmitDistance.open("Log/TMCLog/DataPackageTransmitDistance.txt");
 }
 
 
@@ -470,11 +478,29 @@ void TMC::processStatistics() {
 	for (Event &event : m_EventVec) {
 		transimitPackageNum += event.getTransimitPackageNum();
 		lossPacketNum += event.getPacketLossNum();
-		for (double &d : event.getPackageLossDistanceVec())
-			m_FilePackageLoss << d << endl;
-		for (double &d : event.getPackageTransimitDistanceVec())
-			m_FilePackageTransimit << d << endl;
+
+		switch (event.getMessageType()) {
+		case EMERGENCY:
+			for (double &d : event.getPackageLossDistanceVec())
+				m_FileEmergencyPackageLossDistance << d << endl;
+			for (double &d : event.getPackageTransimitDistanceVec())
+				m_FileEmergencyPackageTransmitDistance << d << endl;
+			break;
+		case PERIOD:
+			for (double &d : event.getPackageLossDistanceVec())
+				m_FilePeriodPackageLossDistance << d << endl;
+			for (double &d : event.getPackageTransimitDistanceVec())
+				m_FilePeriodPackageTransmitDistance << d << endl;
+			break;
+		case DATA:
+			for (double &d : event.getPackageLossDistanceVec())
+				m_FileDataPackageLossDistance << d << endl;
+			for (double &d : event.getPackageTransimitDistanceVec())
+				m_FileDataPackageTransmitDistance << d << endl;
+			break;
+		}
 	}
+
 	m_FileStatisticsDescription << "<TransimitPackageNum>" << transimitPackageNum << "</TransimitPackageNum>" << endl;
 	m_FileStatisticsDescription << "<PackageLossRate>" << (double)lossPacketNum / (double)transimitPackageNum << "</PackageLossRate>" << endl;
 }

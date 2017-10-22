@@ -1,14 +1,14 @@
 <!--地理拓扑单元选择
 	[URBAN]：城市场景
 	[HIGHSPEED]：高速场景-->	
-<GTTMode>HIGHSPEED</GTTMode>
+<GTTMode>URBAN</GTTMode>
 
 
 <!--无限资源管理模式选择
 	[TDM_DRA]：簇间时分的竞争式资源管理模式
 	[ICC_DRA]：簇间并发的竞争式资源管理模式
 	[RR]：集中式轮询调度模式-->
-<RRMMode>ICC_DRA</RRMMode>
+<RRMMode>TDM_DRA</RRMMode>
 
 
 <!--无限资源管理模式选择
@@ -18,7 +18,7 @@
 
 
 <!--仿真总时间，单位TTI(毫秒)-->
-<NTTI>2000</NTTI>
+<NTTI>100</NTTI>
 
 
 <!--线程数量-->

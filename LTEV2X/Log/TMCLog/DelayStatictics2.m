@@ -163,8 +163,8 @@ grid on;
 
 
 %% PRR
-PackageLossDistance=load('PackageLoss.txt');
-PackageTransimitDistance=load('PackageTransimit.txt');
+PackageLossDistance=load('PeriodPackageLossDistance.txt');
+PackageTransimitDistance=load('PeriodPackageTransmitDistance.txt');
 
 IntersectDistance=intersect(unique(PackageLossDistance),unique(PackageTransimitDistance));
 IntersectDistance=0:20:max(PackageLossDistance);

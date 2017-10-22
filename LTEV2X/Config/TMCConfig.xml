@@ -7,11 +7,11 @@
 
 
 <!--紧急事件Lambda，单位次/TTI-->
-<EmergencyPoisson>0.001</EmergencyPoisson>
+<EmergencyPoisson>0</EmergencyPoisson>
 
 
 <!--数据事件Lambda，单位次/TTI-->
-<DataPoisson>0.001</DataPoisson>
+<DataPoisson>0</DataPoisson>
 
 
 <!--紧急事件/周期事件/数据业务事件 的数据包数量-->
@@ -31,7 +31,7 @@
 
 
 <!--紧急事件/周期事件/数据业务事件 最大的退避窗大小-->
-<MaxWindowSize>40 20 20</MaxWindowSize>
+<MaxWindowSize>5 20 20</MaxWindowSize>
 
 
 

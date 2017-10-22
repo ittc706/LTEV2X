@@ -143,8 +143,12 @@ public:
 	std::ofstream m_FileDataConflictNum;
 	std::ofstream m_FileTTIThroughput;
 	std::ofstream m_FileRSUThroughput;
-	std::ofstream m_FilePackageLoss;
-	std::ofstream m_FilePackageTransimit;
+	std::ofstream m_FileEmergencyPackageLossDistance;
+	std::ofstream m_FileEmergencyPackageTransmitDistance;
+	std::ofstream m_FilePeriodPackageLossDistance;
+	std::ofstream m_FilePeriodPackageTransmitDistance;
+	std::ofstream m_FileDataPackageLossDistance;
+	std::ofstream m_FileDataPackageTransmitDistance;
 	/*------------------½Ó¿Ú------------------*/
 public:
 	/*
