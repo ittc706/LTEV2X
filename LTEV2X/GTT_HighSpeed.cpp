@@ -351,6 +351,8 @@ void GTT_HighSpeed::channelGeneration() {
 
 
 void GTT_HighSpeed::freshLoc() {
+	m_FileVeUEMessage.close();
+	m_FileVeUEMessage.open("Log/GTTLog/VeUEMessage.txt");
 	double freshTime = ((double)getContext()->m_Config.locationUpdateNTTI) / 1000.0;
 	for (int UserIdx = 0; UserIdx != GTT::s_VeUE_NUM; UserIdx++)
 	{
